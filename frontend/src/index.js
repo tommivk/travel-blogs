@@ -15,7 +15,20 @@ const App = () => {
   return (
     <div>
       {user === null ? 'Hello, world!' : `Hello ${user.username}`}
+      {user && <LogOut setUser={setUser}></LogOut>}
       {!user && <Login setUser={setUser}></Login>}
+    </div>
+  )
+}
+
+const LogOut = ({ setUser }) => {
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedTravelBlogUser')
+    setUser(null)
+  }
+  return (
+    <div>
+      <button onClick={handleLogout}>Logout</button>
     </div>
   )
 }
