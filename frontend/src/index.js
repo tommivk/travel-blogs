@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
+require('firebase/storage')
 require('firebase/auth')
 
 const firebaseConfig = {
@@ -15,6 +16,7 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
+const storage = firebase.storage()
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -31,6 +33,47 @@ const App = () => {
       {user === null ? 'Hello, world!' : `Hello ${user.username}`}
       {user && <LogOut setUser={setUser}></LogOut>}
       {!user && <Login setUser={setUser}></Login>}
+      {!user && <SignUp></SignUp>}
+    </div>
+  )
+}
+
+const SignUp = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSignup = async (e) => {
+    e.preventDefault()
+    try {
+      const user = await axios.post('http://localhost:8008/api/users', {
+        username,
+        password,
+      })
+      setUsername('')
+      setPassword('')
+      console.log(user.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <div>
+      <form onSubmit={handleSignup}>
+        username
+        <input
+          type='text'
+          onChange={({ target }) => setUsername(target.value)}
+        ></input>
+        <br></br>
+        password
+        <input
+          type='password'
+          onChange={({ target }) => setPassword(target.value)}
+        ></input>
+        <br></br>
+        <button type='submit'>Sign up</button>
+      </form>
     </div>
   )
 }
