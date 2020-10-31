@@ -39,9 +39,15 @@ const LogOut = ({ setUser }) => {
   const handleLogout = () => {
     window.localStorage.removeItem('loggedTravelBlogUser')
     setUser(null)
+
+    firebase
+      .auth()
+      .signOut()
+      .then(() => console.log('signout successful'))
+      .catch((error) => console.log('error happened'))
   }
   return (
-    <div>
+    <div style={{ float: 'right' }}>
       <button onClick={handleLogout}>Logout</button>
     </div>
   )
@@ -65,6 +71,7 @@ const Login = ({ setUser }) => {
         'loggedTravelBlogUser',
         JSON.stringify(user.data)
       )
+      await firebase.auth().signInWithCustomToken(user.data.fbtoken)
     } catch (error) {
       console.log(error.message)
     }
