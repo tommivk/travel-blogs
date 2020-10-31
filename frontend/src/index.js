@@ -1,7 +1,10 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import { Link, Modal, Button, TextField } from '@material-ui/core'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
+import './index.css'
+
 require('firebase/storage')
 require('firebase/auth')
 
@@ -28,14 +31,100 @@ const App = () => {
     }
   }, [])
   console.log(user)
-
+  if (!user) {
+    return <Index setUser={setUser}></Index>
+  }
   return (
     <div>
-      {user && <img src={user.avatar} height='50' width='50'></img>}
-      {user === null ? 'Hello, world!' : `Hello ${user.username}`}
+      {user && (
+        <img
+          style={{ float: 'right' }}
+          src={user.avatar}
+          height='50'
+          width='50'
+        ></img>
+      )}
+
       {user && <LogOut setUser={setUser}></LogOut>}
       {!user && <Login setUser={setUser}></Login>}
       {!user && <SignUp></SignUp>}
+    </div>
+  )
+}
+const IndexModal = ({ modalOpen, closeModal, setUser }) => {
+  if (!modalOpen.open) return null
+  if (modalOpen.modal !== 'login' && modalOpen.modal !== 'signup') return null
+  return (
+    <div>
+      <Modal
+        open={modalOpen.open}
+        onClose={closeModal}
+        aria-labelledby='simple-modal-title'
+        aria-describedby='simple-modal-description'
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: `translate(-50%, -50%)`,
+            backgroundColor: 'white',
+          }}
+        >
+          {modalOpen.modal === 'login' ? (
+            <Login setUser={setUser}></Login>
+          ) : (
+            <SignUp></SignUp>
+          )}
+        </div>
+      </Modal>
+    </div>
+  )
+}
+const Index = ({ setUser }) => {
+  const [modalOpen, setModalOpen] = useState({ open: false, modal: '' })
+
+  const openSignUpModal = () => {
+    setModalOpen({ open: true, modal: 'signup' })
+  }
+  const openLoginModal = () => {
+    setModalOpen({ open: true, modal: 'login' })
+  }
+  const closeModal = () => {
+    setModalOpen({ open: false, modal: '' })
+  }
+
+  return (
+    <div style={{ height: '100vh', backgroundColor: 'rgb(60,60,60)' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          height: '100vh',
+        }}
+      >
+        {modalOpen && (
+          <IndexModal
+            modalOpen={modalOpen}
+            closeModal={closeModal}
+            setUser={setUser}
+          ></IndexModal>
+        )}
+        <Button
+          style={{ margin: '20px' }}
+          onClick={openSignUpModal}
+          size='large'
+          variant='outlined'
+          color='secondary'
+        >
+          Sign Up
+        </Button>
+        <div style={{ cursor: 'pointer' }}>
+          Already a member? <Link onClick={openLoginModal}>Login</Link>
+        </div>
+      </div>
     </div>
   )
 }
@@ -62,19 +151,28 @@ const SignUp = () => {
   return (
     <div>
       <form onSubmit={handleSignup}>
-        username
-        <input
+        <TextField
+          id='outlined-textarea'
+          variant='outlined'
           type='text'
+          label='Username'
+          autoComplete='off'
+          value={username}
           onChange={({ target }) => setUsername(target.value)}
-        ></input>
+        ></TextField>
         <br></br>
-        password
-        <input
+        <TextField
+          id='outlined-textarea'
+          label='Password'
+          variant='outlined'
           type='password'
+          value={password}
           onChange={({ target }) => setPassword(target.value)}
-        ></input>
+        ></TextField>
         <br></br>
-        <button type='submit'>Sign up</button>
+        <Button type='submit' color='primary' variant='contained'>
+          Sign up
+        </Button>
       </form>
     </div>
   )
@@ -93,7 +191,9 @@ const LogOut = ({ setUser }) => {
   }
   return (
     <div style={{ float: 'right' }}>
-      <button onClick={handleLogout}>Logout</button>
+      <Button variant='contained' color='primary' onClick={handleLogout}>
+        Logout
+      </Button>
     </div>
   )
 }
@@ -124,15 +224,28 @@ const Login = ({ setUser }) => {
   return (
     <div>
       <form onSubmit={handleLogin}>
-        <input
+        <TextField
+          id='outlined-textarea'
+          variant='outlined'
           type='text'
+          placeholder='Username'
+          autoComplete='off'
+          value={username}
           onChange={({ target }) => setUsername(target.value)}
-        ></input>
-        <input
+        ></TextField>
+        <br></br>
+        <TextField
+          id='outlined-textarea'
+          placeholder='Password'
+          variant='outlined'
           type='password'
+          value={password}
           onChange={({ target }) => setPassword(target.value)}
-        ></input>
-        <button type='submit'>Login</button>
+        ></TextField>
+        <br></br>
+        <Button type='submit' color='primary' variant='contained'>
+          Login
+        </Button>
       </form>
     </div>
   )
