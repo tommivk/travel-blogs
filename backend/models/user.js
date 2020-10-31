@@ -1,10 +1,15 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const defaultPictureURL = process.env.DEFAULT_PICTURE_URL
 
 const userSchema = mongoose.Schema({
   username: {
     type: String,
     unique: true,
+  },
+  avatar: {
+    type: String,
+    default: defaultPictureURL,
   },
   passwordHash: String,
 })

@@ -27,9 +27,11 @@ const App = () => {
       setUser(JSON.parse(loggedUser))
     }
   }, [])
+  console.log(user)
 
   return (
     <div>
+      {user && <img src={user.avatar} height='50' width='50'></img>}
       {user === null ? 'Hello, world!' : `Hello ${user.username}`}
       {user && <LogOut setUser={setUser}></LogOut>}
       {!user && <Login setUser={setUser}></Login>}
