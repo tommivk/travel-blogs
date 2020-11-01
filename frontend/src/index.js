@@ -2,8 +2,10 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link, Modal, Button, TextField } from '@material-ui/core'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import { Search, Language, Notifications } from '@material-ui/icons'
 import Menu from '@material-ui/core/Menu'
+import Container from '@material-ui/core/Container'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
@@ -11,6 +13,7 @@ import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
+import { Editor } from '@tinymce/tinymce-react'
 import './index.css'
 
 require('firebase/storage')
@@ -28,6 +31,44 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 const storage = firebase.storage()
+
+const NewBlog = () => {
+  const [content, setContent] = useState('')
+  const handleBlogChange = (content, editor) => {
+    setContent(content)
+  }
+  const handleBlogSubmit = (e) => {
+    e.preventDefault()
+    console.log('asd')
+  }
+  return (
+    <div style={{}}>
+      <Container maxWidth='md'>
+        <h2 style={{ textAlign: 'center' }}>Create New Blog</h2>
+        <form onSubmit={handleBlogSubmit}>
+          <TextField
+            placeholder='Title'
+            variant='outlined'
+            size='small'
+            style={{ marginBottom: '5px', width: '30%' }}
+          ></TextField>
+          <Editor
+            init={{
+              height: 600,
+              menubar: true,
+              paste_data_images: true,
+              plugins: ['paste'],
+            }}
+            onEditorChange={handleBlogChange}
+          ></Editor>
+          <Button style={{ float: 'right' }} type='submit'>
+            Submit
+          </Button>
+        </form>
+      </Container>
+    </div>
+  )
+}
 
 const Header = ({ user, setUser }) => {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
@@ -58,6 +99,7 @@ const Header = ({ user, setUser }) => {
         display: 'flex',
         justifyContent: 'space-between',
         borderBottom: '1px solid black',
+        marginBottom: '10px',
       }}
     >
       <div>
@@ -124,6 +166,7 @@ const App = () => {
   return (
     <div>
       <Header user={user} setUser={setUser}></Header>
+      <NewBlog></NewBlog>
       {!user && <Login setUser={setUser}></Login>}
       {!user && <SignUp></SignUp>}
     </div>
