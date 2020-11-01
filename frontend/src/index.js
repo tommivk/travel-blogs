@@ -1,6 +1,14 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link, Modal, Button, TextField } from '@material-ui/core'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import { Search, Language, Notifications } from '@material-ui/icons'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import Paper from '@material-ui/core/Paper'
+import InputBase from '@material-ui/core/InputBase'
+import Icon from '@material-ui/core/Icon'
+import IconButton from '@material-ui/core/IconButton'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
 import './index.css'
@@ -21,6 +29,85 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 const storage = firebase.storage()
 
+const Header = ({ user, setUser }) => {
+  const [menuAnchorEl, setMenuAnchorEl] = useState(null)
+
+  const handleMenuOpen = (e) => {
+    setMenuAnchorEl(e.currentTarget)
+  }
+  const handleMenuClose = () => {
+    setMenuAnchorEl(null)
+  }
+
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedTravelBlogUser')
+    setUser(null)
+
+    firebase
+      .auth()
+      .signOut()
+      .then(() => console.log('signout successful'))
+      .catch((error) => console.log('error happened'))
+
+    setMenuAnchorEl(null)
+  }
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid black',
+      }}
+    >
+      <div>
+        <h2 style={{ marginLeft: '10px' }}>TITLE</h2>
+      </div>
+      <div style={{ margin: 'auto', display: 'flex' }}>
+        <Paper component='form' style={{ paddingLeft: '10px' }}>
+          <InputBase
+            variant='outlined'
+            size='small'
+            placeholder='Search...'
+          ></InputBase>
+          <IconButton>
+            <Search />
+          </IconButton>
+        </Paper>
+        <div style={{ margin: 'auto', paddingLeft: '20px', cursor: 'pointer' }}>
+          <Language fontSize='large' />
+        </div>
+      </div>
+      <div style={{ display: 'flex' }}>
+        <Notifications fontSize='large' style={{ margin: 'auto' }} />
+        <div
+          style={{ margin: '10px', cursor: 'pointer' }}
+          onClick={handleMenuOpen}
+        >
+          <img
+            src={user.avatar}
+            height='50'
+            width='50'
+            alt='profile picture'
+          ></img>
+        </div>
+      </div>
+      <Menu
+        anchorEl={menuAnchorEl}
+        keepMounted
+        open={Boolean(menuAnchorEl)}
+        onClose={handleMenuClose}
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <MenuItem onClick={handleMenuClose}>Add new blog</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
+    </div>
+  )
+}
+
 const App = () => {
   const [user, setUser] = useState(null)
 
@@ -36,16 +123,7 @@ const App = () => {
   }
   return (
     <div>
-      {user && (
-        <img
-          style={{ float: 'right' }}
-          src={user.avatar}
-          height='50'
-          width='50'
-        ></img>
-      )}
-
-      {user && <LogOut setUser={setUser}></LogOut>}
+      <Header user={user} setUser={setUser}></Header>
       {!user && <Login setUser={setUser}></Login>}
       {!user && <SignUp></SignUp>}
     </div>
@@ -174,26 +252,6 @@ const SignUp = () => {
           Sign up
         </Button>
       </form>
-    </div>
-  )
-}
-
-const LogOut = ({ setUser }) => {
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedTravelBlogUser')
-    setUser(null)
-
-    firebase
-      .auth()
-      .signOut()
-      .then(() => console.log('signout successful'))
-      .catch((error) => console.log('error happened'))
-  }
-  return (
-    <div style={{ float: 'right' }}>
-      <Button variant='contained' color='primary' onClick={handleLogout}>
-        Logout
-      </Button>
     </div>
   )
 }
