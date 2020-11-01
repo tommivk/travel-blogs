@@ -32,14 +32,26 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 const storage = firebase.storage()
 
-const NewBlog = () => {
+const NewBlog = ({ user }) => {
   const [content, setContent] = useState('')
+  const [title, setTitle] = useState('')
   const handleBlogChange = (content, editor) => {
     setContent(content)
   }
-  const handleBlogSubmit = (e) => {
+  const handleBlogSubmit = async (e) => {
     e.preventDefault()
-    console.log('asd')
+    try {
+      const response = await axios.post('http://localhost:8008/api/blogs', {
+        username: user.username,
+        content: content,
+        title: title,
+      })
+      setContent('')
+      setTitle('')
+      console.log(response)
+    } catch (error) {
+      console.log(error.message)
+    }
   }
   return (
     <div style={{}}>
@@ -51,6 +63,7 @@ const NewBlog = () => {
             variant='outlined'
             size='small'
             style={{ marginBottom: '5px', width: '30%' }}
+            onChange={({ target }) => setTitle(target.value)}
           ></TextField>
           <Editor
             init={{
@@ -166,7 +179,7 @@ const App = () => {
   return (
     <div>
       <Header user={user} setUser={setUser}></Header>
-      <NewBlog></NewBlog>
+      <NewBlog user={user}></NewBlog>
       {!user && <Login setUser={setUser}></Login>}
       {!user && <SignUp></SignUp>}
     </div>

@@ -29,9 +29,12 @@ loginRouter.post('/', async (request, response) => {
     .auth()
     .createCustomToken(userForToken.id.toString() + process.env.FBSECRET)
 
-  response
-    .status(200)
-    .send({ token, fbtoken, avatar: user.avatar, username: user.username })
+  response.status(200).send({
+    token,
+    fbtoken,
+    avatar: user.avatar,
+    username: user.username,
+  })
 })
 
 module.exports = loginRouter

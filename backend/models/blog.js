@@ -8,10 +8,7 @@ const blogSchema = mongoose.Schema({
   },
   date: Date,
   content: String,
-  location: {
-    lat: { type: Number },
-    lng: { type: Number },
-  },
+  location: String,
   stars: [
     {
       type: mongoose.Schema.Types.ObjectId,
