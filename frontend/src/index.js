@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
 import CardHeader from '@material-ui/core/CardHeader'
-
+import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -336,15 +336,36 @@ const HomePage = ({ allBlogs }) => {
   if (allBlogs == null) return null
   return (
     <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'flex-start',
+        }}
+      >
         {allBlogs.map((blog) => (
-          <div>
+          <div style={{ margin: '5px' }}>
             <Card style={{ width: '250px' }}>
-              <CardHeader title={blog.title} subheader={blog.date} />
+              <CardHeader
+                avatar={
+                  <Avatar alt='author profile' src={blog.author.avatar} />
+                }
+                title={blog.title}
+                subheader={blog.author.username}
+                subheader={blog.date}
+              />
               <CardMedia>
                 <img src={blog.headerImage} height='100%' width='100%' />
               </CardMedia>
-              <CardContent>{ReactHtmlParser(blog.content)}</CardContent>
+              <CardContent>
+                {ReactHtmlParser(blog.content, {
+                  transform: (node) => {
+                    if (node.type === 'tag' && node.name === 'img') {
+                      return null
+                    }
+                  },
+                })}
+              </CardContent>
             </Card>
           </div>
         ))}
