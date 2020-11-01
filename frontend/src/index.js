@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { Link, Modal, Button, TextField } from '@material-ui/core'
+import { Modal, Button, TextField } from '@material-ui/core'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import { Search, Language, Notifications } from '@material-ui/icons'
@@ -15,6 +15,13 @@ import IconButton from '@material-ui/core/IconButton'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
 import { Editor } from '@tinymce/tinymce-react'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from 'react-router-dom'
 import './index.css'
 
 require('firebase/storage')
@@ -89,6 +96,29 @@ const ImageUpload = ({ user }) => {
   const [imagePreview, setImagePreview] = useState(null)
   const [uploadedImages, setUploadedImages] = useState([])
   console.log(uploadedImages)
+  const [userimages, setUserImages] = useState(null)
+  const fbuser = firebase.auth().currentUser
+
+  useEffect(() => {
+    var storageRef = firebase.storage().ref()
+
+    storageRef
+      .listAll()
+      .then(function (result) {
+        // result.items.forEach(function(imageRef) {
+        //   // And finally display them
+        //   displayImage(imageRef);
+        // });
+        result.items.forEach(function (imageRef) {
+          // And finally display them
+          setUserImages(userimages.concat(imageRef))
+        })
+      })
+      .catch(function (error) {
+        // Handle any errors
+      })
+  }, [])
+  console.log(userimages)
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0])
@@ -125,13 +155,16 @@ const ImageUpload = ({ user }) => {
       () => {
         uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
           console.log('File available at', downloadURL)
-          setUploadedImages(uploadedImages.concat(downloadURL))
+
+          setUploadedImages([downloadURL].concat(uploadedImages))
         })
+        setImagePreview(null)
       }
     )
   }
   return (
     <div style={{ height: '100%' }}>
+      <h3 style={{ textAlign: 'center' }}>My images</h3>
       {imagePreview && (
         <img alt='' src={imagePreview} height='200' width='200'></img>
       )}
@@ -139,10 +172,13 @@ const ImageUpload = ({ user }) => {
         <input type='file' onChange={handleImageChange}></input>
         <Button type='submit'>upload</Button>
       </form>
-
-      {uploadedImages.map((imageUrl, i) => (
-        <img key={i} alt='' src={imageUrl} height='100' width='100'></img>
-      ))}
+      <div style={{ display: 'block', height: '100%' }}>
+        {uploadedImages.map((imageUrl, i) => (
+          <div>
+            <img key={i} alt='' src={imageUrl} height='100' width='100'></img>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -180,7 +216,9 @@ const Header = ({ user, setUser }) => {
       }}
     >
       <div>
-        <h2 style={{ marginLeft: '10px' }}>TITLE</h2>
+        <Link to='/' style={{ textDecoration: 'none', color: 'black' }}>
+          <h2 style={{ marginLeft: '10px' }}>TITLE</h2>
+        </Link>
       </div>
       <div style={{ margin: 'auto', display: 'flex' }}>
         <Paper component='form' style={{ paddingLeft: '10px' }}>
@@ -215,7 +253,17 @@ const Header = ({ user, setUser }) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <MenuItem onClick={handleMenuClose}>Add new blog</MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link
+            to='/createblog'
+            style={{
+              textDecoration: 'none',
+              color: 'black',
+            }}
+          >
+            Add new blog
+          </Link>
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
@@ -237,8 +285,33 @@ const App = () => {
   }
   return (
     <div>
-      <Header user={user} setUser={setUser}></Header>
-      <Grid container justify='center' spacing={24}>
+      <Router>
+        <Switch>
+          <Route path='/login'>
+            <Header user={user} setUser={setUser}></Header>
+          </Route>
+
+          <Route path='/createblog'>
+            <Header user={user} setUser={setUser}></Header>
+            <Grid container justify='center' spacing={24}>
+              <Grid item xs={3}>
+                <div></div>
+              </Grid>
+              <Grid item xs={5}>
+                <NewBlog user={user}></NewBlog>
+              </Grid>
+              <Grid xs={3}>
+                <ImageUpload user={user}></ImageUpload>
+              </Grid>
+            </Grid>
+          </Route>
+          <Route path='/'>
+            <Header user={user} setUser={setUser}></Header>
+          </Route>
+        </Switch>
+      </Router>
+
+      {/* <Grid container justify='center' spacing={24}>
         <Grid item xs={3}>
           <div></div>
         </Grid>
@@ -248,9 +321,7 @@ const App = () => {
         <Grid xs={3}>
           <ImageUpload user={user}></ImageUpload>
         </Grid>
-      </Grid>
-      {!user && <Login setUser={setUser}></Login>}
-      {!user && <SignUp></SignUp>}
+      </Grid> */}
     </div>
   )
 }
@@ -325,7 +396,7 @@ const Index = ({ setUser }) => {
           Sign Up
         </Button>
         <div style={{ cursor: 'pointer' }}>
-          Already a member? <Link onClick={openLoginModal}>Login</Link>
+          Already a member? <span onClick={openLoginModal}>Login</span>
         </div>
       </div>
     </div>
