@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { Modal, Button, TextField } from '@material-ui/core'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
@@ -9,11 +9,22 @@ import Menu from '@material-ui/core/Menu'
 import Container from '@material-ui/core/Container'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
+import CardHeader from '@material-ui/core/CardHeader'
+
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
 import InputBase from '@material-ui/core/InputBase'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2,
+} from 'react-html-parser'
 import { Editor } from '@tinymce/tinymce-react'
 import {
   BrowserRouter as Router,
@@ -272,13 +283,18 @@ const Header = ({ user, setUser }) => {
 
 const App = () => {
   const [user, setUser] = useState(null)
+  const [allBlogs, setAllBlogs] = useState(null)
 
   useEffect(() => {
     const loggedUser = localStorage.getItem('loggedTravelBlogUser')
     if (loggedUser) {
       setUser(JSON.parse(loggedUser))
     }
+    axios
+      .get('http://localhost:8008/api/blogs')
+      .then((response) => setAllBlogs(response.data))
   }, [])
+  console.log(allBlogs)
   console.log(user)
   if (!user) {
     return <Index setUser={setUser}></Index>
@@ -307,21 +323,32 @@ const App = () => {
           </Route>
           <Route path='/'>
             <Header user={user} setUser={setUser}></Header>
+            <HomePage allBlogs={allBlogs}></HomePage>
           </Route>
         </Switch>
       </Router>
+    </div>
+  )
+}
 
-      {/* <Grid container justify='center' spacing={24}>
-        <Grid item xs={3}>
-          <div></div>
-        </Grid>
-        <Grid item xs={5}>
-          <NewBlog user={user}></NewBlog>
-        </Grid>
-        <Grid xs={3}>
-          <ImageUpload user={user}></ImageUpload>
-        </Grid>
-      </Grid> */}
+const HomePage = ({ allBlogs }) => {
+  console.log(allBlogs)
+  if (allBlogs == null) return null
+  return (
+    <div>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {allBlogs.map((blog) => (
+          <div>
+            <Card style={{ width: '250px' }}>
+              <CardHeader title={blog.title} subheader={blog.date} />
+              <CardMedia>
+                <img src={blog.headerImage} height='100%' width='100%' />
+              </CardMedia>
+              <CardContent>{ReactHtmlParser(blog.content)}</CardContent>
+            </Card>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
