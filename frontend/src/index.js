@@ -4,6 +4,7 @@ import { Link, Modal, Button, TextField } from '@material-ui/core'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import { Search, Language, Notifications } from '@material-ui/icons'
+import Grid from '@material-ui/core/Grid'
 import Menu from '@material-ui/core/Menu'
 import Container from '@material-ui/core/Container'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -55,7 +56,7 @@ const NewBlog = ({ user }) => {
   }
   return (
     <div style={{}}>
-      <Container maxWidth='md'>
+      <div>
         <h2 style={{ textAlign: 'center' }}>Create New Blog</h2>
         <form onSubmit={handleBlogSubmit}>
           <TextField
@@ -78,7 +79,70 @@ const NewBlog = ({ user }) => {
             Submit
           </Button>
         </form>
-      </Container>
+      </div>
+    </div>
+  )
+}
+
+const ImageUpload = ({ user }) => {
+  const [image, setImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState(null)
+  const [uploadedImages, setUploadedImages] = useState([])
+  console.log(uploadedImages)
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0])
+    setImagePreview(URL.createObjectURL(e.target.files[0]))
+  }
+
+  const handleImageUpload = async (e) => {
+    e.preventDefault()
+    const fbuser = await firebase.auth().currentUser
+    const userID = fbuser.uid
+
+    let uploadTask = storage
+      .ref()
+      .child(`/images/${userID}/${image.name}`)
+      .put(image)
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        console.log('Upload is ' + progress + '% done')
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED:
+            console.log('Upload is paused')
+            break
+          case firebase.storage.TaskState.RUNNING:
+            console.log('Upload is running')
+            break
+        }
+      },
+      (error) => {
+        console.log('error happened')
+      },
+      () => {
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+          console.log('File available at', downloadURL)
+          setUploadedImages(uploadedImages.concat(downloadURL))
+        })
+      }
+    )
+  }
+  return (
+    <div style={{ height: '100%' }}>
+      {imagePreview && (
+        <img alt='' src={imagePreview} height='200' width='200'></img>
+      )}
+      <form onSubmit={handleImageUpload}>
+        <input type='file' onChange={handleImageChange}></input>
+        <Button type='submit'>upload</Button>
+      </form>
+
+      {uploadedImages.map((imageUrl, i) => (
+        <img key={i} alt='' src={imageUrl} height='100' width='100'></img>
+      ))}
     </div>
   )
 }
@@ -139,12 +203,7 @@ const Header = ({ user, setUser }) => {
           style={{ margin: '10px', cursor: 'pointer' }}
           onClick={handleMenuOpen}
         >
-          <img
-            src={user.avatar}
-            height='50'
-            width='50'
-            alt='profile picture'
-          ></img>
+          <img src={user.avatar} height='50' width='50' alt='avatar'></img>
         </div>
       </div>
       <Menu
@@ -179,7 +238,17 @@ const App = () => {
   return (
     <div>
       <Header user={user} setUser={setUser}></Header>
-      <NewBlog user={user}></NewBlog>
+      <Grid container justify='center' spacing={24}>
+        <Grid item xs={3}>
+          <div></div>
+        </Grid>
+        <Grid item xs={5}>
+          <NewBlog user={user}></NewBlog>
+        </Grid>
+        <Grid xs={3}>
+          <ImageUpload user={user}></ImageUpload>
+        </Grid>
+      </Grid>
       {!user && <Login setUser={setUser}></Login>}
       {!user && <SignUp></SignUp>}
     </div>
