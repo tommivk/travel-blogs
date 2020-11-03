@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect, Fragment } from 'react'
+import GoogleMapReact from 'google-map-react'
 import { Modal, Button, TextField } from '@material-ui/core'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
@@ -119,7 +120,7 @@ const AddLocations = ({ locations, setLocations }) => {
 const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
-  const [activeStep, setActiveStep] = useState(2)
+  const [activeStep, setActiveStep] = useState(0)
   const [headerImageURL, setHeaderImageURL] = useState(null)
   const [locations, setLocations] = useState([])
   const steps = getSteps()
@@ -432,7 +433,9 @@ const Header = ({ user, setUser }) => {
           </IconButton>
         </Paper>
         <div style={{ margin: 'auto', paddingLeft: '20px', cursor: 'pointer' }}>
-          <Language fontSize='large' />
+          <Link to='/explore' style={{ color: 'black' }}>
+            <Language fontSize='large' />
+          </Link>
         </div>
       </div>
       <div style={{ display: 'flex' }}>
@@ -520,6 +523,12 @@ const App = () => {
             </Grid>
           </Grid>
         </Route>
+        <Route path='/explore'>
+          <div>
+            <Header user={user} setUser={setUser}></Header>
+            <WorldMap></WorldMap>
+          </div>
+        </Route>
         <Route path='/blogs/:id'>
           <Header user={user} setUser={setUser}></Header>
           <SingleBlogPage blog={blog}></SingleBlogPage>
@@ -533,6 +542,25 @@ const App = () => {
   )
 }
 
+const WorldMap = () => {
+  return (
+    <div
+      style={{
+        height: '100vh',
+        width: '100%',
+        overflow: 'hidden',
+      }}
+    >
+      <GoogleMapReact
+        bootstrapURLKeys={{
+          key: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+        }}
+        defaultCenter={{ lat: 59, lng: 30 }}
+        defaultZoom={0}
+      ></GoogleMapReact>
+    </div>
+  )
+}
 const HomePage = ({ allBlogs }) => {
   console.log(allBlogs)
 
