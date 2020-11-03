@@ -59,11 +59,69 @@ const getSteps = () => {
   return ['Set Title', 'Write Content', 'Add Location', 'Preview And Submit']
 }
 
+const AddLocations = ({ locations, setLocations }) => {
+  const [filter, SetFilter] = useState('')
+  const [searchResult, setSearchResult] = useState([])
+  const URL =
+    'http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix='
+
+  useEffect(() => {
+    if (filter !== '') {
+      axios.get(`${URL}${filter}`).then((res) => setSearchResult(res.data))
+    }
+  }, [filter])
+  console.log(searchResult)
+
+  const handleAddLocation = (city) => {
+    console.log(city)
+    const newLocation = [
+      {
+        lat: city.latitude,
+        lng: city.longitude,
+      },
+    ]
+    setLocations(locations.concat(newLocation))
+  }
+  console.log(locations)
+  return (
+    <div>
+      {Location && (
+        <ul>
+          {locations.map((l) => (
+            <li>
+              {l.lat} {l.lng}
+            </li>
+          ))}
+        </ul>
+      )}
+      Add locations
+      <ul>
+        {searchResult &&
+          searchResult.data &&
+          searchResult.data.map((city) => (
+            <div style={{ display: 'flex' }}>
+              <li>
+                {city.city} {', '} {city.country}
+              </li>
+              <Button onClick={() => handleAddLocation(city)}>Add</Button>
+            </div>
+          ))}
+      </ul>
+      <TextField
+        variant='outlined'
+        placeholder='search by city'
+        onChange={({ target }) => SetFilter(target.value)}
+      ></TextField>
+    </div>
+  )
+}
+
 const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
-  const [activeStep, setActiveStep] = useState(0)
+  const [activeStep, setActiveStep] = useState(2)
   const [headerImageURL, setHeaderImageURL] = useState(null)
+  const [locations, setLocations] = useState([])
   const steps = getSteps()
 
   const handleNext = () => {
@@ -86,6 +144,7 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
         content: content,
         title: title,
         headerImageURL: headerImageURL,
+        locations: locations,
       })
       setContent('')
       setTitle('')
@@ -101,6 +160,7 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
         stars: response.data.stars,
         title: response.data.title,
         headerImageURL: response.data.headerImageURL,
+        locations: locations,
       }
       setAllBlogs(allBlogs.concat(newBlog))
     } catch (error) {
@@ -182,6 +242,10 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
               </Step>
             ))}
           </Stepper>
+          <AddLocations
+            locations={locations}
+            setLocations={setLocations}
+          ></AddLocations>
           <div style={{ float: 'left' }}>
             <Button onClick={handleBack}>Back</Button>
             <Button onClick={handleNext}>Next</Button>
@@ -473,7 +537,6 @@ const HomePage = ({ allBlogs }) => {
   console.log(allBlogs)
 
   if (allBlogs == null) return null
-
   return (
     <div>
       <div
@@ -487,7 +550,7 @@ const HomePage = ({ allBlogs }) => {
           <div style={{ margin: '5px' }}>
             <Link to={`/blogs/${blog.id}`} style={{ textDecoration: 'none' }}>
               <div>
-                <Card style={{ width: '250px' }}>
+                <Card style={{ width: '250px', height: '400px' }}>
                   <CardHeader
                     avatar={
                       <Avatar alt='author profile' src={blog.author.avatar} />

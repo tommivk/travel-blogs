@@ -22,7 +22,7 @@ blogsRouter.post('/', async (req, res) => {
     content: body.content,
     stars: [],
     headerImageURL: body.headerImageURL,
-    location: body.location,
+    locations: body.locations,
   })
 
   const savedBlog = await newBlog.save()
