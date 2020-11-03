@@ -12,6 +12,9 @@ import Paper from '@material-ui/core/Paper'
 import CardHeader from '@material-ui/core/CardHeader'
 import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
+import Stepper from '@material-ui/core/Stepper'
+import Step from '@material-ui/core/Step'
+import StepLabel from '@material-ui/core/StepLabel'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -51,12 +54,28 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 const storage = firebase.storage()
 
+const getSteps = () => {
+  return ['Set Title', 'Write Content', 'Add Location', 'Preview And Submit']
+}
+
 const NewBlog = ({ user }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
+  const [activeStep, setActiveStep] = useState(0)
+  const steps = getSteps()
+
+  const handleNext = () => {
+    setActiveStep((prevState) => prevState + 1)
+  }
+
+  const handleBack = () => {
+    setActiveStep((prevState) => prevState - 1)
+  }
+
   const handleBlogChange = (content, editor) => {
     setContent(content)
   }
+
   const handleBlogSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -71,12 +90,20 @@ const NewBlog = ({ user }) => {
     } catch (error) {
       console.log(error.message)
     }
+    setActiveStep(4)
   }
-  return (
-    <div style={{}}>
-      <div>
-        <h2 style={{ textAlign: 'center' }}>Create New Blog</h2>
-        <form onSubmit={handleBlogSubmit}>
+
+  switch (activeStep) {
+    case 0:
+      return (
+        <div>
+          <Stepper alternativeLabel activeStep={activeStep}>
+            {steps.map((step) => (
+              <Step>
+                <StepLabel>{step}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
           <TextField
             placeholder='Title'
             variant='outlined'
@@ -84,22 +111,95 @@ const NewBlog = ({ user }) => {
             style={{ marginBottom: '5px', width: '30%' }}
             onChange={({ target }) => setTitle(target.value)}
           ></TextField>
-          <Editor
-            init={{
-              height: 600,
-              menubar: true,
-              paste_data_images: true,
-              plugins: ['paste'],
-            }}
-            onEditorChange={handleBlogChange}
-          ></Editor>
-          <Button style={{ float: 'right' }} type='submit'>
-            Submit
-          </Button>
-        </form>
-      </div>
-    </div>
-  )
+          <div>
+            <Button onClick={handleNext}>Next</Button>
+          </div>
+        </div>
+      )
+    case 1:
+      return (
+        <div>
+          <div>
+            <h2 style={{ textAlign: 'center' }}>Create New Blog</h2>
+            <Stepper alternativeLabel activeStep={activeStep}>
+              {steps.map((step) => (
+                <Step>
+                  <StepLabel>{step}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+
+            <Editor
+              value={content}
+              init={{
+                height: 600,
+                menubar: true,
+                paste_data_images: true,
+                plugins: ['paste'],
+              }}
+              onEditorChange={handleBlogChange}
+            ></Editor>
+            <div style={{ float: 'left' }}>
+              <Button onClick={handleBack}>Back</Button>
+              <Button onClick={handleNext}>Next</Button>
+            </div>
+          </div>
+        </div>
+      )
+    case 2:
+      return (
+        <div>
+          location
+          <Stepper alternativeLabel activeStep={activeStep}>
+            {steps.map((step) => (
+              <Step>
+                <StepLabel>{step}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <div style={{ float: 'left' }}>
+            <Button onClick={handleBack}>Back</Button>
+            <Button onClick={handleNext}>Next</Button>
+          </div>
+        </div>
+      )
+    case 3:
+      return (
+        <div>
+          preview
+          <Stepper alternativeLabel activeStep={activeStep}>
+            {steps.map((step) => (
+              <Step>
+                <StepLabel>{step}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <div style={{ float: 'left' }}>
+            <Button onClick={handleBack}>Back</Button>
+          </div>
+          <form onSubmit={handleBlogSubmit}>
+            <Button style={{ float: 'right' }} type='submit'>
+              Submit
+            </Button>
+          </form>
+        </div>
+      )
+    case 4:
+      return (
+        <div>
+          <Stepper alternativeLabel activeStep={activeStep}>
+            {steps.map((step) => (
+              <Step>
+                <StepLabel>{step}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          Blog submitted!
+        </div>
+      )
+    default:
+      return null
+  }
 }
 
 const ImageUpload = ({ user }) => {
