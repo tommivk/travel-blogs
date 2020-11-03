@@ -59,7 +59,7 @@ const getSteps = () => {
   return ['Set Title', 'Write Content', 'Add Location', 'Preview And Submit']
 }
 
-const NewBlog = ({ user }) => {
+const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
   const [activeStep, setActiveStep] = useState(0)
@@ -90,6 +90,19 @@ const NewBlog = ({ user }) => {
       setContent('')
       setTitle('')
       console.log(response)
+      const newBlog = {
+        author: {
+          avatar: user.avatar,
+          username: user.username,
+        },
+        content: response.data.content,
+        date: response.data.date,
+        id: response.data.id,
+        stars: response.data.stars,
+        title: response.data.title,
+        headerImageURL: response.data.headerImageURL,
+      }
+      setAllBlogs(allBlogs.concat(newBlog))
     } catch (error) {
       console.log(error.message)
     }
@@ -432,7 +445,11 @@ const App = () => {
               <div></div>
             </Grid>
             <Grid item xs={5}>
-              <NewBlog user={user}></NewBlog>
+              <NewBlog
+                user={user}
+                setAllBlogs={setAllBlogs}
+                allBlogs={allBlogs}
+              ></NewBlog>
             </Grid>
             <Grid xs={3}>
               <ImageUpload user={user}></ImageUpload>
@@ -440,6 +457,7 @@ const App = () => {
           </Grid>
         </Route>
         <Route path='/blogs/:id'>
+          <Header user={user} setUser={setUser}></Header>
           <SingleBlogPage blog={blog}></SingleBlogPage>
         </Route>
         <Route path='/'>
