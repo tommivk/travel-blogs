@@ -5,6 +5,7 @@ import { Modal, Button, TextField } from '@material-ui/core'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import { Search, Language, Notifications } from '@material-ui/icons'
+import ChatOutlined from '@material-ui/icons/ChatOutlined'
 import Grid from '@material-ui/core/Grid'
 import Menu from '@material-ui/core/Menu'
 import Container from '@material-ui/core/Container'
@@ -526,7 +527,7 @@ const App = () => {
         <Route path='/explore'>
           <div>
             <Header user={user} setUser={setUser}></Header>
-            <WorldMap></WorldMap>
+            <WorldMap allBlogs={allBlogs}></WorldMap>
           </div>
         </Route>
         <Route path='/blogs/:id'>
@@ -542,7 +543,8 @@ const App = () => {
   )
 }
 
-const WorldMap = () => {
+const WorldMap = ({ allBlogs }) => {
+  console.log(allBlogs)
   return (
     <div
       style={{
@@ -557,10 +559,22 @@ const WorldMap = () => {
         }}
         defaultCenter={{ lat: 59, lng: 30 }}
         defaultZoom={0}
-      ></GoogleMapReact>
+      >
+        {allBlogs &&
+          allBlogs.map((blog) =>
+            blog.locations.map((location) => (
+              <ChatOutlined
+                lat={location.lat}
+                lng={location.lng}
+                text='Blog'
+              ></ChatOutlined>
+            ))
+          )}
+      </GoogleMapReact>
     </div>
   )
 }
+
 const HomePage = ({ allBlogs }) => {
   console.log(allBlogs)
 
