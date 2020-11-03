@@ -35,6 +35,7 @@ import {
   Route,
   Link,
   Redirect,
+  useRouteMatch,
 } from 'react-router-dom'
 import './index.css'
 
@@ -62,6 +63,7 @@ const NewBlog = ({ user }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
   const [activeStep, setActiveStep] = useState(0)
+  const [headerImageURL, setHeaderImageURL] = useState(null)
   const steps = getSteps()
 
   const handleNext = () => {
@@ -83,6 +85,7 @@ const NewBlog = ({ user }) => {
         username: user.username,
         content: content,
         title: title,
+        headerImageURL: headerImageURL,
       })
       setContent('')
       setTitle('')
@@ -104,6 +107,7 @@ const NewBlog = ({ user }) => {
               </Step>
             ))}
           </Stepper>
+          Add title:
           <TextField
             placeholder='Title'
             variant='outlined'
@@ -111,6 +115,14 @@ const NewBlog = ({ user }) => {
             style={{ marginBottom: '5px', width: '30%' }}
             onChange={({ target }) => setTitle(target.value)}
           ></TextField>
+          Add Header Image:
+          <div>
+            <TextField
+              onChange={({ target }) => setHeaderImageURL(target.value)}
+              variant='outlined'
+              style={{ height: '200px', width: '200px' }}
+            ></TextField>
+          </div>
           <div>
             <Button onClick={handleNext}>Next</Button>
           </div>
@@ -396,44 +408,54 @@ const App = () => {
   }, [])
   console.log(allBlogs)
   console.log(user)
+  const match = useRouteMatch('/blogs/:id')
+  let blog = null
+  if (allBlogs) {
+    blog = match ? allBlogs.find((blog) => blog.id === match.params.id) : null
+  }
   if (!user) {
     return <Index setUser={setUser}></Index>
   }
+  if (allBlogs) {
+  }
   return (
     <div>
-      <Router>
-        <Switch>
-          <Route path='/login'>
-            <Header user={user} setUser={setUser}></Header>
-          </Route>
+      <Switch>
+        <Route path='/login'>
+          <Header user={user} setUser={setUser}></Header>
+        </Route>
 
-          <Route path='/createblog'>
-            <Header user={user} setUser={setUser}></Header>
-            <Grid container justify='center' spacing={24}>
-              <Grid item xs={3}>
-                <div></div>
-              </Grid>
-              <Grid item xs={5}>
-                <NewBlog user={user}></NewBlog>
-              </Grid>
-              <Grid xs={3}>
-                <ImageUpload user={user}></ImageUpload>
-              </Grid>
+        <Route path='/createblog'>
+          <Header user={user} setUser={setUser}></Header>
+          <Grid container justify='center' spacing={2}>
+            <Grid item xs={3}>
+              <div></div>
             </Grid>
-          </Route>
-          <Route path='/'>
-            <Header user={user} setUser={setUser}></Header>
-            <HomePage allBlogs={allBlogs}></HomePage>
-          </Route>
-        </Switch>
-      </Router>
+            <Grid item xs={5}>
+              <NewBlog user={user}></NewBlog>
+            </Grid>
+            <Grid xs={3}>
+              <ImageUpload user={user}></ImageUpload>
+            </Grid>
+          </Grid>
+        </Route>
+        <Route path='/blogs/:id'>
+          <SingleBlogPage blog={blog}></SingleBlogPage>
+        </Route>
+        <Route path='/'>
+          <Header user={user} setUser={setUser}></Header>
+          <HomePage allBlogs={allBlogs}></HomePage>
+        </Route>
+      </Switch>
     </div>
   )
 }
 
 const HomePage = ({ allBlogs }) => {
   console.log(allBlogs)
+
   if (allBlogs == null) return null
+
   return (
     <div>
       <div
@@ -445,34 +467,65 @@ const HomePage = ({ allBlogs }) => {
       >
         {allBlogs.map((blog) => (
           <div style={{ margin: '5px' }}>
-            <Card style={{ width: '250px' }}>
-              <CardHeader
-                avatar={
-                  <Avatar alt='author profile' src={blog.author.avatar} />
-                }
-                title={blog.title}
-                subheader={blog.author.username}
-                subheader={blog.date}
-              />
-              <CardMedia>
-                <img src={blog.headerImage} height='100%' width='100%' />
-              </CardMedia>
-              <CardContent>
-                {ReactHtmlParser(blog.content, {
-                  transform: (node) => {
-                    if (node.type === 'tag' && node.name === 'img') {
-                      return null
+            <Link to={`/blogs/${blog.id}`} style={{ textDecoration: 'none' }}>
+              <div>
+                <Card style={{ width: '250px' }}>
+                  <CardHeader
+                    avatar={
+                      <Avatar alt='author profile' src={blog.author.avatar} />
                     }
-                  },
-                })}
-              </CardContent>
-            </Card>
+                    title={blog.title}
+                    subheader={`written by: ${blog.author.username}`}
+                    // subheader={blog.date}
+                  />
+                  <CardMedia>
+                    <img
+                      src={blog.headerImageURL}
+                      height='200px'
+                      width='200px'
+                    />
+                  </CardMedia>
+                  <CardContent>
+                    {ReactHtmlParser(blog.content, {
+                      transform: (node) => {
+                        if (node.type === 'tag' && node.name === 'img') {
+                          return null
+                        }
+                      },
+                    })}
+                  </CardContent>
+                </Card>
+              </div>
+            </Link>
           </div>
         ))}
       </div>
     </div>
   )
 }
+
+const SingleBlogPage = ({ blog }) => {
+  console.log(blog)
+  if (!blog) return null
+  return (
+    <div>
+      <Container maxWidth='md'>
+        <div>
+          <h1 style={{ textAlign: 'center' }}>{blog.title}</h1>
+          <div style={{ display: 'flex' }}>
+            <Avatar alt='author profile' src={blog.author.avatar} />
+            {blog.author.username} {blog.date}
+          </div>
+          {ReactHtmlParser(blog.content)}
+        </div>
+        <Link to='/'>
+          <Button>Go back</Button>
+        </Link>
+      </Container>
+    </div>
+  )
+}
+
 const IndexModal = ({ modalOpen, closeModal, setUser }) => {
   if (!modalOpen.open) return null
   if (modalOpen.modal !== 'login' && modalOpen.modal !== 'signup') return null
@@ -655,7 +708,9 @@ const Login = ({ setUser }) => {
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 )

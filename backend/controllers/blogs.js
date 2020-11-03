@@ -10,6 +10,7 @@ blogsRouter.get('/', async (req, res) => {
 
 blogsRouter.post('/', async (req, res) => {
   const body = req.body
+  console.log(body)
   const user = await User.findOne({ username: body.username })
   console.log(user)
   const userID = user._id
@@ -20,7 +21,7 @@ blogsRouter.post('/', async (req, res) => {
     date: Date.now(),
     content: body.content,
     stars: [],
-    headerImage: body.headerImage,
+    headerImageURL: body.headerImageURL,
     location: body.location,
   })
 
