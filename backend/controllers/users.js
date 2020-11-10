@@ -29,16 +29,17 @@ usersRouter.put('/', async (req, res) => {
   const body = req.body
   const token = getTokenFrom(req)
   const decodedToken = jwt.verify(token, process.env.SECRET)
+
   if (!token || !decodedToken) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
-  //const user = await User.findById(decodedToken.id)
+
   const updatedUser = {
     avatar: body.avatar,
   }
   const newUser = await User.findByIdAndUpdate(decodedToken.id, updatedUser, {
     new: true,
-  })
+  }).populate('pictures')
   console.log(newUser.toJSON())
   res.status(200).send(newUser.toJSON())
 })

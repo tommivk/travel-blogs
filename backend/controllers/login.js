@@ -6,7 +6,9 @@ const admin = require('firebase-admin')
 
 loginRouter.post('/', async (request, response) => {
   const body = request.body
-  const user = await User.findOne({ username: body.username })
+  const user = await User.findOne({ username: body.username }).populate(
+    'pictures'
+  )
   const passwordCorrect =
     user === null
       ? false
@@ -34,6 +36,7 @@ loginRouter.post('/', async (request, response) => {
       fbtoken,
       avatar: user.avatar,
       username: user.username,
+      pictures: user.pictures,
     })
   } catch (error) {
     console.log(error.message)

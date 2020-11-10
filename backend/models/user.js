@@ -11,6 +11,12 @@ const userSchema = mongoose.Schema({
     type: String,
     default: defaultPictureURL,
   },
+  pictures: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Picture',
+    },
+  ],
   passwordHash: String,
 })
 
