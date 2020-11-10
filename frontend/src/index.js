@@ -73,7 +73,6 @@ const AddLocations = ({ locations, setLocations }) => {
       axios.get(`${URL}${filter}`).then((res) => setSearchResult(res.data))
     }
   }, [filter])
-  console.log(searchResult)
 
   const handleAddLocation = (city) => {
     console.log(city)
@@ -85,7 +84,6 @@ const AddLocations = ({ locations, setLocations }) => {
     ]
     setLocations(locations.concat(newLocation))
   }
-  console.log(locations)
   return (
     <div>
       {Location && (
@@ -159,7 +157,6 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
       )
       setContent('')
       setTitle('')
-      console.log(response)
       const newBlog = {
         author: {
           avatar: user.avatar,
@@ -306,9 +303,7 @@ const ImageUpload = ({ user, setUser }) => {
   const [image, setImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [uploadedImages, setUploadedImages] = useState([])
-
-  console.log(uploadedImages)
-  //const fbuser = firebase.auth().currentUser
+  console.log(user)
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0])
@@ -334,19 +329,18 @@ const ImageUpload = ({ user, setUser }) => {
       newUser.pictures = user.pictures.concat(response.data)
       setUser(newUser)
       setUploadedImages([uploadedPictureURL].concat(uploadedImages))
-
+      window.localStorage.setItem('loggedTravelBlogUser', JSON.stringify(user))
       setImagePreview(null)
-      console.log('newuser: ', newUser)
     } catch (error) {
       console.log(error)
     }
   }
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     e.preventDefault()
     const fbuser = firebase.auth().currentUser
+    console.log(fbuser)
     const userID = fbuser.uid
-
     let uploadTask = storage
       .ref()
       .child(`/images/${userID}/${image.name}`)
@@ -506,12 +500,22 @@ const App = () => {
     if (loggedUser) {
       setUser(JSON.parse(loggedUser))
     }
+
     axios
       .get('http://localhost:8008/api/blogs')
       .then((response) => setAllBlogs(response.data))
   }, [])
-  console.log(allBlogs)
-  console.log(user)
+
+  useEffect(() => {
+    if (user && user.fbtoken) {
+      console.log('asd')
+      firebase
+        .auth()
+        .signInWithCustomToken(user.fbtoken)
+        .then((res) => console.log('signed in to firebase with token'))
+        .catch((e) => console.log(e))
+    }
+  }, [user])
   const match = useRouteMatch('/blogs/:id')
   let blog = null
   if (allBlogs) {
@@ -578,7 +582,6 @@ const UserSettings = ({ user, setUser }) => {
   )
 }
 const WorldMap = ({ allBlogs }) => {
-  console.log(allBlogs)
   return (
     <div
       style={{
@@ -610,8 +613,6 @@ const WorldMap = ({ allBlogs }) => {
 }
 
 const HomePage = ({ allBlogs }) => {
-  console.log(allBlogs)
-
   if (allBlogs == null) return null
   return (
     <div>
@@ -662,7 +663,6 @@ const HomePage = ({ allBlogs }) => {
 }
 
 const SingleBlogPage = ({ blog }) => {
-  console.log(blog)
   if (!blog) return null
   return (
     <div>
@@ -774,7 +774,6 @@ const SignUp = () => {
       })
       setUsername('')
       setPassword('')
-      console.log(user.data)
     } catch (error) {
       console.log(error)
     }
@@ -823,7 +822,6 @@ const Login = ({ setUser }) => {
       setUsername('')
       setPassword('')
       setUser(user.data)
-      console.log(user.data)
       window.localStorage.setItem(
         'loggedTravelBlogUser',
         JSON.stringify(user.data)
