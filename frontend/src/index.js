@@ -23,6 +23,7 @@ import CardMedia from '@material-ui/core/CardMedia'
 import InputBase from '@material-ui/core/InputBase'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
+import Settings from '@material-ui/icons/Settings'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
 import ReactHtmlParser, {
@@ -301,43 +302,49 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
   }
 }
 
-const ImageUpload = ({ user }) => {
+const ImageUpload = ({ user, setUser }) => {
   const [image, setImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [uploadedImages, setUploadedImages] = useState([])
+
   console.log(uploadedImages)
-  const [userimages, setUserImages] = useState(null)
-  const fbuser = firebase.auth().currentUser
-
-  useEffect(() => {
-    var storageRef = firebase.storage().ref()
-
-    storageRef
-      .listAll()
-      .then(function (result) {
-        // result.items.forEach(function(imageRef) {
-        //   // And finally display them
-        //   displayImage(imageRef);
-        // });
-        result.items.forEach(function (imageRef) {
-          // And finally display them
-          setUserImages(userimages.concat(imageRef))
-        })
-      })
-      .catch(function (error) {
-        // Handle any errors
-      })
-  }, [])
-  console.log(userimages)
+  //const fbuser = firebase.auth().currentUser
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0])
     setImagePreview(URL.createObjectURL(e.target.files[0]))
   }
 
-  const handleImageUpload = async (e) => {
+  const uploadPicture = async (uploadedPictureURL) => {
+    const newPicture = {
+      imgURL: uploadedPictureURL,
+      public: false,
+    }
+    try {
+      const response = await axios.post(
+        'http://localhost:8008/api/pictures',
+        newPicture,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+      const newUser = user
+      newUser.pictures = user.pictures.concat(response.data)
+      setUser(newUser)
+      setUploadedImages([uploadedPictureURL].concat(uploadedImages))
+
+      setImagePreview(null)
+      console.log('newuser: ', newUser)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleImageUpload = (e) => {
     e.preventDefault()
-    const fbuser = await firebase.auth().currentUser
+    const fbuser = firebase.auth().currentUser
     const userID = fbuser.uid
 
     let uploadTask = storage
@@ -363,12 +370,9 @@ const ImageUpload = ({ user }) => {
         console.log('error happened')
       },
       () => {
-        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-          console.log('File available at', downloadURL)
-
-          setUploadedImages([downloadURL].concat(uploadedImages))
-        })
-        setImagePreview(null)
+        uploadTask.snapshot.ref
+          .getDownloadURL()
+          .then((downloadURL) => uploadPicture(downloadURL))
       }
     )
   }
@@ -383,9 +387,15 @@ const ImageUpload = ({ user }) => {
         <Button type='submit'>upload</Button>
       </form>
       <div style={{ display: 'block', height: '100%' }}>
-        {uploadedImages.map((imageUrl, i) => (
+        {user.pictures.map((picture, i) => (
           <div>
-            <img key={i} alt='' src={imageUrl} height='100' width='100'></img>
+            <img
+              key={i}
+              alt=''
+              src={picture.imgURL}
+              height='100'
+              width='100'
+            ></img>
           </div>
         ))}
       </div>
@@ -476,7 +486,12 @@ const Header = ({ user, setUser }) => {
             Add new blog
           </Link>
         </MenuItem>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>{' '}
+        <MenuItem onClick={handleMenuClose}>
+          <Link to='/settings'>
+            <Settings></Settings>
+          </Link>
+        </MenuItem>
       </Menu>
     </div>
   )
@@ -528,9 +543,13 @@ const App = () => {
               ></NewBlog>
             </Grid>
             <Grid xs={3}>
-              <ImageUpload user={user}></ImageUpload>
+              <ImageUpload user={user} setUser={setUser}></ImageUpload>
             </Grid>
           </Grid>
+        </Route>
+        <Route path='/settings'>
+          <Header user={user} setUser={setUser}></Header>
+          <UserSettings user={user} setUser={setUser}></UserSettings>
         </Route>
         <Route path='/explore'>
           <div>
@@ -550,7 +569,14 @@ const App = () => {
     </div>
   )
 }
-
+const UserSettings = ({ user, setUser }) => {
+  return (
+    <div>
+      <h3>Change avatar</h3>
+      asd
+    </div>
+  )
+}
 const WorldMap = ({ allBlogs }) => {
   console.log(allBlogs)
   return (
