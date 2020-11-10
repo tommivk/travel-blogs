@@ -141,13 +141,21 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
   const handleBlogSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await axios.post('http://localhost:8008/api/blogs', {
-        username: user.username,
-        content: content,
-        title: title,
-        headerImageURL: headerImageURL,
-        locations: locations,
-      })
+      const response = await axios.post(
+        'http://localhost:8008/api/blogs',
+        {
+          username: user.username,
+          content: content,
+          title: title,
+          headerImageURL: headerImageURL,
+          locations: locations,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
       setContent('')
       setTitle('')
       console.log(response)

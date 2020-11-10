@@ -22,19 +22,23 @@ loginRouter.post('/', async (request, response) => {
     username: user.username,
     id: user._id,
   }
+  try {
+    const token = jwt.sign(userForToken, process.env.SECRET)
 
-  const token = jwt.sign(userForToken, process.env.SECRET)
+    const fbtoken = await admin
+      .auth()
+      .createCustomToken(userForToken.id.toString() + process.env.FBSECRET)
 
-  const fbtoken = await admin
-    .auth()
-    .createCustomToken(userForToken.id.toString() + process.env.FBSECRET)
-
-  response.status(200).send({
-    token,
-    fbtoken,
-    avatar: user.avatar,
-    username: user.username,
-  })
+    response.status(200).send({
+      token,
+      fbtoken,
+      avatar: user.avatar,
+      username: user.username,
+    })
+  } catch (error) {
+    console.log(error.message)
+    response.status(500).send()
+  }
 })
 
 module.exports = loginRouter
