@@ -121,7 +121,7 @@ const App = () => {
         <Route path='/explore'>
           <div>
             <Header user={user} setUser={setUser}></Header>
-            <WorldMap allBlogs={allBlogs}></WorldMap>
+            <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
           </div>
         </Route>
         <Route path='/gallery/:id'>
