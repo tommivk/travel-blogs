@@ -17,7 +17,7 @@ const ImageUpload = ({ user, setUser, storage }) => {
   const uploadPicture = async (uploadedPictureURL) => {
     const newPicture = {
       imgURL: uploadedPictureURL,
-      public: false,
+      public: true,
     }
     try {
       const response = await axios.post(

@@ -5,7 +5,9 @@ import WorldMap from './components/WorldMap'
 import Index from './components/Index'
 import NewBlog from './components/NewBlog'
 import HomePage from './components/HomePage'
+import Gallery from './components/Gallery'
 import SingleBlogPage from './components/SingleBlogPage'
+import SinglePicturePage from './components/SinglePicturePage'
 import ImageUpload from './components/ImageUpload'
 import UserSettings from './components/UserSettings'
 import Grid from '@material-ui/core/Grid'
@@ -40,6 +42,7 @@ const storage = firebase.storage()
 const App = () => {
   const [user, setUser] = useState(null)
   const [allBlogs, setAllBlogs] = useState(null)
+  const [allPictures, setAllPictures] = useState(null)
 
   useEffect(() => {
     const loggedUser = localStorage.getItem('loggedTravelBlogUser')
@@ -50,11 +53,14 @@ const App = () => {
     axios
       .get('http://localhost:8008/api/blogs')
       .then((response) => setAllBlogs(response.data))
+
+    axios
+      .get('http://localhost:8008/api/pictures')
+      .then((res) => setAllPictures(res.data))
   }, [])
 
   useEffect(() => {
     if (user && user.fbtoken) {
-      console.log('asd')
       firebase
         .auth()
         .signInWithCustomToken(user.fbtoken)
@@ -67,10 +73,16 @@ const App = () => {
   if (allBlogs) {
     blog = match ? allBlogs.find((blog) => blog.id === match.params.id) : null
   }
+
+  const pictureMatch = useRouteMatch('/gallery/:id')
+  let picture = null
+  if (allPictures) {
+    picture = pictureMatch
+      ? allPictures.find((pic) => pic.id === pictureMatch.params.id)
+      : null
+  }
   if (!user) {
     return <Index setUser={setUser}></Index>
-  }
-  if (allBlogs) {
   }
   return (
     <div>
@@ -109,6 +121,17 @@ const App = () => {
             <Header user={user} setUser={setUser}></Header>
             <WorldMap allBlogs={allBlogs}></WorldMap>
           </div>
+        </Route>
+        <Route path='/gallery/:id'>
+          <Header user={user} setUser={setUser}></Header>
+          <SinglePicturePage
+            picture={picture}
+            allPictures={allPictures}
+          ></SinglePicturePage>
+        </Route>
+        <Route path='/gallery'>
+          <Header user={user} setUser={setUser}></Header>
+          <Gallery allPictures={allPictures}></Gallery>
         </Route>
         <Route path='/blogs/:id'>
           <Header user={user} setUser={setUser}></Header>

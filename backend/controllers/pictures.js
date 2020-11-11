@@ -12,6 +12,11 @@ const getTokenFrom = (request) => {
   return null
 }
 
+picturesRouter.get('/', async (req, res) => {
+  const pictures = await Picture.find({})
+  res.json(pictures.map((p) => p.toJSON()))
+})
+
 picturesRouter.post('/', async (req, res) => {
   const body = req.body
   const token = getTokenFrom(req)

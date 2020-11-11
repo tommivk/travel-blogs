@@ -3,7 +3,7 @@ import firebase from 'firebase/app'
 import { Link } from 'react-router-dom'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
-import { Search, Language, Notifications } from '@material-ui/icons'
+import { Search, Language, Notifications, Photo } from '@material-ui/icons'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputBase from '@material-ui/core/InputBase'
@@ -58,6 +58,9 @@ const Header = ({ user, setUser }) => {
           </IconButton>
         </Paper>
         <div style={{ margin: 'auto', paddingLeft: '20px', cursor: 'pointer' }}>
+          <Link to='/gallery'>
+            <Photo fontSize='large' style={{ color: 'black' }}></Photo>
+          </Link>
           <Link to='/explore' style={{ color: 'black' }}>
             <Language fontSize='large' />
           </Link>
