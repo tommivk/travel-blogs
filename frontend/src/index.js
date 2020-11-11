@@ -8,7 +8,7 @@ import HomePage from './components/HomePage'
 import Gallery from './components/Gallery'
 import SingleBlogPage from './components/SingleBlogPage'
 import SinglePicturePage from './components/SinglePicturePage'
-import ImageUpload from './components/ImageUpload'
+
 import UserSettings from './components/UserSettings'
 import Grid from '@material-ui/core/Grid'
 import ReactDOM from 'react-dom'
@@ -99,16 +99,18 @@ const App = () => {
             <Grid item xs={5}>
               <NewBlog
                 user={user}
+                setUser={setUser}
                 setAllBlogs={setAllBlogs}
                 allBlogs={allBlogs}
+                storage={storage}
               ></NewBlog>
             </Grid>
             <Grid xs={3}>
-              <ImageUpload
+              {/* <ImageUpload
                 user={user}
                 setUser={setUser}
                 storage={storage}
-              ></ImageUpload>
+              ></ImageUpload> */}
             </Grid>
           </Grid>
         </Route>

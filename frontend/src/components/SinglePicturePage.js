@@ -5,19 +5,19 @@ const SinglePicturePage = ({ picture, allPictures }) => {
   console.log(picture)
 
   if (!picture || !allPictures) return null
-  let x = allPictures.findIndex((pic) => pic.id === picture.id)
+  let pictureIndex = allPictures.findIndex((pic) => pic.id === picture.id)
   return (
     <div>
-      {x - 1 >= 0 && (
-        <Link to={`/gallery/${allPictures[x - 1].id}`}>
+      {pictureIndex - 1 >= 0 && (
+        <Link to={`/gallery/${allPictures[pictureIndex - 1].id}`}>
           {' '}
           <button>Previous</button>
         </Link>
       )}
       <img src={picture.imgURL}></img>
 
-      {allPictures.length > x + 1 && (
-        <Link to={`/gallery/${allPictures[x + 1].id}`}>
+      {allPictures.length > pictureIndex + 1 && (
+        <Link to={`/gallery/${allPictures[pictureIndex + 1].id}`}>
           {' '}
           <button>Next</button>
         </Link>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import ImageUploadModal from './ImageUploadModal'
 import AddLocations from './AddLocations'
 import axios from 'axios'
 import Stepper from '@material-ui/core/Stepper'
@@ -13,12 +14,13 @@ const getSteps = () => {
   return ['Set Title', 'Write Content', 'Add Location', 'Preview And Submit']
 }
 
-const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
+const NewBlog = ({ user, setUser, allBlogs, setAllBlogs, storage }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
   const [activeStep, setActiveStep] = useState(0)
   const [headerImageURL, setHeaderImageURL] = useState(null)
   const [locations, setLocations] = useState([])
+  const [uploadModalOpen, setUploadModalOpen] = useState(false)
   const steps = getSteps()
 
   const handleNext = () => {
@@ -31,6 +33,9 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
 
   const handleBlogChange = (content, editor) => {
     setContent(content)
+  }
+  const closeUploadModal = () => {
+    setUploadModalOpen(false)
   }
 
   const handleBlogSubmit = async (e) => {
@@ -84,6 +89,18 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
               </Step>
             ))}
           </Stepper>
+          <ImageUploadModal
+            uploadModalOpen={uploadModalOpen}
+            closeModal={closeUploadModal}
+            user={user}
+            setUser={setUser}
+            storage={storage}
+          ></ImageUploadModal>
+          <div>
+            <Button onClick={() => setUploadModalOpen(true)}>
+              upload images
+            </Button>
+          </div>
           Add title:
           <TextField
             placeholder='Title'
@@ -92,8 +109,8 @@ const NewBlog = ({ user, allBlogs, setAllBlogs }) => {
             style={{ marginBottom: '5px', width: '30%' }}
             onChange={({ target }) => setTitle(target.value)}
           ></TextField>
-          Add Header Image:
           <div>
+            Add Header Image:
             <TextField
               onChange={({ target }) => setHeaderImageURL(target.value)}
               variant='outlined'
