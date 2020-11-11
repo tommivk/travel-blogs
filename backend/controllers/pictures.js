@@ -34,6 +34,7 @@ picturesRouter.post('/', async (req, res) => {
       date: Date.now(),
       user: user._id,
       public: body.public,
+      location: body.location,
     })
 
     const savedPicture = await newPicture.save()

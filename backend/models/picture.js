@@ -8,6 +8,10 @@ const pictureSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  location: {
+    lat: Number,
+    lng: Number,
+  },
 })
 
 pictureSchema.set('toJSON', {
