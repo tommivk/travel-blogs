@@ -4,6 +4,7 @@ const pictureSchema = mongoose.Schema({
   imgURL: String,
   date: Date,
   public: Boolean,
+  title: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
