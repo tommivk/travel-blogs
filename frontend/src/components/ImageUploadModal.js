@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import firebase from 'firebase/app'
 import axios from 'axios'
-import { Button, Modal, Input, LinearProgress } from '@material-ui/core'
+import { Button, Modal, Input, LinearProgress, Switch } from '@material-ui/core'
 import imageModalBG from '../images/imagemodalbg.jpg'
-
+import AddLocations from './AddLocations'
 const ImageUploadModal = ({
   user,
   setUser,
@@ -12,9 +12,13 @@ const ImageUploadModal = ({
   closeModal,
 }) => {
   const [image, setImage] = useState(null)
+  const [title, setTitle] = useState('')
+  const [locations, setLocations] = useState([])
+  const [publishToGallery, setPublishToGallery] = useState(false)
   const [imagePreview, setImagePreview] = useState(null)
   const [uploadedImages, setUploadedImages] = useState([])
   const [uploadProgress, setUploadProgress] = useState(0)
+  const [step, setStep] = useState(0)
   console.log(uploadModalOpen)
 
   const handleImageChange = (e) => {
@@ -26,12 +30,23 @@ const ImageUploadModal = ({
   const cancelImage = () => {
     setImage(null)
     setImagePreview(null)
+    setStep(0)
+  }
+
+  const handleNextStep = () => {
+    setStep(step + 1)
+  }
+  const handlePreviousStep = () => {
+    setStep(step - 1)
   }
 
   const uploadPicture = async (uploadedPictureURL) => {
+    const locationData = locations[locations.length - 1]
     const newPicture = {
       imgURL: uploadedPictureURL,
-      public: true,
+      public: publishToGallery,
+      location: locationData,
+      title: title,
     }
     try {
       const response = await axios.post(
@@ -49,6 +64,11 @@ const ImageUploadModal = ({
       setUploadedImages([uploadedPictureURL].concat(uploadedImages))
       window.localStorage.setItem('loggedTravelBlogUser', JSON.stringify(user))
       setImagePreview(null)
+      setImage(null)
+      setTitle('')
+      setLocations([])
+      setStep(0)
+      setPublishToGallery(false)
     } catch (error) {
       console.log(error)
     }
@@ -139,8 +159,42 @@ const ImageUploadModal = ({
                 backgroundColor: 'rgba(0,0,0,0.7)',
               }}
             >
-              {imagePreview && (
+              {imagePreview && step === 0 && (
                 <img alt='' src={imagePreview} height='300' width='300'></img>
+              )}
+              {step === 1 && (
+                <div>
+                  <div>Choose title</div>
+                  <div>
+                    <Input
+                      placeholder='title'
+                      style={{ color: 'white' }}
+                      onChange={({ target }) => setTitle(target.value)}
+                    ></Input>
+                  </div>
+                </div>
+              )}
+              {step === 2 && (
+                <div>
+                  <div>Choose location</div>
+                  search for city
+                  <AddLocations
+                    locations={locations}
+                    setLocations={setLocations}
+                  ></AddLocations>
+                  <div>Or select from map: [O]</div>
+                </div>
+              )}
+              {step === 3 && (
+                <div>
+                  <div>Publish image to Gallery?</div>
+                  No{' '}
+                  <Switch
+                    checked={publishToGallery}
+                    onChange={() => setPublishToGallery(!publishToGallery)}
+                  ></Switch>{' '}
+                  Yes
+                </div>
               )}
             </div>
 
@@ -149,42 +203,61 @@ const ImageUploadModal = ({
             <div
               style={{ position: 'relative', textAlign: 'center', top: '10px' }}
             >
-              <form onSubmit={handleImageUpload}>
-                {image ? (
-                  <div>
-                    <Button
-                      onClick={cancelImage}
-                      variant='contained'
-                      style={{ marginRight: '5px' }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button type='submit' variant='contained' color='secondary'>
-                      upload
-                    </Button>
-                  </div>
-                ) : (
-                  <input type='file' onChange={handleImageChange}></input>
-                )}
-              </form>
+              {image ? (
+                <div>
+                  <Button
+                    onClick={cancelImage}
+                    variant='contained'
+                    style={{ marginRight: '5px' }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button onClick={handlePreviousStep}>Back</Button>
+                  <Button variant='contained' onClick={handleNextStep}>
+                    next
+                  </Button>
+                </div>
+              ) : (
+                <input type='file' onChange={handleImageChange}></input>
+              )}
             </div>
           </div>
-          <div
-            style={{
-              position: 'absolute',
-              right: '2%',
-              top: '3%',
-              width: '25%',
-              height: '94%',
-              // overflowY: 'scroll',
-              textAlign: 'center',
-              border: '2px solid black',
-              borderRadius: '2%',
-              overflow: 'hidden',
-              backgroundColor: '#1d1f1e',
-            }}
-          >
-            <h4>My Images ({user.pictures.length})</h4>
+
+          {step !== 0 && (
+            <div
+              style={{
+                position: 'absolute',
+                right: '2%',
+                top: '3%',
+                width: '25%',
+                height: '94%',
+                // overflowY: 'scroll',
+                textAlign: 'center',
+                border: '2px solid black',
+                borderRadius: '2%',
+                overflow: 'hidden',
+                backgroundColor: '#1d1f1e',
+              }}
+            >
+              {step > 0 && (
+                <div>
+                  <h2>Preview</h2>
+
+                  <img alt='' src={imagePreview} height='150' width='150'></img>
+                  <p>{title}</p>
+                  <p>
+                    Location: {locations[locations.length - 1]?.lat},{' '}
+                    {locations[locations.length - 1]?.lng}{' '}
+                  </p>
+                  <p>Publish to gallery: {publishToGallery ? 'yes' : 'no'}</p>
+                  <form onSubmit={handleImageUpload}>
+                    <Button variant='contained' color='primary' type='submit'>
+                      Upload
+                    </Button>
+                  </form>
+                </div>
+              )}
+              {/* <h4>My Images ({user.pictures.length})</h4>
             <div
               style={{
                 display: 'flex',
@@ -206,8 +279,9 @@ const ImageUploadModal = ({
                   ></img>
                 </div>
               ))}
+            </div> */}
             </div>
-          </div>
+          )}
         </div>
       </Modal>
     </div>

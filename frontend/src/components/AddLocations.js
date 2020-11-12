@@ -26,7 +26,7 @@ const AddLocations = ({ locations, setLocations }) => {
   }
   return (
     <div>
-      {Location && (
+      {/* {Location && (
         <ul>
           {locations.map((l) => (
             <li>
@@ -34,8 +34,13 @@ const AddLocations = ({ locations, setLocations }) => {
             </li>
           ))}
         </ul>
-      )}
-      Add locations
+      )} */}
+      {/* Add locations */}
+      <TextField
+        variant='outlined'
+        placeholder='search by city'
+        onChange={({ target }) => SetFilter(target.value)}
+      ></TextField>
       <ul>
         {searchResult &&
           searchResult.data &&
@@ -44,15 +49,16 @@ const AddLocations = ({ locations, setLocations }) => {
               <li>
                 {city.city} {', '} {city.country}
               </li>
-              <Button onClick={() => handleAddLocation(city)}>Add</Button>
+              <Button
+                onClick={() => handleAddLocation(city)}
+                variant='outlined'
+                color='secondary'
+              >
+                Choose
+              </Button>
             </div>
           ))}
       </ul>
-      <TextField
-        variant='outlined'
-        placeholder='search by city'
-        onChange={({ target }) => SetFilter(target.value)}
-      ></TextField>
     </div>
   )
 }
