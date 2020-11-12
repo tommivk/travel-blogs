@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import firebase from 'firebase/app'
 import axios from 'axios'
 import { Button, Modal, Input, LinearProgress, Switch } from '@material-ui/core'
+import Explore from '@material-ui/icons/Explore'
+import Room from '@material-ui/icons/Room'
+import GoogleMapReact from 'google-map-react'
 import imageModalBG from '../images/imagemodalbg.jpg'
 import AddLocations from './AddLocations'
 const ImageUploadModal = ({
@@ -10,6 +13,8 @@ const ImageUploadModal = ({
   storage,
   uploadModalOpen,
   closeModal,
+  allPictures,
+  setAllPictures,
 }) => {
   const [image, setImage] = useState(null)
   const [title, setTitle] = useState('')
@@ -19,6 +24,7 @@ const ImageUploadModal = ({
   const [uploadedImages, setUploadedImages] = useState([])
   const [uploadProgress, setUploadProgress] = useState(0)
   const [step, setStep] = useState(0)
+  const [mapOpen, setMapOpen] = useState(false)
   console.log(uploadModalOpen)
 
   const handleImageChange = (e) => {
@@ -61,6 +67,7 @@ const ImageUploadModal = ({
       const newUser = user
       newUser.pictures = [response.data].concat(user.pictures)
       setUser(newUser)
+      setAllPictures(allPictures.concat(response.data))
       setUploadedImages([uploadedPictureURL].concat(uploadedImages))
       window.localStorage.setItem('loggedTravelBlogUser', JSON.stringify(user))
       setImagePreview(null)
@@ -109,7 +116,99 @@ const ImageUploadModal = ({
       }
     )
   }
-  if (!uploadModalOpen) return null
+  const handleApiLoaded = (map, maps) => {
+    console.log(map)
+    console.log(maps)
+    console.log(map.center.lat(), map.center.lng())
+  }
+  const [markerPosition, setMarkerPosition] = useState(null)
+
+  // const handleMapChange = (e) => {
+  //   setMarkerPosition(e.center)
+  //   console.log(markerPosition)
+  // }
+
+  const handleMapDrag = (e) => {
+    setMarkerPosition({ lat: e.center.lat(), lng: e.center.lng() })
+  }
+  const handleLocationSelect = () => {
+    setLocations([markerPosition])
+    console.log(locations)
+    setStep(3)
+    setMapOpen(false)
+  }
+  if (mapOpen) {
+    return (
+      <Modal
+        open={uploadModalOpen}
+        onClose={closeModal}
+        aria-labelledby='simple-modal-title'
+        aria-describedby='simple-modal-description'
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: `translate(-50%, -50%)`,
+            width: '60%',
+            height: '60%',
+          }}
+        >
+          <div style={{ height: '100%', width: '100%' }}>
+            <Button
+              style={{
+                position: 'absolute',
+                bottom: '1%',
+                left: '1%',
+                zIndex: '1',
+              }}
+              variant='outlined'
+              color='secondary'
+              onClick={() => setMapOpen(false)}
+            >
+              {'<-'}
+            </Button>
+            <Button
+              style={{
+                position: 'absolute',
+                zIndex: '1',
+                left: '50%',
+                bottom: '1%',
+                transform: 'translate(-50%, 0)',
+              }}
+              onClick={handleLocationSelect}
+              variant='contained'
+              color='primary'
+            >
+              OK
+            </Button>
+            <Room
+              color='secondary'
+              style={{
+                position: 'absolute',
+                zIndex: '1',
+                top: '50%',
+                left: '50%',
+                transform: `translate(0, -100%)`,
+              }}
+            ></Room>
+            <GoogleMapReact
+              yesIWantToUseGoogleMapApiInternals
+              onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
+              bootstrapURLKeys={{
+                key: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
+              }}
+              defaultCenter={{ lat: 59, lng: 30 }}
+              defaultZoom={1}
+              // onChange={(e) => handleMapChange(e)}
+              onDrag={(e) => handleMapDrag(e)}
+            ></GoogleMapReact>
+          </div>
+        </div>
+      </Modal>
+    )
+  }
 
   return (
     <div>
@@ -153,10 +252,10 @@ const ImageUploadModal = ({
           <div style={{ position: 'absolute', top: '20%', left: '42%' }}>
             <div
               style={{
-                border: '3px solid black',
+                // border: '3px solid black',
                 width: '300px',
                 height: '300px',
-                backgroundColor: 'rgba(0,0,0,0.7)',
+                // backgroundColor: 'rgba(0,0,0,0.7)',
               }}
             >
               {imagePreview && step === 0 && (
@@ -182,18 +281,23 @@ const ImageUploadModal = ({
                     locations={locations}
                     setLocations={setLocations}
                   ></AddLocations>
-                  <div>Or select from map: [O]</div>
+                  <div>
+                    Or select from map:{' '}
+                    <Explore
+                      fontSize='large'
+                      onClick={() => setMapOpen(true)}
+                    ></Explore>
+                  </div>
                 </div>
               )}
               {step === 3 && (
                 <div>
-                  <div>Publish image to Gallery?</div>
-                  No{' '}
+                  <div>Publish This Image To Gallery?</div>
+                  <div>{publishToGallery ? 'Yes' : 'No'}</div>
                   <Switch
                     checked={publishToGallery}
                     onChange={() => setPublishToGallery(!publishToGallery)}
                   ></Switch>{' '}
-                  Yes
                 </div>
               )}
             </div>
@@ -212,10 +316,14 @@ const ImageUploadModal = ({
                   >
                     Cancel
                   </Button>
-                  <Button onClick={handlePreviousStep}>Back</Button>
-                  <Button variant='contained' onClick={handleNextStep}>
-                    next
-                  </Button>
+                  {step > 0 && (
+                    <Button onClick={handlePreviousStep}>Back</Button>
+                  )}
+                  {step < 4 && (
+                    <Button variant='contained' onClick={handleNextStep}>
+                      next
+                    </Button>
+                  )}
                 </div>
               ) : (
                 <input type='file' onChange={handleImageChange}></input>
@@ -250,11 +358,13 @@ const ImageUploadModal = ({
                     {locations[locations.length - 1]?.lng}{' '}
                   </p>
                   <p>Publish to gallery: {publishToGallery ? 'yes' : 'no'}</p>
-                  <form onSubmit={handleImageUpload}>
-                    <Button variant='contained' color='primary' type='submit'>
-                      Upload
-                    </Button>
-                  </form>
+                  {step === 4 && (
+                    <form onSubmit={handleImageUpload}>
+                      <Button variant='contained' color='primary' type='submit'>
+                        Upload
+                      </Button>
+                    </form>
+                  )}
                 </div>
               )}
               {/* <h4>My Images ({user.pictures.length})</h4>

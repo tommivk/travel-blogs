@@ -103,6 +103,8 @@ const App = () => {
                 setAllBlogs={setAllBlogs}
                 allBlogs={allBlogs}
                 storage={storage}
+                allPictures={allPictures}
+                setAllPictures={setAllPictures}
               ></NewBlog>
             </Grid>
             <Grid xs={3}>
@@ -133,7 +135,13 @@ const App = () => {
         </Route>
         <Route path='/gallery'>
           <Header user={user} setUser={setUser}></Header>
-          <Gallery allPictures={allPictures}></Gallery>
+          <Gallery
+            allPictures={allPictures}
+            setAllPictures={setAllPictures}
+            user={user}
+            setUser={setUser}
+            storage={storage}
+          ></Gallery>
         </Route>
         <Route path='/blogs/:id'>
           <Header user={user} setUser={setUser}></Header>

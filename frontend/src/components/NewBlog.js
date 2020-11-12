@@ -14,7 +14,15 @@ const getSteps = () => {
   return ['Set Title', 'Write Content', 'Add Location', 'Preview And Submit']
 }
 
-const NewBlog = ({ user, setUser, allBlogs, setAllBlogs, storage }) => {
+const NewBlog = ({
+  user,
+  setUser,
+  allBlogs,
+  setAllBlogs,
+  storage,
+  allPictures,
+  setAllPictures,
+}) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
   const [activeStep, setActiveStep] = useState(0)
@@ -95,6 +103,8 @@ const NewBlog = ({ user, setUser, allBlogs, setAllBlogs, storage }) => {
             user={user}
             setUser={setUser}
             storage={storage}
+            allPictures={allPictures}
+            setAllPictures={setAllPictures}
           ></ImageUploadModal>
           <div>
             <Button onClick={() => setUploadModalOpen(true)}>

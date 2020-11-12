@@ -84,17 +84,15 @@ const Header = ({ user, setUser }) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <MenuItem onClick={handleMenuClose}>
-          <Link
-            to='/createblog'
-            style={{
-              textDecoration: 'none',
-              color: 'black',
-            }}
-          >
-            Add new blog
-          </Link>
-        </MenuItem>
+        <Link
+          to='/createblog'
+          style={{
+            textDecoration: 'none',
+            color: 'black',
+          }}
+        >
+          <MenuItem onClick={handleMenuClose}>Add new blog</MenuItem>
+        </Link>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>{' '}
         <MenuItem onClick={handleMenuClose}>
           <Link to='/settings'>
