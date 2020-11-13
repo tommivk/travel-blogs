@@ -118,7 +118,11 @@ const App = () => {
         </Route>
         <Route path='/settings'>
           <Header user={user} setUser={setUser}></Header>
-          <UserSettings user={user} setUser={setUser}></UserSettings>
+          <UserSettings
+            user={user}
+            setUser={setUser}
+            storage={storage}
+          ></UserSettings>
         </Route>
         <Route path='/explore'>
           <Header user={user} setUser={setUser}></Header>

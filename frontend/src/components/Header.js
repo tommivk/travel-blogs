@@ -10,6 +10,7 @@ import InputBase from '@material-ui/core/InputBase'
 import Settings from '@material-ui/icons/Settings'
 
 const Header = ({ user, setUser }) => {
+  console.log(user)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
 
   const handleMenuOpen = (e) => {
