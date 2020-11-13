@@ -85,7 +85,7 @@ const App = () => {
     return <Index setUser={setUser}></Index>
   }
   return (
-    <div>
+    <div style={{ height: '100vh' }}>
       <Switch>
         <Route path='/login'>
           <Header user={user} setUser={setUser}></Header>
