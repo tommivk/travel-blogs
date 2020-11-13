@@ -121,10 +121,8 @@ const App = () => {
           <UserSettings user={user} setUser={setUser}></UserSettings>
         </Route>
         <Route path='/explore'>
-          <div>
-            <Header user={user} setUser={setUser}></Header>
-            <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
-          </div>
+          <Header user={user} setUser={setUser}></Header>
+          <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
         </Route>
         <Route path='/gallery/:id'>
           <Header user={user} setUser={setUser}></Header>
