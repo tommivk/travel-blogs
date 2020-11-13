@@ -13,7 +13,7 @@ const getTokenFrom = (request) => {
 }
 
 picturesRouter.get('/', async (req, res) => {
-  const pictures = await Picture.find({})
+  const pictures = await Picture.find({}).populate('user')
   res.json(pictures.map((p) => p.toJSON()))
 })
 
