@@ -1,0 +1,7 @@
+.fullscreen-image img{
+    display: none;
+  }
+  
+  .fullscreen-enabled .fullscreen-image img{
+    display: block;
+  }

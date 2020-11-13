@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom'
 import { Button, Container } from '@material-ui/core'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
-
+import Fullscreen from '@material-ui/icons/Fullscreen'
+import { FullScreen, useFullScreenHandle } from 'react-full-screen'
+import '../styles/SinglePicturePage.css'
 const SinglePicturePage = ({ picture, allPictures }) => {
-  console.log('asdASDa')
+  const pictureHandle = useFullScreenHandle()
+
   console.log(picture)
 
   if (!picture || !allPictures) return null
@@ -24,7 +27,6 @@ const SinglePicturePage = ({ picture, allPictures }) => {
           left: '50%',
           transform: 'translate(-50%,0%)',
           backgroundColor: '#231A03',
-          paddingBottom: '10px',
           paddingTop: '10px',
           paddingRight: '10px',
           paddingLeft: '10px',
@@ -69,6 +71,12 @@ const SinglePicturePage = ({ picture, allPictures }) => {
         </div>
         <div>
           <img src={picture.imgURL} width='700px'></img>
+        </div>
+        <div style={{ float: 'right', margin: '0' }}>
+          <Fullscreen
+            fontSize='small'
+            onClick={pictureHandle.enter}
+          ></Fullscreen>
         </div>
       </div>
 
@@ -119,6 +127,12 @@ const SinglePicturePage = ({ picture, allPictures }) => {
         </div>
         <div></div>
       </div>
+
+      <FullScreen handle={pictureHandle}>
+        <div className='fullscreen-image'>
+          <img src={picture.imgURL}></img>
+        </div>
+      </FullScreen>
     </div>
   )
 }
