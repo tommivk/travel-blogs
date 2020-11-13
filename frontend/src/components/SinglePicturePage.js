@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Button, Container } from '@material-ui/core'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
@@ -6,8 +7,23 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import '../styles/SinglePicturePage.css'
+
+const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY
+
 const SinglePicturePage = ({ picture, allPictures }) => {
+  const [mapImage, setMapImage] = useState(null)
   const pictureHandle = useFullScreenHandle()
+
+  useEffect(() => {
+    if (picture && picture.location) {
+      const lat = picture.location.lat.toFixed(6)
+      const lng = picture.location.lng.toFixed(6)
+      setMapImage(
+        `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=300x300&markers=color:red|${lat},${lng}&key=${API_KEY}`
+      )
+    }
+  }, [])
+  console.log(mapImage)
 
   console.log(picture)
 
@@ -127,7 +143,9 @@ const SinglePicturePage = ({ picture, allPictures }) => {
         </div>
         <div></div>
       </div>
-
+      <div>
+        <img src={mapImage}></img>
+      </div>
       <FullScreen handle={pictureHandle}>
         <div className='fullscreen-image'>
           <img src={picture.imgURL}></img>
