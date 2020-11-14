@@ -13,6 +13,18 @@ const pictureSchema = mongoose.Schema({
     lat: Number,
     lng: Number,
   },
+  voteResult: Number,
+  votes: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      dir: {
+        type: Number,
+      },
+    },
+  ],
 })
 
 pictureSchema.set('toJSON', {
