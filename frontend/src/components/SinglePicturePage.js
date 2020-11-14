@@ -14,15 +14,15 @@ const SinglePicturePage = ({ picture, allPictures }) => {
   const [mapImage, setMapImage] = useState(null)
   const pictureHandle = useFullScreenHandle()
 
-  useEffect(() => {
-    if (picture && picture.location) {
-      const lat = picture.location.lat.toFixed(6)
-      const lng = picture.location.lng.toFixed(6)
-      setMapImage(
-        `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=300x300&markers=color:red|${lat},${lng}&key=${API_KEY}`
-      )
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (picture && picture.location) {
+  //     const lat = picture.location.lat.toFixed(6)
+  //     const lng = picture.location.lng.toFixed(6)
+  //     setMapImage(
+  //       `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=300x300&markers=color:red|${lat},${lng}&key=${API_KEY}`
+  //     )
+  //   }
+  // }, [])
   console.log(mapImage)
 
   console.log(picture)
@@ -99,7 +99,7 @@ const SinglePicturePage = ({ picture, allPictures }) => {
       <div
         style={{
           position: 'absolute',
-          top: '20%',
+          top: '25%',
           color: 'white',
           left: '26%',
           width: '3%',
