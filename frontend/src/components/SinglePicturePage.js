@@ -10,7 +10,13 @@ import '../styles/SinglePicturePage.css'
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY
 
-const SinglePicturePage = ({ picture, allPictures }) => {
+const SinglePicturePage = ({
+  user,
+  picture,
+  allPictures,
+  setPicture,
+  setAllPictures,
+}) => {
   const [mapImage, setMapImage] = useState(null)
   const pictureHandle = useFullScreenHandle()
 
@@ -23,10 +29,30 @@ const SinglePicturePage = ({ picture, allPictures }) => {
   //     )
   //   }
   // }, [])
-  console.log(mapImage)
 
+  const handleVote = async (direction) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8008/api/pictures/${picture.id}/vote`,
+        { dir: direction },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+
+      setPicture(response.data)
+
+      const filteredPictures = await allPictures.map((pic) =>
+        pic.id === picture.id ? response.data : pic
+      )
+      setAllPictures(filteredPictures)
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
   console.log(picture)
-
   if (!picture || !allPictures) return null
   let pictureIndex = allPictures.findIndex((pic) => pic.id === picture.id)
   return (
@@ -112,11 +138,11 @@ const SinglePicturePage = ({ picture, allPictures }) => {
         }}
       >
         <div>
-          <ArrowUpward></ArrowUpward>
+          <ArrowUpward onClick={() => handleVote(1)}></ArrowUpward>
         </div>{' '}
-        <div>33</div>
+        <div>{picture.voteResult}</div>
         <div>
-          <ArrowDownward></ArrowDownward>
+          <ArrowDownward onClick={() => handleVote(-1)}></ArrowDownward>
         </div>
       </div>
       <div
@@ -141,7 +167,7 @@ const SinglePicturePage = ({ picture, allPictures }) => {
         <div>
           <h4>Uploaded:</h4> {picture.date.toString()}
         </div>
-        <div></div>
+        <div>votes: {picture.votes.length}</div>
       </div>
       <div>
         <img src={mapImage}></img>

@@ -8,7 +8,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputBase from '@material-ui/core/InputBase'
 import Settings from '@material-ui/icons/Settings'
-
+import '../styles/header.css'
 const Header = ({ user, setUser }) => {
   console.log(user)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)

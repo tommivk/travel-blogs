@@ -43,6 +43,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [allBlogs, setAllBlogs] = useState(null)
   const [allPictures, setAllPictures] = useState(null)
+  const [picture, setPicture] = useState(null)
 
   useEffect(() => {
     const loggedUser = localStorage.getItem('loggedTravelBlogUser')
@@ -75,12 +76,14 @@ const App = () => {
   }
 
   const pictureMatch = useRouteMatch('/gallery/:id')
-  let picture = null
-  if (allPictures) {
-    picture = pictureMatch
-      ? allPictures.find((pic) => pic.id === pictureMatch.params.id)
-      : null
-  }
+
+  useEffect(() => {
+    if (allPictures && pictureMatch) {
+      const pic = allPictures.find((pic) => pic.id === pictureMatch.params.id)
+      setPicture(pic)
+    }
+  }, [pictureMatch])
+
   if (!user) {
     return <Index setUser={setUser}></Index>
   }
@@ -131,8 +134,11 @@ const App = () => {
         <Route path='/gallery/:id'>
           <Header user={user} setUser={setUser}></Header>
           <SinglePicturePage
+            user={user}
             picture={picture}
             allPictures={allPictures}
+            setAllPictures={setAllPictures}
+            setPicture={setPicture}
           ></SinglePicturePage>
         </Route>
         <Route path='/gallery'>

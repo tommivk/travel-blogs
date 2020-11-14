@@ -71,7 +71,7 @@ const Gallery = ({ allPictures, setAllPictures, user, setUser, storage }) => {
                   }}
                 >
                   <div style={{ color: '#6c717a', marginLeft: '4px' }}>
-                    <ArrowUpward></ArrowUpward> 4
+                    <ArrowUpward></ArrowUpward> {pic.voteResult}
                   </div>
                   <div style={{ color: '#6c717a', marginRight: '4px' }}>
                     <Sms></Sms> 55
