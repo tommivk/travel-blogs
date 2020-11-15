@@ -8,20 +8,41 @@ import { Link } from 'react-router-dom'
 import { Button } from '@material-ui/core'
 import '../index.css'
 
-const PopUp = ({ selected, handle }) => {
+const PopUp = ({ selected, handle, type }) => {
   console.log(selected)
+  console.log(type)
+  if (type !== 'blog' && type !== 'image') return null
 
+  const card = {
+    width: '205px',
+    height: '300px',
+    border: '2px solid black',
+    backgroundColor: type === 'image' ? '#191e36' : 'darkred',
+    transform: 'translate(5%, -110%)',
+    color: 'white',
+    textAlign: 'center',
+    borderRadius: '5px',
+  }
+
+  if (type === 'blog')
+    return (
+      <div style={card}>
+        <h1>{selected.title}</h1>
+
+        <p>
+          by:
+          {selected.author.username}
+        </p>
+
+        <p>{selected.date}</p>
+        <Link to={`/blogs/${selected.id}`}>
+          <h3>Read</h3>
+        </Link>
+      </div>
+    )
   return (
     <div>
-      <div
-        style={{
-          width: '205px',
-          height: '300px',
-          border: '2px solid black',
-          backgroundColor: 'grey',
-          transform: 'translate(5%, -110%)',
-        }}
-      >
+      <div style={card}>
         <h2>{selected.title}</h2>
         <div style={{ position: 'relative' }}>
           <img src={selected.imgURL} width='200' height='200'></img>
@@ -35,7 +56,7 @@ const PopUp = ({ selected, handle }) => {
 
         <Link to={`/gallery/${selected.id}`}>
           {' '}
-          <Button>Show Image In Gallery</Button>
+          <Button>Open In Gallery</Button>
         </Link>
       </div>
     </div>
@@ -43,10 +64,14 @@ const PopUp = ({ selected, handle }) => {
 }
 
 const WorldMap = ({ allBlogs, allPictures }) => {
-  const [activePicture, setActivePicture] = useState(null)
+  const [activePopUp, setActivePopUp] = useState({
+    data: null,
+    type: null,
+    blogLocation: null,
+  })
   const handle = useFullScreenHandle()
 
-  console.log(activePicture)
+  console.log(activePopUp)
 
   return (
     <div
@@ -68,7 +93,13 @@ const WorldMap = ({ allBlogs, allPictures }) => {
           allBlogs.map((blog) =>
             blog.locations.map((location) => (
               <ChatOutlined
-                onClick={() => console.log(blog)}
+                onClick={() =>
+                  setActivePopUp({
+                    data: blog,
+                    type: 'blog',
+                    blogLocation: location,
+                  })
+                }
                 lat={location.lat}
                 lng={location.lng}
                 text='Blog'
@@ -82,7 +113,7 @@ const WorldMap = ({ allBlogs, allPictures }) => {
             (image) =>
               image.location && (
                 <PhotoCamera
-                  onClick={() => setActivePicture(image)}
+                  onClick={() => setActivePopUp({ data: image, type: 'image' })}
                   lat={image.location.lat}
                   lng={image.location.lng}
                   text='Photo'
@@ -91,20 +122,32 @@ const WorldMap = ({ allBlogs, allPictures }) => {
                 ></PhotoCamera>
               )
           )}
-        {activePicture && (
+
+        {activePopUp && activePopUp.data && activePopUp.type === 'image' && (
           <PopUp
             handle={handle}
-            selected={activePicture}
-            lat={activePicture.location.lat}
-            lng={activePicture.location.lng}
+            selected={activePopUp.data}
+            lat={activePopUp.data.location.lat}
+            lng={activePopUp.data.location.lng}
+            type={activePopUp.type}
+          ></PopUp>
+        )}
+
+        {activePopUp && activePopUp.data && activePopUp.type === 'blog' && (
+          <PopUp
+            handle={handle}
+            selected={activePopUp.data}
+            lat={activePopUp.blogLocation.lat}
+            lng={activePopUp.blogLocation.lng}
+            type={activePopUp.type}
           ></PopUp>
         )}
       </GoogleMapReact>
 
       <FullScreen handle={handle}>
-        {activePicture && (
+        {activePopUp && activePopUp.type === 'image' && (
           <img
-            src={activePicture.imgURL}
+            src={activePopUp.data.imgURL}
             style={{
               display: 'block',
               marginLeft: 'auto',
