@@ -68,7 +68,10 @@ picturesRouter.put('/:id/vote', async (req, res) => {
       picture._id,
       newPicture,
       { new: true }
-    ).populate('user')
+    )
+      .populate('user')
+      .populate('votes.user')
+    console.log(updatedPicture)
     res.json(updatedPicture.toJSON())
   } catch (error) {
     console.log(error)

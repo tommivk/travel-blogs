@@ -11,6 +11,11 @@ const getTokenFrom = (request) => {
   return null
 }
 
+usersRouter.get('/', async (req, res) => {
+  const users = await User.find({})
+  res.json(users.map((user) => user.toJSON()))
+})
+
 usersRouter.post('/', async (req, res) => {
   const body = req.body
   const saltRounds = 10
