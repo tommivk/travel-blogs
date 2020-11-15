@@ -6,7 +6,7 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
-import '../styles/SinglePicturePage.css'
+import '../styles/singlePicturePage.css'
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY
 
@@ -41,7 +41,7 @@ const SinglePicturePage = ({
           },
         }
       )
-
+      console.log(response.data)
       setPicture(response.data)
 
       const filteredPictures = await allPictures.map((pic) =>
@@ -52,8 +52,13 @@ const SinglePicturePage = ({
       console.log(error.message)
     }
   }
-  console.log(picture)
+
   if (!picture || !allPictures) return null
+
+  const userVote = picture.votes.find(
+    (vote) => vote.user.username === user.username
+  )
+
   let pictureIndex = allPictures.findIndex((pic) => pic.id === picture.id)
   return (
     <div
@@ -138,11 +143,25 @@ const SinglePicturePage = ({
         }}
       >
         <div>
-          <ArrowUpward onClick={() => handleVote(1)}></ArrowUpward>
+          {userVote && userVote.dir === 1 ? (
+            <ArrowUpward onClick={() => handleVote(1)}></ArrowUpward>
+          ) : (
+            <ArrowUpward
+              onClick={() => handleVote(1)}
+              style={{ fill: 'black' }}
+            ></ArrowUpward>
+          )}
         </div>{' '}
         <div>{picture.voteResult}</div>
         <div>
-          <ArrowDownward onClick={() => handleVote(-1)}></ArrowDownward>
+          {userVote && userVote.dir === -1 ? (
+            <ArrowDownward onClick={() => handleVote(-1)}></ArrowDownward>
+          ) : (
+            <ArrowDownward
+              onClick={() => handleVote(-1)}
+              style={{ fill: 'black' }}
+            ></ArrowDownward>
+          )}
         </div>
       </div>
       <div
@@ -162,7 +181,9 @@ const SinglePicturePage = ({
           <img src={picture.user.avatar} width='70%'></img> 
         </div>
         <div>
-          <h2>{picture.user.username}</h2>
+          <Link to={`/users/${picture.user.id}`}>
+            <h2>{picture.user.username}</h2>
+          </Link>
         </div>
         <div>
           <h4>Uploaded:</h4> {picture.date.toString()}

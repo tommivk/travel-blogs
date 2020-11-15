@@ -8,7 +8,7 @@ import HomePage from './components/HomePage'
 import Gallery from './components/Gallery'
 import SingleBlogPage from './components/SingleBlogPage'
 import SinglePicturePage from './components/SinglePicturePage'
-
+import UserPage from './components/UserPage'
 import UserSettings from './components/UserSettings'
 import Grid from '@material-ui/core/Grid'
 import ReactDOM from 'react-dom'
@@ -44,13 +44,13 @@ const App = () => {
   const [allBlogs, setAllBlogs] = useState(null)
   const [allPictures, setAllPictures] = useState(null)
   const [picture, setPicture] = useState(null)
+  const [allUsers, setAllUsers] = useState(null)
 
   useEffect(() => {
     const loggedUser = localStorage.getItem('loggedTravelBlogUser')
     if (loggedUser) {
       setUser(JSON.parse(loggedUser))
     }
-
     axios
       .get('http://localhost:8008/api/blogs')
       .then((response) => setAllBlogs(response.data))
@@ -58,6 +58,10 @@ const App = () => {
     axios
       .get('http://localhost:8008/api/pictures')
       .then((res) => setAllPictures(res.data))
+
+    axios
+      .get('http://localhost:8008/api/users')
+      .then((res) => setAllUsers(res.data))
   }, [])
 
   useEffect(() => {
@@ -69,6 +73,7 @@ const App = () => {
         .catch((e) => console.log(e))
     }
   }, [user])
+
   const match = useRouteMatch('/blogs/:id')
   let blog = null
   if (allBlogs) {
@@ -83,6 +88,14 @@ const App = () => {
       setPicture(pic)
     }
   }, [pictureMatch])
+
+  const userMatch = useRouteMatch('/users/:id')
+  let selectedUser = null
+  if (allUsers) {
+    selectedUser = userMatch
+      ? allUsers.find((u) => u.id === userMatch.params.id)
+      : null
+  }
 
   if (!user) {
     return <Index setUser={setUser}></Index>
@@ -150,6 +163,10 @@ const App = () => {
             setUser={setUser}
             storage={storage}
           ></Gallery>
+        </Route>
+        <Route path='/users/:id'>
+          <Header user={user} setUser={setUser}></Header>
+          <UserPage userData={selectedUser}></UserPage>
         </Route>
         <Route path='/blogs/:id'>
           <Header user={user} setUser={setUser}></Header>
