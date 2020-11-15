@@ -20,15 +20,15 @@ const SinglePicturePage = ({
   const [mapImage, setMapImage] = useState(null)
   const pictureHandle = useFullScreenHandle()
 
-  // useEffect(() => {
-  //   if (picture && picture.location) {
-  //     const lat = picture.location.lat.toFixed(6)
-  //     const lng = picture.location.lng.toFixed(6)
-  //     setMapImage(
-  //       `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=13&size=300x300&markers=color:red|${lat},${lng}&key=${API_KEY}`
-  //     )
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (picture && picture.location) {
+      const lat = picture.location.lat.toFixed(6)
+      const lng = picture.location.lng.toFixed(6)
+      setMapImage(
+        `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=11&size=900x400&markers=color:red|${lat},${lng}&key=${API_KEY}`
+      )
+    }
+  }, [picture])
 
   const handleVote = async (direction) => {
     try {
@@ -79,6 +79,7 @@ const SinglePicturePage = ({
           paddingLeft: '10px',
           color: 'white',
           marginTop: '30px',
+          height: '60vh',
         }}
       >
         <div
@@ -116,10 +117,19 @@ const SinglePicturePage = ({
             )}
           </div>
         </div>
-        <div>
-          <img src={picture.imgURL} width='700px'></img>
+
+        <div className='picture-main-container'>
+          <div className='picture-inner-container'>
+            <div className='front-image'>
+              <img src={picture.imgURL} width='700px'></img>
+            </div>
+            <div className='back-image'>
+              <img src={mapImage}></img>
+            </div>
+          </div>
         </div>
-        <div style={{ float: 'right', margin: '0' }}>
+
+        <div style={{ position: 'absolute', bottom: '0px', right: '0px' }}>
           <Fullscreen
             fontSize='small'
             onClick={pictureHandle.enter}
@@ -190,9 +200,7 @@ const SinglePicturePage = ({
         </div>
         <div>votes: {picture.votes.length}</div>
       </div>
-      <div>
-        <img src={mapImage}></img>
-      </div>
+
       <FullScreen handle={pictureHandle}>
         <div className='fullscreen-image'>
           <img src={picture.imgURL}></img>
