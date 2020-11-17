@@ -3,7 +3,6 @@
     height: 100%;
     position: relative;
     color: white;
-   
 }
 
 .blog-card{
@@ -14,6 +13,11 @@
     background-color: #231A03;
     border-radius: 5px;
     margin: 20px;
+    transition: transform 0.2s;
+}
+
+.blog-card:hover {
+    transform: scale(1.05);
 }
 
 .cards-container {
@@ -29,6 +33,7 @@
 
 .blog-header{
   position: relative;
+  margin-bottom: 5px;
 }
 
 .author-avatar {
@@ -41,13 +46,13 @@
     bottom: 3%;
     left: 50%;
     transform: translate(-50%, 0);
-   
 }
 
 .blog-star {
     position: absolute;
+    display: flex;
     top: 2%;
-    right: 3%;
+    left: 4%;
 }
 
 #star {
@@ -61,5 +66,22 @@
 .blog-date{
     position: absolute;
     right: 2%;
-    bottom: 2%;
+    top: 2%;
+}
+
+#blog-stars-count {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 2px;
+}
+.blog-author-username {
+    font-size: 0.8em;
+}
+.blog-title h1 {
+    margin-bottom: 0;
+}
+
+#main-blog-link{
+    text-decoration: none;
+    color: white
 }

@@ -34,7 +34,7 @@ const PopUp = ({ selected, handle, type }) => {
           {selected.author.username}
         </p>
 
-        <p>{selected.date}</p>
+        {/* <p>{selected.date}</p> */}
         <Link to={`/blogs/${selected.id}`}>
           <h3>Read</h3>
         </Link>

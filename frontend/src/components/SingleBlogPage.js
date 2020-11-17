@@ -7,6 +7,7 @@ import Star from '@material-ui/icons/Star'
 import StarBorder from '@material-ui/icons/StarBorder'
 import Avatar from '@material-ui/core/Avatar'
 import ReactHtmlParser from 'react-html-parser'
+import '../styles/singleBlogPage.css'
 
 const monthNames = [
   'January',

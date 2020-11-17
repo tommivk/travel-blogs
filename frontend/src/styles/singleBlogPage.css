@@ -1,0 +1,54 @@
+  .vote-container {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  #voted-star {
+    color: gold
+  }
+
+  #voted-star:hover, #unvoted-star:hover {
+      cursor: pointer;
+  }
+  
+  #vote-count {
+    position: relative;
+    margin-left: 10px;
+    margin-top: auto; 
+    margin-bottom: auto;
+  }
+
+  .author-container {
+    display: flex;
+  }
+
+  .author-picture {
+    margin-top: auto;
+    margin-bottom: auto; 
+  }
+
+  .blog-info-container {
+    display: flex;  
+  }
+
+  .blog-info-date {
+    margin-top: auto;
+    margin-bottom: auto; 
+    margin-left: 5px;
+  }
+
+  .author-username {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+  }
+  
+  #blog-author-link {
+    text-decoration: none;
+    color: black;
+  }
+
+  #blog-title {
+    text-align: center;
+    font-size: 4em;
+  }

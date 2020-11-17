@@ -29,38 +29,44 @@ const Blogs = ({ allBlogs }) => {
       <Container>
         <div className='cards-container'>
           {allBlogs.map((blog) => (
-            <div className='blog-card'>
-              <div className='blog-header'>
-                <div className='author-avatar'>
+            <Link id='main-blog-link' to={`/blogs/${blog.id}`}>
+              <div className='blog-card'>
+                <div className='blog-header'>
+                  {/* <div className='author-avatar'>
                   <Avatar src={blog.author.avatar}></Avatar>
+                </div> */}
+                  <div className='blog-title'>
+                    <h1>{blog.title}</h1>
+                  </div>
+                  <div className='blog-author-username'>
+                    Written by {blog.author.username}
+                  </div>
                 </div>
-                <div className='blog-title'>
-                  <h1>{blog.title}</h1>
+                <div className='blog-image'>
+                  <img src={blog.headerImageURL} width='300px'></img>
+                </div>
+
+                <div>
+                  <h4>{blog.description}</h4>
+                </div>
+                <div className='blog-star'>
+                  <Star id='star' fontSize='medium'></Star>
+                  <div id='blog-stars-count'>{blog.stars.length}</div>
+                </div>
+
+                <div className='blog-button'>
+                  <Link to={`/blogs/${blog.id}`} id='blog-link'>
+                    <Button variant='outlined' color='primary'>
+                      Read
+                    </Button>
+                  </Link>
+                </div>
+                <div className='blog-date'>
+                  {monthNames[blog.date.getMonth()].substring(0, 3)}{' '}
+                  {blog.date.getDate()}
                 </div>
               </div>
-              <div className='blog-image'>
-                <img src={blog.headerImageURL} width='300px'></img>
-              </div>
-
-              <div>
-                <h4>{blog.description}</h4>
-              </div>
-              <div className='blog-star'>
-                <Star id='star' fontSize='medium'></Star> {blog.stars.length}
-              </div>
-
-              <div className='blog-button'>
-                <Link to={`/blogs/${blog.id}`} id='blog-link'>
-                  <Button variant='outlined' color='primary'>
-                    Read
-                  </Button>
-                </Link>
-              </div>
-              <div className='blog-date'>
-                {monthNames[blog.date.getMonth()].substring(0, 3)}{' '}
-                {blog.date.getDate()}
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       </Container>
