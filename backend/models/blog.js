@@ -7,6 +7,7 @@ const blogSchema = mongoose.Schema({
     ref: 'User',
   },
   date: Date,
+  description: String,
   content: String,
   locations: [
     {

@@ -34,6 +34,7 @@ blogsRouter.post('/', async (req, res) => {
   console.log(userID)
   const newBlog = new Blog({
     title: body.title,
+    description: body.description,
     author: userID,
     date: Date.now(),
     content: body.content,

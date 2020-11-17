@@ -25,6 +25,7 @@ const NewBlog = ({
 }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
   const [activeStep, setActiveStep] = useState(0)
   const [headerImageURL, setHeaderImageURL] = useState(null)
   const [locations, setLocations] = useState([])
@@ -55,6 +56,7 @@ const NewBlog = ({
           username: user.username,
           content: content,
           title: title,
+          description: description,
           headerImageURL: headerImageURL,
           locations: locations,
         },
@@ -74,6 +76,7 @@ const NewBlog = ({
         content: response.data.content,
         date: response.data.date,
         id: response.data.id,
+        description: response.data.description,
         stars: response.data.stars,
         title: response.data.title,
         headerImageURL: response.data.headerImageURL,
@@ -119,6 +122,13 @@ const NewBlog = ({
             style={{ marginBottom: '5px', width: '30%' }}
             onChange={({ target }) => setTitle(target.value)}
           ></TextField>
+          <div>
+            Add Description
+            <TextField
+              onChange={({ target }) => setDescription(target.value)}
+              variant='outlined'
+            ></TextField>
+          </div>
           <div>
             Add Header Image:
             <TextField

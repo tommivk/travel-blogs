@@ -124,13 +124,6 @@ const App = () => {
                 setAllPictures={setAllPictures}
               ></NewBlog>
             </Grid>
-            <Grid xs={3}>
-              {/* <ImageUpload
-                user={user}
-                setUser={setUser}
-                storage={storage}
-              ></ImageUpload> */}
-            </Grid>
           </Grid>
         </Route>
         <Route path='/settings'>
