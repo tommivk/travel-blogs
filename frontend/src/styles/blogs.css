@@ -1,0 +1,31 @@
+.main-container {
+    background-color: #191e36;
+    height: 100%;
+    position: relative;
+}
+
+.image-container img {
+    width: 100vh;
+    height: 100vh;
+    object-fit: cover;
+    float: right;
+}
+
+.image-container {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+
+    width: 70%;
+}
+
+.blog-info {
+    position: absolute;
+    color: #FFFFFF;
+    width: 30%;
+    height: 100vh;
+    top: 50%;
+    left: 0px;
+    text-align: center;
+}
+

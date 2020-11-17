@@ -8,6 +8,7 @@ import HomePage from './components/HomePage'
 import Gallery from './components/Gallery'
 import SingleBlogPage from './components/SingleBlogPage'
 import SinglePicturePage from './components/SinglePicturePage'
+import Blogs from './components/Blogs'
 import UserPage from './components/UserPage'
 import UserSettings from './components/UserSettings'
 import Grid from '@material-ui/core/Grid'
@@ -168,9 +169,14 @@ const App = () => {
           <Header user={user} setUser={setUser}></Header>
           <UserPage userData={selectedUser}></UserPage>
         </Route>
+
         <Route path='/blogs/:id'>
           <Header user={user} setUser={setUser}></Header>
           <SingleBlogPage blog={blog}></SingleBlogPage>
+        </Route>
+        <Route path='/blogs'>
+          <Header user={user} setUser={setUser}></Header>
+          <Blogs allBlogs={allBlogs}></Blogs>
         </Route>
         <Route path='/'>
           <Header user={user} setUser={setUser}></Header>

@@ -26,7 +26,14 @@ const Gallery = ({ allPictures, setAllPictures, user, setUser, storage }) => {
         setAllPictures={setAllPictures}
       ></ImageUploadModal>
       <div>
-        <Button onClick={() => setUploadModalOpen(true)}>upload images</Button>
+        <Button
+          style={{ float: 'right' }}
+          variant='contained'
+          color='primary'
+          onClick={() => setUploadModalOpen(true)}
+        >
+          upload images
+        </Button>
       </div>
       <Container maxWidth='lg'>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>

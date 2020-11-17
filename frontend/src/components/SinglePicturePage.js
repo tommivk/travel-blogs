@@ -5,6 +5,8 @@ import { Button, Container } from '@material-ui/core'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Fullscreen from '@material-ui/icons/Fullscreen'
+import Explore from '@material-ui/icons/Explore'
+import Image from '@material-ui/icons/Image'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import '../styles/singlePicturePage.css'
 
@@ -18,18 +20,37 @@ const SinglePicturePage = ({
   setAllPictures,
 }) => {
   const [mapImage, setMapImage] = useState(null)
+  const [showMap, setShowMap] = useState(false)
+  const [locationData, setLocationData] = useState(null)
   const pictureHandle = useFullScreenHandle()
 
-  useEffect(() => {
+  useEffect(async () => {
+    setShowMap(false)
+    setLocationData(null)
     if (picture && picture.location) {
       const lat = picture.location.lat.toFixed(6)
       const lng = picture.location.lng.toFixed(6)
       setMapImage(
-        `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=11&size=900x400&markers=color:red|${lat},${lng}&key=${API_KEY}`
+        `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=11&size=700x400&markers=color:red|${lat},${lng}&key=${API_KEY}`
       )
+
+      try {
+        const result = await axios.get(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+        )
+        console.log(result)
+
+        setLocationData(result.data)
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      setMapImage(null)
     }
   }, [picture])
 
+  console.log(picture)
+  console.log(locationData)
   const handleVote = async (direction) => {
     try {
       const response = await axios.put(
@@ -63,7 +84,8 @@ const SinglePicturePage = ({
   return (
     <div
       style={{
-        height: '100%',
+        height: 'fit-content',
+        minHeight: '100%',
         backgroundColor: '#191e36',
         position: 'relative',
       }}
@@ -79,7 +101,9 @@ const SinglePicturePage = ({
           paddingLeft: '10px',
           color: 'white',
           marginTop: '30px',
-          height: '60vh',
+          height: 'fit-content',
+          minHeight: '500px',
+          paddingBottom: '5%',
         }}
       >
         <div
@@ -103,7 +127,9 @@ const SinglePicturePage = ({
           </div>
 
           <div>
-            <h2 style={{ margin: '0' }}>{picture.title}</h2>
+            <h2 style={{ margin: '0', textAlign: 'center' }}>
+              {picture.title}
+            </h2>
           </div>
 
           <div>
@@ -118,16 +144,19 @@ const SinglePicturePage = ({
           </div>
         </div>
 
-        <div className='picture-main-container'>
-          <div className='picture-inner-container'>
-            <div className='front-image'>
-              <img src={picture.imgURL} width='700px'></img>
-            </div>
-            <div className='back-image'>
-              <img src={mapImage}></img>
-            </div>
+        {showMap ? (
+          <div style={{ maxHeight: '400px' }}>
+            <img src={mapImage} width='700px'></img>
+            {locationData && (
+              <p>
+                {locationData.city} {locationData.countryName}{' '}
+                {locationData.postcode}
+              </p>
+            )}
           </div>
-        </div>
+        ) : (
+          <img src={picture.imgURL} width='700px'></img>
+        )}
 
         <div style={{ position: 'absolute', bottom: '0px', right: '0px' }}>
           <Fullscreen
@@ -136,6 +165,17 @@ const SinglePicturePage = ({
           ></Fullscreen>
         </div>
       </div>
+
+      {mapImage && !showMap && (
+        <div className='image-toggle-button'>
+          <Explore fontSize='large' onClick={() => setShowMap(true)}></Explore>
+        </div>
+      )}
+      {showMap && (
+        <div className='image-toggle-button'>
+          <Image fontSize='large' onClick={() => setShowMap(false)}></Image>
+        </div>
+      )}
 
       <div
         style={{

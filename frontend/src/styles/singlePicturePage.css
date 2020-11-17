@@ -10,43 +10,10 @@
     transform: translate(-50%, -50%);
   }
 
-  .picture-main-container {
-    position: relative;
-    width: 100%;
-    height: fit-content;
-  
-  }
-  
-  .picture-inner-container {
-    position: relative;
-    width: 100%;
-    height:fit-content;
-    text-align: center;
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-  }
-  
-  .picture-main-container:hover .picture-inner-container {
-    transform: rotateY(180deg);
-  }
-  
-  .front-image, .flip-card-back {
+  .image-toggle-button {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden; 
-    backface-visibility: hidden;
+    top: 23%;
+    right: 28%;
+    width: fit-content;
+    background-color: #FFFFFF;
   }
- 
-  .front-image {
-    background-color: #bbb;
-    color: black;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .back-image {
-    transform: rotateY(180deg);
-    height: 100%;
-    width: 100%;
-  } 
