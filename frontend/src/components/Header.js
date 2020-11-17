@@ -65,6 +65,7 @@ const Header = ({ user, setUser }) => {
           <Link to='/explore' style={{ color: 'black' }}>
             <Language fontSize='large' />
           </Link>
+          <Link to='/blogs'>BLOGS</Link>
         </div>
       </div>
       <div style={{ display: 'flex' }}>

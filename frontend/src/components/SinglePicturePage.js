@@ -12,6 +12,21 @@ import '../styles/singlePicturePage.css'
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY
 
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+
 const SinglePicturePage = ({
   user,
   picture,
@@ -75,6 +90,8 @@ const SinglePicturePage = ({
   }
 
   if (!picture || !allPictures) return null
+
+  const date = new Date(picture.date)
 
   const userVote = picture.votes.find(
     (vote) => vote.user.username === user.username
@@ -236,7 +253,7 @@ const SinglePicturePage = ({
           </Link>
         </div>
         <div>
-          <h4>Uploaded:</h4> {picture.date.toString()}
+          <h4>Uploaded:</h4> {monthNames[date.getMonth()]} {date.getDate()}
         </div>
         <div>votes: {picture.votes.length}</div>
       </div>
