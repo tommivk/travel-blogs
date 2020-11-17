@@ -23,8 +23,6 @@ const monthNames = [
 const SingleBlogPage = ({ blog }) => {
   if (!blog) return null
 
-  const date = new Date(blog.date)
-
   return (
     <div>
       <Container maxWidth='md'>
@@ -33,7 +31,7 @@ const SingleBlogPage = ({ blog }) => {
           <div style={{ display: 'flex' }}>
             <Avatar alt='author profile' src={blog.author.avatar} />
             <strong>{blog.author.username}</strong>{' '}
-            {monthNames[date.getMonth()]} {date.getDate()}
+            {monthNames[blog.date.getMonth()]} {blog.date.getDate()}
           </div>
           {ReactHtmlParser(blog.content)}
         </div>

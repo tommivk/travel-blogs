@@ -54,7 +54,12 @@ const App = () => {
     }
     axios
       .get('http://localhost:8008/api/blogs')
-      .then((response) => setAllBlogs(response.data))
+      .then(
+        (response) => (
+          response.data.map((blog) => (blog.date = new Date(blog.date))),
+          setAllBlogs(response.data)
+        )
+      )
 
     axios
       .get('http://localhost:8008/api/pictures')
