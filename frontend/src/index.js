@@ -80,10 +80,13 @@ const App = () => {
     }
   }, [user])
 
-  const match = useRouteMatch('/blogs/:id')
+  const blogMatch = useRouteMatch('/blogs/:id')
   let blog = null
+
   if (allBlogs) {
-    blog = match ? allBlogs.find((blog) => blog.id === match.params.id) : null
+    blog = blogMatch
+      ? allBlogs.find((blog) => blog.id === blogMatch.params.id)
+      : null
   }
 
   const pictureMatch = useRouteMatch('/gallery/:id')
@@ -170,7 +173,12 @@ const App = () => {
 
         <Route path='/blogs/:id'>
           <Header user={user} setUser={setUser}></Header>
-          <SingleBlogPage blog={blog}></SingleBlogPage>
+          <SingleBlogPage
+            blogMatch={blog}
+            allBlogs={allBlogs}
+            setAllBlogs={setAllBlogs}
+            user={user}
+          ></SingleBlogPage>
         </Route>
         <Route path='/blogs'>
           <Header user={user} setUser={setUser}></Header>
