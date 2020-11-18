@@ -44,6 +44,7 @@ const CommentForm = ({ user, blog, setBlog }) => {
       )
       setBlog(response.data)
       console.log(response.data)
+      setComment('')
     } catch (error) {
       console.log(error)
     }
@@ -54,6 +55,7 @@ const CommentForm = ({ user, blog, setBlog }) => {
       <form onSubmit={handleCommentSubmit}>
         <input
           type='text'
+          value={comment}
           onChange={({ target }) => setComment(target.value)}
         ></input>
         <button type='submit'>submit</button>

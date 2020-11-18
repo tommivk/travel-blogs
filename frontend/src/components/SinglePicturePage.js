@@ -27,6 +27,55 @@ const monthNames = [
   'December',
 ]
 
+const CommentForm = ({
+  picture,
+  user,
+  setPicture,
+  allPictures,
+  setAllPictures,
+}) => {
+  const [comment, setComment] = useState('')
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault()
+    const newComment = {
+      content: comment,
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8008/api/pictures/${picture.id}/comment`,
+        newComment,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+      setPicture(response.data)
+      setComment('')
+      const filteredPictures = allPictures.map((pic) =>
+        pic.id === picture.id ? response.data : pic
+      )
+      setAllPictures(filteredPictures)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  return (
+    <div>
+      <form onSubmit={handleCommentSubmit}>
+        <input
+          type='text'
+          value={comment}
+          onChange={({ target }) => setComment(target.value)}
+        ></input>
+        <button>Send</button>
+      </form>
+    </div>
+  )
+}
+
 const SinglePicturePage = ({
   user,
   picture,
@@ -53,7 +102,6 @@ const SinglePicturePage = ({
         const result = await axios.get(
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
         )
-        console.log(result)
 
         setLocationData(result.data)
       } catch (error) {
@@ -64,8 +112,6 @@ const SinglePicturePage = ({
     }
   }, [picture])
 
-  console.log(picture)
-  console.log(locationData)
   const handleVote = async (direction) => {
     try {
       const response = await axios.put(
@@ -77,7 +123,6 @@ const SinglePicturePage = ({
           },
         }
       )
-      console.log(response.data)
       setPicture(response.data)
 
       const filteredPictures = await allPictures.map((pic) =>
@@ -263,6 +308,20 @@ const SinglePicturePage = ({
           <img src={picture.imgURL}></img>
         </div>
       </FullScreen>
+      <CommentForm
+        user={user}
+        picture={picture}
+        setPicture={setPicture}
+        allPictures={allPictures}
+        setAllPictures={setAllPictures}
+      ></CommentForm>
+      <ul>
+        {picture.comments.map((comment) => (
+          <li>
+            {comment.user.username}: {comment.content}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

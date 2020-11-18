@@ -1,6 +1,6 @@
 const picturesRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
-
+const Comment = require('../models/comment')
 const Picture = require('../models/picture')
 const User = require('../models/user')
 
@@ -13,7 +13,14 @@ const getTokenFrom = (request) => {
 }
 
 picturesRouter.get('/', async (req, res) => {
-  const pictures = await Picture.find({}).populate('user')
+  const pictures = await Picture.find({})
+    .populate('user')
+    .populate('votes.user')
+    .populate({
+      path: 'comments',
+      model: 'Comment',
+      populate: { path: 'user', model: 'User' },
+    })
   res.json(pictures.map((p) => p.toJSON()))
 })
 
@@ -71,6 +78,11 @@ picturesRouter.put('/:id/vote', async (req, res) => {
     )
       .populate('user')
       .populate('votes.user')
+      .populate({
+        path: 'comments',
+        model: 'Comment',
+        populate: { path: 'user', model: 'User' },
+      })
     console.log(updatedPicture)
     res.json(updatedPicture.toJSON())
   } catch (error) {
@@ -110,6 +122,47 @@ picturesRouter.post('/', async (req, res) => {
   } catch (error) {
     console.log(error)
     return res.status(500).send()
+  }
+})
+
+picturesRouter.post('/:id/comment', async (req, res) => {
+  const body = req.body
+  const pictureId = req.params.id
+  const token = getTokenFrom(req)
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = await User.findById(decodedToken.id)
+
+    const comment = new Comment({
+      content: body.content,
+      user: user._id,
+      date: new Date(),
+    })
+
+    const newComment = await comment.save()
+    const picture = await Picture.findById(req.params.id)
+
+    picture.comments = [newComment].concat(picture.comments)
+
+    const newPicture = await Picture.findByIdAndUpdate(pictureId, picture, {
+      new: true,
+    })
+      .populate('user')
+      .populate('votes.user')
+      .populate({
+        path: 'comments',
+        model: 'Comment',
+        populate: { path: 'user', model: 'User' },
+      })
+    console.log(newPicture)
+    res.json(newPicture.toJSON())
+  } catch (error) {
+    console.log(error)
   }
 })
 

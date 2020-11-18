@@ -27,10 +27,8 @@ const pictureSchema = mongoose.Schema({
   ],
   comments: [
     {
-      comment: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
     },
   ],
 })
