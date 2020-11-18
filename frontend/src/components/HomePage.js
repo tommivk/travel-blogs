@@ -1,13 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
+import { Button } from '@material-ui/core'
 import '../styles/homePage.css'
 
 const TopFiveBlogs = ({ allBlogs }) => {
   console.log(allBlogs)
   const month = new Date().getMonth()
   const thisMonth = allBlogs.map((blog) =>
-    blog.date.getMonth() === month ? blog : null
+    new Date(blog.date).getMonth() === month ? blog : null
   )
 
   const topBlogs = thisMonth
@@ -37,6 +38,7 @@ const TopFiveBlogs = ({ allBlogs }) => {
             </div>
           </div>
         ))}
+        <Button>Browse blogs</Button>
       </div>
     </div>
   )
@@ -65,6 +67,7 @@ const PictureOfTheWeek = ({ allPictures }) => {
         </div>
         <img src={best.imgURL} width='700px'></img>
       </div>
+      <Button>Open in gallery</Button>
     </div>
   )
 }

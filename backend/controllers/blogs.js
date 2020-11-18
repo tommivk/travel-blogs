@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const Comment = require('../models/comment')
 const blogsRouter = require('express').Router()
 
 const getTokenFrom = (request) => {
@@ -12,8 +13,14 @@ const getTokenFrom = (request) => {
 }
 
 blogsRouter.get('/', async (req, res) => {
-  console.log('asd')
-  const blogs = await Blog.find({}).populate('author')
+  const blogs = await Blog.find({})
+    .populate({
+      path: 'comments',
+      model: 'Comment',
+      populate: { path: 'user', model: 'User' },
+    })
+    .populate({ path: 'author', model: 'User' })
+
   res.json(blogs.map((blog) => blog.toJSON()))
 })
 
@@ -27,11 +34,10 @@ blogsRouter.post('/', async (req, res) => {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
 
-  console.log(token)
   const user = await User.findById(decodedToken.id)
-  console.log(user)
+
   const userID = user._id
-  console.log(userID)
+
   const newBlog = new Blog({
     title: body.title,
     description: body.description,
@@ -41,10 +47,53 @@ blogsRouter.post('/', async (req, res) => {
     stars: [],
     headerImageURL: body.headerImageURL,
     locations: body.locations,
+    comments: [],
   })
 
   const savedBlog = await newBlog.save()
   res.json(savedBlog.toJSON())
+})
+
+blogsRouter.post('/:id/comments', async (req, res) => {
+  const blogId = req.params.id
+  const body = req.body
+
+  const token = getTokenFrom(req)
+
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+
+  if (!token || !decodedToken) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+
+  try {
+    const blog = await Blog.findById(blogId)
+    const comment = new Comment({
+      user: user._id,
+      content: body.content,
+      date: new Date(),
+    })
+    const newComment = await comment.save()
+    const newBlog = blog
+    newBlog.comments = [newComment].concat(newBlog.comments)
+
+    const updatedBlog = await Blog.findByIdAndUpdate(blogId, newBlog, {
+      new: true,
+    })
+      .populate({
+        path: 'comments',
+        model: 'Comment',
+        populate: { path: 'user', model: 'User' },
+      })
+      .populate({ path: 'author', model: 'User' })
+
+    console.log(updatedBlog.toJSON())
+    res.json(updatedBlog)
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 blogsRouter.put('/:id/star', async (req, res) => {
@@ -78,7 +127,15 @@ blogsRouter.put('/:id/star', async (req, res) => {
 
       const newBlog = await Blog.findByIdAndUpdate(blog.id, updatedBlog, {
         new: true,
-      }).populate('author')
+      })
+        .populate({
+          path: 'comments',
+          model: 'Comment',
+          populate: { path: 'user', model: 'User' },
+        })
+        .populate({ path: 'author', model: 'User' })
+
+      console.log(newBlog)
 
       res.json(newBlog.toJSON())
     }
@@ -96,7 +153,13 @@ blogsRouter.put('/:id/star', async (req, res) => {
 
       const newBlog = await Blog.findByIdAndUpdate(blog.id, updatedBlog, {
         new: true,
-      }).populate('author')
+      })
+        .populate({
+          path: 'comments',
+          model: 'Comment',
+          populate: { path: 'user', model: 'User' },
+        })
+        .populate({ path: 'author', model: 'User' })
 
       res.json(newBlog.toJSON())
     }

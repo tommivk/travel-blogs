@@ -99,6 +99,7 @@ picturesRouter.post('/', async (req, res) => {
       title: body.title,
       voteResult: 0,
       votes: [],
+      comments: [],
     })
 
     const savedPicture = await newPicture.save()

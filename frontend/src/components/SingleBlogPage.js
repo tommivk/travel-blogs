@@ -24,6 +24,44 @@ const monthNames = [
   'December',
 ]
 
+const CommentForm = ({ user, blog, setBlog }) => {
+  const [comment, setComment] = useState('')
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault()
+    const newComment = {
+      content: comment,
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8008/api/blogs/${blog.id}/comments`,
+        newComment,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+      setBlog(response.data)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <div>
+      <form onSubmit={handleCommentSubmit}>
+        <input
+          type='text'
+          onChange={({ target }) => setComment(target.value)}
+        ></input>
+        <button type='submit'>submit</button>
+      </form>
+    </div>
+  )
+}
+
 const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
   const [blog, setBlog] = useState(blogMatch)
 
@@ -69,7 +107,7 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
                 </Link>
               </div>
               <div className='blog-info-date'>
-                {monthNames[blog.date.getMonth()]} {blog.date.getDate()}
+                {/* {monthNames[blog.date.getMonth()]} {blog.date.getDate()} */}
               </div>
             </div>
           </div>
@@ -97,6 +135,15 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
           </div>
           <div id='vote-count'> {blog.stars.length} stars</div>
         </div>
+        <CommentForm user={user} blog={blog} setBlog={setBlog}></CommentForm>
+        comments: {blog.comments.length}
+        <ul>
+          {blog.comments.map((comment) => (
+            <li>
+              {comment.user.username} {comment.content}
+            </li>
+          ))}
+        </ul>
       </Container>
     </div>
   )

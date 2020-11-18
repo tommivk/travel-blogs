@@ -22,6 +22,12 @@ const blogSchema = mongoose.Schema({
     },
   ],
   headerImageURL: String,
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
 })
 
 blogSchema.set('toJSON', {

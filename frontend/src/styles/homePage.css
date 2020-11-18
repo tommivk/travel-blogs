@@ -30,9 +30,9 @@
     max-height: 8vh;
     border-bottom: 3px solid black;
     margin-bottom: 5px;
-    
     display: flex;
     justify-content: space-between;
+    padding: 10px;
 }
 
 .top-blogs-card img{

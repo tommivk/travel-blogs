@@ -25,6 +25,14 @@ const pictureSchema = mongoose.Schema({
       },
     },
   ],
+  comments: [
+    {
+      comment: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
+      },
+    },
+  ],
 })
 
 pictureSchema.set('toJSON', {
