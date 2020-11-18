@@ -186,7 +186,7 @@ const App = () => {
         </Route>
         <Route path='/'>
           <Header user={user} setUser={setUser}></Header>
-          <HomePage allBlogs={allBlogs}></HomePage>
+          <HomePage allBlogs={allBlogs} allPictures={allPictures}></HomePage>
         </Route>
       </Switch>
     </div>

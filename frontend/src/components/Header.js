@@ -38,8 +38,7 @@ const Header = ({ user, setUser }) => {
       style={{
         display: 'flex',
         justifyContent: 'space-between',
-        borderBottom: '1px solid black',
-        marginBottom: '10px',
+        marginBottom: '0px',
       }}
     >
       <div>
