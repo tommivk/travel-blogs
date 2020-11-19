@@ -27,10 +27,12 @@ const TopFiveBlogs = ({ allBlogs }) => {
           <div className='top-blogs-card'>
             <div className='top-blog-info'>
               <Link id='blog-link' to={`/blogs/${b.id}`}>
-                <div className='top-blog-title'>
-                  <h3>{b.title}</h3>
+                <div className='top-blog-info-wrapper'>
+                  <div className='top-blog-title'>
+                    <h3>{b.title}</h3>
+                  </div>
+                  <div className='top-blog-description'>{b.description}</div>
                 </div>
-                <div className='top-blog-description'>{b.description}</div>
               </Link>
             </div>
             <div className='top-blogs-card-image'>

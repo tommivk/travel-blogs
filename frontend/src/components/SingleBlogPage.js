@@ -8,6 +8,7 @@ import StarBorder from '@material-ui/icons/StarBorder'
 import Avatar from '@material-ui/core/Avatar'
 import ReactHtmlParser from 'react-html-parser'
 import '../styles/singleBlogPage.css'
+import { DateTime } from 'luxon'
 
 const monthNames = [
   'January',
@@ -51,14 +52,25 @@ const CommentForm = ({ user, blog, setBlog }) => {
   }
 
   return (
-    <div>
+    <div className='comment-form-main-container'>
       <form onSubmit={handleCommentSubmit}>
-        <input
-          type='text'
-          value={comment}
-          onChange={({ target }) => setComment(target.value)}
-        ></input>
-        <button type='submit'>submit</button>
+        <div className='comment-form-wrapper'>
+          <input
+            id='comment-form-input'
+            type='text'
+            value={comment}
+            autoComplete='off'
+            onChange={({ target }) => setComment(target.value)}
+          ></input>
+          <Button
+            id='comment-form-button'
+            variant='contained'
+            size='small'
+            type='submit'
+          >
+            send
+          </Button>
+        </div>
       </form>
     </div>
   )
@@ -68,6 +80,10 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
   const [blog, setBlog] = useState(blogMatch)
 
   if (!blog) return null
+  const dateNow = DateTime.local()
+
+  // console.log(blogDate)
+
   console.log(blog)
   console.log(user, blog)
   const handleStarChange = async (action) => {
@@ -91,6 +107,35 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
 
     setAllBlogs(filteredBlogs)
     console.log(response)
+  }
+
+  const calculateDateDiff = (date) => {
+    const daysAgo = Math.floor(dateNow.diff(DateTime.fromISO(date)).as('days'))
+    if (daysAgo >= 1) {
+      if (daysAgo === 1) {
+        return '1 day ago'
+      }
+      return `${daysAgo} days ago`
+    }
+    const hoursAgo = Math.floor(
+      dateNow.diff(DateTime.fromISO(date)).as('hours')
+    )
+    if (hoursAgo >= 1) {
+      if (hoursAgo === 1) {
+        return '1 hour ago'
+      }
+      return `${hoursAgo} hours ago`
+    }
+    const minutesAgo = Math.floor(
+      dateNow.diff(DateTime.fromISO(date)).as('minutes')
+    )
+    if (minutesAgo >= 1) {
+      if (minutesAgo === 1) {
+        return '1 minute ago'
+      }
+      return `${minutesAgo} minutes ago`
+    }
+    return `less than a minute ago`
   }
 
   return (
@@ -137,15 +182,36 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
           </div>
           <div id='vote-count'> {blog.stars.length} stars</div>
         </div>
-        <CommentForm user={user} blog={blog} setBlog={setBlog}></CommentForm>
-        comments: {blog.comments.length}
-        <ul>
-          {blog.comments.map((comment) => (
-            <li>
-              {comment.user.username} {comment.content}
-            </li>
-          ))}
-        </ul>
+        <div className='blog-comment-section-container'>
+          <div className='blog-comment-form'>
+            <CommentForm
+              user={user}
+              blog={blog}
+              setBlog={setBlog}
+            ></CommentForm>
+          </div>
+
+          <ul>
+            {blog.comments.map((comment) => (
+              <div className='blog-comment'>
+                <li>
+                  <div className='blog-comment-top-section'>
+                    <img src={comment.user.avatar}></img>
+                    <div className='blog-comment-username'>
+                      <Link to={`/users/${comment.user.id}`}>
+                        {comment.user.username}
+                      </Link>
+                    </div>
+                    <div className='blog-comment-date'>
+                      {calculateDateDiff(comment.date)}
+                    </div>
+                  </div>
+                  <div className='blog-comment-content'>{comment.content}</div>
+                </li>
+              </div>
+            ))}
+          </ul>
+        </div>
       </Container>
     </div>
   )

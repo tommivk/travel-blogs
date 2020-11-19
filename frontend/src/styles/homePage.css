@@ -44,7 +44,14 @@
 .top-blog-info {
     position: relative;
     text-align: center;
+    display: block;
     width: 17vw;
+    
+}
+
+.top-blog-info-wrapper {
+    position: relative;
+    left: 50%
 }
 
 .top-blogs-cards-container {
@@ -54,11 +61,7 @@
 }
 
 .top-blog-title {
-   position: absolute;
-   top: 0%;
-   left: 8.5vw;
    transform: translate(-50%, 0);
-
 }
 
 .top-blog-title h3{
@@ -67,9 +70,6 @@
  }
 
 .top-blog-description {
-   position: absolute;
-   bottom: 20%;
-   left: 8.5vw;
    transform: translate(-50%, 0);
 }
 
