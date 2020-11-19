@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import firebase from 'firebase/app'
 import axios from 'axios'
 import { Button, Modal, Input, LinearProgress, Switch } from '@material-ui/core'
@@ -7,6 +7,7 @@ import Room from '@material-ui/icons/Room'
 import GoogleMapReact from 'google-map-react'
 import imageModalBG from '../images/imagemodalbg.jpg'
 import AddLocations from './AddLocations'
+
 const ImageUploadModal = ({
   user,
   setUser,
@@ -19,6 +20,7 @@ const ImageUploadModal = ({
   const [image, setImage] = useState(null)
   const [title, setTitle] = useState('')
   const [locations, setLocations] = useState([])
+  const [locationInfo, setLocationInfo] = useState(null)
   const [publishToGallery, setPublishToGallery] = useState(false)
   const [imagePreview, setImagePreview] = useState(null)
   const [uploadedImages, setUploadedImages] = useState([])
@@ -27,6 +29,19 @@ const ImageUploadModal = ({
   const [mapOpen, setMapOpen] = useState(false)
   console.log(uploadModalOpen)
 
+  useEffect(() => {
+    if (locations) {
+      const lat = locations[locations.length - 1]?.lat
+      const lng = locations[locations.length - 1]?.lng
+      axios
+        .get(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+        )
+        .then((res) => setLocationInfo(res.data))
+    }
+  }, [locations])
+
+  console.log(locationInfo)
   const handleImageChange = (e) => {
     setImage(e.target.files[0])
     setImagePreview(URL.createObjectURL(e.target.files[0]))
@@ -37,6 +52,7 @@ const ImageUploadModal = ({
     setImage(null)
     setImagePreview(null)
     setStep(0)
+    setLocationInfo(null)
   }
 
   const handleNextStep = () => {
@@ -194,6 +210,7 @@ const ImageUploadModal = ({
               }}
             ></Room>
             <GoogleMapReact
+              options={{ gestureHandling: 'greedy' }}
               yesIWantToUseGoogleMapApiInternals
               onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
               bootstrapURLKeys={{
@@ -353,10 +370,15 @@ const ImageUploadModal = ({
 
                   <img alt='' src={imagePreview} height='150' width='150'></img>
                   <p>{title}</p>
-                  <p>
-                    Location: {locations[locations.length - 1]?.lat},{' '}
-                    {locations[locations.length - 1]?.lng}{' '}
-                  </p>
+                  {locationInfo && (
+                    <p>
+                      Location:{' '}
+                      {locationInfo.city === ''
+                        ? locationInfo.locality
+                        : locationInfo.city}
+                      , {locationInfo.countryName}
+                    </p>
+                  )}
                   <p>Publish to gallery: {publishToGallery ? 'yes' : 'no'}</p>
                   {step === 4 && (
                     <form onSubmit={handleImageUpload}>

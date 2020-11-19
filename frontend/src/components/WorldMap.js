@@ -83,6 +83,7 @@ const WorldMap = ({ allBlogs, allPictures }) => {
       }}
     >
       <GoogleMapReact
+        options={{ gestureHandling: 'greedy' }}
         bootstrapURLKeys={{
           key: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
         }}

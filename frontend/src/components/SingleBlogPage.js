@@ -10,21 +10,6 @@ import ReactHtmlParser from 'react-html-parser'
 import '../styles/singleBlogPage.css'
 import { DateTime } from 'luxon'
 
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-]
-
 const CommentForm = ({ user, blog, setBlog }) => {
   const [comment, setComment] = useState('')
 
@@ -81,11 +66,11 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
 
   if (!blog) return null
   const dateNow = DateTime.local()
+  console.log(typeof blog.date)
+  const blogDate = DateTime.fromISO(blog.date)
 
-  // console.log(blogDate)
+  console.log(blogDate)
 
-  console.log(blog)
-  console.log(user, blog)
   const handleStarChange = async (action) => {
     console.log(user, blog)
     const response = await axios.put(
@@ -98,7 +83,6 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
       }
     )
     const newBlog = response.data
-    newBlog.date = new Date(response.data.date)
     setBlog(newBlog)
     console.log(newBlog, allBlogs)
     const filteredBlogs = allBlogs.map((b) =>
@@ -154,7 +138,7 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
                 </Link>
               </div>
               <div className='blog-info-date'>
-                {/* {monthNames[blog.date.getMonth()]} {blog.date.getDate()} */}
+                {blogDate.monthLong} {blogDate.day}
               </div>
             </div>
           </div>

@@ -61,10 +61,10 @@ const Blogs = ({ allBlogs }) => {
                     </Button>
                   </Link>
                 </div>
-                <div className='blog-date'>
+                {/* <div className='blog-date'>
                   {monthNames[blog.date.getMonth()].substring(0, 3)}{' '}
                   {blog.date.getDate()}
-                </div>
+                </div> */}
               </div>
             </Link>
           ))}
