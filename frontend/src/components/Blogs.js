@@ -1,75 +1,99 @@
+import React, { useState } from 'react'
 import { Button, Container } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import Star from '@material-ui/icons/Star'
 import Avatar from '@material-ui/core/Avatar'
 import '../styles/blogs.css'
-
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-]
+import BorderAll from '@material-ui/icons/BorderAll'
+import CropLandscape from '@material-ui/icons/CropLandscape'
+import SwiperCore, { Navigation } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.scss'
+import 'swiper/components/navigation/navigation.scss'
+SwiperCore.use([Navigation])
 
 const Blogs = ({ allBlogs }) => {
+  const [displayMode, setDisplayMode] = useState(0)
+  console.log(displayMode)
   if (!allBlogs) return null
-
+  if (displayMode === 1) {
+    return (
+      <div>
+        <div style={{ float: 'right' }}>
+          <CropLandscape onClick={() => setDisplayMode(1)}></CropLandscape>
+          <BorderAll onClick={() => setDisplayMode(0)}></BorderAll>
+        </div>
+        <Swiper
+          slidesPerView={1}
+          navigation
+          onSlideChange={() => console.log('slide change')}
+          onSwiper={(swiper) => console.log(swiper)}
+          style={{ textAlign: 'center' }}
+        >
+          {allBlogs.map(
+            (blog) =>
+              blog.headerImageURL && (
+                <SwiperSlide>
+                  <Link to={`/blogs/${blog.id}`}>
+                    <img src={blog.headerImageURL} width='80%'></img>
+                  </Link>
+                </SwiperSlide>
+              )
+          )}
+        </Swiper>
+      </div>
+    )
+  }
   console.log(allBlogs)
 
   return (
     <div className='main-container'>
-      <Container>
-        <div className='cards-container'>
-          {allBlogs.map((blog) => (
-            <Link id='main-blog-link' to={`/blogs/${blog.id}`}>
-              <div className='blog-card'>
-                <div className='blog-header'>
-                  {/* <div className='author-avatar'>
+      <div style={{ float: 'right' }}>
+        <CropLandscape onClick={() => setDisplayMode(1)}></CropLandscape>
+        <BorderAll onClick={() => setDisplayMode(0)}></BorderAll>
+      </div>
+      <div className='cards-container'>
+        {allBlogs.map((blog) => (
+          <Link id='main-blog-link' to={`/blogs/${blog.id}`}>
+            <div className='blog-card'>
+              <div className='blog-header'>
+                {/* <div className='author-avatar'>
                   <Avatar src={blog.author.avatar}></Avatar>
                 </div> */}
-                  <div className='blog-title'>
-                    <h1>{blog.title}</h1>
-                  </div>
-                  <div className='blog-author-username'>
-                    Written by {blog.author.username}
-                  </div>
+                <div className='blog-title'>
+                  <h1>{blog.title}</h1>
                 </div>
-                <div className='blog-image'>
-                  <img src={blog.headerImageURL} width='300px'></img>
+                <div className='blog-author-username'>
+                  Written by {blog.author.username}
                 </div>
+              </div>
+              <div className='blog-image'>
+                <img src={blog.headerImageURL} width='300px'></img>
+              </div>
 
-                <div>
-                  <h4>{blog.description}</h4>
-                </div>
-                <div className='blog-star'>
-                  <Star id='star' fontSize='medium'></Star>
-                  <div id='blog-stars-count'>{blog.stars.length}</div>
-                </div>
+              <div>
+                <h4>{blog.description}</h4>
+              </div>
+              <div className='blog-star'>
+                <Star id='star' fontSize='medium'></Star>
+                <div id='blog-stars-count'>{blog.stars.length}</div>
+              </div>
 
-                <div className='blog-button'>
-                  <Link to={`/blogs/${blog.id}`} id='blog-link'>
-                    <Button variant='outlined' color='primary'>
-                      Read
-                    </Button>
-                  </Link>
-                </div>
-                {/* <div className='blog-date'>
+              <div className='blog-button'>
+                <Link to={`/blogs/${blog.id}`} id='blog-link'>
+                  <Button variant='outlined' color='primary'>
+                    Read
+                  </Button>
+                </Link>
+              </div>
+              {/* <div className='blog-date'>
                   {monthNames[blog.date.getMonth()].substring(0, 3)}{' '}
                   {blog.date.getDate()}
                 </div> */}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </Container>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }

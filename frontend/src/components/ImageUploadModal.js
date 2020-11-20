@@ -27,21 +27,21 @@ const ImageUploadModal = ({
   const [uploadProgress, setUploadProgress] = useState(0)
   const [step, setStep] = useState(0)
   const [mapOpen, setMapOpen] = useState(false)
-  console.log(uploadModalOpen)
 
   useEffect(() => {
     if (locations) {
       const lat = locations[locations.length - 1]?.lat
       const lng = locations[locations.length - 1]?.lng
-      axios
-        .get(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
-        )
-        .then((res) => setLocationInfo(res.data))
+      if (lat && lng) {
+        axios
+          .get(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+          )
+          .then((res) => setLocationInfo(res.data))
+      }
     }
   }, [locations])
 
-  console.log(locationInfo)
   const handleImageChange = (e) => {
     setImage(e.target.files[0])
     setImagePreview(URL.createObjectURL(e.target.files[0]))
