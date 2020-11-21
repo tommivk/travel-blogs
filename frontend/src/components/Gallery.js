@@ -1,21 +1,44 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import ImageUploadModal from './ImageUploadModal'
+import SearchModal from './SearchModal'
 import { Link } from 'react-router-dom'
 import { Button, Container } from '@material-ui/core'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import Sms from '@material-ui/icons/Sms'
 
 const Gallery = ({ allPictures, setAllPictures, user, setUser, storage }) => {
-  console.log(allPictures)
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
+  const [searchFilter, setSearchFilter] = useState('')
+  const [searchModalOpen, setSearchModalOpen] = useState(false)
 
+  useEffect(() => {
+    if (searchFilter !== '') {
+      setSearchModalOpen(true)
+    }
+  }, [searchFilter])
   const closeUploadModal = () => {
     setUploadModalOpen(false)
   }
+  const closeSearchModal = () => {
+    setSearchModalOpen(false)
+    setSearchFilter('')
+  }
 
   if (!allPictures) return null
+  console.log(searchFilter)
+
   return (
     <div style={{ backgroundColor: '#14182b', height: '94vh' }}>
+      <div>
+        <SearchModal
+          open={searchModalOpen}
+          closeSearchModal={closeSearchModal}
+          searchFilter={searchFilter}
+          setSearchFilter={setSearchFilter}
+          allPictures={allPictures}
+        ></SearchModal>
+      </div>
+
       <ImageUploadModal
         uploadModalOpen={uploadModalOpen}
         closeModal={closeUploadModal}
@@ -36,6 +59,13 @@ const Gallery = ({ allPictures, setAllPictures, user, setUser, storage }) => {
         </Button>
       </div>
       <Container maxWidth='lg'>
+        <div style={{ textAlign: 'center' }}>
+          <input
+            type='text'
+            value={searchFilter}
+            onChange={({ target }) => setSearchFilter(target.value)}
+          ></input>
+        </div>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {allPictures.map((pic, i) => (
             <div

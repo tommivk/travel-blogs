@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, Container } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import Star from '@material-ui/icons/Star'
-import Avatar from '@material-ui/core/Avatar'
 import '../styles/blogs.css'
 import BorderAll from '@material-ui/icons/BorderAll'
 import CropLandscape from '@material-ui/icons/CropLandscape'
@@ -14,7 +13,7 @@ SwiperCore.use([Navigation])
 
 const Blogs = ({ allBlogs }) => {
   const [displayMode, setDisplayMode] = useState(0)
-  console.log(displayMode)
+
   if (!allBlogs) return null
   if (displayMode === 1) {
     return (

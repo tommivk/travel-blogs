@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import Header from './components/Header'
 import WorldMap from './components/WorldMap'
-import Index from './components/Index'
+import IndexPage from './components/IndexPage'
 import NewBlog from './components/NewBlog'
 import HomePage from './components/HomePage'
 import Gallery from './components/Gallery'
@@ -102,7 +102,7 @@ const App = () => {
   }
 
   if (!user) {
-    return <Index setUser={setUser}></Index>
+    return <IndexPage setUser={setUser}></IndexPage>
   }
   return (
     <div style={{ height: '100vh' }}>

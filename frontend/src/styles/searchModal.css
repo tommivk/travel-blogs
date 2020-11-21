@@ -1,0 +1,40 @@
+.modal-content{
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    width: 30vw;
+    height: 70vh;
+    background: white;
+    transform: translate(-50%, 0);
+    text-align: center;
+    border-radius: 5px;
+}
+
+#search-modal-input{
+    margin-top: 10px;
+    height: 40px;
+    width: 20vw;
+}
+
+.search-bottom-container {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+ 
+}
+
+.search-bottom-section {
+    width: 16vw;
+    margin: 5px;
+}
+
+.search-bottom-section li {
+    list-style: none;
+    text-align: left;
+   
+}
+
+.search-bottom-section ul {
+   padding: 5px;
+}
+

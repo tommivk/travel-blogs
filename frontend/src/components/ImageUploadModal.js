@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import firebase from 'firebase/app'
 import axios from 'axios'
 import { Button, Modal, Input, LinearProgress, Switch } from '@material-ui/core'
@@ -28,6 +28,7 @@ const ImageUploadModal = ({
   const [step, setStep] = useState(0)
   const [mapOpen, setMapOpen] = useState(false)
 
+  console.log(locationInfo)
   useEffect(() => {
     if (locations) {
       const lat = locations[locations.length - 1]?.lat
@@ -64,6 +65,10 @@ const ImageUploadModal = ({
 
   const uploadPicture = async (uploadedPictureURL) => {
     const locationData = locations[locations.length - 1]
+    locationData.country = locationInfo.countryName
+    locationData.city = !locationInfo.city
+      ? locationInfo.locality
+      : locationInfo.city
     const newPicture = {
       imgURL: uploadedPictureURL,
       public: publishToGallery,

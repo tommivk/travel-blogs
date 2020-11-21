@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import IndexModal from './IndexModal'
 import { Button } from '@material-ui/core'
 
-const Index = ({ setUser }) => {
+const IndexPage = ({ setUser }) => {
   const [modalOpen, setModalOpen] = useState({ open: false, modal: '' })
 
   const openSignUpModal = () => {
@@ -49,4 +49,4 @@ const Index = ({ setUser }) => {
     </div>
   )
 }
-export default Index
+export default IndexPage
