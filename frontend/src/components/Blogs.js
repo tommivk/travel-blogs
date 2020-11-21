@@ -18,10 +18,16 @@ const Blogs = ({ allBlogs }) => {
   if (!allBlogs) return null
   if (displayMode === 1) {
     return (
-      <div>
-        <div style={{ float: 'right' }}>
-          <CropLandscape onClick={() => setDisplayMode(1)}></CropLandscape>
-          <BorderAll onClick={() => setDisplayMode(0)}></BorderAll>
+      <div className='main-container'>
+        <div className='display-mode-buttons'>
+          <CropLandscape
+            id='blog-single-display-mode-button'
+            onClick={() => setDisplayMode(1)}
+          ></CropLandscape>
+          <BorderAll
+            id='blog-multi-display-mode-button'
+            onClick={() => setDisplayMode(0)}
+          ></BorderAll>
         </div>
         <Swiper
           slidesPerView={1}
@@ -35,7 +41,11 @@ const Blogs = ({ allBlogs }) => {
               blog.headerImageURL && (
                 <SwiperSlide>
                   <Link to={`/blogs/${blog.id}`}>
-                    <img src={blog.headerImageURL} width='80%'></img>
+                    <img
+                      src={blog.headerImageURL}
+                      width='80%'
+                      onLoad={() => console.log('img loading')}
+                    ></img>
                   </Link>
                 </SwiperSlide>
               )
@@ -48,9 +58,15 @@ const Blogs = ({ allBlogs }) => {
 
   return (
     <div className='main-container'>
-      <div style={{ float: 'right' }}>
-        <CropLandscape onClick={() => setDisplayMode(1)}></CropLandscape>
-        <BorderAll onClick={() => setDisplayMode(0)}></BorderAll>
+      <div className='display-mode-buttons'>
+        <CropLandscape
+          id='blog-single-display-mode-button'
+          onClick={() => setDisplayMode(1)}
+        ></CropLandscape>
+        <BorderAll
+          id='blog-multi-display-mode-button'
+          onClick={() => setDisplayMode(0)}
+        ></BorderAll>
       </div>
       <div className='cards-container'>
         {allBlogs.map((blog) => (

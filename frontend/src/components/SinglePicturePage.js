@@ -147,7 +147,7 @@ const SinglePicturePage = ({
     <div
       style={{
         height: 'fit-content',
-        minHeight: '100%',
+        height: '94vh',
         backgroundColor: '#191e36',
         position: 'relative',
       }}

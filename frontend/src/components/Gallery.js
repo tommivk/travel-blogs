@@ -15,7 +15,7 @@ const Gallery = ({ allPictures, setAllPictures, user, setUser, storage }) => {
 
   if (!allPictures) return null
   return (
-    <div style={{ backgroundColor: '#14182b', height: '100%' }}>
+    <div style={{ backgroundColor: '#14182b', height: '94vh' }}>
       <ImageUploadModal
         uploadModalOpen={uploadModalOpen}
         closeModal={closeUploadModal}

@@ -1,8 +1,12 @@
 .main-container {
     background-color: #191e36;
-    height: 100%;
+    height: 94vh;
     position: relative;
     color: white;
+}
+
+.swiper-wrapper {
+    max-height: 94vh;
 }
 
 .blog-card{
@@ -84,4 +88,21 @@
 #main-blog-link{
     text-decoration: none;
     color: white
+}
+
+#blog-single-display-mode-button{
+    color: white;
+    font-size: 2.4em;
+    cursor: pointer;
+}
+#blog-multi-display-mode-button{
+    color: white;
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.display-mode-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }

@@ -76,7 +76,7 @@ const WorldMap = ({ allBlogs, allPictures }) => {
   return (
     <div
       style={{
-        height: '90%',
+        height: '94vh',
         width: '100%',
         overflow: 'hidden',
         position: 'absolute',

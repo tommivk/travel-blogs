@@ -34,46 +34,44 @@ const Header = ({ user, setUser }) => {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '0px',
-      }}
-    >
-      <div>
+    <div className='main-header-container'>
+      <div className='header-title'>
         <Link to='/' style={{ textDecoration: 'none', color: 'black' }}>
-          <h2 style={{ marginLeft: '10px' }}>TITLE</h2>
+          <h1>TravelBlogs</h1>
         </Link>
       </div>
-      <div style={{ margin: 'auto', display: 'flex' }}>
-        <Paper component='form' style={{ paddingLeft: '10px' }}>
-          <InputBase
-            variant='outlined'
-            size='small'
-            placeholder='Search...'
-          ></InputBase>
-          <IconButton>
-            <Search />
-          </IconButton>
-        </Paper>
-        <div style={{ margin: 'auto', paddingLeft: '20px', cursor: 'pointer' }}>
-          <Link to='/gallery'>
-            <Photo fontSize='large' style={{ color: 'black' }}></Photo>
-          </Link>
-          <Link to='/explore' style={{ color: 'black' }}>
+      <div className='header-link-container'>
+        <Link to='/blogs'>
+          <div className='header-link'>
+            <h1>Blogs</h1>
+          </div>
+        </Link>
+        <Link to='/gallery'>
+          <div className='header-link'>
+            {/* <Photo fontSize='large' style={{ color: 'black' }}></Photo> */}
+            <h1>Gallery</h1>
+          </div>
+        </Link>
+        <Link to='/explore' style={{ color: 'black' }}>
+          <div className='header-link'>
             <Language fontSize='large' />
-          </Link>
-          <Link to='/blogs'>BLOGS</Link>
-        </div>
+          </div>
+        </Link>
       </div>
+
       <div style={{ display: 'flex' }}>
-        <Notifications fontSize='large' style={{ margin: 'auto' }} />
+        <Notifications id='notifications-bell' />
         <div
           style={{ margin: '10px', cursor: 'pointer' }}
           onClick={handleMenuOpen}
         >
-          <img src={user.avatar} height='50' width='50' alt='avatar'></img>
+          <img
+            src={user.avatar}
+            height='40'
+            width='40'
+            alt='avatar'
+            style={{ borderRadius: '50%' }}
+          ></img>
         </div>
       </div>
       <Menu
