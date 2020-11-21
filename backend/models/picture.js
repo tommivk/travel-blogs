@@ -12,6 +12,8 @@ const pictureSchema = mongoose.Schema({
   location: {
     lat: Number,
     lng: Number,
+    city: String,
+    country: String,
   },
   voteResult: Number,
   votes: [
