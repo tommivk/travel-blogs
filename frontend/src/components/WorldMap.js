@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import GoogleMapReact from 'google-map-react'
+import MarkerClusterer from '@googlemaps/markerclustererplus'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import ChatOutlined from '@material-ui/icons/ChatOutlined'
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
@@ -22,6 +23,7 @@ const PopUp = ({ selected, handle, type }) => {
     color: 'white',
     textAlign: 'center',
     borderRadius: '5px',
+    zIndex: '999999999',
   }
 
   if (type === 'blog')
@@ -70,8 +72,39 @@ const WorldMap = ({ allBlogs, allPictures }) => {
     blogLocation: null,
   })
   const handle = useFullScreenHandle()
+  if (!allBlogs || !allPictures) return null
 
-  console.log(activePopUp)
+  const mapsApiLoaded = (map, maps) => {
+    let markers = allPictures.map((pic) => {
+      let marker = new maps.Marker({
+        position: { lat: pic.location.lat, lng: pic.location.lng },
+      })
+      maps.event.addListener(marker, 'click', () =>
+        setActivePopUp({ data: pic, type: 'image' })
+      )
+      return marker
+    })
+
+    allBlogs.map((blog) =>
+      blog.locations.map((loc) => {
+        let marker = new maps.Marker({
+          position: { lat: loc.lat, lng: loc.lng },
+        })
+        maps.event.addListener(marker, 'click', () =>
+          setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
+        )
+        console.log(marker)
+        markers.push(marker)
+      })
+    )
+
+    const markerCluster = new MarkerClusterer(map, markers, {
+      imagePath:
+        'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+      gridSize: 10,
+      minimumClusterSize: 2,
+    })
+  }
 
   return (
     <div
@@ -89,41 +122,9 @@ const WorldMap = ({ allBlogs, allPictures }) => {
         }}
         defaultCenter={{ lat: 59, lng: 30 }}
         defaultZoom={2}
+        onGoogleApiLoaded={({ map, maps }) => mapsApiLoaded(map, maps)}
+        yesIWantToUseGoogleMapApiInternals
       >
-        {allBlogs &&
-          allBlogs.map((blog) =>
-            blog.locations.map((location) => (
-              <ChatOutlined
-                onClick={() =>
-                  setActivePopUp({
-                    data: blog,
-                    type: 'blog',
-                    blogLocation: location,
-                  })
-                }
-                lat={location.lat}
-                lng={location.lng}
-                text='Blog'
-                style={{ transform: `translate(0%, -100%)` }}
-              ></ChatOutlined>
-            ))
-          )}
-
-        {allPictures &&
-          allPictures.map(
-            (image) =>
-              image.location && (
-                <PhotoCamera
-                  onClick={() => setActivePopUp({ data: image, type: 'image' })}
-                  lat={image.location.lat}
-                  lng={image.location.lng}
-                  text='Photo'
-                  key={image.id}
-                  style={{ transform: `translate(0%, -100%)` }}
-                ></PhotoCamera>
-              )
-          )}
-
         {activePopUp && activePopUp.data && activePopUp.type === 'image' && (
           <PopUp
             handle={handle}

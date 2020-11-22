@@ -51,8 +51,8 @@ const PictureOfTheWeek = ({ allPictures }) => {
 
   const thisweek = DateTime.local().weekNumber
 
-  const filtered = allPictures.map((pic) =>
-    DateTime.fromISO(pic.date).weekNumber === thisweek ? pic : null
+  const filtered = allPictures.map(
+    (pic) => DateTime.fromISO(pic.date).weekNumber === thisweek
   )
 
   const best = filtered.sort((a, b) => b.voteResult - a.voteResult)[0]
