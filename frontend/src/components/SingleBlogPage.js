@@ -127,6 +127,7 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
       <Container maxWidth='md'>
         <div>
           <h1 id='blog-title'>{blog.title}</h1>
+          <img src={blog.headerImageURL} alt='cover image' width='1000px'></img>
           <div className='author-container'>
             <div className='author-picture'>
               <Avatar alt='author profile' src={blog.author.avatar} />

@@ -5,13 +5,15 @@ import axios from 'axios'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
-
+import Create from '@material-ui/icons/Create'
 import { Editor } from '@tinymce/tinymce-react'
-
+import EditLocation from '@material-ui/icons/EditLocation'
+import Subject from '@material-ui/icons/Subject'
+import Visibility from '@material-ui/icons/Visibility'
 import { Button, TextField } from '@material-ui/core'
 
 const getSteps = () => {
-  return ['Set Title', 'Write Content', 'Add Location', 'Preview And Submit']
+  return ['Set Title', 'Write Content', 'Add Locations', 'Preview And Submit']
 }
 
 const NewBlog = ({
@@ -89,14 +91,29 @@ const NewBlog = ({
     setActiveStep(4)
   }
 
+  const stepperIcons = (props) => {
+    const icons = {
+      1: <Subject />,
+      2: <Create />,
+      3: <EditLocation />,
+      4: <Visibility />,
+    }
+    return <div>{icons[String(props.icon)]}</div>
+  }
+
   switch (activeStep) {
     case 0:
       return (
         <div>
           <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step) => (
+            {steps.map((step, index) => (
               <Step>
-                <StepLabel>{step}</StepLabel>
+                <StepLabel
+                  onClick={() => setActiveStep(index)}
+                  StepIconComponent={stepperIcons}
+                >
+                  {step}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
@@ -148,9 +165,14 @@ const NewBlog = ({
           <div>
             <h2 style={{ textAlign: 'center' }}>Create New Blog</h2>
             <Stepper alternativeLabel activeStep={activeStep}>
-              {steps.map((step) => (
+              {steps.map((step, index) => (
                 <Step>
-                  <StepLabel>{step}</StepLabel>
+                  <StepLabel
+                    onClick={() => setActiveStep(index)}
+                    StepIconComponent={stepperIcons}
+                  >
+                    {step}
+                  </StepLabel>
                 </Step>
               ))}
             </Stepper>
@@ -177,9 +199,14 @@ const NewBlog = ({
         <div>
           location
           <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step) => (
+            {steps.map((step, index) => (
               <Step>
-                <StepLabel>{step}</StepLabel>
+                <StepLabel
+                  onClick={() => setActiveStep(index)}
+                  StepIconComponent={stepperIcons}
+                >
+                  {step}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
@@ -198,9 +225,14 @@ const NewBlog = ({
         <div>
           preview
           <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step) => (
+            {steps.map((step, index) => (
               <Step>
-                <StepLabel>{step}</StepLabel>
+                <StepLabel
+                  onClick={() => setActiveStep(index)}
+                  StepIconComponent={stepperIcons}
+                >
+                  {step}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
@@ -218,9 +250,14 @@ const NewBlog = ({
       return (
         <div>
           <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step) => (
+            {steps.map((step, index) => (
               <Step>
-                <StepLabel>{step}</StepLabel>
+                <StepLabel
+                  onClick={() => setActiveStep(index)}
+                  StepIconComponent={stepperIcons}
+                >
+                  {step}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>

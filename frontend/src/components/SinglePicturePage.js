@@ -102,13 +102,14 @@ const SinglePicturePage = ({
         const result = await axios.get(
           `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
         )
-
+        console.log(result)
         setLocationData(result.data)
       } catch (error) {
         console.log(error)
       }
     } else {
       setMapImage(null)
+      setLocationData(null)
     }
   }, [picture])
 
