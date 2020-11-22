@@ -7,6 +7,7 @@ import Room from '@material-ui/icons/Room'
 import GoogleMapReact from 'google-map-react'
 import imageModalBG from '../images/imagemodalbg.jpg'
 import AddLocations from './AddLocations'
+const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY
 
 const ImageUploadModal = ({
   user,
@@ -28,7 +29,6 @@ const ImageUploadModal = ({
   const [step, setStep] = useState(0)
   const [mapOpen, setMapOpen] = useState(false)
 
-  console.log(locationInfo)
   useEffect(() => {
     if (locations) {
       const lat = locations[locations.length - 1]?.lat
@@ -36,7 +36,7 @@ const ImageUploadModal = ({
       if (lat && lng) {
         axios
           .get(
-            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+            `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&format=json`
           )
           .then((res) => setLocationInfo(res.data))
       }
@@ -65,10 +65,9 @@ const ImageUploadModal = ({
 
   const uploadPicture = async (uploadedPictureURL) => {
     const locationData = locations[locations.length - 1]
-    locationData.country = locationInfo.countryName
-    locationData.city = !locationInfo.city
-      ? locationInfo.locality
-      : locationInfo.city
+    locationData.country = locationInfo.address.country
+    locationData.city = locationInfo.address.city
+
     const newPicture = {
       imgURL: uploadedPictureURL,
       public: publishToGallery,
@@ -377,11 +376,8 @@ const ImageUploadModal = ({
                   <p>{title}</p>
                   {locationInfo && (
                     <p>
-                      Location:{' '}
-                      {locationInfo.city === ''
-                        ? locationInfo.locality
-                        : locationInfo.city}
-                      , {locationInfo.countryName}
+                      Location: {locationInfo.address.city},{' '}
+                      {locationInfo.address.country}
                     </p>
                   )}
                   <p>Publish to gallery: {publishToGallery ? 'yes' : 'no'}</p>

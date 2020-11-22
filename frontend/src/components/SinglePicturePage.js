@@ -11,6 +11,7 @@ import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import '../styles/singlePicturePage.css'
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY
+const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY
 
 const monthNames = [
   'January',
@@ -100,9 +101,9 @@ const SinglePicturePage = ({
 
       try {
         const result = await axios.get(
-          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
+          `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&format=json`
         )
-        console.log(result)
+        console.log(result.data)
         setLocationData(result.data)
       } catch (error) {
         console.log(error)
@@ -212,8 +213,8 @@ const SinglePicturePage = ({
             <img src={mapImage} width='700px'></img>
             {locationData && (
               <p>
-                {locationData.city} {locationData.countryName}{' '}
-                {locationData.postcode}
+                {locationData.address.city} {locationData.address.country}{' '}
+                {locationData.address.postcode}
               </p>
             )}
           </div>
