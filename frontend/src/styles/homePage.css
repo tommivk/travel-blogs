@@ -28,7 +28,7 @@
     position: relative;
     height: 8vh;
     max-height: 8vh;
-    border-bottom: 3px solid black;
+    border-bottom: 3px solid rgba(56, 47, 180, 0.541);
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;

@@ -17,6 +17,7 @@ const ImageUploadModal = ({
   closeModal,
   allPictures,
   setAllPictures,
+  handleMessage,
 }) => {
   const [image, setImage] = useState(null)
   const [title, setTitle] = useState('')
@@ -96,7 +97,9 @@ const ImageUploadModal = ({
       setLocations([])
       setStep(0)
       setPublishToGallery(false)
+      handleMessage('success', 'Image uploaded!')
     } catch (error) {
+      handleMessage('error', error.message)
       console.log(error)
     }
   }

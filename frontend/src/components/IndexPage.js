@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import IndexModal from './IndexModal'
 import { Button } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 
-const IndexPage = ({ setUser }) => {
+const IndexPage = ({ setUser, message, handleMessage }) => {
   const [modalOpen, setModalOpen] = useState({ open: false, modal: '' })
 
   const openSignUpModal = () => {
@@ -17,6 +18,20 @@ const IndexPage = ({ setUser }) => {
 
   return (
     <div style={{ height: '100vh', backgroundColor: 'rgb(60,60,60)' }}>
+      {message.message !== '' && (
+        <Alert
+          style={{
+            position: 'absolute',
+            top: '7vh',
+            left: '50%',
+            transform: 'translate(-50%, 0)',
+            zIndex: '9999',
+          }}
+          severity={message.type}
+        >
+          {message.message}
+        </Alert>
+      )}
       <div
         style={{
           display: 'flex',
@@ -28,6 +43,7 @@ const IndexPage = ({ setUser }) => {
       >
         {modalOpen && (
           <IndexModal
+            handleMessage={handleMessage}
             modalOpen={modalOpen}
             closeModal={closeModal}
             setUser={setUser}

@@ -6,7 +6,14 @@ import { Button, Container } from '@material-ui/core'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import Sms from '@material-ui/icons/Sms'
 
-const Gallery = ({ allPictures, setAllPictures, user, setUser, storage }) => {
+const Gallery = ({
+  allPictures,
+  setAllPictures,
+  user,
+  setUser,
+  storage,
+  handleMessage,
+}) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
   const [searchFilter, setSearchFilter] = useState('')
   const [searchModalOpen, setSearchModalOpen] = useState(false)
@@ -47,6 +54,7 @@ const Gallery = ({ allPictures, setAllPictures, user, setUser, storage }) => {
         storage={storage}
         allPictures={allPictures}
         setAllPictures={setAllPictures}
+        handleMessage={handleMessage}
       ></ImageUploadModal>
       <div>
         <Button

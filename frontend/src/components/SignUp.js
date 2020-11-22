@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { Button, TextField } from '@material-ui/core'
 
-const SignUp = () => {
+const SignUp = ({ handleMessage }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -15,7 +15,9 @@ const SignUp = () => {
       })
       setUsername('')
       setPassword('')
+      handleMessage('success', 'Signed Up Successfully')
     } catch (error) {
+      handleMessage('error', error.message)
       console.log(error)
     }
   }

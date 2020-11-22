@@ -17,17 +17,21 @@ usersRouter.get('/', async (req, res) => {
 })
 
 usersRouter.post('/', async (req, res) => {
-  const body = req.body
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(body.password, saltRounds)
+  try {
+    const body = req.body
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
-  const user = new User({
-    username: body.username,
-    passwordHash,
-  })
+    const user = new User({
+      username: body.username,
+      passwordHash,
+    })
 
-  const savedUser = await user.save()
-  res.json(savedUser.toJSON())
+    const savedUser = await user.save()
+    res.json(savedUser.toJSON())
+  } catch (error) {
+    res.status(400).send(error)
+  }
 })
 
 usersRouter.put('/', async (req, res) => {

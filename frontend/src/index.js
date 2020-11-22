@@ -14,6 +14,8 @@ import UserSettings from './components/UserSettings'
 import Grid from '@material-ui/core/Grid'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
+import Alert from '@material-ui/lab/Alert'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -46,6 +48,12 @@ const App = () => {
   const [allPictures, setAllPictures] = useState(null)
   const [picture, setPicture] = useState(null)
   const [allUsers, setAllUsers] = useState(null)
+  const [message, setMessage] = useState({ type: '', message: '' })
+
+  const handleMessage = (t, m) => {
+    setMessage({ type: t, message: m })
+    setTimeout(() => setMessage({ type: '', message: '' }), 5000)
+  }
 
   useEffect(() => {
     const loggedUser = localStorage.getItem('loggedTravelBlogUser')
@@ -102,14 +110,34 @@ const App = () => {
   }
 
   if (!user) {
-    return <IndexPage setUser={setUser}></IndexPage>
+    return (
+      <IndexPage
+        setUser={setUser}
+        message={message}
+        handleMessage={handleMessage}
+      ></IndexPage>
+    )
   }
   return (
     <div style={{ height: '100vh' }}>
+      {message.message !== '' && (
+        <Alert
+          style={{
+            position: 'absolute',
+            top: '7vh',
+            left: '50%',
+            transform: 'translate(-50%, 0)',
+            zIndex: '9999',
+          }}
+          severity={message.type}
+        >
+          {message.message}
+        </Alert>
+      )}
       <Switch>
-        <Route path='/login'>
+        {/* <Route path='/login'>
           <Header user={user} setUser={setUser}></Header>
-        </Route>
+        </Route> */}
         <Route path='/createblog'>
           <Header user={user} setUser={setUser}></Header>
           <Grid container justify='center' spacing={2}>
@@ -125,6 +153,7 @@ const App = () => {
                 storage={storage}
                 allPictures={allPictures}
                 setAllPictures={setAllPictures}
+                handleMessage={handleMessage}
               ></NewBlog>
             </Grid>
           </Grid>
@@ -159,13 +188,13 @@ const App = () => {
             user={user}
             setUser={setUser}
             storage={storage}
+            handleMessage={handleMessage}
           ></Gallery>
         </Route>
         <Route path='/users/:id'>
           <Header user={user} setUser={setUser}></Header>
           <UserPage userData={selectedUser}></UserPage>
         </Route>
-
         <Route path='/blogs/:id'>
           <Header user={user} setUser={setUser}></Header>
           <SingleBlogPage

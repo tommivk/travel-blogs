@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Login from './Login'
 import SignUp from './SignUp'
 import { Modal } from '@material-ui/core'
 
-const IndexModal = ({ modalOpen, closeModal, setUser }) => {
+const IndexModal = ({ modalOpen, closeModal, setUser, handleMessage }) => {
   if (!modalOpen.open) return null
   if (modalOpen.modal !== 'login' && modalOpen.modal !== 'signup') return null
   return (
@@ -24,9 +24,9 @@ const IndexModal = ({ modalOpen, closeModal, setUser }) => {
           }}
         >
           {modalOpen.modal === 'login' ? (
-            <Login setUser={setUser}></Login>
+            <Login setUser={setUser} handleMessage={handleMessage}></Login>
           ) : (
-            <SignUp></SignUp>
+            <SignUp handleMessage={handleMessage}></SignUp>
           )}
         </div>
       </Modal>

@@ -24,6 +24,7 @@ const NewBlog = ({
   storage,
   allPictures,
   setAllPictures,
+  handleMessage,
 }) => {
   const [content, setContent] = useState('')
   const [title, setTitle] = useState('')
@@ -85,7 +86,9 @@ const NewBlog = ({
         locations: locations,
       }
       setAllBlogs(allBlogs.concat(newBlog))
+      handleMessage('success', 'Blog Submitted!')
     } catch (error) {
+      handleMessage('error', error.message)
       console.log(error.message)
     }
     setActiveStep(4)
