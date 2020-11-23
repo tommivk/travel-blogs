@@ -140,23 +140,17 @@ const App = () => {
         </Route> */}
         <Route path='/createblog'>
           <Header user={user} setUser={setUser}></Header>
-          <Grid container justify='center' spacing={2}>
-            <Grid item xs={3}>
-              <div></div>
-            </Grid>
-            <Grid item xs={5}>
-              <NewBlog
-                user={user}
-                setUser={setUser}
-                setAllBlogs={setAllBlogs}
-                allBlogs={allBlogs}
-                storage={storage}
-                allPictures={allPictures}
-                setAllPictures={setAllPictures}
-                handleMessage={handleMessage}
-              ></NewBlog>
-            </Grid>
-          </Grid>
+
+          <NewBlog
+            user={user}
+            setUser={setUser}
+            setAllBlogs={setAllBlogs}
+            allBlogs={allBlogs}
+            storage={storage}
+            allPictures={allPictures}
+            setAllPictures={setAllPictures}
+            handleMessage={handleMessage}
+          ></NewBlog>
         </Route>
         <Route path='/settings'>
           <Header user={user} setUser={setUser}></Header>
