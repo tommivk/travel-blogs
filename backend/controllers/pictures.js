@@ -94,7 +94,7 @@ picturesRouter.post('/', async (req, res) => {
   const body = req.body
   const token = getTokenFrom(req)
   const decodedToken = jwt.verify(token, process.env.SECRET)
-
+  console.log(body)
   if (!token || !decodedToken) {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
@@ -115,7 +115,7 @@ picturesRouter.post('/', async (req, res) => {
     })
 
     const savedPicture = await newPicture.save()
-    console.log('saved: ', savedPicture)
+
     user.pictures = user.pictures.concat(savedPicture._id)
     await user.save()
     res.json(savedPicture.toJSON())

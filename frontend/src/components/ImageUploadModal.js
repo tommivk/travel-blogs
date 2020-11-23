@@ -37,7 +37,7 @@ const ImageUploadModal = ({
       if (lat && lng) {
         axios
           .get(
-            `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&format=json`
+            `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&accept-language=en&format=json`
           )
           .then((res) => setLocationInfo(res.data))
       }
@@ -65,9 +65,26 @@ const ImageUploadModal = ({
   }
 
   const uploadPicture = async (uploadedPictureURL) => {
-    const locationData = locations[locations.length - 1]
-    locationData.country = locationInfo.address.country
-    locationData.city = locationInfo.address.city
+    const locationData = {}
+
+    if (locations && locations[locations.length - 1]) {
+      locationData.lat = locations[locations.length - 1].lat
+      locationData.lng = locations[locations.length - 1].lng
+    } else {
+      locationData.lat = null
+      locationData.lng = null
+    }
+
+    if (locationInfo && locationInfo.address && locationInfo.address.country) {
+      locationData.country = locationInfo.address.country
+    } else {
+      locationData.country = null
+    }
+    if (locationInfo && locationInfo.address && locationInfo.address.city) {
+      locationData.city = locationInfo.address.city
+    } else {
+      locationData.city = null
+    }
 
     const newPicture = {
       imgURL: uploadedPictureURL,

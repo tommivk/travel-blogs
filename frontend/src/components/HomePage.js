@@ -48,26 +48,17 @@ const TopFiveBlogs = ({ allBlogs }) => {
 
 const PictureOfTheWeek = ({ allPictures }) => {
   if (!allPictures) return null
-
-  const thisweek = DateTime.local().weekNumber
-
-  const filtered = allPictures.map(
-    (pic) => DateTime.fromISO(pic.date).weekNumber === thisweek
-  )
-
-  const best = filtered.sort((a, b) => b.voteResult - a.voteResult)[0]
-
-  if (!best) return null
-
+  if (!allPictures[0]) return null
+  const picture = allPictures[0]
   return (
     <div className='homepage-main-picture-container'>
       <h2>Picture Of The Week</h2>
       <div>
         <div>
           {' '}
-          <h3>{best.title}</h3>
+          <h3>{picture.title}</h3>
         </div>
-        <img src={best.imgURL} width='700px'></img>
+        <img src={picture.imgURL} width='700px'></img>
       </div>
       <Button>Open in gallery</Button>
     </div>

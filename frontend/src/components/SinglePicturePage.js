@@ -92,7 +92,7 @@ const SinglePicturePage = ({
   useEffect(async () => {
     setShowMap(false)
     setLocationData(null)
-    if (picture && picture.location) {
+    if (picture && picture.location.lat && picture.location.lng) {
       const lat = picture.location.lat.toFixed(6)
       const lng = picture.location.lng.toFixed(6)
       setMapImage(

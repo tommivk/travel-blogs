@@ -71,21 +71,8 @@ const NewBlog = ({
       )
       setContent('')
       setTitle('')
-      const newBlog = {
-        author: {
-          avatar: user.avatar,
-          username: user.username,
-        },
-        content: response.data.content,
-        date: response.data.date,
-        id: response.data.id,
-        description: response.data.description,
-        stars: response.data.stars,
-        title: response.data.title,
-        headerImageURL: response.data.headerImageURL,
-        locations: locations,
-      }
-      setAllBlogs(allBlogs.concat(newBlog))
+
+      setAllBlogs(allBlogs.concat(response.data))
       handleMessage('success', 'Blog Submitted!')
     } catch (error) {
       handleMessage('error', error.message)

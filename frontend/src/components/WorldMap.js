@@ -74,10 +74,17 @@ const WorldMap = ({ allBlogs, allPictures }) => {
   const handle = useFullScreenHandle()
   if (!allBlogs || !allPictures) return null
 
+  const picturesWithLocation = allPictures.filter(
+    (pic) => pic.location.lat !== null && pic.location.lng !== null
+  )
+
   const mapsApiLoaded = (map, maps) => {
-    let markers = allPictures.map((pic) => {
+    let markers = picturesWithLocation.map((pic) => {
       let marker = new maps.Marker({
-        position: { lat: pic.location.lat, lng: pic.location.lng },
+        position: {
+          lat: pic.location.lat,
+          lng: pic.location.lng,
+        },
       })
       maps.event.addListener(marker, 'click', () =>
         setActivePopUp({ data: pic, type: 'image' })
