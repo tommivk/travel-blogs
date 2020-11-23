@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const pictureSchema = mongoose.Schema({
   imgURL: String,
+  firebaseID: String,
   date: Date,
   public: Boolean,
   title: String,

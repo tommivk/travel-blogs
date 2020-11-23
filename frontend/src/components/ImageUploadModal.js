@@ -7,6 +7,7 @@ import Room from '@material-ui/icons/Room'
 import GoogleMapReact from 'google-map-react'
 import imageModalBG from '../images/imagemodalbg.jpg'
 import AddLocations from './AddLocations'
+import { v4 as uuidv4 } from 'uuid'
 const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY
 
 const ImageUploadModal = ({
@@ -64,7 +65,7 @@ const ImageUploadModal = ({
     setStep(step - 1)
   }
 
-  const uploadPicture = async (uploadedPictureURL) => {
+  const uploadPicture = async (uploadedPictureURL, firebaseID) => {
     const locationData = {}
 
     if (locations && locations[locations.length - 1]) {
@@ -88,6 +89,7 @@ const ImageUploadModal = ({
 
     const newPicture = {
       imgURL: uploadedPictureURL,
+      firebaseID: firebaseID,
       public: publishToGallery,
       location: locationData,
       title: title,
@@ -126,9 +128,10 @@ const ImageUploadModal = ({
     const fbuser = firebase.auth().currentUser
     console.log(fbuser)
     const userID = fbuser.uid
+    const imageID = uuidv4()
     let uploadTask = storage
       .ref()
-      .child(`/images/${userID}/${image.name}`)
+      .child(`/images/${userID}/${imageID}`)
       .put(image)
 
     uploadTask.on(
@@ -152,7 +155,7 @@ const ImageUploadModal = ({
       () => {
         uploadTask.snapshot.ref
           .getDownloadURL()
-          .then((downloadURL) => uploadPicture(downloadURL))
+          .then((downloadURL) => uploadPicture(downloadURL, imageID))
       }
     )
   }

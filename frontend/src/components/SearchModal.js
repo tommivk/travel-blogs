@@ -8,16 +8,20 @@ const SearchModal = ({
   closeSearchModal,
   allPictures,
 }) => {
-  if (!open) return null
+  if (!open || !allPictures) return null
 
   const pictures = allPictures
   console.log(pictures)
   const cities = pictures.filter((pic) =>
-    pic.location.city.toLowerCase().includes(searchFilter.toLowerCase())
+    pic.location.city
+      ? pic.location.city.toLowerCase().includes(searchFilter.toLowerCase())
+      : null
   )
   const foundCities = [...new Set(cities.map((c) => c.location.city))]
   const countries = pictures.filter((pic) =>
-    pic.location.country.toLowerCase().includes(searchFilter.toLowerCase())
+    pic.location.country
+      ? pic.location.country.toLowerCase().includes(searchFilter.toLowerCase())
+      : null
   )
   const foundCountries = [...new Set(countries.map((c) => c.location.country))]
 

@@ -104,6 +104,7 @@ picturesRouter.post('/', async (req, res) => {
 
     const newPicture = new Picture({
       imgURL: body.imgURL,
+      firebaseID: body.firebaseID,
       date: Date.now(),
       user: user._id,
       public: body.public,
