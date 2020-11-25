@@ -25,8 +25,10 @@ const SearchModal = ({
   )
   const foundCountries = [...new Set(countries.map((c) => c.location.country))]
 
-  const users = pictures.filter((pic) =>
-    pic.user.username.toLowerCase().includes(searchFilter.toLowerCase())
+  const users = pictures.filter(
+    (pic) =>
+      pic.user &&
+      pic.user.username.toLowerCase().includes(searchFilter.toLowerCase())
   )
   const foundUsers = [...new Set(users.map((pic) => pic.user.username))]
   console.log(foundCities)

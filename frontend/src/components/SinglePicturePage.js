@@ -136,6 +136,27 @@ const SinglePicturePage = ({
     }
   }
 
+  const handleVoteDelete = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8008/api/pictures/${picture.id}/vote`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+
+      setPicture(response.data)
+      const filteredPictures = await allPictures.map((pic) =>
+        pic.id === picture.id ? response.data : pic
+      )
+      setAllPictures(filteredPictures)
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
   if (!picture || !allPictures) return null
 
   const date = new Date(picture.date)
@@ -258,23 +279,19 @@ const SinglePicturePage = ({
       >
         <div>
           {userVote && userVote.dir === 1 ? (
+            <ArrowUpward onClick={() => handleVoteDelete()}></ArrowUpward>
+          ) : null}
+          {!userVote && (
             <ArrowUpward onClick={() => handleVote(1)}></ArrowUpward>
-          ) : (
-            <ArrowUpward
-              onClick={() => handleVote(1)}
-              style={{ fill: 'black' }}
-            ></ArrowUpward>
           )}
         </div>{' '}
         <div>{picture.voteResult}</div>
         <div>
           {userVote && userVote.dir === -1 ? (
+            <ArrowDownward onClick={() => handleVoteDelete()}></ArrowDownward>
+          ) : null}
+          {!userVote && (
             <ArrowDownward onClick={() => handleVote(-1)}></ArrowDownward>
-          ) : (
-            <ArrowDownward
-              onClick={() => handleVote(-1)}
-              style={{ fill: 'black' }}
-            ></ArrowDownward>
           )}
         </div>
       </div>

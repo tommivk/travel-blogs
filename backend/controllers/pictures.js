@@ -24,6 +24,49 @@ picturesRouter.get('/', async (req, res) => {
   res.json(pictures.map((p) => p.toJSON()))
 })
 
+picturesRouter.delete('/:id/vote', async (req, res) => {
+  try {
+    const picture = await Picture.findById(req.params.id)
+    if (!picture) {
+      return res.status(404).send().end()
+    }
+    const token = getTokenFrom(req)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = await User.findById(decodedToken.id)
+
+    const usersVote = await picture.votes.find(
+      (vote) => vote.user.toString() === user._id.toString()
+    )
+
+    if (!usersVote) {
+      res.send(400).end()
+    }
+    if (usersVote.dir !== 1 && usersVote.dir !== -1) {
+      res.send(400).end()
+    }
+
+    if (usersVote.dir === 1) {
+      picture.voteResult = picture.voteResult - 1
+    } else {
+      picture.voteResult = picture.voteResult + 1
+    }
+
+    picture.votes = await picture.votes.filter(
+      (vote) => vote.user.toString() !== user._id.toString()
+    )
+
+    const newPicture = await picture.save()
+    res.json(newPicture)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 picturesRouter.put('/:id/vote', async (req, res) => {
   const body = req.body
   try {

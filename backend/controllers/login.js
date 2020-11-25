@@ -30,7 +30,7 @@ loginRouter.post('/', async (request, response) => {
     const fbtoken = await admin
       .auth()
       .createCustomToken(userForToken.id.toString() + process.env.FBSECRET)
-
+    console.log('token: ', token)
     response.status(200).send({
       token,
       fbtoken,

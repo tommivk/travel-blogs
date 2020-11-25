@@ -129,7 +129,6 @@ const NewBlog = ({
       )
       setContent('')
       setTitle('')
-
       setAllBlogs(allBlogs.concat(response.data))
       handleMessage('success', 'Blog Submitted!')
     } catch (error) {
@@ -153,18 +152,20 @@ const NewBlog = ({
     case 0:
       return (
         <div className='new-blog-main-container'>
-          <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step, index) => (
-              <Step>
-                <StepLabel
-                  onClick={() => setActiveStep(index)}
-                  StepIconComponent={stepperIcons}
-                >
-                  {step}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+          <div className='new-blog-stepper-container'>
+            <Stepper alternativeLabel activeStep={activeStep}>
+              {steps.map((step, index) => (
+                <Step>
+                  <StepLabel
+                    onClick={() => setActiveStep(index)}
+                    StepIconComponent={stepperIcons}
+                  >
+                    {step}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </div>
           <div className='new-blog-info-container'>
             <ImageUploadModal
               uploadModalOpen={uploadModalOpen}

@@ -3,6 +3,8 @@
     height: 94vh;
     position: relative;
     color: white;
+    overflow-y: scroll;
+    
 }
 
 .swiper-wrapper {

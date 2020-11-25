@@ -23,7 +23,7 @@ const PopUp = ({ selected, handle, type }) => {
     color: 'white',
     textAlign: 'center',
     borderRadius: '5px',
-    zIndex: '999999999',
+    zIndex: '99999',
   }
 
   if (type === 'blog')
