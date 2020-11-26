@@ -9,12 +9,13 @@ loginRouter.post('/', async (request, response) => {
   const user = await User.findOne({ username: body.username }).populate(
     'pictures'
   )
+
   const passwordCorrect =
     user === null
       ? false
       : await bcrypt.compare(body.password, user.passwordHash)
 
-  if (!(user && passwordCorrect)) {
+  if (!user && !passwordCorrect) {
     return response.status(401).json({
       error: 'invalid username or password',
     })
@@ -30,7 +31,7 @@ loginRouter.post('/', async (request, response) => {
     const fbtoken = await admin
       .auth()
       .createCustomToken(userForToken.id.toString() + process.env.FBSECRET)
-    console.log('token: ', token)
+
     response.status(200).send({
       token,
       fbtoken,
