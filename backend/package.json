@@ -4,13 +4,16 @@
   "description": "backend for travel-blogs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "test": "NODE_ENV=test jest --verbose",
+    "dev": "NODE_ENV=development nodemon index.js"
   },
   "author": "tommivk",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "firebase-admin": "^9.4.1",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.6",
+    "supertest": "^6.0.1"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -20,5 +23,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.11",
     "mongoose-unique-validator": "^2.0.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
