@@ -135,11 +135,12 @@ const App = () => {
         </Alert>
       )}
       <Switch>
-        {/* <Route path='/login'>
-          <Header user={user} setUser={setUser}></Header>
-        </Route> */}
         <Route path='/createblog'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
 
           <NewBlog
             user={user}
@@ -153,7 +154,11 @@ const App = () => {
           ></NewBlog>
         </Route>
         <Route path='/settings'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
           <UserSettings
             user={user}
             setUser={setUser}
@@ -161,11 +166,19 @@ const App = () => {
           ></UserSettings>
         </Route>
         <Route path='/explore'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
           <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
         </Route>
         <Route path='/gallery/:id'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
           <SinglePicturePage
             user={user}
             picture={picture}
@@ -175,7 +188,11 @@ const App = () => {
           ></SinglePicturePage>
         </Route>
         <Route path='/gallery'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
           <Gallery
             allPictures={allPictures}
             setAllPictures={setAllPictures}
@@ -186,11 +203,19 @@ const App = () => {
           ></Gallery>
         </Route>
         <Route path='/users/:id'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
           <UserPage userData={selectedUser}></UserPage>
         </Route>
         <Route path='/blogs/:id'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
           <SingleBlogPage
             blogMatch={blog}
             allBlogs={allBlogs}
@@ -199,11 +224,19 @@ const App = () => {
           ></SingleBlogPage>
         </Route>
         <Route path='/blogs'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
           <Blogs allBlogs={allBlogs}></Blogs>
         </Route>
         <Route path='/'>
-          <Header user={user} setUser={setUser}></Header>
+          <Header
+            user={user}
+            setUser={setUser}
+            allPictures={allPictures}
+          ></Header>
           <HomePage allBlogs={allBlogs} allPictures={allPictures}></HomePage>
         </Route>
       </Switch>

@@ -58,3 +58,9 @@
     font-size: 1.8em;
     margin: auto;
 }
+
+#header-search-icon {
+    font-size: 1.8em;
+    margin: auto;
+    cursor: pointer;
+}

@@ -1,17 +1,22 @@
 import React, { useState } from 'react'
 import firebase from 'firebase/app'
 import { Link } from 'react-router-dom'
-import Paper from '@material-ui/core/Paper'
-import IconButton from '@material-ui/core/IconButton'
-import { Search, Language, Notifications, Photo } from '@material-ui/icons'
+import { Search, Language, Notifications } from '@material-ui/icons'
+import SearchModal from './SearchModal'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import InputBase from '@material-ui/core/InputBase'
 import Settings from '@material-ui/icons/Settings'
 import '../styles/header.css'
-const Header = ({ user, setUser }) => {
+const Header = ({ user, setUser, allPictures }) => {
   console.log(user)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
+  const [searchFilter, setSearchFilter] = useState('')
+  const [searchModalOpen, setSearchModalOpen] = useState(false)
+
+  const closeSearchModal = () => {
+    setSearchModalOpen(false)
+    setSearchFilter('')
+  }
 
   const handleMenuOpen = (e) => {
     setMenuAnchorEl(e.currentTarget)
@@ -35,6 +40,16 @@ const Header = ({ user, setUser }) => {
 
   return (
     <div className='main-header-container'>
+      <div>
+        <SearchModal
+          open={searchModalOpen}
+          closeSearchModal={closeSearchModal}
+          searchFilter={searchFilter}
+          setSearchFilter={setSearchFilter}
+          allPictures={allPictures}
+        ></SearchModal>
+      </div>
+
       <div className='header-title'>
         <Link to='/' style={{ textDecoration: 'none', color: 'black' }}>
           <h1>TravelBlogs</h1>
@@ -48,7 +63,6 @@ const Header = ({ user, setUser }) => {
         </Link>
         <Link to='/gallery'>
           <div className='header-link'>
-            {/* <Photo fontSize='large' style={{ color: 'black' }}></Photo> */}
             <h1>Gallery</h1>
           </div>
         </Link>
@@ -60,6 +74,10 @@ const Header = ({ user, setUser }) => {
       </div>
 
       <div style={{ display: 'flex' }}>
+        <Search
+          id='header-search-icon'
+          onClick={() => setSearchModalOpen(true)}
+        ></Search>
         <Notifications id='notifications-bell' />
         <div
           style={{ margin: '10px', cursor: 'pointer' }}

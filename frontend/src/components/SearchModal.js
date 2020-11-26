@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Modal } from '@material-ui/core'
 import '../styles/searchModal.css'
+import { Link } from 'react-router-dom'
 const SearchModal = ({
   open,
   searchFilter,
@@ -59,7 +60,9 @@ const SearchModal = ({
                 <ul>
                   <div>
                     {titleMatch.map((pic) => (
-                      <li>{pic.title}</li>
+                      <li>
+                        <Link to={`/gallery/${pic.id}`}>{pic.title}</Link>
+                      </li>
                     ))}
                   </div>
                 </ul>
@@ -71,7 +74,18 @@ const SearchModal = ({
                 <div>
                   <ul>
                     {foundCities.map((city) => (
-                      <li key={city}>{city}</li>
+                      <li key={city}>
+                        {city}
+
+                        <Link
+                          to={{
+                            pathname: '/gallery',
+                            search: `?city=${city}`,
+                          }}
+                        >
+                          <button>Pictures</button>
+                        </Link>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -83,7 +97,17 @@ const SearchModal = ({
                 <div>
                   <ul>
                     {foundCountries.map((country) => (
-                      <li key={country}>{country}</li>
+                      <li key={country}>
+                        {country}{' '}
+                        <Link
+                          to={{
+                            pathname: '/gallery',
+                            search: `?country=${country}`,
+                          }}
+                        >
+                          <button>Pictures</button>
+                        </Link>
+                      </li>
                     ))}
                   </ul>
                 </div>

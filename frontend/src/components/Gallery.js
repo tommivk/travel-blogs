@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
+import queryString from 'query-string'
 import ImageUploadModal from './ImageUploadModal'
-import SearchModal from './SearchModal'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Button, Container } from '@material-ui/core'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import Sms from '@material-ui/icons/Sms'
@@ -15,37 +15,44 @@ const Gallery = ({
   handleMessage,
 }) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
-  const [searchFilter, setSearchFilter] = useState('')
-  const [searchModalOpen, setSearchModalOpen] = useState(false)
-
+  const [pictures, setPictures] = useState(null)
+  const param = queryString.parse(useLocation().search)
+  console.log(param)
   useEffect(() => {
-    if (searchFilter !== '') {
-      setSearchModalOpen(true)
+    setPictures(allPictures)
+    if (param.city && allPictures) {
+      console.log(param)
+      const picturesWithCity = allPictures.filter(
+        (p) => p.location.city !== null
+      )
+      const filteredPics = picturesWithCity.filter(
+        (p) => p.location.city.toLowerCase() === param.city.toLowerCase()
+      )
+
+      setPictures(filteredPics)
     }
-  }, [searchFilter])
+    if (param.country && allPictures) {
+      console.log(param)
+
+      const picturesWithCountry = allPictures.filter(
+        (p) => p.location.country !== null
+      )
+      const filteredPics = picturesWithCountry.filter(
+        (p) => p.location.country.toLowerCase() === param.country.toLowerCase()
+      )
+
+      setPictures(filteredPics)
+    }
+  }, [param.country, param.city, allPictures])
+
   const closeUploadModal = () => {
     setUploadModalOpen(false)
   }
-  const closeSearchModal = () => {
-    setSearchModalOpen(false)
-    setSearchFilter('')
-  }
 
-  if (!allPictures) return null
-  console.log(searchFilter)
+  if (!pictures) return null
 
   return (
     <div style={{ backgroundColor: '#14182b', height: '94vh' }}>
-      <div>
-        <SearchModal
-          open={searchModalOpen}
-          closeSearchModal={closeSearchModal}
-          searchFilter={searchFilter}
-          setSearchFilter={setSearchFilter}
-          allPictures={allPictures}
-        ></SearchModal>
-      </div>
-
       <ImageUploadModal
         uploadModalOpen={uploadModalOpen}
         closeModal={closeUploadModal}
@@ -67,15 +74,15 @@ const Gallery = ({
         </Button>
       </div>
       <Container maxWidth='lg'>
-        <div style={{ textAlign: 'center' }}>
-          <input
-            type='text'
-            value={searchFilter}
-            onChange={({ target }) => setSearchFilter(target.value)}
-          ></input>
-        </div>
+        <div style={{ textAlign: 'center' }}></div>
+        {param.country && (
+          <h1 style={{ color: 'white' }}>Images from {param.country}</h1>
+        )}
+        {param.city && (
+          <h1 style={{ color: 'white' }}>Images from {param.city}</h1>
+        )}
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {allPictures.map((pic, i) => (
+          {pictures.map((pic, i) => (
             <div
               style={{
                 width: '200px',

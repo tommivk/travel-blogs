@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import queryString from 'query-string'
 import { Button, Container } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Star from '@material-ui/icons/Star'
 import '../styles/blogs.css'
 import BorderAll from '@material-ui/icons/BorderAll'
