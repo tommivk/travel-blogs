@@ -81,6 +81,9 @@ blogsRouter.post('/:id/comments', async (req, res, next) => {
     const user = await User.findById(decodedToken.id)
 
     const blog = await Blog.findById(blogId)
+    if (!blog) {
+      return res.status(500).send()
+    }
     const comment = new Comment({
       user: user._id,
       content: body.content,
@@ -100,8 +103,7 @@ blogsRouter.post('/:id/comments', async (req, res, next) => {
       })
       .populate({ path: 'author', model: 'User' })
 
-    console.log(updatedBlog.toJSON())
-    res.json(updatedBlog)
+    res.json(updatedBlog.toJSON())
   } catch (error) {
     next(error)
   }
