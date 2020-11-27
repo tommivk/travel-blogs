@@ -6,6 +6,9 @@ const User = require('../models/user')
 
 beforeEach(async () => {
   await User.deleteMany({})
+  await api
+    .post('/api/users')
+    .send({ username: 'testuser', password: 'testpassword' })
 })
 
 test('creating new user without password returns 400', async () => {
@@ -23,10 +26,17 @@ test('creating user without username and password returns 400', async () => {
 test('creating new user returns 200 and json', async () => {
   await api
     .post('/api/users')
-    .send({ username: 'testuser', password: 'testpassword' })
+    .send({ username: 'testuser2', password: 'testpassword2' })
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
     .expect(200)
+})
+
+test('creating new user that already exists returns 400', async () => {
+  await api
+    .post('/api/users')
+    .send({ username: 'testuser', password: 'testpassword' })
+    .expect(400)
 })
 
 test('get users returns json', async () => {

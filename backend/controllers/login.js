@@ -6,6 +6,9 @@ const admin = require('firebase-admin')
 
 loginRouter.post('/', async (request, response) => {
   const body = request.body
+  if (!body.username || !body.password) {
+    return response.send(401).end()
+  }
   const user = await User.findOne({ username: body.username }).populate(
     'pictures'
   )
@@ -15,7 +18,7 @@ loginRouter.post('/', async (request, response) => {
       ? false
       : await bcrypt.compare(body.password, user.passwordHash)
 
-  if (!user && !passwordCorrect) {
+  if (!user || !passwordCorrect) {
     return response.status(401).json({
       error: 'invalid username or password',
     })
