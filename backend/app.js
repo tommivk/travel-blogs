@@ -36,4 +36,20 @@ app.use('/api/login', loginRouter)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/pictures', picturesRouter)
 
+const errorHandler = (error, req, res, next) => {
+  console.log('error: ', error.message)
+
+  if (error.name === 'JsonWebTokenError') {
+    res.send(401).send({ error: 'token missing or invalid' })
+  }
+
+  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+}
+
+app.use(errorHandler)
+
 module.exports = app

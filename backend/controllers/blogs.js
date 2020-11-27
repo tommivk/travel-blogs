@@ -12,28 +12,34 @@ const getTokenFrom = (request) => {
   return null
 }
 
-blogsRouter.get('/', async (req, res) => {
-  const blogs = await Blog.find({})
-    .populate({
-      path: 'comments',
-      model: 'Comment',
-      populate: { path: 'user', model: 'User' },
-    })
-    .populate({ path: 'author', model: 'User' })
+blogsRouter.get('/', async (req, res, next) => {
+  try {
+    const blogs = await Blog.find({})
+      .populate({
+        path: 'comments',
+        model: 'Comment',
+        populate: { path: 'user', model: 'User' },
+      })
+      .populate({ path: 'author', model: 'User' })
 
-  res.json(blogs.map((blog) => blog.toJSON()))
+    res.json(blogs.map((blog) => blog.toJSON()))
+  } catch (error) {
+    next(error)
+  }
 })
 
-blogsRouter.post('/', async (req, res) => {
-  const body = req.body
-  const token = getTokenFrom(req)
-
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-
-  if (!token || !decodedToken) {
-    return res.status(401).json({ error: 'token missing or invalid' })
-  }
+blogsRouter.post('/', async (req, res, next) => {
   try {
+    const body = req.body
+
+    const token = getTokenFrom(req)
+
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
+
     const user = await User.findById(decodedToken.id)
 
     const userID = user._id
@@ -55,25 +61,25 @@ blogsRouter.post('/', async (req, res) => {
 
     res.json(savedBlog.toJSON())
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 })
 
-blogsRouter.post('/:id/comments', async (req, res) => {
-  const blogId = req.params.id
-  const body = req.body
-
-  const token = getTokenFrom(req)
-
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-
-  if (!token || !decodedToken) {
-    return res.status(401).json({ error: 'token missing or invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
-
+blogsRouter.post('/:id/comments', async (req, res, next) => {
   try {
+    const blogId = req.params.id
+    const body = req.body
+
+    const token = getTokenFrom(req)
+
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = await User.findById(decodedToken.id)
+
     const blog = await Blog.findById(blogId)
     const comment = new Comment({
       user: user._id,
@@ -97,14 +103,13 @@ blogsRouter.post('/:id/comments', async (req, res) => {
     console.log(updatedBlog.toJSON())
     res.json(updatedBlog)
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 })
 
-blogsRouter.put('/:id/star', async (req, res) => {
-  const body = req.body
-
+blogsRouter.put('/:id/star', async (req, res, next) => {
   try {
+    const body = req.body
     const token = getTokenFrom(req)
 
     const decodedToken = jwt.verify(token, process.env.SECRET)
@@ -169,7 +174,7 @@ blogsRouter.put('/:id/star', async (req, res) => {
       res.json(newBlog.toJSON())
     }
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 })
 
