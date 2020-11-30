@@ -16,15 +16,14 @@ const Gallery = ({
   handleMessage,
 }) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
-  const [pictures, setPictures] = useState(null)
+  const [pictures, setPictures] = useState(allPictures)
   const param = queryString.parse(useLocation().search)
   const [sortBy, setSortBy] = useState('Newest')
 
   useEffect(() => {
-    setPictures(allPictures)
-
     if (allPictures) {
       let sortedPictures = allPictures.slice()
+
       switch (sortBy) {
         case 'Newest':
           sortedPictures.sort((a, b) => {
@@ -65,30 +64,28 @@ const Gallery = ({
         default:
           break
       }
-    }
 
-    if (param.city && allPictures) {
-      console.log(param)
-      const picturesWithCity = allPictures.filter(
-        (p) => p.location.city !== null
-      )
-      const filteredPics = picturesWithCity.filter(
-        (p) => p.location.city.toLowerCase() === param.city.toLowerCase()
-      )
+      if (param.city) {
+        const picturesWithCity = sortedPictures.filter(
+          (p) => p.location.city !== null
+        )
+        const filteredPics = picturesWithCity.filter(
+          (p) => p.location.city.toLowerCase() === param.city.toLowerCase()
+        )
+        setPictures(filteredPics)
+      }
 
-      setPictures(filteredPics)
-    }
-
-    if (param.country && allPictures) {
-      console.log(param)
-      const picturesWithCountry = allPictures.filter(
-        (p) => p.location.country !== null
-      )
-      const filteredPics = picturesWithCountry.filter(
-        (p) => p.location.country.toLowerCase() === param.country.toLowerCase()
-      )
-
-      setPictures(filteredPics)
+      if (param.country) {
+        console.log(param)
+        const picturesWithCountry = sortedPictures.filter(
+          (p) => p.location.country !== null
+        )
+        const filteredPics = picturesWithCountry.filter(
+          (p) =>
+            p.location.country.toLowerCase() === param.country.toLowerCase()
+        )
+        setPictures(filteredPics)
+      }
     }
   }, [param.country, param.city, allPictures, sortBy])
 
