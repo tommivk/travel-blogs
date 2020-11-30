@@ -82,7 +82,7 @@ blogsRouter.post('/:id/comments', async (req, res, next) => {
 
     const blog = await Blog.findById(blogId)
     if (!blog) {
-      return res.status(500).send()
+      return res.status(400).send()
     }
     const comment = new Comment({
       user: user._id,

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import queryString from 'query-string'
-import { Button, Container } from '@material-ui/core'
-import { Link, useLocation } from 'react-router-dom'
+import { Button } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 import Star from '@material-ui/icons/Star'
 import '../styles/blogs.css'
 import BorderAll from '@material-ui/icons/BorderAll'
@@ -18,7 +17,7 @@ const Blogs = ({ allBlogs }) => {
   if (!allBlogs) return null
   if (displayMode === 1) {
     return (
-      <div className='main-container'>
+      <div className='main-container swiper-wrapper'>
         <div className='display-mode-buttons'>
           <CropLandscape
             id='blog-single-display-mode-button'
@@ -46,6 +45,12 @@ const Blogs = ({ allBlogs }) => {
                       width='80%'
                       onLoad={() => console.log('img loading')}
                     ></img>
+                    <div className='swiper-blog-info'>
+                      <div className='swiper-blog-title'>{blog.title}</div>
+                      <div className='swiper-blog-description'>
+                        {blog.description}
+                      </div>
+                    </div>
                   </Link>
                 </SwiperSlide>
               )
@@ -73,9 +78,6 @@ const Blogs = ({ allBlogs }) => {
           <Link id='main-blog-link' to={`/blogs/${blog.id}`}>
             <div className='blog-card'>
               <div className='blog-header'>
-                {/* <div className='author-avatar'>
-                  <Avatar src={blog.author.avatar}></Avatar>
-                </div> */}
                 <div className='blog-title'>
                   <h1>{blog.title}</h1>
                 </div>
@@ -95,17 +97,13 @@ const Blogs = ({ allBlogs }) => {
                 <div id='blog-stars-count'>{blog.stars.length}</div>
               </div>
 
-              <div className='blog-button'>
+              {/* <div className='blog-button'>
                 <Link to={`/blogs/${blog.id}`} id='blog-link'>
                   <Button variant='outlined' color='primary'>
                     Read
                   </Button>
                 </Link>
-              </div>
-              {/* <div className='blog-date'>
-                  {monthNames[blog.date.getMonth()].substring(0, 3)}{' '}
-                  {blog.date.getDate()}
-                </div> */}
+              </div> */}
             </div>
           </Link>
         ))}
