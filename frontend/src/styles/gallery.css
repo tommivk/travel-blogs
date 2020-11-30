@@ -1,0 +1,13 @@
+.gallery-card {
+      position: relative;
+        width: 200px;
+        height: 280px;
+        background-color: #231A03;
+        margin: 10px;
+        border-radius: 4px;
+        transition: transform 0.2s;
+}
+
+.gallery-card:hover {
+    transform: scale(1.1);
+}

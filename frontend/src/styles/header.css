@@ -33,8 +33,11 @@
     font-size: 1.5em;
 }
 
-.header-link:hover{
-    background-color: rgb(214, 76, 21);
+.header-link:hover {
+    background-color: #191e36;
+    color: white
+}
+.header-link:hover h1{
     color: white
 }
 

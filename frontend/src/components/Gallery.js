@@ -145,55 +145,55 @@ const Gallery = ({
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {pictures.map((pic) => (
-            <div
-              style={{
-                width: '200px',
-                height: '280px',
-                backgroundColor: '#231A03',
-                margin: '10px',
-                position: 'relative',
-                borderRadius: '4px',
-              }}
-              key={pic.id}
-            >
-              <Link to={`/gallery/${pic.id}`}>
+            <Link to={`/gallery/${pic.id}`}>
+              <div className='gallery-card' key={pic.id}>
                 <img
                   src={pic.imgURL}
                   height='200'
                   width='200'
                   style={{ borderRadius: '4px' }}
                 ></img>
-              </Link>
-              <h4
-                style={{
-                  marginTop: '2px',
-                  marginBottom: '5px',
-                  textAlign: 'center',
-                  color: '#FFFFFF',
-                }}
-              >
-                {pic.title}
-              </h4>
-              <div
-                style={{ position: 'absolute', bottom: '0px', width: '100%' }}
-              >
-                <div
+
+                <h4
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    marginBottom: '3px',
+                    marginTop: '2px',
+                    marginBottom: '5px',
+                    textAlign: 'center',
+                    color: '#FFFFFF',
                   }}
                 >
-                  <div style={{ color: '#6c717a', marginLeft: '4px' }}>
-                    <ArrowUpward></ArrowUpward> {pic.voteResult}
-                  </div>
-                  <div style={{ color: '#6c717a', marginRight: '4px' }}>
-                    <Sms></Sms> 55
+                  {pic.title}
+                </h4>
+                <div
+                  style={{ position: 'absolute', bottom: '0px', width: '100%' }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      marginBottom: '3px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        color: '#6c717a',
+                        marginLeft: '4px',
+                      }}
+                    >
+                      <ArrowUpward></ArrowUpward>{' '}
+                      <div style={{ alignSelf: 'center', marginLeft: '3px' }}>
+                        {pic.voteResult}
+                      </div>
+                    </div>
+                    <div style={{ color: '#6c717a', marginRight: '4px' }}>
+                      <Sms></Sms> 55
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </Container>
