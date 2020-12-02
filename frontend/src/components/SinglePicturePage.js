@@ -158,79 +158,95 @@ const SinglePicturePage = ({
         position: 'relative',
       }}
     >
-      <div
-        style={{
-          position: 'absolute',
-          left: '50%',
-          transform: 'translate(-50%,0%)',
-          backgroundColor: '#231A03',
-          paddingTop: '10px',
-          paddingRight: '10px',
-          paddingLeft: '10px',
-          color: 'white',
-          marginTop: '30px',
-          height: 'fit-content',
-        }}
-      >
+      <div className='picture-comment-container'>
         <div
           style={{
-            width: '700px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '15px',
-            marginBottom: '5px',
+            backgroundColor: '#231A03',
+            paddingTop: '10px',
+            paddingRight: '10px',
+            paddingLeft: '10px',
+            color: 'white',
+            marginTop: '30px',
+            height: 'fit-content',
           }}
         >
-          <div>
-            {pictureIndex - 1 >= 0 && (
-              <Link to={`/gallery/${allPictures[pictureIndex - 1].id}`}>
-                {' '}
-                <Button color='primary' variant='contained'>
-                  Previous
-                </Button>
-              </Link>
-            )}
-          </div>
+          <div
+            style={{
+              width: '700px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginTop: '15px',
+              marginBottom: '5px',
+            }}
+          >
+            <div>
+              {pictureIndex - 1 >= 0 && (
+                <Link to={`/gallery/${allPictures[pictureIndex - 1].id}`}>
+                  {' '}
+                  <Button color='primary' variant='contained'>
+                    Previous
+                  </Button>
+                </Link>
+              )}
+            </div>
 
-          <div>
-            <h2 style={{ margin: '0', textAlign: 'center' }}>
-              {picture.title}
-            </h2>
-          </div>
+            <div>
+              <h2 style={{ margin: '0', textAlign: 'center' }}>
+                {picture.title}
+              </h2>
+            </div>
 
-          <div>
-            {allPictures.length > pictureIndex + 1 && (
-              <Link to={`/gallery/${allPictures[pictureIndex + 1].id}`}>
-                {' '}
-                <Button color='primary' variant='contained'>
-                  Next
-                </Button>
-              </Link>
-            )}
-          </div>
-        </div>
-
-        {showMap ? (
-          <div>
-            <img src={mapImage} width='700px' height='400px'></img>
-            {locationData && (
-              <p>
-                {locationData.address.city} {locationData.address.country}{' '}
-                {locationData.address.postcode}
-              </p>
-            )}
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <img src={picture.imgURL} width='700px'></img>
-            <div style={{ alignSelf: 'flex-end' }}>
-              <Fullscreen
-                id='picture-fullscreen-button'
-                onClick={pictureHandle.enter}
-              ></Fullscreen>
+            <div>
+              {allPictures.length > pictureIndex + 1 && (
+                <Link to={`/gallery/${allPictures[pictureIndex + 1].id}`}>
+                  {' '}
+                  <Button color='primary' variant='contained'>
+                    Next
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
-        )}
+
+          {showMap ? (
+            <div>
+              <img src={mapImage} width='700px' height='400px'></img>
+              {locationData && (
+                <p>
+                  {locationData.address.city} {locationData.address.country}{' '}
+                  {locationData.address.postcode}
+                </p>
+              )}
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <img src={picture.imgURL} width='700px'></img>
+              <div style={{ alignSelf: 'flex-end' }}>
+                <Fullscreen
+                  id='picture-fullscreen-button'
+                  onClick={pictureHandle.enter}
+                ></Fullscreen>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className='comment-container'>
+          <CommentForm
+            user={user}
+            picture={picture}
+            setPicture={setPicture}
+            allPictures={allPictures}
+            setAllPictures={setAllPictures}
+          ></CommentForm>
+          <ul>
+            {picture.comments.map((comment) => (
+              <li>
+                {comment.user.username}: {comment.content}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       {mapImage && !showMap && (
@@ -309,22 +325,6 @@ const SinglePicturePage = ({
           <img src={picture.imgURL}></img>
         </div>
       </FullScreen>
-      <div>
-        <CommentForm
-          user={user}
-          picture={picture}
-          setPicture={setPicture}
-          allPictures={allPictures}
-          setAllPictures={setAllPictures}
-        ></CommentForm>
-        <ul>
-          {picture.comments.map((comment) => (
-            <li>
-              {comment.user.username}: {comment.content}
-            </li>
-          ))}
-        </ul>
-      </div>
       <div className='picture-list-container'>
         {allPictures.map((pic) => (
           <div className='picture-list-picture-box'>

@@ -178,3 +178,17 @@
   #picture-fullscreen-button{
     font-size: 1.5em;
   }
+
+  .picture-comment-container{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,0%);
+  }
+
+  .comment-container{
+    margin-top: 20px;
+    align-self: center;
+    color: white;
+  }
