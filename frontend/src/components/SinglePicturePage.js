@@ -156,6 +156,8 @@ const SinglePicturePage = ({
         minHeight: '94vh',
         backgroundColor: '#191e36',
         position: 'relative',
+        overflowY: 'auto',
+        overflowX: 'hidden',
       }}
     >
       <div className='picture-comment-container'>
@@ -248,7 +250,7 @@ const SinglePicturePage = ({
           ></CommentForm>
           <ul>
             {picture.comments.map((comment) => (
-              <li>
+              <li key={comment.id}>
                 {comment.user.username}: {comment.content}
               </li>
             ))}

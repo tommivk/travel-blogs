@@ -96,7 +96,14 @@ const Gallery = ({
   if (!pictures) return null
   console.log(pictures)
   return (
-    <div style={{ backgroundColor: '#14182b', height: '94vh' }}>
+    <div
+      style={{
+        backgroundColor: '#14182b',
+        height: '94vh',
+        overflowX: 'hidden',
+        overflowY: 'auto',
+      }}
+    >
       <ImageUploadModal
         uploadModalOpen={uploadModalOpen}
         closeModal={closeUploadModal}

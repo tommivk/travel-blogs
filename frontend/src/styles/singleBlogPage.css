@@ -1,3 +1,9 @@
+  .main-blog-page-container{
+    background-color: white;
+    height: 94vh;
+    overflow-y: auto;
+  }
+
   .vote-container {
     display: flex;
     margin-top: 20px;
@@ -57,6 +63,8 @@
   #blog-title {
     text-align: center;
     font-size: 4em;
+    margin-top: 0;
+    margin-bottom: 10px;
   }
 
   .blog-comment-form {

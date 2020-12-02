@@ -123,7 +123,7 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
   }
 
   return (
-    <div>
+    <div className='main-blog-page-container'>
       <Container maxWidth='md'>
         <div>
           <h1 id='blog-title'>{blog.title}</h1>

@@ -5,6 +5,7 @@
     margin-bottom: 0px;
     height: 6vh;
     background-color: white;
+    overflow: hidden;
 }
 
 .main-header-container a{
