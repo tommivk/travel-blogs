@@ -191,7 +191,14 @@ const SinglePicturePage = ({
             </div>
 
             <div>
-              <h2 style={{ margin: '0', textAlign: 'center' }}>
+              <h2
+                style={{
+                  margin: '0',
+                  position: 'absolute',
+                  right: '50%',
+                  transform: 'translate(50%,0%)',
+                }}
+              >
                 {picture.title}
               </h2>
             </div>
