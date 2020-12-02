@@ -170,8 +170,6 @@ const SinglePicturePage = ({
           color: 'white',
           marginTop: '30px',
           height: 'fit-content',
-          minHeight: '500px',
-          paddingBottom: '5%',
         }}
       >
         <div
@@ -213,8 +211,8 @@ const SinglePicturePage = ({
         </div>
 
         {showMap ? (
-          <div style={{ maxHeight: '400px' }}>
-            <img src={mapImage} width='700px'></img>
+          <div>
+            <img src={mapImage} width='700px' height='400px'></img>
             {locationData && (
               <p>
                 {locationData.address.city} {locationData.address.country}{' '}
@@ -223,15 +221,16 @@ const SinglePicturePage = ({
             )}
           </div>
         ) : (
-          <img src={picture.imgURL} width='700px'></img>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <img src={picture.imgURL} width='700px'></img>
+            <div style={{ alignSelf: 'flex-end' }}>
+              <Fullscreen
+                id='picture-fullscreen-button'
+                onClick={pictureHandle.enter}
+              ></Fullscreen>
+            </div>
+          </div>
         )}
-
-        <div style={{ position: 'absolute', bottom: '0px', right: '0px' }}>
-          <Fullscreen
-            fontSize='small'
-            onClick={pictureHandle.enter}
-          ></Fullscreen>
-        </div>
       </div>
 
       {mapImage && !showMap && (
