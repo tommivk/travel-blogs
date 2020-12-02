@@ -120,14 +120,24 @@ const Gallery = ({
       <Container maxWidth='lg'>
         <div style={{ textAlign: 'center' }}></div>
         {param.country && (
-          <h1 style={{ color: 'white', marginTop: '0px' }}>
-            Images from {param.country}
-          </h1>
+          <div style={{ display: 'flex' }}>
+            <h1 style={{ color: 'white', marginTop: '0px' }}>
+              Images from {param.country}
+            </h1>
+            <Link to={'/gallery'}>
+              <Button style={{ color: 'white' }}>(X)</Button>
+            </Link>
+          </div>
         )}
         {param.city && (
-          <h1 style={{ color: 'white', marginTop: '0px' }}>
-            Images from {param.city}
-          </h1>
+          <div style={{ display: 'flex' }}>
+            <h1 style={{ color: 'white', marginTop: '0px' }}>
+              Images from {param.city}
+            </h1>
+            <Link to={'/gallery'}>
+              <Button style={{ color: 'white' }}>(X)</Button>
+            </Link>
+          </div>
         )}
         <div className='gallery-filter-selection'>
           <Select
@@ -142,8 +152,8 @@ const Gallery = ({
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
           {pictures.map((pic) => (
-            <Link to={`/gallery/${pic.id}`}>
-              <div className='gallery-card' key={pic.id}>
+            <Link to={`/gallery/${pic.id}`} key={pic.id}>
+              <div className='gallery-card'>
                 <img
                   src={pic.imgURL}
                   height='200'

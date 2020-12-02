@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { Button, Container } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Fullscreen from '@material-ui/icons/Fullscreen'
@@ -12,21 +12,6 @@ import '../styles/singlePicturePage.css'
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY
 const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY
-
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-]
 
 const CommentForm = ({
   picture,
@@ -159,18 +144,16 @@ const SinglePicturePage = ({
 
   if (!picture || !allPictures) return null
 
-  const date = new Date(picture.date)
-
   const userVote = picture.votes.find(
     (vote) => vote.user.username === user.username
   )
 
   let pictureIndex = allPictures.findIndex((pic) => pic.id === picture.id)
+
   return (
     <div
       style={{
-        height: 'fit-content',
-        height: '94vh',
+        minHeight: '94vh',
         backgroundColor: '#191e36',
         position: 'relative',
       }}
@@ -317,7 +300,7 @@ const SinglePicturePage = ({
           </Link>
         </div>
         <div>
-          <h4>Uploaded:</h4> {monthNames[date.getMonth()]} {date.getDate()}
+          {/* <h4>Uploaded:</h4> {monthNames[date.getMonth()]} {date.getDate()} */}
         </div>
         <div>votes: {picture.votes.length}</div>
       </div>
@@ -327,20 +310,39 @@ const SinglePicturePage = ({
           <img src={picture.imgURL}></img>
         </div>
       </FullScreen>
-      <CommentForm
-        user={user}
-        picture={picture}
-        setPicture={setPicture}
-        allPictures={allPictures}
-        setAllPictures={setAllPictures}
-      ></CommentForm>
-      <ul>
-        {picture.comments.map((comment) => (
-          <li>
-            {comment.user.username}: {comment.content}
-          </li>
+      <div>
+        <CommentForm
+          user={user}
+          picture={picture}
+          setPicture={setPicture}
+          allPictures={allPictures}
+          setAllPictures={setAllPictures}
+        ></CommentForm>
+        <ul>
+          {picture.comments.map((comment) => (
+            <li>
+              {comment.user.username}: {comment.content}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className='picture-list-container'>
+        {allPictures.map((pic) => (
+          <div className='picture-list-picture-box'>
+            {pic.id === picture.id ? (
+              <div className='picture-list-active-image'>
+                <img src={pic.imgURL}></img>
+              </div>
+            ) : (
+              <Link to={`/gallery/${pic.id}`}>
+                <div>
+                  <img src={pic.imgURL}></img>
+                </div>
+              </Link>
+            )}
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

@@ -89,7 +89,7 @@ const Blogs = ({ allBlogs }) => {
                 <img src={blog.headerImageURL} width='300px'></img>
               </div>
 
-              <div>
+              <div className='blog-description'>
                 <h4>{blog.description}</h4>
               </div>
               <div className='blog-star'>

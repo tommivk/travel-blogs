@@ -3,8 +3,8 @@
     height: 94vh;
     position: relative;
     color: white;
-   
-    
+    display: flex;
+    justify-content: center;
 }
 
 .swiper-wrapper {
@@ -30,8 +30,8 @@
 
 .blog-card{
     position: relative;
-    height: 400px;
-    width: 300px;
+    min-height: 430px;
+    width: 350px;
     text-align: center;
     background-color: #231A03;
     border-radius: 5px;
@@ -47,17 +47,17 @@
     display: flex;
     justify-self: flex-start;
     flex-wrap: wrap;
+    max-width: 85vw;
 }
 
 .blog-image {
     width: 300px;
     max-width: 300px;
-   
 }
 .blog-image img {
     object-fit: fill;
     min-width: 300px;
-    max-height: 250px;
+    max-height:200px;
 }
 
 .blog-header{
@@ -103,11 +103,24 @@
     margin-bottom: auto;
     margin-left: 2px;
 }
+
 .blog-author-username {
     font-size: 0.8em;
 }
+
+.blog-title{
+    display: flex;
+    justify-content: center;
+}
+
 .blog-title h1 {
-    margin-bottom: 0;
+    margin: 0;
+    font-size: 1.3em;
+    max-width: 250px;
+}
+
+.blog-description {
+    font-size: 0.95em;
 }
 
 #main-blog-link{
@@ -120,6 +133,7 @@
     font-size: 2.4em;
     cursor: pointer;
 }
+
 #blog-multi-display-mode-button{
     color: white;
     font-size: 2em;
@@ -132,13 +146,13 @@
     display: flex;
     align-items: center;
     z-index: 3;
-    
 }
 
 .swiper-blog-info {
     color: white;
     position: absolute;
-    left: 20%;
+    max-width: 40%;
+    left: 15%;
     top: 50%;
     transform: translate(0,-50%);
     text-shadow:
@@ -147,10 +161,15 @@
         -0.07em 0 black,
         0 -0.07em black;
 }
+
 .swiper-blog-title {
     font-size: 5em;
     margin-bottom: 30px;
+    font-weight: 600;
 }
+
 .swiper-blog-description {
     font-size: 1.5em;
+    font-weight: 600;
+    font-style: italic;
 }
