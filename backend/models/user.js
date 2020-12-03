@@ -23,6 +23,18 @@ const userSchema = mongoose.Schema({
       ref: 'Blog',
     },
   ],
+  pictureSubscribers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  blogSubscribers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   joinDate: Date,
   passwordHash: String,
 })
