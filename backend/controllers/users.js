@@ -12,7 +12,7 @@ const getTokenFrom = (request) => {
 }
 
 usersRouter.get('/', async (req, res) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate('blogs').populate('pictures')
   res.json(users.map((user) => user.toJSON()))
 })
 
