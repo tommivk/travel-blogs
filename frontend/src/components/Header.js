@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import firebase from 'firebase/app'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Search, Language, Notifications } from '@material-ui/icons'
 import SearchModal from './SearchModal'
 import Menu from '@material-ui/core/Menu'
@@ -16,9 +16,11 @@ const Header = ({
 }) => {
   console.log(user)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
+  const [notificationMenuEl, setNotificationMenuEl] = useState(null)
   const [searchFilter, setSearchFilter] = useState('')
   const [searchModalOpen, setSearchModalOpen] = useState(false)
   console.log(userNotifications)
+  const history = useHistory()
 
   if (!userNotifications) return null
   const unreadNotifications = userNotifications.filter(
@@ -41,6 +43,17 @@ const Header = ({
     setMenuAnchorEl(null)
   }
 
+  const handleNotificationMenuOpen = (e) => {
+    setNotificationMenuEl(e.currentTarget)
+  }
+  const handleNotificationMenuClose = () => {
+    setNotificationMenuEl(null)
+  }
+
+  const handleNotificationMessageClick = (n) => {
+    console.log(n)
+    history.push(`/gallery/${n.content.contentID}`)
+  }
   const handleLogout = () => {
     window.localStorage.removeItem('loggedTravelBlogUser')
     setUser(null)
@@ -95,7 +108,10 @@ const Header = ({
           id='header-search-icon'
           onClick={() => setSearchModalOpen(true)}
         ></Search>
-        <div className='notification-container'>
+        <div
+          className='notification-container'
+          onClick={handleNotificationMenuOpen}
+        >
           <Notifications id='notifications-bell' />
 
           {unreadNotifications.length > 0 && (
@@ -106,6 +122,23 @@ const Header = ({
             </div>
           )}
         </div>
+        <Menu
+          anchorEl={notificationMenuEl}
+          keepMounted
+          open={Boolean(notificationMenuEl)}
+          onClose={handleNotificationMenuClose}
+          getContentAnchorEl={null}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <div className='notification-menu-content'>
+            {unreadNotifications.map((n) => (
+              <div onClick={() => handleNotificationMessageClick(n)}>
+                {n.content.message}
+              </div>
+            ))}
+          </div>
+        </Menu>
         <div
           style={{ margin: '10px', cursor: 'pointer' }}
           onClick={handleMenuOpen}
