@@ -7,12 +7,28 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Settings from '@material-ui/icons/Settings'
 import '../styles/header.css'
-const Header = ({ user, setUser, allPictures, allUsers }) => {
+const Header = ({
+  user,
+  setUser,
+  allPictures,
+  allUsers,
+  userNotifications,
+}) => {
   console.log(user)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
   const [searchFilter, setSearchFilter] = useState('')
   const [searchModalOpen, setSearchModalOpen] = useState(false)
+  console.log(userNotifications)
 
+  if (!userNotifications) return null
+  const unreadNotifications = userNotifications.filter(
+    (n) => !n.readBy.includes(user.id)
+  )
+  const readNotifications = userNotifications.filter((n) =>
+    n.readBy.includes(user.id)
+  )
+  console.log(unreadNotifications)
+  console.log(readNotifications)
   const closeSearchModal = () => {
     setSearchModalOpen(false)
     setSearchFilter('')
@@ -79,7 +95,17 @@ const Header = ({ user, setUser, allPictures, allUsers }) => {
           id='header-search-icon'
           onClick={() => setSearchModalOpen(true)}
         ></Search>
-        <Notifications id='notifications-bell' />
+        <div className='notification-container'>
+          <Notifications id='notifications-bell' />
+
+          {unreadNotifications.length > 0 && (
+            <div className='notification-count'>
+              <div className='notification-number'>
+                {unreadNotifications.length}
+              </div>
+            </div>
+          )}
+        </div>
         <div
           style={{ margin: '10px', cursor: 'pointer' }}
           onClick={handleMenuOpen}

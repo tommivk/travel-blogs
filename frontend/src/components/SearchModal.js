@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, Checkbox } from '@material-ui/core'
 import '../styles/searchModal.css'
 import { Link } from 'react-router-dom'
@@ -14,6 +14,13 @@ const SearchModal = ({
   const [searchCountries, setSearchCountries] = useState(true)
   const [searchPictures, setSearchPictures] = useState(true)
   const [searchUsers, setSearchUsers] = useState(true)
+
+  useEffect(() => {
+    setSearchCities(true)
+    setSearchCountries(true)
+    setSearchPictures(true)
+    setSearchUsers(true)
+  }, [open])
 
   if (!open || !allPictures) return null
 

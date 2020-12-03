@@ -11,7 +11,7 @@ notificationsRouter.get('/user/:id', async (req, res, next) => {
     const notifications = await Notification.find({
       receivers: { $in: req.params.id },
     })
-
+    console.log(notifications)
     res.send(notifications)
   } catch (error) {
     next(error)

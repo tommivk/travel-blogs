@@ -11,7 +11,6 @@ import SinglePicturePage from './components/SinglePicturePage'
 import Blogs from './components/Blogs'
 import UserPage from './components/UserPage'
 import UserSettings from './components/UserSettings'
-import Grid from '@material-ui/core/Grid'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
 import Alert from '@material-ui/lab/Alert'
@@ -44,6 +43,7 @@ const storage = firebase.storage()
 
 const App = () => {
   const [user, setUser] = useState(null)
+  const [userNotifications, setUserNotifications] = useState(null)
   const [allBlogs, setAllBlogs] = useState(null)
   const [allPictures, setAllPictures] = useState(null)
   const [picture, setPicture] = useState(null)
@@ -73,16 +73,21 @@ const App = () => {
       .then((res) => setAllUsers(res.data))
   }, [])
 
-  useEffect(() => {
+  useEffect(async () => {
     if (user && user.fbtoken) {
-      firebase
+      await firebase
         .auth()
         .signInWithCustomToken(user.fbtoken)
         .then((res) => console.log('signed in to firebase with token'))
         .catch((e) => console.log(e))
+
+      await axios
+        .get(`http://localhost:8008/api/notifications/user/${user.id}`)
+        .then((res) => setUserNotifications(res.data))
     }
   }, [user])
 
+  console.log(userNotifications)
   const blogMatch = useRouteMatch('/blogs/:id')
   let blog = null
 
@@ -141,6 +146,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
 
           <NewBlog
@@ -160,6 +166,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
           <UserSettings
             user={user}
@@ -173,6 +180,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
           <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
         </Route>
@@ -182,6 +190,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
           <SinglePicturePage
             user={user}
@@ -197,6 +206,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
           <Gallery
             allPictures={allPictures}
@@ -213,6 +223,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
           <UserPage userData={selectedUser}></UserPage>
         </Route>
@@ -222,6 +233,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
           <SingleBlogPage
             blogMatch={blog}
@@ -236,6 +248,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
           <Blogs allBlogs={allBlogs}></Blogs>
         </Route>
@@ -245,6 +258,7 @@ const App = () => {
             setUser={setUser}
             allPictures={allPictures}
             allUsers={allUsers}
+            userNotifications={userNotifications}
           ></Header>
           <HomePage allBlogs={allBlogs} allPictures={allPictures}></HomePage>
         </Route>
