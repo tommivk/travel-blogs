@@ -8,6 +8,7 @@ const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
 const blogsRouter = require('./controllers/blogs')
 const picturesRouter = require('./controllers/pictures')
+const noticationsRouter = require('./controllers/notifications')
 let MongoURI = process.env.MONGO_DB_URI
 let FirebaseURI = process.env.FIREBASE_DB_URI
 
@@ -35,6 +36,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/pictures', picturesRouter)
+app.use('/api/notifications', noticationsRouter)
 
 const errorHandler = (error, req, res, next) => {
   console.log('error: ', error.message)
