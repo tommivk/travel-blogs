@@ -140,6 +140,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
 
           <NewBlog
@@ -158,6 +159,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
           <UserSettings
             user={user}
@@ -170,6 +172,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
           <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
         </Route>
@@ -178,6 +181,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
           <SinglePicturePage
             user={user}
@@ -192,6 +196,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
           <Gallery
             allPictures={allPictures}
@@ -207,6 +212,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
           <UserPage userData={selectedUser}></UserPage>
         </Route>
@@ -215,6 +221,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
           <SingleBlogPage
             blogMatch={blog}
@@ -228,6 +235,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
           <Blogs allBlogs={allBlogs}></Blogs>
         </Route>
@@ -236,6 +244,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allUsers={allUsers}
           ></Header>
           <HomePage allBlogs={allBlogs} allPictures={allPictures}></HomePage>
         </Route>

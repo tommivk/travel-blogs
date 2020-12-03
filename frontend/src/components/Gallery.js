@@ -208,7 +208,7 @@ const Gallery = ({
                         </div>
                       </div>
                       <div style={{ color: '#6c717a', marginRight: '4px' }}>
-                        <Sms></Sms> 55
+                        <Sms></Sms> {pic.comments.length}
                       </div>
                     </div>
                   </div>

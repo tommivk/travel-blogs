@@ -7,7 +7,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Settings from '@material-ui/icons/Settings'
 import '../styles/header.css'
-const Header = ({ user, setUser, allPictures }) => {
+const Header = ({ user, setUser, allPictures, allUsers }) => {
   console.log(user)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
   const [searchFilter, setSearchFilter] = useState('')
@@ -47,6 +47,7 @@ const Header = ({ user, setUser, allPictures }) => {
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
           allPictures={allPictures}
+          allUsers={allUsers}
         ></SearchModal>
       </div>
 
