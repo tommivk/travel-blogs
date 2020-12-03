@@ -2,6 +2,7 @@ const picturesRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Comment = require('../models/comment')
 const Picture = require('../models/picture')
+const Notification = require('../models/notification')
 const User = require('../models/user')
 
 const getTokenFrom = (request) => {
@@ -162,6 +163,22 @@ picturesRouter.post('/', async (req, res) => {
 
     user.pictures = user.pictures.concat(savedPicture._id)
     await user.save()
+
+    if (body.public && user.pictureSubscribers.length > 0) {
+      const notification = new Notification({
+        sender: user,
+        receivers: user.pictureSubscribers,
+        readBy: [],
+        content: {
+          message: `New picture posted by ${user.username}`,
+          contentType: 'picture',
+          contentID: savedPicture.id,
+        },
+        createdAt: new Date(),
+      })
+      await notification.save()
+    }
+
     res.json(savedPicture.toJSON())
   } catch (error) {
     console.log(error)
