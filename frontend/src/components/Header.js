@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import firebase from 'firebase/app'
 import { Link, useHistory } from 'react-router-dom'
 import { Search, Language, Notifications } from '@material-ui/icons'
@@ -13,22 +14,30 @@ const Header = ({
   allPictures,
   allUsers,
   userNotifications,
+  setUserNotifications,
 }) => {
   console.log(user)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
   const [notificationMenuEl, setNotificationMenuEl] = useState(null)
+  const [unreadNotifications, setUnreadNotifications] = useState([])
+  const [readNotifications, setReadNotifications] = useState([])
   const [searchFilter, setSearchFilter] = useState('')
   const [searchModalOpen, setSearchModalOpen] = useState(false)
   console.log(userNotifications)
   const history = useHistory()
 
-  if (!userNotifications) return null
-  const unreadNotifications = userNotifications.filter(
-    (n) => !n.readBy.includes(user.id)
-  )
-  const readNotifications = userNotifications.filter((n) =>
-    n.readBy.includes(user.id)
-  )
+  useEffect(() => {
+    if (userNotifications) {
+      setUnreadNotifications(
+        userNotifications.filter((n) => !n.readBy.includes(user.id))
+      )
+
+      setReadNotifications(
+        userNotifications.filter((n) => n.readBy.includes(user.id))
+      )
+    }
+  }, [userNotifications])
+
   console.log(unreadNotifications)
   console.log(readNotifications)
   const closeSearchModal = () => {
@@ -50,9 +59,37 @@ const Header = ({
     setNotificationMenuEl(null)
   }
 
-  const handleNotificationMessageClick = (n) => {
-    console.log(n)
-    history.push(`/gallery/${n.content.contentID}`)
+  const handleNotificationMessageClick = async (n) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:8008/api/notifications/${n.id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+      let newNotifications = userNotifications.map((notification) =>
+        notification.id === n.id ? res.data : notification
+      )
+      setUserNotifications(newNotifications)
+      const readnotifications = readNotifications.filter((x) => x.id !== n.id)
+      setReadNotifications(readnotifications)
+      const unreadnotifications = unreadNotifications.filter(
+        (x) => x.id !== n.id
+      )
+      setUnreadNotifications(unreadnotifications)
+      setNotificationMenuEl(null)
+      if (n.content.contentType === 'blog') {
+        history.push(`/blogs/${n.content.contentID}`)
+      }
+      if (n.content.contentType === 'picture') {
+        history.push(`/gallery/${n.content.contentID}`)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
   const handleLogout = () => {
     window.localStorage.removeItem('loggedTravelBlogUser')
@@ -133,9 +170,15 @@ const Header = ({
         >
           <div className='notification-menu-content'>
             {unreadNotifications.map((n) => (
-              <div onClick={() => handleNotificationMessageClick(n)}>
+              <div
+                className='unread-notification'
+                onClick={() => handleNotificationMessageClick(n)}
+              >
                 {n.content.message}
               </div>
+            ))}
+            {readNotifications.map((n) => (
+              <div className='read-notification'>{n.content.message}</div>
             ))}
           </div>
         </Menu>

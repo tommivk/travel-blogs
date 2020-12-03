@@ -95,3 +95,7 @@
 #notifications-bell{
     font-size: 1.8em;
 }
+
+.read-notification {
+    text-decoration: line-through;
+}

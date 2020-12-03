@@ -147,6 +147,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
 
           <NewBlog
@@ -167,6 +168,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
           <UserSettings
             user={user}
@@ -181,6 +183,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
           <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
         </Route>
@@ -191,6 +194,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
           <SinglePicturePage
             user={user}
@@ -207,6 +211,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
           <Gallery
             allPictures={allPictures}
@@ -224,6 +229,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
           <UserPage userData={selectedUser}></UserPage>
         </Route>
@@ -234,6 +240,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
           <SingleBlogPage
             blogMatch={blog}
@@ -249,6 +256,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
           <Blogs allBlogs={allBlogs}></Blogs>
         </Route>
@@ -259,6 +267,7 @@ const App = () => {
             allPictures={allPictures}
             allUsers={allUsers}
             userNotifications={userNotifications}
+            setUserNotifications={setUserNotifications}
           ></Header>
           <HomePage allBlogs={allBlogs} allPictures={allPictures}></HomePage>
         </Route>
