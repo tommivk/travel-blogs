@@ -1,0 +1,17 @@
+.user-page-main-container{
+    color: white;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+.user-page-main-container img{
+    width: 100px;
+}
+
+.user-page-user-info{
+    height: 300px;
+    width: 300px;
+    background-color: rgb(31, 25, 25);
+    margin: 20px;
+    text-align: center;  
+}
