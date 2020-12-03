@@ -23,6 +23,7 @@ const userSchema = mongoose.Schema({
       ref: 'Blog',
     },
   ],
+  joinDate: Date,
   passwordHash: String,
 })
 
