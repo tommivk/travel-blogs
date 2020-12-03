@@ -17,7 +17,11 @@ const notificationSchema = mongoose.Schema({
       ref: 'User',
     },
   ],
-  message: String,
+  content: {
+    message: { type: String },
+    contentType: { type: String },
+    contentID: { type: String },
+  },
   createdAt: Date,
 })
 

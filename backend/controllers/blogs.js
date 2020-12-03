@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const Comment = require('../models/comment')
+const Notification = require('../models/notification')
 const blogsRouter = require('express').Router()
 
 const getTokenFrom = (request) => {
@@ -60,6 +61,22 @@ blogsRouter.post('/', async (req, res, next) => {
     user.blogs = user.blogs.concat(savedBlog)
     await user.save()
     await savedBlog.populate('author').execPopulate()
+
+    if (user.blogSubscribers.length > 0) {
+      const notification = new Notification({
+        sender: user,
+        receivers: user.blogSubscribers,
+        readBy: [],
+        content: {
+          message: `New blog created by ${user.username}`,
+          contentType: 'blog',
+          contentID: `${savedBlog.id}`,
+        },
+        createdAt: new Date(),
+      })
+
+      await notification.save()
+    }
 
     res.json(savedBlog.toJSON())
   } catch (error) {
