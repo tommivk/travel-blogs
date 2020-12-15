@@ -62,6 +62,16 @@ picturesRouter.delete('/:id/vote', async (req, res) => {
     )
 
     const newPicture = await picture.save()
+    await newPicture
+      .populate('user')
+      .populate('votes.user')
+      .populate({
+        path: 'comments',
+        model: 'Comment',
+        populate: { path: 'user', model: 'User' },
+      })
+      .execPopulate()
+      
     res.json(newPicture)
   } catch (error) {
     console.log(error)
