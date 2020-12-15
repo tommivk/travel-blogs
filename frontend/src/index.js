@@ -231,7 +231,7 @@ const App = () => {
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
           ></Header>
-          <UserPage userData={selectedUser}></UserPage>
+          <UserPage userData={selectedUser} user={user}></UserPage>
         </Route>
         <Route path='/blogs/:id'>
           <Header
