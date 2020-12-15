@@ -57,4 +57,60 @@ usersRouter.put('/', async (req, res) => {
   res.status(200).send(newUser.toJSON())
 })
 
+usersRouter.put('/:id/subscription', async (req, res, next) => {
+  try {
+    const body = req.body
+    const token = getTokenFrom(req)
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    if (!token || !decodedToken) {
+      console.log(token)
+      return res.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = await User.findById(decodedToken.id)
+    const userToSubscribe = await User.findById(req.params.id)
+
+    if (!user || !userToSubscribe) {
+      return res.status(400).send()
+    }
+
+    if (body.blogSubscription) {
+      const isSubscribed = await userToSubscribe.blogSubscribers.find(
+        (s) => s._id.toString() === user._id.toString()
+      )
+      if (!isSubscribed) {
+        userToSubscribe.blogSubscribers.push(user)
+      }
+    }
+
+    if (body.pictureSubscription) {
+      const isSubscribed = await userToSubscribe.pictureSubscribers.find(
+        (s) => s._id.toString() === user._id.toString()
+      )
+      if (!isSubscribed) {
+        userToSubscribe.pictureSubscribers.push(user)
+      }
+    }
+
+    if (!body.blogSubscription) {
+      userToSubscribe.blogSubscribers = userToSubscribe.blogSubscribers.filter(
+        (s) => s._id.toString() !== user._id.toString()
+      )
+    }
+
+    if (!body.pictureSubscription) {
+      userToSubscribe.pictureSubscribers = userToSubscribe.pictureSubscribers.filter(
+        (s) => s._id.toString() !== user._id.toString()
+      )
+    }
+
+    const result = await userToSubscribe.save()
+
+    res.status(200).send(result)
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = usersRouter
