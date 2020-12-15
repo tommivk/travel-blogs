@@ -140,7 +140,7 @@ const App = () => {
         </Alert>
       )}
       <Switch>
-        <Route path='/createblog'>
+        <Route path="/createblog">
           <Header
             user={user}
             setUser={setUser}
@@ -161,7 +161,7 @@ const App = () => {
             handleMessage={handleMessage}
           ></NewBlog>
         </Route>
-        <Route path='/settings'>
+        <Route path="/settings">
           <Header
             user={user}
             setUser={setUser}
@@ -176,7 +176,7 @@ const App = () => {
             storage={storage}
           ></UserSettings>
         </Route>
-        <Route path='/explore'>
+        <Route path="/explore">
           <Header
             user={user}
             setUser={setUser}
@@ -187,7 +187,7 @@ const App = () => {
           ></Header>
           <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
         </Route>
-        <Route path='/gallery/:id'>
+        <Route path="/gallery/:id">
           <Header
             user={user}
             setUser={setUser}
@@ -204,7 +204,7 @@ const App = () => {
             setPicture={setPicture}
           ></SinglePicturePage>
         </Route>
-        <Route path='/gallery'>
+        <Route path="/gallery">
           <Header
             user={user}
             setUser={setUser}
@@ -222,7 +222,7 @@ const App = () => {
             handleMessage={handleMessage}
           ></Gallery>
         </Route>
-        <Route path='/users/:id'>
+        <Route path="/users/:id">
           <Header
             user={user}
             setUser={setUser}
@@ -231,9 +231,14 @@ const App = () => {
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
           ></Header>
-          <UserPage userData={selectedUser} user={user}></UserPage>
+          <UserPage
+            userMatch={selectedUser}
+            user={user}
+            allUsers={allUsers}
+            setAllUsers={setAllUsers}
+          ></UserPage>
         </Route>
-        <Route path='/blogs/:id'>
+        <Route path="/blogs/:id">
           <Header
             user={user}
             setUser={setUser}
@@ -249,7 +254,7 @@ const App = () => {
             user={user}
           ></SingleBlogPage>
         </Route>
-        <Route path='/blogs'>
+        <Route path="/blogs">
           <Header
             user={user}
             setUser={setUser}
@@ -260,7 +265,7 @@ const App = () => {
           ></Header>
           <Blogs allBlogs={allBlogs}></Blogs>
         </Route>
-        <Route path='/'>
+        <Route path="/">
           <Header
             user={user}
             setUser={setUser}
