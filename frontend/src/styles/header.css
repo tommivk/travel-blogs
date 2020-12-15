@@ -99,3 +99,14 @@
 .read-notification {
     text-decoration: line-through;
 }
+
+.notification-message{
+    cursor: pointer;
+    margin: 20px;
+}
+
+.notification-menu-content {
+    max-height: 50vh;
+    width: 20vw;
+    overflow-y: scroll;
+}

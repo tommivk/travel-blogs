@@ -91,6 +91,16 @@ const Header = ({
       console.log(error)
     }
   }
+
+  const handleReadNotificationClick = (n) => {
+    if (n.content.contentType === 'blog') {
+      history.push(`/blogs/${n.content.contentID}`)
+    }
+    if (n.content.contentType === 'picture') {
+      history.push(`/gallery/${n.content.contentID}`)
+    }
+  }
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedTravelBlogUser')
     setUser(null)
@@ -171,14 +181,14 @@ const Header = ({
           <div className='notification-menu-content'>
             {unreadNotifications.map((n) => (
               <div
-                className='unread-notification'
+                className='unread-notification notification-message'
                 onClick={() => handleNotificationMessageClick(n)}
               >
                 {n.content.message}
               </div>
             ))}
             {readNotifications.map((n) => (
-              <div className='read-notification'>{n.content.message}</div>
+              <div className='read-notification notification-message' onClick={()=> handleReadNotificationClick(n)}>{n.content.message}</div>
             ))}
           </div>
         </Menu>
