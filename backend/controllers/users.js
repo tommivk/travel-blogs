@@ -105,9 +105,9 @@ usersRouter.put('/:id/subscription', async (req, res, next) => {
       )
     }
 
-    const result = await userToSubscribe.save()
-
-    res.status(200).send(result)
+    const updatedUser = await userToSubscribe.save()
+    await updatedUser.populate('pictures').populate('blogs').execPopulate()
+    res.status(200).send(updatedUser)
   } catch (error) {
     next(error)
   }
