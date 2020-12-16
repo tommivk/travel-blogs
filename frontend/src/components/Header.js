@@ -191,7 +191,7 @@ const Header = ({
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
           <div className="notification-menu-content">
-            {userNotifications.length===0 && <div>You don't have any notifications</div>}
+            {userNotifications && userNotifications.length===0 && <div>You don't have any notifications</div>}
             {unreadNotifications.map((n) => (
               <div
                 className="unread-notification notification-message"

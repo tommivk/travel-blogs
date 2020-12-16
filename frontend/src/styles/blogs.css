@@ -1,11 +1,21 @@
+
 .main-container {
+   
+}
+
+.blogs-container{
     background-color: #191e36;
     height: 94vh;
     position: relative;
     color: white;
     display: flex;
     justify-content: center;
-    overflow-y: auto;
+    
+}
+
+.blogs-navigation{
+    height: 5vh;
+    position: relative;
 }
 
 .swiper-wrapper {
@@ -146,8 +156,9 @@
     right: 10px;
     display: flex;
     align-items: center;
-    z-index: 3;
-}
+    z-index: 3; 
+    top: 5px;
+ }
 
 .swiper-blog-info {
     color: white;
