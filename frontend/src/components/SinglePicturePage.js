@@ -71,31 +71,19 @@ const SinglePicturePage = ({
 }) => {
   const [mapImage, setMapImage] = useState(null)
   const [showMap, setShowMap] = useState(false)
-  const [locationData, setLocationData] = useState(null)
   const pictureHandle = useFullScreenHandle()
 
   useEffect(async () => {
     setShowMap(false)
-    setLocationData(null)
+
     if (picture && picture.location.lat && picture.location.lng) {
       const lat = picture.location.lat.toFixed(6)
       const lng = picture.location.lng.toFixed(6)
       setMapImage(
         `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=11&size=700x400&markers=color:red|${lat},${lng}&key=${API_KEY}`
       )
-
-      try {
-        const result = await axios.get(
-          `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&format=json`
-        )
-        console.log(result.data)
-        setLocationData(result.data)
-      } catch (error) {
-        console.log(error)
-      }
     } else {
       setMapImage(null)
-      setLocationData(null)
     }
   }, [picture])
 
@@ -220,12 +208,8 @@ const SinglePicturePage = ({
           {showMap ? (
             <div>
               <img src={mapImage} width="700px" height="400px"></img>
-              {locationData && (
-                <p>
-                  {locationData.address.city} {locationData.address.country}{' '}
-                  {locationData.address.postcode}
-                </p>
-              )}
+              {picture.location.city && <p>{picture.location.city}</p>}{' '}
+              {picture.location.country && <p>{picture.location.country}</p>}
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column' }}>

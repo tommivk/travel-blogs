@@ -20,6 +20,8 @@ const AddLocations = ({ locations, setLocations }) => {
       {
         lat: city.latitude,
         lng: city.longitude,
+        city: city.city,
+        country: city.country,
       },
     ]
     setLocations(locations.concat(newLocation))

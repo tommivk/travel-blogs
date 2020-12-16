@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import queryString from 'query-string'
 import { Button } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Star from '@material-ui/icons/Star'
 import '../styles/blogs.css'
 import BorderAll from '@material-ui/icons/BorderAll'
@@ -18,9 +19,12 @@ const Blogs = ({ allBlogs }) => {
   const [displayMode, setDisplayMode] = useState(0)
   const [sortBy, setSortBy] = useState('Newest')
 
+  const param = queryString.parse(useLocation().search)
+
   useEffect(() => {
     if (blogs) {
       let sortedBlogs = blogs.slice()
+      console.log(blogs)
       if (sortBy === 'Newest') {
         sortedBlogs.sort((a, b) => {
           if (DateTime.fromISO(a.date) < DateTime.fromISO(b.date)) {
@@ -46,7 +50,7 @@ const Blogs = ({ allBlogs }) => {
         setBlogs(sortedBlogs)
       }
     }
-  }, [sortBy, allBlogs])
+  }, [sortBy])
 
   if (!blogs) return null
 

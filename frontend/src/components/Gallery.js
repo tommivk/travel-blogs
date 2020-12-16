@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import queryString from 'query-string'
 import ImageUploadModal from './ImageUploadModal'
 import { Link, useLocation } from 'react-router-dom'
@@ -17,8 +17,9 @@ const Gallery = ({
 }) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
   const [pictures, setPictures] = useState(allPictures)
-  const param = queryString.parse(useLocation().search)
   const [sortBy, setSortBy] = useState('Newest')
+
+  const param = queryString.parse(useLocation().search)
 
   useEffect(() => {
     if (allPictures) {

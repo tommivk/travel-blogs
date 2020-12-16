@@ -23,27 +23,39 @@ const ImageUploadModal = ({
   const [image, setImage] = useState(null)
   const [title, setTitle] = useState('')
   const [locations, setLocations] = useState([])
-  const [locationInfo, setLocationInfo] = useState(null)
   const [publishToGallery, setPublishToGallery] = useState(false)
   const [imagePreview, setImagePreview] = useState(null)
   const [uploadedImages, setUploadedImages] = useState([])
   const [uploadProgress, setUploadProgress] = useState(0)
   const [step, setStep] = useState(0)
   const [mapOpen, setMapOpen] = useState(false)
+  const [markerPosition, setMarkerPosition] = useState(null)
 
-  useEffect(() => {
-    if (locations) {
-      const lat = locations[locations.length - 1]?.lat
-      const lng = locations[locations.length - 1]?.lng
-      if (lat && lng) {
-        axios
-          .get(
-            `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&accept-language=en&format=json`
-          )
-          .then((res) => setLocationInfo(res.data))
-      }
+  const handleLocationSelect = () => {
+    const lat = markerPosition.lat
+    const lng = markerPosition.lng
+    try{
+    axios
+      .get(
+        `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&accept-language=en&format=json`
+      )
+      .then((res) =>
+        setLocations([
+          {
+            lat,
+            lng,
+            city: res.data.address.city,
+            country: res.data.address.country,
+          },
+        ])
+      )
+    }catch(error){
+      console.log(error)
     }
-  }, [locations])
+
+    setStep(3)
+    setMapOpen(false)
+  }
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0])
@@ -55,7 +67,6 @@ const ImageUploadModal = ({
     setImage(null)
     setImagePreview(null)
     setStep(0)
-    setLocationInfo(null)
   }
 
   const handleNextStep = () => {
@@ -66,25 +77,10 @@ const ImageUploadModal = ({
   }
 
   const uploadPicture = async (uploadedPictureURL, firebaseID) => {
-    const locationData = {}
+    let locationData = { lat: null, lng: null, city: null, country: null }
 
-    if (locations && locations[locations.length - 1]) {
-      locationData.lat = locations[locations.length - 1].lat
-      locationData.lng = locations[locations.length - 1].lng
-    } else {
-      locationData.lat = null
-      locationData.lng = null
-    }
-
-    if (locationInfo && locationInfo.address && locationInfo.address.country) {
-      locationData.country = locationInfo.address.country
-    } else {
-      locationData.country = null
-    }
-    if (locationInfo && locationInfo.address && locationInfo.address.city) {
-      locationData.city = locationInfo.address.city
-    } else {
-      locationData.city = null
+    if (locations.length > 0) {
+      locationData = locations[locations.length - 1]
     }
 
     const newPicture = {
@@ -164,29 +160,18 @@ const ImageUploadModal = ({
     console.log(maps)
     console.log(map.center.lat(), map.center.lng())
   }
-  const [markerPosition, setMarkerPosition] = useState(null)
-
-  // const handleMapChange = (e) => {
-  //   setMarkerPosition(e.center)
-  //   console.log(markerPosition)
-  // }
 
   const handleMapDrag = (e) => {
     setMarkerPosition({ lat: e.center.lat(), lng: e.center.lng() })
   }
-  const handleLocationSelect = () => {
-    setLocations([markerPosition])
-    console.log(locations)
-    setStep(3)
-    setMapOpen(false)
-  }
+
   if (mapOpen) {
     return (
       <Modal
         open={uploadModalOpen}
         onClose={closeModal}
-        aria-labelledby='simple-modal-title'
-        aria-describedby='simple-modal-description'
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
       >
         <div
           style={{
@@ -206,8 +191,8 @@ const ImageUploadModal = ({
                 left: '1%',
                 zIndex: '1',
               }}
-              variant='outlined'
-              color='secondary'
+              variant="outlined"
+              color="secondary"
               onClick={() => setMapOpen(false)}
             >
               {'<-'}
@@ -221,13 +206,13 @@ const ImageUploadModal = ({
                 transform: 'translate(-50%, 0)',
               }}
               onClick={handleLocationSelect}
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
             >
               OK
             </Button>
             <Room
-              color='secondary'
+              color="secondary"
               style={{
                 position: 'absolute',
                 zIndex: '1',
@@ -259,8 +244,8 @@ const ImageUploadModal = ({
       <Modal
         open={uploadModalOpen}
         onClose={closeModal}
-        aria-labelledby='simple-modal-title'
-        aria-describedby='simple-modal-description'
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
       >
         <div
           style={{
@@ -303,14 +288,14 @@ const ImageUploadModal = ({
               }}
             >
               {imagePreview && step === 0 && (
-                <img alt='' src={imagePreview} height='300' width='300'></img>
+                <img alt="" src={imagePreview} height="300" width="300"></img>
               )}
               {step === 1 && (
                 <div>
                   <div>Choose title</div>
                   <div>
                     <Input
-                      placeholder='title'
+                      placeholder="title"
                       style={{ color: 'white' }}
                       onChange={({ target }) => setTitle(target.value)}
                     ></Input>
@@ -328,7 +313,7 @@ const ImageUploadModal = ({
                   <div>
                     Or select from map:{' '}
                     <Explore
-                      fontSize='large'
+                      fontSize="large"
                       onClick={() => setMapOpen(true)}
                     ></Explore>
                   </div>
@@ -346,7 +331,7 @@ const ImageUploadModal = ({
               )}
             </div>
 
-            <LinearProgress variant='determinate' value={uploadProgress} />
+            <LinearProgress variant="determinate" value={uploadProgress} />
 
             <div
               style={{ position: 'relative', textAlign: 'center', top: '10px' }}
@@ -355,7 +340,7 @@ const ImageUploadModal = ({
                 <div>
                   <Button
                     onClick={cancelImage}
-                    variant='contained'
+                    variant="contained"
                     style={{ marginRight: '5px' }}
                   >
                     Cancel
@@ -364,13 +349,13 @@ const ImageUploadModal = ({
                     <Button onClick={handlePreviousStep}>Back</Button>
                   )}
                   {step < 4 && (
-                    <Button variant='contained' onClick={handleNextStep}>
+                    <Button variant="contained" onClick={handleNextStep}>
                       next
                     </Button>
                   )}
                 </div>
               ) : (
-                <input type='file' onChange={handleImageChange}></input>
+                <input type="file" onChange={handleImageChange}></input>
               )}
             </div>
           </div>
@@ -395,47 +380,29 @@ const ImageUploadModal = ({
                 <div>
                   <h2>Preview</h2>
 
-                  <img alt='' src={imagePreview} height='150' width='150'></img>
+                  <img alt="" src={imagePreview} height="150" width="150"></img>
                   <p>{title}</p>
-                  {locationInfo && (
-                    <p>
-                      Location: {locationInfo.address.city},{' '}
-                      {locationInfo.address.country}
-                    </p>
-                  )}
+
+                  <p>Location</p>
+                  <div>
+                    {locations.length > 0 &&
+                      `Country: ${locations[locations.length - 1].country}`}
+                  </div>
+                  <div>
+                    {locations.length > 0 &&
+                      `City: ${locations[locations.length - 1].city}`}
+                  </div>
+
                   <p>Publish to gallery: {publishToGallery ? 'yes' : 'no'}</p>
                   {step === 4 && (
                     <form onSubmit={handleImageUpload}>
-                      <Button variant='contained' color='primary' type='submit'>
+                      <Button variant="contained" color="primary" type="submit">
                         Upload
                       </Button>
                     </form>
                   )}
                 </div>
               )}
-              {/* <h4>My Images ({user.pictures.length})</h4>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-around',
-                flexDirection: 'row',
-                alignContent: 'stretch',
-                flexWrap: 'wrap',
-              }}
-            >
-              {user.pictures.length === 0 && <p>No images uploaded.</p>}
-              {user.pictures.map((picture) => (
-                <div>
-                  <img
-                    key={picture.id}
-                    alt=''
-                    src={picture.imgURL}
-                    height='100'
-                    width='100'
-                  ></img>
-                </div>
-              ))}
-            </div> */}
             </div>
           )}
         </div>
