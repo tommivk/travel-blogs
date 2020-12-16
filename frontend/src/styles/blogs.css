@@ -1,16 +1,16 @@
 
 .main-container {
-   
+    overflow: auto;
 }
 
 .blogs-container{
     background-color: #191e36;
-    height: 94vh;
+    height: 89vh;
     position: relative;
     color: white;
     display: flex;
     justify-content: center;
-    
+    overflow: hidden;
 }
 
 .blogs-navigation{
