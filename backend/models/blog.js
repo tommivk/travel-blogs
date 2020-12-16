@@ -13,6 +13,8 @@ const blogSchema = mongoose.Schema({
     {
       lat: Number,
       lng: Number,
+      city: String,
+      country: String,
     },
   ],
   stars: [
