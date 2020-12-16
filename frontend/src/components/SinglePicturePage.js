@@ -52,7 +52,7 @@ const CommentForm = ({
     <div>
       <form onSubmit={handleCommentSubmit}>
         <input
-          type='text'
+          type="text"
           value={comment}
           onChange={({ target }) => setComment(target.value)}
         ></input>
@@ -160,7 +160,7 @@ const SinglePicturePage = ({
         overflowX: 'hidden',
       }}
     >
-      <div className='picture-comment-container'>
+      <div className="picture-comment-container">
         <div
           style={{
             backgroundColor: '#231A03',
@@ -185,7 +185,7 @@ const SinglePicturePage = ({
               {pictureIndex - 1 >= 0 && (
                 <Link to={`/gallery/${allPictures[pictureIndex - 1].id}`}>
                   {' '}
-                  <Button color='primary' variant='contained'>
+                  <Button color="primary" variant="contained">
                     Previous
                   </Button>
                 </Link>
@@ -209,7 +209,7 @@ const SinglePicturePage = ({
               {allPictures.length > pictureIndex + 1 && (
                 <Link to={`/gallery/${allPictures[pictureIndex + 1].id}`}>
                   {' '}
-                  <Button color='primary' variant='contained'>
+                  <Button color="primary" variant="contained">
                     Next
                   </Button>
                 </Link>
@@ -219,7 +219,7 @@ const SinglePicturePage = ({
 
           {showMap ? (
             <div>
-              <img src={mapImage} width='700px' height='400px'></img>
+              <img src={mapImage} width="700px" height="400px"></img>
               {locationData && (
                 <p>
                   {locationData.address.city} {locationData.address.country}{' '}
@@ -229,10 +229,10 @@ const SinglePicturePage = ({
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <img src={picture.imgURL} width='700px'></img>
+              <img src={picture.imgURL} width="700px"></img>
               <div style={{ alignSelf: 'flex-end' }}>
                 <Fullscreen
-                  id='picture-fullscreen-button'
+                  id="picture-fullscreen-button"
                   onClick={pictureHandle.enter}
                 ></Fullscreen>
               </div>
@@ -240,7 +240,7 @@ const SinglePicturePage = ({
           )}
         </div>
 
-        <div className='comment-container'>
+        <div className="comment-container">
           <CommentForm
             user={user}
             picture={picture}
@@ -259,13 +259,13 @@ const SinglePicturePage = ({
       </div>
 
       {mapImage && !showMap && (
-        <div className='image-toggle-button'>
-          <Explore fontSize='large' onClick={() => setShowMap(true)}></Explore>
+        <div className="image-toggle-button">
+          <Explore fontSize="large" onClick={() => setShowMap(true)}></Explore>
         </div>
       )}
       {showMap && (
-        <div className='image-toggle-button'>
-          <Image fontSize='large' onClick={() => setShowMap(false)}></Image>
+        <div className="image-toggle-button">
+          <Image fontSize="large" onClick={() => setShowMap(false)}></Image>
         </div>
       )}
 
@@ -284,16 +284,16 @@ const SinglePicturePage = ({
           alignItems: 'center',
         }}
       >
-        <div>
+        <div className="vote-container-element">
           {userVote && userVote.dir === 1 ? (
             <ArrowUpward onClick={() => handleVoteDelete()}></ArrowUpward>
           ) : null}
           {!userVote && (
             <ArrowUpward onClick={() => handleVote(1)}></ArrowUpward>
           )}
-        </div>{' '}
-        <div>{picture.voteResult}</div>
-        <div>
+        </div>
+        <div className="vote-container-element">{picture.voteResult}</div>
+        <div className="vote-container-element">
           {userVote && userVote.dir === -1 ? (
             <ArrowDownward onClick={() => handleVoteDelete()}></ArrowDownward>
           ) : null}
@@ -316,7 +316,7 @@ const SinglePicturePage = ({
         }}
       >
         <div style={{ margin: '4%' }}>
-          <img src={picture.user.avatar} width='70%'></img> 
+          <img src={picture.user.avatar} width="70%"></img> 
         </div>
         <div>
           <Link to={`/users/${picture.user.id}`}>
@@ -330,15 +330,15 @@ const SinglePicturePage = ({
       </div>
 
       <FullScreen handle={pictureHandle}>
-        <div className='fullscreen-image'>
+        <div className="fullscreen-image">
           <img src={picture.imgURL}></img>
         </div>
       </FullScreen>
-      <div className='picture-list-container'>
+      <div className="picture-list-container">
         {allPictures.map((pic) => (
-          <div className='picture-list-picture-box'>
+          <div className="picture-list-picture-box">
             {pic.id === picture.id ? (
-              <div className='picture-list-active-image'>
+              <div className="picture-list-active-image">
                 <img src={pic.imgURL}></img>
               </div>
             ) : (

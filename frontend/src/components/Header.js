@@ -2,12 +2,19 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import firebase from 'firebase/app'
 import { Link, useHistory } from 'react-router-dom'
-import { Search, Language, Notifications } from '@material-ui/icons'
+import {
+  Search,
+  Language,
+  Notifications,
+  FormatIndentDecreaseTwoTone,
+} from '@material-ui/icons'
 import SearchModal from './SearchModal'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Settings from '@material-ui/icons/Settings'
+import { DateTime } from 'luxon'
 import '../styles/header.css'
+
 const Header = ({
   user,
   setUser,
@@ -114,8 +121,13 @@ const Header = ({
     setMenuAnchorEl(null)
   }
 
+  const formatDate = (date) => {
+    const d = DateTime.fromISO(date)
+    return `${d.weekYear}-${d.month}-${d.day} ${d.hour}:${d.minute}`
+  }
+
   return (
-    <div className='main-header-container'>
+    <div className="main-header-container">
       <div>
         <SearchModal
           open={searchModalOpen}
@@ -127,43 +139,43 @@ const Header = ({
         ></SearchModal>
       </div>
 
-      <div className='header-title'>
-        <Link to='/' style={{ textDecoration: 'none', color: 'black' }}>
+      <div className="header-title">
+        <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
           <h1>TravelBlogs</h1>
         </Link>
       </div>
-      <div className='header-link-container'>
-        <Link to='/blogs'>
-          <div className='header-link'>
+      <div className="header-link-container">
+        <Link to="/blogs">
+          <div className="header-link">
             <h1>Blogs</h1>
           </div>
         </Link>
-        <Link to='/gallery'>
-          <div className='header-link'>
+        <Link to="/gallery">
+          <div className="header-link">
             <h1>Gallery</h1>
           </div>
         </Link>
-        <Link to='/explore' style={{ color: 'black' }}>
-          <div className='header-link'>
-            <Language fontSize='large' />
+        <Link to="/explore" style={{ color: 'black' }}>
+          <div className="header-link">
+            <Language fontSize="large" />
           </div>
         </Link>
       </div>
 
       <div style={{ display: 'flex' }}>
         <Search
-          id='header-search-icon'
+          id="header-search-icon"
           onClick={() => setSearchModalOpen(true)}
         ></Search>
         <div
-          className='notification-container'
+          className="notification-container"
           onClick={handleNotificationMenuOpen}
         >
-          <Notifications id='notifications-bell' />
+          <Notifications id="notifications-bell" />
 
           {unreadNotifications.length > 0 && (
-            <div className='notification-count'>
-              <div className='notification-number'>
+            <div className="notification-count">
+              <div className="notification-number">
                 {unreadNotifications.length}
               </div>
             </div>
@@ -178,17 +190,25 @@ const Header = ({
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-          <div className='notification-menu-content'>
+          <div className="notification-menu-content">
+            {userNotifications.length===0 && <div>You don't have any notifications</div>}
             {unreadNotifications.map((n) => (
               <div
-                className='unread-notification notification-message'
+                className="unread-notification notification-message"
                 onClick={() => handleNotificationMessageClick(n)}
               >
                 {n.content.message}
+                <div>{formatDate(n.createdAt)}</div>
               </div>
             ))}
             {readNotifications.map((n) => (
-              <div className='read-notification notification-message' onClick={()=> handleReadNotificationClick(n)}>{n.content.message}</div>
+              <div
+                className="read-notification notification-message"
+                onClick={() => handleReadNotificationClick(n)}
+              >
+                {n.content.message}
+                <div>{formatDate(n.createdAt)}</div>
+              </div>
             ))}
           </div>
         </Menu>
@@ -198,9 +218,9 @@ const Header = ({
         >
           <img
             src={user.avatar}
-            height='40'
-            width='40'
-            alt='avatar'
+            height="40"
+            width="40"
+            alt="avatar"
             style={{ borderRadius: '50%' }}
           ></img>
         </div>
@@ -215,7 +235,7 @@ const Header = ({
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Link
-          to='/createblog'
+          to="/createblog"
           style={{
             textDecoration: 'none',
             color: 'black',
@@ -225,7 +245,7 @@ const Header = ({
         </Link>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>{' '}
         <MenuItem onClick={handleMenuClose}>
-          <Link to='/settings'>
+          <Link to="/settings">
             <Settings></Settings>
           </Link>
         </MenuItem>

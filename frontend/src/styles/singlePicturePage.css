@@ -17,3 +17,7 @@
     width: fit-content;
     background-color: #FFFFFF;
   }
+
+  .vote-container-element {
+    height: 33.333%;
+  }
