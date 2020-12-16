@@ -20,7 +20,8 @@ const Blogs = ({ allBlogs }) => {
   const [sortBy, setSortBy] = useState('Newest')
 
   const param = queryString.parse(useLocation().search)
-
+  console.log(param)
+  
   useEffect(() => {
     if (blogs) {
       let sortedBlogs = blogs.slice()
@@ -49,8 +50,11 @@ const Blogs = ({ allBlogs }) => {
         })
         setBlogs(sortedBlogs)
       }
+      if(param.country){
+        sortedBlogs = sortedBlogs.filter((blog) => blog.locations.map((loc) => loc.country.toLowerCase() === param.country.toLowerCase()))
+      }
     }
-  }, [sortBy])
+  }, [sortBy, param.country])
 
   if (!blogs) return null
 

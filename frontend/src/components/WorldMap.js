@@ -1,14 +1,13 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import GoogleMapReact from 'google-map-react'
 import MarkerClusterer from '@googlemaps/markerclustererplus'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
-import ChatOutlined from '@material-ui/icons/ChatOutlined'
-import PhotoCamera from '@material-ui/icons/PhotoCamera'
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import { Link } from 'react-router-dom'
 import { Button } from '@material-ui/core'
 import '../index.css'
-
+import pictureIcon from '../images/photo_camera.svg'
+import blogIcon from '../images/message.svg'
 const PopUp = ({ selected, handle, type }) => {
   console.log(selected)
   console.log(type)
@@ -85,6 +84,8 @@ const WorldMap = ({ allBlogs, allPictures }) => {
           lat: pic.location.lat,
           lng: pic.location.lng,
         },
+        icon: pictureIcon,
+        title: "Picture"
       })
       maps.event.addListener(marker, 'click', () =>
         setActivePopUp({ data: pic, type: 'image' })
@@ -96,6 +97,8 @@ const WorldMap = ({ allBlogs, allPictures }) => {
       blog.locations.map((loc) => {
         let marker = new maps.Marker({
           position: { lat: loc.lat, lng: loc.lng },
+          icon: blogIcon,
+          title: "Blog",
         })
         maps.event.addListener(marker, 'click', () =>
           setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
