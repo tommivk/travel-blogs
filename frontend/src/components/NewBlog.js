@@ -40,11 +40,11 @@ const UserImagesModal = ({
         }}
       >
         <div
-          className='user-image-modal-content'
+          className="user-image-modal-content"
           style={{ height: '100%', width: '100%' }}
         >
           <h2>My Images</h2>
-          <div className='user-image-modal-pictures'>
+          <div className="user-image-modal-pictures">
             {user.pictures.map((pic) => (
               <img
                 onClick={() => handleImagePick(pic.imgURL)}
@@ -53,8 +53,8 @@ const UserImagesModal = ({
             ))}
           </div>
           <Button
-            color='primary'
-            variant='contained'
+            color="primary"
+            variant="contained"
             onClick={() => setUploadModalOpen(true)}
           >
             Upload Images
@@ -108,6 +108,11 @@ const NewBlog = ({
     setUserImageModalOpen(false)
   }
 
+  const handleLocationRemove = (location) => {
+    let locationCopy = locations
+    locationCopy = locationCopy.filter((loc) => loc !== location)
+    setLocations(locationCopy)
+  }
   const handleBlogSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -151,8 +156,8 @@ const NewBlog = ({
   switch (activeStep) {
     case 0:
       return (
-        <div className='new-blog-main-container'>
-          <div className='new-blog-stepper-container'>
+        <div className="new-blog-main-container">
+          <div className="new-blog-stepper-container">
             <Stepper alternativeLabel activeStep={activeStep}>
               {steps.map((step, index) => (
                 <Step>
@@ -166,7 +171,7 @@ const NewBlog = ({
               ))}
             </Stepper>
           </div>
-          <div className='new-blog-info-container'>
+          <div className="new-blog-info-container">
             <ImageUploadModal
               uploadModalOpen={uploadModalOpen}
               closeModal={closeUploadModal}
@@ -182,18 +187,18 @@ const NewBlog = ({
                 upload images
               </Button>
             </div> */}
-            <div className='new-blog-textfield'>
+            <div className="new-blog-textfield">
               <TextField
-                label='Title'
-                variant='outlined'
+                label="Title"
+                variant="outlined"
                 onChange={({ target }) => setTitle(target.value)}
               ></TextField>
             </div>
-            <div className='new-blog-textfield'>
+            <div className="new-blog-textfield">
               <TextField
-                label='Blog Description'
+                label="Blog Description"
                 onChange={({ target }) => setDescription(target.value)}
-                variant='outlined'
+                variant="outlined"
               ></TextField>
             </div>
             <div>
@@ -201,7 +206,7 @@ const NewBlog = ({
                 Choose Cover Image
               </Button>
               {headerImageURL && (
-                <img src={headerImageURL} height='200px'></img>
+                <img src={headerImageURL} height="200px"></img>
               )}
               <UserImagesModal
                 closeModal={closeUserImageModal}
@@ -217,15 +222,50 @@ const NewBlog = ({
             ></TextField> */}
             </div>
           </div>
-          <div className='new-blog-next-button'>
+          <div className="new-blog-nav-button-right">
             <Button onClick={handleNext}>Next</Button>
           </div>
         </div>
       )
     case 1:
       return (
-        <div className='new-blog-main-container'>
+        <div className="new-blog-main-container">
           <div>
+            <div className="new-blog-stepper-container">
+              <Stepper alternativeLabel activeStep={activeStep}>
+                {steps.map((step, index) => (
+                  <Step>
+                    <StepLabel
+                      onClick={() => setActiveStep(index)}
+                      StepIconComponent={stepperIcons}
+                    >
+                      {step}
+                    </StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
+            </div>
+            <Editor
+              value={content}
+              init={{
+                height: 600,
+                menubar: true,
+                paste_data_images: true,
+                plugins: ['paste'],
+              }}
+              onEditorChange={handleBlogChange}
+            ></Editor>
+          </div>
+          <div className="new-blog-bottom-navigation">
+            <Button onClick={handleBack}>Back</Button>
+            <Button onClick={handleNext}>Next</Button>
+          </div>
+        </div>
+      )
+    case 2:
+      return (
+        <div className="new-blog-main-container">
+          <div className="new-blog-stepper-container">
             <Stepper alternativeLabel activeStep={activeStep}>
               {steps.map((step, index) => (
                 <Step>
@@ -238,44 +278,25 @@ const NewBlog = ({
                 </Step>
               ))}
             </Stepper>
-
-            <Editor
-              value={content}
-              init={{
-                height: 600,
-                menubar: true,
-                paste_data_images: true,
-                plugins: ['paste'],
-              }}
-              onEditorChange={handleBlogChange}
-            ></Editor>
-            <div style={{ float: 'left' }}>
-              <Button onClick={handleBack}>Back</Button>
-              <Button onClick={handleNext}>Next</Button>
+          </div>
+          <div className="location-select-wrapper">
+            <div>
+              <h3>Locations selected</h3>
+              {locations.map((loc) => (
+                <div>
+                  {loc.city}, {loc.country}
+                  <span onClick={() => handleLocationRemove(loc)}>(x)</span>
+                </div>
+              ))}
+            </div>
+            <div className="location-select-form">
+              <AddLocations
+                locations={locations}
+                setLocations={setLocations}
+              ></AddLocations>
             </div>
           </div>
-        </div>
-      )
-    case 2:
-      return (
-        <div className='new-blog-main-container'>
-          <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step, index) => (
-              <Step>
-                <StepLabel
-                  onClick={() => setActiveStep(index)}
-                  StepIconComponent={stepperIcons}
-                >
-                  {step}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <AddLocations
-            locations={locations}
-            setLocations={setLocations}
-          ></AddLocations>
-          <div style={{ float: 'left' }}>
+          <div className="new-blog-bottom-navigation">
             <Button onClick={handleBack}>Back</Button>
             <Button onClick={handleNext}>Next</Button>
           </div>
@@ -283,44 +304,52 @@ const NewBlog = ({
       )
     case 3:
       return (
-        <div className='new-blog-main-container'>
-          <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step, index) => (
-              <Step>
-                <StepLabel
-                  onClick={() => setActiveStep(index)}
-                  StepIconComponent={stepperIcons}
-                >
-                  {step}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <div style={{ float: 'left' }}>
-            <Button onClick={handleBack}>Back</Button>
+        <div className="new-blog-main-container">
+          <div className="new-blog-stepper-container">
+            <Stepper alternativeLabel activeStep={activeStep}>
+              {steps.map((step, index) => (
+                <Step>
+                  <StepLabel
+                    onClick={() => setActiveStep(index)}
+                    StepIconComponent={stepperIcons}
+                  >
+                    {step}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
           </div>
-          <form onSubmit={handleBlogSubmit}>
-            <Button style={{ float: 'right' }} type='submit'>
-              Submit
-            </Button>
-          </form>
+          <div className="new-blog-bottom-navigation">
+            <div>
+              <Button onClick={handleBack}>Back</Button>
+            </div>
+            <div>
+              <form onSubmit={handleBlogSubmit}>
+                <Button className="new-blog-nav-button-right" type="submit">
+                  Submit
+                </Button>
+              </form>
+            </div>
+          </div>
         </div>
       )
     case 4:
       return (
-        <div className='new-blog-main-container'>
-          <Stepper alternativeLabel activeStep={activeStep}>
-            {steps.map((step, index) => (
-              <Step>
-                <StepLabel
-                  onClick={() => setActiveStep(index)}
-                  StepIconComponent={stepperIcons}
-                >
-                  {step}
-                </StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+        <div className="new-blog-main-container">
+          <div className="new-blog-stepper-container">
+            <Stepper alternativeLabel activeStep={activeStep}>
+              {steps.map((step, index) => (
+                <Step>
+                  <StepLabel
+                    onClick={() => setActiveStep(index)}
+                    StepIconComponent={stepperIcons}
+                  >
+                    {step}
+                  </StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </div>
           Blog submitted!
         </div>
       )

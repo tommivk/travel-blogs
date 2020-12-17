@@ -1,61 +1,86 @@
-.new-blog-main-container{
-    background-color: rgb(255, 255, 255);
-    height: 94vh;
-    width: 70vw;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    margin: 10px
+.new-blog-main-container {
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  height: 92vh;
+  max-height: 94vh;
+  width: 70vw;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin: 10px;
 }
 
 .new-blog-info-container {
-    /* background-color: rgb(105, 84, 84); */
-    position: absolute;
-    left: 50%;
-    top: 20%;
-    transform: translate(-50%,0);
-    
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-
 .new-blog-next-button {
-    position: absolute;
-    right: 5%;
-    bottom: 5%;
-    
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
 }
 
 .new-blog-textfield {
-    margin: 30px;
+  margin: 30px;
 }
 
-.user-image-modal-pictures{
-    height: 90%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    
+.user-image-modal-pictures {
+  height: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
 }
-.user-image-modal-pictures img{
-    width: 30%;
-    height: 40%;
-    object-fit: contain;
-    cursor: pointer;
+
+.user-image-modal-pictures img {
+  width: 30%;
+  height: 40%;
+  object-fit: contain;
+  cursor: pointer;
 }
 
 .user-image-modal-content {
-    text-align: center;
-    background-color: #33302a;
-}
-.user-image-modal-content  .MuiButton-root  {
-    position: absolute;
-    top: 0%;
-    right: 0%;
+  text-align: center;
+  background-color: #33302a;
+  overflow-y: auto;
 }
 
-.new-blog-stepper-container{
-    
-    width: 60%;
-  
+.user-image-modal-content .MuiButton-root {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+}
+
+.new-blog-stepper-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.location-select-wrapper {
+  height: 50%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.location-select-form {
+  width: 400px;
+}
+
+.new-blog-bottom-navigation {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.new-blog-nav-button-right {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
 }
