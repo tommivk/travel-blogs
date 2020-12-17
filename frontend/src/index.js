@@ -145,6 +145,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -166,6 +167,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -181,6 +183,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -192,6 +195,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -209,6 +213,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -227,6 +232,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -243,6 +249,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -259,6 +266,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -270,6 +278,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
+            allBlogs = {allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}

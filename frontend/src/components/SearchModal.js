@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, Checkbox } from '@material-ui/core'
-import '../styles/searchModal.css'
 import { Link } from 'react-router-dom'
+import '../styles/searchModal.css'
+
 const SearchModal = ({
   open,
   searchFilter,
   setSearchFilter,
   closeSearchModal,
   allPictures,
+  allBlogs,
   allUsers,
 }) => {
   const [searchCities, setSearchCities] = useState(true)
@@ -22,39 +24,75 @@ const SearchModal = ({
     setSearchUsers(true)
   }, [open])
 
-  if (!open || !allPictures) return null
+  if (!open || !allPictures || !allBlogs) return null
 
-  const cities = allPictures.filter((pic) =>
-    pic.location.city
-      ? pic.location.city.toLowerCase().includes(searchFilter.toLowerCase())
-      : null
+  let blogCityMatches = []
+  let blogCountryMatches = []
+
+  allBlogs.map((blog) =>
+    blog.locations.map((loc) => {
+      if (
+        loc.city &&
+        loc.city.toLowerCase().includes(searchFilter.toLowerCase())
+      ) {
+        blogCityMatches.push(loc.city)
+      }
+      if (
+        loc.country &&
+        loc.country.toLowerCase().includes(searchFilter.toLowerCase())
+      ) {
+        blogCountryMatches.push(loc.country)
+      }
+    })
   )
-  const foundCities = [...new Set(cities.map((c) => c.location.city))]
-  const countries = allPictures.filter((pic) =>
-    pic.location.country
-      ? pic.location.country.toLowerCase().includes(searchFilter.toLowerCase())
-      : null
-  )
-  const foundCountries = [...new Set(countries.map((c) => c.location.country))]
+
+  const foundBlogCities = [...new Set(blogCityMatches)]
+  const foundBlogCountries = [...new Set(blogCountryMatches)]
+
+  let pictureCityMatches = []
+  let pictureCountryMatches = []
+
+  allPictures.map((pic) => {
+    if (
+      pic.location &&
+      pic.location.city &&
+      pic.location.city.toLowerCase().includes(searchFilter.toLowerCase())
+    ) {
+      pictureCityMatches.push(pic.location.city)
+    }
+    if (
+      pic.location &&
+      pic.location.country &&
+      pic.location.country.toLowerCase().includes(searchFilter.toLowerCase())
+    ) {
+      pictureCountryMatches.push(pic.location.country)
+    }
+  })
+
+  const foundPictureCities = [...new Set(pictureCityMatches)]
+  const foundPictureCountries = [...new Set(pictureCountryMatches)]
+
+  const foundCities = foundBlogCities.concat(foundPictureCities)
+  const foundCountries = foundBlogCountries.concat(foundPictureCountries)
 
   const foundUsers = allUsers.filter((user) =>
     user.username.toLowerCase().includes(searchFilter.toLowerCase())
   )
 
-  const foundPicture = allPictures.filter((pic) =>
+  const foundPictures = allPictures.filter((pic) =>
     pic.title.toLowerCase().includes(searchFilter.toLowerCase())
   )
 
   return (
     <div>
       <Modal open={open} onClose={closeSearchModal}>
-        <div className='modal-content'>
+        <div className="modal-content">
           <button style={{ float: 'right' }} onClick={closeSearchModal}>
             close
           </button>
           <input
-            autoComplete='off'
-            id='search-modal-input'
+            autoComplete="off"
+            id="search-modal-input"
             autoFocus
             value={searchFilter}
             onChange={({ target }) => setSearchFilter(target.value)}
@@ -81,18 +119,18 @@ const SearchModal = ({
               onChange={() => setSearchUsers(!searchUsers)}
             ></Checkbox>
           </div>
-          <div className='search-bottom-container'>
-            <div className='search-bottom-section'>
+          <div className="search-bottom-container">
+            <div className="search-bottom-section">
               {searchPictures && (
                 <div>
                   <h2>Pictures</h2>
-                  {foundPicture.length === 0 ? (
+                  {foundPictures.length === 0 ? (
                     'No pictures found'
                   ) : (
                     <div>
                       <ul>
                         <div>
-                          {foundPicture.map((pic) => (
+                          {foundPictures.map((pic) => (
                             <li>
                               <Link to={`/gallery/${pic.id}`}>{pic.title}</Link>
                             </li>
@@ -104,7 +142,7 @@ const SearchModal = ({
                 </div>
               )}
             </div>
-            <div className='search-bottom-section'>
+            <div className="search-bottom-section">
               {searchCities && (
                 <div>
                   <h2>Cities</h2>
@@ -116,15 +154,26 @@ const SearchModal = ({
                         {foundCities.map((city) => (
                           <li key={city}>
                             {city}
-
-                            <Link
-                              to={{
-                                pathname: '/gallery',
-                                search: `?city=${city}`,
-                              }}
-                            >
-                              <button>Pictures</button>
-                            </Link>
+                            {foundPictureCities.includes(city) && (
+                              <Link
+                                to={{
+                                  pathname: '/gallery',
+                                  search: `?city=${city}`,
+                                }}
+                              >
+                                <button>Pictures</button>
+                              </Link>
+                            )}
+                            {foundBlogCities.includes(city) && (
+                              <Link
+                                to={{
+                                  pathname: '/blogs',
+                                  search: `?city=${city}`,
+                                }}
+                              >
+                                <button>Blogs</button>
+                              </Link>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -133,7 +182,7 @@ const SearchModal = ({
                 </div>
               )}
             </div>
-            <div className='search-bottom-section'>
+            <div className="search-bottom-section">
               {searchCountries && (
                 <div>
                   <h2>Countries</h2>
@@ -144,15 +193,27 @@ const SearchModal = ({
                       <ul>
                         {foundCountries.map((country) => (
                           <li key={country}>
-                            {country}{' '}
-                            <Link
-                              to={{
-                                pathname: '/gallery',
-                                search: `?country=${country}`,
-                              }}
-                            >
-                              <button>Pictures</button>
-                            </Link>
+                            {country}
+                            {foundPictureCountries.includes(country) && (
+                              <Link
+                                to={{
+                                  pathname: '/gallery',
+                                  search: `?country=${country}`,
+                                }}
+                              >
+                                <button>Pictures</button>
+                              </Link>
+                            )}
+                            {foundBlogCountries.includes(country) && (
+                              <Link
+                                to={{
+                                  pathname: '/blogs',
+                                  search: `?country=${country}`,
+                                }}
+                              >
+                                <button>Blogs</button>
+                              </Link>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -161,7 +222,7 @@ const SearchModal = ({
                 </div>
               )}
             </div>
-            <div className='search-bottom-section'>
+            <div className="search-bottom-section">
               {searchUsers && (
                 <div>
                   <h2>Users</h2>

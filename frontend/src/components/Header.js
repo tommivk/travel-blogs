@@ -19,6 +19,7 @@ const Header = ({
   user,
   setUser,
   allPictures,
+  allBlogs,
   allUsers,
   userNotifications,
   setUserNotifications,
@@ -135,6 +136,7 @@ const Header = ({
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
           allPictures={allPictures}
+          allBlogs = {allBlogs}
           allUsers={allUsers}
         ></SearchModal>
       </div>
