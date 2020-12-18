@@ -10,9 +10,8 @@ loginRouter.post('/', async (req, res, next) => {
     if (!body.username || !body.password) {
       return res.send(401).end()
     }
-    const user = await User.findOne({ username: body.username }).populate(
-      'pictures'
-    )
+
+    const user = await User.findOne({ username: body.username })
 
     const passwordCorrect =
       user === null
@@ -24,6 +23,8 @@ loginRouter.post('/', async (req, res, next) => {
         error: 'invalid username or password',
       })
     }
+
+    await user.populate('pictures').populate('blogs').execPopulate()
 
     const userForToken = {
       username: user.username,
@@ -42,6 +43,7 @@ loginRouter.post('/', async (req, res, next) => {
       avatar: user.avatar,
       username: user.username,
       pictures: user.pictures,
+      blogs: user.blogs,
       id: user._id,
     })
   } catch (error) {
