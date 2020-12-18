@@ -188,7 +188,7 @@ const App = () => {
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
           ></Header>
-          <WorldMap allBlogs={allBlogs} allPictures={allPictures}></WorldMap>
+          <WorldMap allBlogs={allBlogs} allPictures={allPictures} user={user}></WorldMap>
         </Route>
         <Route path="/gallery/:id">
           <Header

@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import GoogleMapReact from 'google-map-react'
 import MarkerClusterer from '@googlemaps/markerclustererplus'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import { Link } from 'react-router-dom'
 import { Button } from '@material-ui/core'
-import '../index.css'
 import pictureIcon from '../images/photo_camera.svg'
 import blogIcon from '../images/message.svg'
+import ChatOutlined from '@material-ui/icons/ChatOutlined'
+import PhotoCamera from '@material-ui/icons/PhotoCamera'
+import Settings from '@material-ui/icons/Settings'
+import Switch from '@material-ui/core/Switch'
+import '../styles/worldMap.css'
+
 const PopUp = ({ selected, handle, type }) => {
   console.log(selected)
   console.log(type)
@@ -46,17 +51,16 @@ const PopUp = ({ selected, handle, type }) => {
       <div style={card}>
         <h2>{selected.title}</h2>
         <div style={{ position: 'relative' }}>
-          <img src={selected.imgURL} width='200' height='200'></img>
+          <img src={selected.imgURL} width="200" height="200"></img>
           <div
             style={{ position: 'absolute', top: '1%', right: '2%' }}
             onClick={handle.enter}
           >
-            <Fullscreen fontSize='large' color='secondary'></Fullscreen>
+            <Fullscreen fontSize="large" color="secondary"></Fullscreen>
           </div>
         </div>
 
         <Link to={`/gallery/${selected.id}`}>
-          {' '}
           <Button>Open In Gallery</Button>
         </Link>
       </div>
@@ -64,56 +68,77 @@ const PopUp = ({ selected, handle, type }) => {
   )
 }
 
-const WorldMap = ({ allBlogs, allPictures }) => {
+const WorldMap = ({ allBlogs, allPictures, user }) => {
+  const [blogs, setBlogs] = useState(allBlogs)
+  const [pictures, setPictures] = useState(allPictures)
+  const [showSettings, setShowSettings] = useState(false)
+  const [showUserContentOnly, setShowUserContentOnly] = useState(false)
   const [activePopUp, setActivePopUp] = useState({
     data: null,
     type: null,
     blogLocation: null,
   })
+
   const handle = useFullScreenHandle()
-  if (!allBlogs || !allPictures) return null
+  const mapRef = useRef(null)
+  useEffect(() => {
+    if (user) {
+      if (showUserContentOnly) {
+        setPictures(user.pictures)
+        setBlogs(user.blogs)
+      } else {
+        setPictures(allPictures)
+        setBlogs(allBlogs)
+      }
+    }
+  }, [showUserContentOnly])
 
-  const picturesWithLocation = allPictures.filter(
-    (pic) => pic.location.lat !== null && pic.location.lng !== null
-  )
+  console.log(blogs, pictures)
+  console.log(showUserContentOnly)
+  if (!allBlogs || !allPictures || !user) return null
+  console.log(user)
 
-  const mapsApiLoaded = (map, maps) => {
+  console.log(pictures)
+
+  const picturesWithLocation = pictures
+    ? pictures.filter(
+        (pic) => pic.location.lat !== null && pic.location.lng !== null
+      )
+    : []
+
+  const mapsApiLoaded = (map, maps) => {}
+
+  const getMarkers = () => {
+    console.log(picturesWithLocation)
+    console.log(blogs)
     let markers = picturesWithLocation.map((pic) => {
-      let marker = new maps.Marker({
-        position: {
-          lat: pic.location.lat,
-          lng: pic.location.lng,
-        },
-        icon: pictureIcon,
-        title: "Picture"
-      })
-      maps.event.addListener(marker, 'click', () =>
-        setActivePopUp({ data: pic, type: 'image' })
+      let marker = (
+        <PhotoCamera
+          lat={pic.location.lat}
+          lng={pic.location.lng}
+          onClick={() => setActivePopUp({ data: pic, type: 'image' })}
+        ></PhotoCamera>
       )
       return marker
     })
 
-    allBlogs.map((blog) =>
-      blog.locations.map((loc) => {
-        let marker = new maps.Marker({
-          position: { lat: loc.lat, lng: loc.lng },
-          icon: blogIcon,
-          title: "Blog",
+    if (blogs) {
+      blogs.map((blog) =>
+        blog.locations.map((loc) => {
+          let marker = (
+            <ChatOutlined
+              lat={loc.lat}
+              lng={loc.lng}
+              onClick={() =>
+                setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
+              }
+            ></ChatOutlined>
+          )
+          markers.push(marker)
         })
-        maps.event.addListener(marker, 'click', () =>
-          setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
-        )
-        console.log(marker)
-        markers.push(marker)
-      })
-    )
-
-    const markerCluster = new MarkerClusterer(map, markers, {
-      imagePath:
-        'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-      gridSize: 10,
-      minimumClusterSize: 2,
-    })
+      )
+    }
+    return markers
   }
 
   return (
@@ -125,6 +150,19 @@ const WorldMap = ({ allBlogs, allPictures }) => {
         position: 'absolute',
       }}
     >
+      <Settings
+        id="settings-gear-icon"
+        onClick={() => setShowSettings(!showSettings)}
+      ></Settings>
+      {showSettings && (
+        <div className="map-filter-box">
+          Show My Content Only
+          <Switch
+            checked={showUserContentOnly}
+            onChange={() => setShowUserContentOnly(!showUserContentOnly)}
+          ></Switch>
+        </div>
+      )}
       <GoogleMapReact
         options={{ gestureHandling: 'greedy' }}
         bootstrapURLKeys={{
@@ -132,6 +170,7 @@ const WorldMap = ({ allBlogs, allPictures }) => {
         }}
         defaultCenter={{ lat: 59, lng: 30 }}
         defaultZoom={2}
+        ref={mapRef}
         onGoogleApiLoaded={({ map, maps }) => mapsApiLoaded(map, maps)}
         yesIWantToUseGoogleMapApiInternals
       >
@@ -154,6 +193,8 @@ const WorldMap = ({ allBlogs, allPictures }) => {
             type={activePopUp.type}
           ></PopUp>
         )}
+
+        {getMarkers()}
       </GoogleMapReact>
 
       <FullScreen handle={handle}>
