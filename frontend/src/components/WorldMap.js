@@ -73,6 +73,8 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
   const [pictures, setPictures] = useState(allPictures)
   const [showSettings, setShowSettings] = useState(false)
   const [showUserContentOnly, setShowUserContentOnly] = useState(false)
+  const [showPictures, setShowPictures] = useState(true)
+  const [showBlogs, setShowBlogs] = useState(true)
   const [activePopUp, setActivePopUp] = useState({
     data: null,
     type: null,
@@ -91,7 +93,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
         setBlogs(allBlogs)
       }
     }
-  }, [showUserContentOnly])
+  }, [showUserContentOnly, showBlogs, showPictures])
 
   console.log(blogs, pictures)
   console.log(showUserContentOnly)
@@ -111,18 +113,20 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
   const getMarkers = () => {
     console.log(picturesWithLocation)
     console.log(blogs)
-    let markers = picturesWithLocation.map((pic) => {
-      let marker = (
-        <PhotoCamera
-          lat={pic.location.lat}
-          lng={pic.location.lng}
-          onClick={() => setActivePopUp({ data: pic, type: 'image' })}
-        ></PhotoCamera>
-      )
-      return marker
-    })
-
-    if (blogs) {
+    let markers = []
+    if (picturesWithLocation && showPictures) {
+      markers = picturesWithLocation.map((pic) => {
+        let marker = (
+          <PhotoCamera
+            lat={pic.location.lat}
+            lng={pic.location.lng}
+            onClick={() => setActivePopUp({ data: pic, type: 'image' })}
+          ></PhotoCamera>
+        )
+        return marker
+      })
+    }
+    if (blogs && showBlogs) {
       blogs.map((blog) =>
         blog.locations.map((loc) => {
           let marker = (
@@ -156,11 +160,27 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
       ></Settings>
       {showSettings && (
         <div className="map-filter-box">
-          Show My Content Only
-          <Switch
-            checked={showUserContentOnly}
-            onChange={() => setShowUserContentOnly(!showUserContentOnly)}
-          ></Switch>
+          <div>
+            Show My Content Only
+            <Switch
+              checked={showUserContentOnly}
+              onChange={() => setShowUserContentOnly(!showUserContentOnly)}
+            ></Switch>
+          </div>
+          <div>
+            Show blogs
+            <Switch
+              checked={showBlogs}
+              onChange={() => setShowBlogs(!showBlogs)}
+            ></Switch>
+          </div>
+          <div>
+            Show pictures
+            <Switch
+              checked={showPictures}
+              onChange={() => setShowPictures(!showPictures)}
+            ></Switch>
+          </div>
         </div>
       )}
       <GoogleMapReact
