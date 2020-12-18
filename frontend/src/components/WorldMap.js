@@ -75,6 +75,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
   const [showUserContentOnly, setShowUserContentOnly] = useState(false)
   const [showPictures, setShowPictures] = useState(true)
   const [showBlogs, setShowBlogs] = useState(true)
+  const [markerClusterer, setMarkerClusterer] = useState(null)
   const [activePopUp, setActivePopUp] = useState({
     data: null,
     type: null,
@@ -83,24 +84,73 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
 
   const handle = useFullScreenHandle()
   const mapRef = useRef(null)
+
+  const getMarkers = () => {
+    if (!mapRef.current) return null
+    let markers = []
+    const maps = mapRef.current.maps_
+
+    if (maps && picturesWithLocation && showPictures) {
+      picturesWithLocation.map((pic) => {
+        let marker = new maps.Marker({
+          position: { lat: pic.location.lat, lng: pic.location.lng },
+          icon: pictureIcon,
+          title: 'Picture',
+        })
+        maps.event.addListener(marker, 'click', () =>
+          setActivePopUp({ data: pic, type: 'image' })
+        )
+        markers.push(marker)
+      })
+    }
+
+    if (markerClusterer) {
+      const mcCopy = markerClusterer
+      mcCopy.clearMarkers()
+      if (blogs && showBlogs && maps && markerClusterer) {
+        blogs.map((blog) =>
+          blog.locations.map((loc) => {
+            let marker = new maps.Marker({
+              position: { lat: loc.lat, lng: loc.lng },
+              icon: blogIcon,
+              title: 'Blog',
+            })
+            maps.event.addListener(marker, 'click', () =>
+              setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
+            )
+
+            markers.push(marker)
+          })
+        )
+      }
+      mcCopy.addMarkers(markers)
+      setMarkerClusterer(mcCopy)
+    }
+  }
+
   useEffect(() => {
     if (user) {
       if (showUserContentOnly) {
         setPictures(user.pictures)
         setBlogs(user.blogs)
+        getMarkers()
       } else {
         setPictures(allPictures)
         setBlogs(allBlogs)
       }
     }
+  }, [showUserContentOnly])
+
+  useEffect(() => {
+    setActivePopUp(null)
+    if (mapRef.current) {
+      getMarkers()
+      console.log('getMarkers')
+    }
   }, [showUserContentOnly, showBlogs, showPictures])
 
-  console.log(blogs, pictures)
-  console.log(showUserContentOnly)
   if (!allBlogs || !allPictures || !user) return null
-  console.log(user)
 
-  console.log(pictures)
 
   const picturesWithLocation = pictures
     ? pictures.filter(
@@ -108,41 +158,42 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
       )
     : []
 
-  const mapsApiLoaded = (map, maps) => {}
-
-  const getMarkers = () => {
-    console.log(picturesWithLocation)
-    console.log(blogs)
+  const mapsApiLoaded = (map, maps) => {
     let markers = []
-    if (picturesWithLocation && showPictures) {
-      markers = picturesWithLocation.map((pic) => {
-        let marker = (
-          <PhotoCamera
-            lat={pic.location.lat}
-            lng={pic.location.lng}
-            onClick={() => setActivePopUp({ data: pic, type: 'image' })}
-          ></PhotoCamera>
-        )
-        return marker
+    picturesWithLocation.map((pic) => {
+      let marker = new maps.Marker({
+        position: { lat: pic.location.lat, lng: pic.location.lng },
+        icon: pictureIcon,
+        title: 'Picture',
       })
-    }
-    if (blogs && showBlogs) {
-      blogs.map((blog) =>
-        blog.locations.map((loc) => {
-          let marker = (
-            <ChatOutlined
-              lat={loc.lat}
-              lng={loc.lng}
-              onClick={() =>
-                setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
-              }
-            ></ChatOutlined>
-          )
-          markers.push(marker)
-        })
+      maps.event.addListener(marker, 'click', () =>
+        setActivePopUp({ data: pic, type: 'image' })
       )
-    }
-    return markers
+      markers.push(marker)
+    })
+    blogs.map((blog) =>
+      blog.locations.map((loc) => {
+        let marker = new maps.Marker({
+          position: { lat: loc.lat, lng: loc.lng },
+          icon: blogIcon,
+          title: 'Blog',
+        })
+        maps.event.addListener(marker, 'click', () =>
+          setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
+        )
+        console.log(marker)
+        markers.push(marker)
+      })
+    )
+    setMarkerClusterer(
+      new MarkerClusterer(map, markers, {
+        imagePath:
+          'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+        gridSize: 1,
+        minimumClusterSize: 2,
+        zoomOnClick: false,
+      })
+    )
   }
 
   return (
@@ -213,8 +264,6 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
             type={activePopUp.type}
           ></PopUp>
         )}
-
-        {getMarkers()}
       </GoogleMapReact>
 
       <FullScreen handle={handle}>
