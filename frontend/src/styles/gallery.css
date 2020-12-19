@@ -1,13 +1,49 @@
+.gallery-main-container {
+  width: 100vw;
+  height: 94vh;
+  overflow-y: scroll;
+}
+
+.gallery-main-content{
+  background-color: #191e36;
+  width: 85vw;
+  height: 94vh;
+  max-width: 85vw;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: block;
+  margin: auto;
+}
+
 .gallery-card {
-      position: relative;
-        width: 200px;
-        height: 280px;
-        background-color: #231A03;
-        margin: 10px;
-        border-radius: 4px;
-        transition: transform 0.2s;
+  position: relative;
+  width: 200px;
+  height: 280px;
+  background-color: #231a03;
+  margin: 10px;
+  border-radius: 4px;
+  transition: transform 0.2s;
 }
 
 .gallery-card:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
+
+.gallery-cards-wrapper {
+}
+
+.gallery-cards {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.pic-pseudo-element {
+  height: 0px;
+  width: 200px;
+  margin: 10px;
+  content: "";
+}
+

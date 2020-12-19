@@ -79,7 +79,7 @@ const Blogs = ({ allBlogs }) => {
 
   if (displayMode === 1) {
     return (
-      <div className="main-container swiper-wrapper">
+      <div className="blogs-main-container swiper-wrapper">
         <div className="display-mode-buttons">
           <CropLandscape
             id="blog-single-display-mode-button"
@@ -124,7 +124,8 @@ const Blogs = ({ allBlogs }) => {
   console.log(blogs)
 
   return (
-    <div className="main-container">
+    <div className="blogs-main-container">
+      <div className="blogs-main-content">
       <div className="blogs-navigation">
         <div>
           <Select
@@ -184,7 +185,11 @@ const Blogs = ({ allBlogs }) => {
               </div>
             </Link>
           ))}
+          <div className="blog-pseudo-element"></div>
+          <div className="blog-pseudo-element"></div>
+          <div className="blog-pseudo-element"></div>
         </div>
+      </div>
       </div>
     </div>
   )

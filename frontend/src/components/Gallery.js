@@ -68,8 +68,9 @@ const Gallery = ({
 
       if (param.city) {
         const picturesWithCity = sortedPictures.filter(
-          (p) => p.location.city !== null
+          (p) => p.location && p.location.city && p.location.city !== null
         )
+        console.log(picturesWithCity)
         const filteredPics = picturesWithCity.filter(
           (p) => p.location.city.toLowerCase() === param.city.toLowerCase()
         )
@@ -98,36 +99,29 @@ const Gallery = ({
   console.log(pictures)
 
   return (
-    <div
-      style={{
-        backgroundColor: '#14182b',
-        height: '94vh',
-        overflowX: 'hidden',
-        overflowY: 'auto',
-      }}
-    >
-      <ImageUploadModal
-        uploadModalOpen={uploadModalOpen}
-        closeModal={closeUploadModal}
-        user={user}
-        setUser={setUser}
-        storage={storage}
-        allPictures={allPictures}
-        setAllPictures={setAllPictures}
-        handleMessage={handleMessage}
-      ></ImageUploadModal>
-      <div>
-        <Button
-          style={{ float: 'right' }}
-          variant='contained'
-          color='primary'
-          onClick={() => setUploadModalOpen(true)}
-        >
-          upload images
-        </Button>
-      </div>
-      <Container maxWidth='lg'>
-        <div style={{ textAlign: 'center' }}></div>
+    <div className="gallery-main-container">
+      <div className="gallery-main-content">
+        <ImageUploadModal
+          uploadModalOpen={uploadModalOpen}
+          closeModal={closeUploadModal}
+          user={user}
+          setUser={setUser}
+          storage={storage}
+          allPictures={allPictures}
+          setAllPictures={setAllPictures}
+          handleMessage={handleMessage}
+        ></ImageUploadModal>
+        <div>
+          <Button
+            style={{ float: 'right' }}
+            variant="contained"
+            color="primary"
+            onClick={() => setUploadModalOpen(true)}
+          >
+            upload images
+          </Button>
+        </div>
+
         {param.country && (
           <div style={{ display: 'flex' }}>
             <h1 style={{ color: 'white', marginTop: '0px' }}>
@@ -148,7 +142,7 @@ const Gallery = ({
             </Link>
           </div>
         )}
-        <div className='gallery-filter-selection'>
+        <div className="gallery-filter-selection">
           <Select
             style={{ color: 'white' }}
             onChange={({ target }) => setSortBy(target.value)}
@@ -159,66 +153,76 @@ const Gallery = ({
             <MenuItem value={'Oldest'}>Oldest</MenuItem>
           </Select>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {pictures.map((pic) => (
-            <div>
-              <Link to={`/gallery/${pic.id}`} key={pic.id}>
-                <div className='gallery-card'>
-                  <img
-                    src={pic.imgURL}
-                    height='200'
-                    width='200'
-                    style={{ borderRadius: '4px' }}
-                  ></img>
+        <div className="gallery-cards-wrapper">
+          <div className="gallery-cards">
+            {pictures.map((pic) => (
+              <div>
+                <Link to={`/gallery/${pic.id}`} key={pic.id}>
+                  <div className="gallery-card">
+                    <img
+                      src={pic.imgURL}
+                      height="200"
+                      width="200"
+                      style={{ borderRadius: '4px' }}
+                    ></img>
 
-                  <h4
-                    style={{
-                      marginTop: '2px',
-                      marginBottom: '5px',
-                      textAlign: 'center',
-                      color: '#FFFFFF',
-                    }}
-                  >
-                    {pic.title}
-                  </h4>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '0px',
-                      width: '100%',
-                    }}
-                  >
+                    <h4
+                      style={{
+                        marginTop: '2px',
+                        marginBottom: '5px',
+                        textAlign: 'center',
+                        color: '#FFFFFF',
+                      }}
+                    >
+                      {pic.title}
+                    </h4>
                     <div
                       style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
+                        position: 'absolute',
+                        bottom: '0px',
                         width: '100%',
-                        marginBottom: '3px',
                       }}
                     >
                       <div
                         style={{
                           display: 'flex',
-                          color: '#6c717a',
-                          marginLeft: '4px',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                          marginBottom: '3px',
                         }}
                       >
-                        <ArrowUpward></ArrowUpward>{' '}
-                        <div style={{ alignSelf: 'center', marginLeft: '3px' }}>
-                          {pic.voteResult}
+                        <div
+                          style={{
+                            display: 'flex',
+                            color: '#6c717a',
+                            marginLeft: '4px',
+                          }}
+                        >
+                          <ArrowUpward></ArrowUpward>{' '}
+                          <div
+                            style={{ alignSelf: 'center', marginLeft: '3px' }}
+                          >
+                            {pic.voteResult}
+                          </div>
                         </div>
-                      </div>
-                      <div style={{ color: '#6c717a', marginRight: '4px' }}>
-                        <Sms></Sms> {pic.comments.length}
+                        <div style={{ color: '#6c717a', marginRight: '4px' }}>
+                          <Sms></Sms> {pic.comments.length}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </div>
-          ))}
+                </Link>
+              </div>
+            ))}
+              <div className="pic-pseudo-element"></div>
+              <div className="pic-pseudo-element"></div>
+              <div className="pic-pseudo-element"></div>
+              <div className="pic-pseudo-element"></div>
+              <div className="pic-pseudo-element"></div>
+              <div className="pic-pseudo-element"></div>
+          </div>
         </div>
-      </Container>
+      </div>
     </div>
   )
 }
