@@ -17,3 +17,21 @@
     left: 20px;
     cursor: pointer;
 }
+
+.map-popup-close-button {
+    position: absolute;
+    width: 30px;
+    top: 0px;
+    right: 0px;
+    transform: translate(50%, -50%);
+    border-radius: 50%;
+    padding: 6px;
+    font-weight: 700;
+    background-color: rgb(46, 39, 39);
+    color: white;
+    border: 2px solid black;
+    cursor: pointer;
+}
+.map-popup-close-button:hover {
+    background-color: red;
+}

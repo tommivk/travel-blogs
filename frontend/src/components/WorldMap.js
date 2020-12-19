@@ -14,7 +14,7 @@ import Settings from '@material-ui/icons/Settings'
 import Switch from '@material-ui/core/Switch'
 import '../styles/worldMap.css'
 
-const PopUp = ({ selected, handle, type }) => {
+const PopUp = ({ selected, handle, type, setActivePopUp }) => {
   console.log(selected)
   console.log(type)
   if (type !== 'blog' && type !== 'image') return null
@@ -45,6 +45,7 @@ const PopUp = ({ selected, handle, type }) => {
         <Link to={`/blogs/${selected.id}`}>
           <h3>Read</h3>
         </Link>
+        <button className="map-popup-close-button" onClick={()=> setActivePopUp(null)}>X</button>
       </div>
     )
   return (
@@ -54,7 +55,7 @@ const PopUp = ({ selected, handle, type }) => {
         <div style={{ position: 'relative' }}>
           <img src={selected.imgURL} width="200" height="200"></img>
           <div
-            style={{ position: 'absolute', top: '1%', right: '2%' }}
+            style={{ position: 'absolute', cursor: "pointer", bottom: '1%', right: '2%' }}
             onClick={handle.enter}
           >
             <Fullscreen fontSize="large" color="secondary"></Fullscreen>
@@ -62,8 +63,9 @@ const PopUp = ({ selected, handle, type }) => {
         </div>
 
         <Link to={`/gallery/${selected.id}`}>
-          <Button>Open In Gallery</Button>
+          <Button style={{color: "white"}}>Open In Gallery</Button>
         </Link>
+        <button className="map-popup-close-button" onClick={()=> setActivePopUp(null)}>X</button>
       </div>
     </div>
   )
@@ -270,6 +272,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
             lat={activePopUp.data.location.lat}
             lng={activePopUp.data.location.lng}
             type={activePopUp.type}
+            setActivePopUp = {setActivePopUp}
           ></PopUp>
         )}
 
@@ -280,6 +283,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
             lat={activePopUp.blogLocation.lat}
             lng={activePopUp.blogLocation.lng}
             type={activePopUp.type}
+            setActivePopUp={setActivePopUp}
           ></PopUp>
         )}
       </GoogleMapReact>
