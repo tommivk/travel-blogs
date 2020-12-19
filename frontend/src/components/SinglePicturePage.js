@@ -7,6 +7,7 @@ import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import Explore from '@material-ui/icons/Explore'
 import Image from '@material-ui/icons/Image'
+import { Language } from '@material-ui/icons'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import '../styles/singlePicturePage.css'
 
@@ -210,6 +211,11 @@ const SinglePicturePage = ({
               <img src={mapImage} width="700px" height="400px"></img>
               {picture.location.city && <p>{picture.location.city}</p>}{' '}
               {picture.location.country && <p>{picture.location.country}</p>}
+              <Link
+                to={`/explore/?lat=${picture.location.lat}&lng=${picture.location.lng}`}
+              >
+                <Language></Language>
+              </Link>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column' }}>

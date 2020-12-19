@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import GoogleMapReact from 'google-map-react'
+import queryString from 'query-string'
 import MarkerClusterer from '@googlemaps/markerclustererplus'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
 import Fullscreen from '@material-ui/icons/Fullscreen'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Button } from '@material-ui/core'
 import pictureIcon from '../images/photo_camera.svg'
 import blogIcon from '../images/message.svg'
@@ -76,14 +77,25 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
   const [showPictures, setShowPictures] = useState(true)
   const [showBlogs, setShowBlogs] = useState(true)
   const [markerClusterer, setMarkerClusterer] = useState(null)
+  const [mapCenter, setMapCenter] = useState({lat: 59, lng: 30})
+  const [mapZoom, setMapZoom] = useState(2)
   const [activePopUp, setActivePopUp] = useState({
     data: null,
     type: null,
     blogLocation: null,
   })
 
+  const param = queryString.parse(useLocation().search)
   const handle = useFullScreenHandle()
   const mapRef = useRef(null)
+  console.log("asd")
+  useEffect(() => {
+    if(param.lat && param.lng){
+      setMapCenter({lat: Number(param.lat), lng: Number(param.lng)})
+      setMapZoom(10)
+      console.log(mapCenter)
+    }
+  },[param.lat, param.lng])
 
   const getMarkers = () => {
     if (!mapRef.current) return null
@@ -92,9 +104,8 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
 
     if (markerClusterer) {
       const mcCopy = markerClusterer
-     
+
       mcCopy.clearMarkers()
-     
 
       if (maps && picturesWithLocation && showPictures) {
         picturesWithLocation.map((pic) => {
@@ -107,8 +118,6 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
             setActivePopUp({ data: pic, type: 'image' })
           )
 
-  
-         
           markers.push(marker)
         })
       }
@@ -126,7 +135,6 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
               setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
             )
             console.log(marker)
-           
 
             markers.push(marker)
           })
@@ -189,7 +197,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
         maps.event.addListener(marker, 'click', () =>
           setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
         )
-  
+
         markers.push(marker)
       })
     )
@@ -201,9 +209,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
       zoomOnClick: false,
       maxZoom: 15,
     })
-    clusterer.addListener('click', (c) =>
-      console.log(c.getMarkers())
-    )
+    clusterer.addListener('click', (c) => console.log(c.getMarkers()))
 
     setMarkerClusterer(clusterer)
   }
@@ -251,8 +257,8 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
         bootstrapURLKeys={{
           key: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
         }}
-        defaultCenter={{ lat: 59, lng: 30 }}
-        defaultZoom={2}
+        defaultCenter={{ lat: mapCenter.lat, lng: mapCenter.lng }}
+        defaultZoom={mapZoom}
         ref={mapRef}
         onGoogleApiLoaded={({ map, maps }) => mapsApiLoaded(map, maps)}
         yesIWantToUseGoogleMapApiInternals
