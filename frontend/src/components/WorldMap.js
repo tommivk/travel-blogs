@@ -45,7 +45,12 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
         <Link to={`/blogs/${selected.id}`}>
           <h3>Read</h3>
         </Link>
-        <button className="map-popup-close-button" onClick={()=> setActivePopUp(null)}>X</button>
+        <button
+          className="map-popup-close-button"
+          onClick={() => setActivePopUp(null)}
+        >
+          X
+        </button>
       </div>
     )
   return (
@@ -55,7 +60,12 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
         <div style={{ position: 'relative' }}>
           <img src={selected.imgURL} width="200" height="200"></img>
           <div
-            style={{ position: 'absolute', cursor: "pointer", bottom: '1%', right: '2%' }}
+            style={{
+              position: 'absolute',
+              cursor: 'pointer',
+              bottom: '1%',
+              right: '2%',
+            }}
             onClick={handle.enter}
           >
             <Fullscreen fontSize="large" color="secondary"></Fullscreen>
@@ -63,9 +73,14 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
         </div>
 
         <Link to={`/gallery/${selected.id}`}>
-          <Button style={{color: "white"}}>Open In Gallery</Button>
+          <Button style={{ color: 'white' }}>Open In Gallery</Button>
         </Link>
-        <button className="map-popup-close-button" onClick={()=> setActivePopUp(null)}>X</button>
+        <button
+          className="map-popup-close-button"
+          onClick={() => setActivePopUp(null)}
+        >
+          X
+        </button>
       </div>
     </div>
   )
@@ -79,7 +94,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
   const [showPictures, setShowPictures] = useState(true)
   const [showBlogs, setShowBlogs] = useState(true)
   const [markerClusterer, setMarkerClusterer] = useState(null)
-  const [mapCenter, setMapCenter] = useState({lat: 59, lng: 30})
+  const [mapCenter, setMapCenter] = useState({ lat: 59, lng: 30 })
   const [mapZoom, setMapZoom] = useState(2)
   const [activePopUp, setActivePopUp] = useState({
     data: null,
@@ -90,14 +105,14 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
   const param = queryString.parse(useLocation().search)
   const handle = useFullScreenHandle()
   const mapRef = useRef(null)
-  console.log("asd")
+  console.log('asd')
   useEffect(() => {
-    if(param.lat && param.lng){
-      setMapCenter({lat: Number(param.lat), lng: Number(param.lng)})
+    if (param.lat && param.lng) {
+      setMapCenter({ lat: Number(param.lat), lng: Number(param.lng) })
       setMapZoom(10)
       console.log(mapCenter)
     }
-  },[param.lat, param.lng])
+  }, [param.lat, param.lng])
 
   const getMarkers = () => {
     if (!mapRef.current) return null
@@ -272,7 +287,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
             lat={activePopUp.data.location.lat}
             lng={activePopUp.data.location.lng}
             type={activePopUp.type}
-            setActivePopUp = {setActivePopUp}
+            setActivePopUp={setActivePopUp}
           ></PopUp>
         )}
 
@@ -290,14 +305,16 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
 
       <FullScreen handle={handle}>
         {activePopUp && activePopUp.type === 'image' && (
-          <img
-            src={activePopUp.data.imgURL}
+          <div
             style={{
-              display: 'block',
-              marginLeft: 'auto',
-              marginRight: 'auto',
+              height: '100vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
-          ></img>
+          >
+            <img src={activePopUp.data.imgURL}></img>
+          </div>
         )}
       </FullScreen>
     </div>
