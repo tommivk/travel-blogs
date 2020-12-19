@@ -21,10 +21,10 @@ const Blogs = ({ allBlogs }) => {
 
   const param = queryString.parse(useLocation().search)
   console.log(param)
-  
+
   useEffect(() => {
-    if (blogs) {
-      let sortedBlogs = blogs.slice()
+    if (blogs && allBlogs) {
+      let sortedBlogs = allBlogs.slice()
       console.log(blogs)
       if (sortBy === 'Newest') {
         sortedBlogs.sort((a, b) => {
@@ -50,11 +50,30 @@ const Blogs = ({ allBlogs }) => {
         })
         setBlogs(sortedBlogs)
       }
-      if(param.country){
-        sortedBlogs = sortedBlogs.filter((blog) => blog.locations.map((loc) => loc.country.toLowerCase() === param.country.toLowerCase()))
+      if (param.country) {
+        let blogMatches = []
+        sortedBlogs.map((blog) =>
+          blog.locations.map((loc) => {
+            if (loc.country.toLowerCase() === param.country.toLowerCase())
+              blogMatches.push(blog)
+          })
+        )
+        setBlogs(blogMatches)
+        console.log(blogMatches)
+      }
+      if (param.city) {
+        let blogMatches = []
+        sortedBlogs.map((blog) =>
+          blog.locations.map((loc) => {
+            if (loc.city.toLowerCase() === param.city.toLowerCase())
+              blogMatches.push(blog)
+          })
+        )
+        setBlogs(blogMatches)
+        console.log(blogMatches)
       }
     }
-  }, [sortBy, param.country])
+  }, [sortBy, param.country, param.city])
 
   if (!blogs) return null
 
@@ -128,6 +147,8 @@ const Blogs = ({ allBlogs }) => {
           ></BorderAll>
         </div>
       </div>
+      {param.city && <div>Blogs about {param.city}</div>}
+      {param.country && <div>Blogs about {param.country}</div>}
       <div className="blogs-container">
         <div className="cards-container">
           {blogs.map((blog) => (
