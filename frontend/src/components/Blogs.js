@@ -80,44 +80,48 @@ const Blogs = ({ allBlogs }) => {
   if (displayMode === 1) {
     return (
       <div className="blogs-main-container swiper-wrapper">
-        <div className="display-mode-buttons">
-          <CropLandscape
-            id="blog-single-display-mode-button"
-            onClick={() => setDisplayMode(1)}
-          ></CropLandscape>
-          <BorderAll
-            id="blog-multi-display-mode-button"
-            onClick={() => setDisplayMode(0)}
-          ></BorderAll>
+        <div className="display-mode-wrapper">
+          <div className="display-mode-buttons">
+            <CropLandscape
+              id="blog-single-display-mode-button"
+              onClick={() => setDisplayMode(1)}
+            ></CropLandscape>
+            <BorderAll
+              id="blog-multi-display-mode-button"
+              onClick={() => setDisplayMode(0)}
+            ></BorderAll>
+          </div>
+          <div className="blog-swiper">
+            <Swiper
+              slidesPerView={1}
+              navigation
+              onSlideChange={() => console.log('slide change')}
+              onSwiper={(swiper) => console.log(swiper)}
+              style={{ textAlign: 'center' }}
+            >
+              {blogs.map(
+                (blog) =>
+                  blog.headerImageURL && (
+                    <SwiperSlide>
+                      <Link to={`/blogs/${blog.id}`}>
+                        <img
+                          src={blog.headerImageURL}
+                          width="80%"
+                          onLoad={() => console.log('img loading')}
+                        ></img>
+                        <div className="swiper-blog-info">
+                          <div className="swiper-blog-title">{blog.title}</div>
+                          <div className="swiper-blog-description">
+                            {blog.description}
+                          </div>
+                        </div>
+                      </Link>
+                    </SwiperSlide>
+                  )
+              )}
+            </Swiper>
+          </div>
         </div>
-        <Swiper
-          slidesPerView={1}
-          navigation
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-          style={{ textAlign: 'center' }}
-        >
-          {blogs.map(
-            (blog) =>
-              blog.headerImageURL && (
-                <SwiperSlide>
-                  <Link to={`/blogs/${blog.id}`}>
-                    <img
-                      src={blog.headerImageURL}
-                      width="80%"
-                      onLoad={() => console.log('img loading')}
-                    ></img>
-                    <div className="swiper-blog-info">
-                      <div className="swiper-blog-title">{blog.title}</div>
-                      <div className="swiper-blog-description">
-                        {blog.description}
-                      </div>
-                    </div>
-                  </Link>
-                </SwiperSlide>
-              )
-          )}
-        </Swiper>
       </div>
     )
   }
@@ -125,18 +129,7 @@ const Blogs = ({ allBlogs }) => {
 
   return (
     <div className="blogs-main-container">
-      <div className="blogs-main-content">
-      <div className="blogs-navigation">
-        <div>
-          <Select
-            style={{ color: 'white' }}
-            onChange={({ target }) => setSortBy(target.value)}
-            value={sortBy}
-          >
-            <MenuItem value={'Best'}>Best</MenuItem>
-            <MenuItem value={'Newest'}>Newest</MenuItem>
-          </Select>
-        </div>
+      <div className="display-mode-wrapper">
         <div className="display-mode-buttons">
           <CropLandscape
             id="blog-single-display-mode-button"
@@ -148,48 +141,64 @@ const Blogs = ({ allBlogs }) => {
           ></BorderAll>
         </div>
       </div>
-      {param.city && <div>Blogs about {param.city}</div>}
-      {param.country && <div>Blogs about {param.country}</div>}
-      <div className="blogs-container">
-        <div className="cards-container">
-          {blogs.map((blog) => (
-            <Link id="main-blog-link" to={`/blogs/${blog.id}`}>
-              <div className="blog-card">
-                <div className="blog-header">
-                  <div className="blog-title">
-                    <h1>{blog.title}</h1>
+      <div className="blogs-main-content">
+        <div className="blogs-navigation">
+          <div className="blogs-top-title">
+            {param.city && <h1>Blogs about {param.city}</h1>}
+            {param.country && <h1>Blogs about {param.country}</h1>}
+          </div>
+          <div className="blog-filter-selection">
+            Sort By{' '}
+            <Select
+              style={{ color: 'white' }}
+              onChange={({ target }) => setSortBy(target.value)}
+              value={sortBy}
+            >
+              <MenuItem value={'Best'}>Best</MenuItem>
+              <MenuItem value={'Newest'}>Newest</MenuItem>
+            </Select>
+          </div>
+        </div>
+        <div className="blogs-container">
+          <div className="cards-container">
+            {blogs.map((blog) => (
+              <Link id="main-blog-link" to={`/blogs/${blog.id}`}>
+                <div className="blog-card">
+                  <div className="blog-header">
+                    <div className="blog-title">
+                      <h1>{blog.title}</h1>
+                    </div>
+                    <div className="blog-author-username">
+                      Written by {blog.author.username}
+                    </div>
                   </div>
-                  <div className="blog-author-username">
-                    Written by {blog.author.username}
+                  <div className="blog-image">
+                    <img src={blog.headerImageURL} width="300px"></img>
                   </div>
-                </div>
-                <div className="blog-image">
-                  <img src={blog.headerImageURL} width="300px"></img>
-                </div>
 
-                <div className="blog-description">
-                  <h4>{blog.description}</h4>
-                </div>
-                <div className="blog-star">
-                  <Star id="star" fontSize="medium"></Star>
-                  <div id="blog-stars-count">{blog.stars.length}</div>
-                </div>
+                  <div className="blog-description">
+                    <h4>{blog.description}</h4>
+                  </div>
+                  <div className="blog-star">
+                    <Star id="star" fontSize="medium"></Star>
+                    <div id="blog-stars-count">{blog.stars.length}</div>
+                  </div>
 
-                {/* <div className='blog-button'>
+                  {/* <div className='blog-button'>
                 <Link to={`/blogs/${blog.id}`} id='blog-link'>
                   <Button variant='outlined' color='primary'>
                     Read
                   </Button>
                 </Link>
               </div> */}
-              </div>
-            </Link>
-          ))}
-          <div className="blog-pseudo-element"></div>
-          <div className="blog-pseudo-element"></div>
-          <div className="blog-pseudo-element"></div>
+                </div>
+              </Link>
+            ))}
+            <div className="blog-pseudo-element"></div>
+            <div className="blog-pseudo-element"></div>
+            <div className="blog-pseudo-element"></div>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   )

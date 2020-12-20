@@ -72,8 +72,8 @@ const SearchModal = ({
   const foundPictureCities = [...new Set(pictureCityMatches)]
   const foundPictureCountries = [...new Set(pictureCountryMatches)]
 
-  const foundCities = foundBlogCities.concat(foundPictureCities)
-  const foundCountries = foundBlogCountries.concat(foundPictureCountries)
+  const foundCities = [...new Set(foundBlogCities.concat(foundPictureCities))]
+  const foundCountries = [...new Set(foundBlogCountries.concat(foundPictureCountries))]
 
   const foundUsers = allUsers.filter((user) =>
     user.username.toLowerCase().includes(searchFilter.toLowerCase())
@@ -131,7 +131,7 @@ const SearchModal = ({
                       <ul>
                         <div>
                           {foundPictures.map((pic) => (
-                            <li>
+                            <li key={pic.id}>
                               <Link to={`/gallery/${pic.id}`}>{pic.title}</Link>
                             </li>
                           ))}
@@ -232,7 +232,7 @@ const SearchModal = ({
                     <div>
                       <ul>
                         {foundUsers.map((user) => (
-                          <li>
+                          <li key={user.username}>
                             <Link to={`/users/${user.id}`}>
                               {user.username}
                             </Link>

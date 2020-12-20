@@ -78,7 +78,6 @@ const Gallery = ({
       }
 
       if (param.country) {
-        console.log(param)
         const picturesWithCountry = sortedPictures.filter(
           (p) => p.location.country !== null
         )
@@ -96,10 +95,18 @@ const Gallery = ({
   }
 
   if (!pictures) return null
-  console.log(pictures)
 
   return (
     <div className="gallery-main-container">
+      <div className="gallery-upload-images-button">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setUploadModalOpen(true)}
+        >
+          upload images
+        </Button>
+      </div>
       <div className="gallery-main-content">
         <ImageUploadModal
           uploadModalOpen={uploadModalOpen}
@@ -111,21 +118,11 @@ const Gallery = ({
           setAllPictures={setAllPictures}
           handleMessage={handleMessage}
         ></ImageUploadModal>
-        <div>
-          <Button
-            style={{ float: 'right' }}
-            variant="contained"
-            color="primary"
-            onClick={() => setUploadModalOpen(true)}
-          >
-            upload images
-          </Button>
-        </div>
-
+        <div className="gallery-top-content">
         {param.country && (
           <div style={{ display: 'flex' }}>
             <h1 style={{ color: 'white', marginTop: '0px' }}>
-              Images from {param.country}
+              Pictures from {param.country}
             </h1>
             <Link to={'/gallery'}>
               <Button style={{ color: 'white' }}>(X)</Button>
@@ -135,7 +132,7 @@ const Gallery = ({
         {param.city && (
           <div style={{ display: 'flex' }}>
             <h1 style={{ color: 'white', marginTop: '0px' }}>
-              Images from {param.city}
+              Pictures from {param.city}
             </h1>
             <Link to={'/gallery'}>
               <Button style={{ color: 'white' }}>(X)</Button>
@@ -143,6 +140,7 @@ const Gallery = ({
           </div>
         )}
         <div className="gallery-filter-selection">
+          Sort By{' '}
           <Select
             style={{ color: 'white' }}
             onChange={({ target }) => setSortBy(target.value)}
@@ -152,6 +150,7 @@ const Gallery = ({
             <MenuItem value={'Newest'}>Newest</MenuItem>
             <MenuItem value={'Oldest'}>Oldest</MenuItem>
           </Select>
+        </div>
         </div>
         <div className="gallery-cards-wrapper">
           <div className="gallery-cards">
@@ -214,12 +213,12 @@ const Gallery = ({
                 </Link>
               </div>
             ))}
-              <div className="pic-pseudo-element"></div>
-              <div className="pic-pseudo-element"></div>
-              <div className="pic-pseudo-element"></div>
-              <div className="pic-pseudo-element"></div>
-              <div className="pic-pseudo-element"></div>
-              <div className="pic-pseudo-element"></div>
+            <div className="pic-pseudo-element"></div>
+            <div className="pic-pseudo-element"></div>
+            <div className="pic-pseudo-element"></div>
+            <div className="pic-pseudo-element"></div>
+            <div className="pic-pseudo-element"></div>
+            <div className="pic-pseudo-element"></div>
           </div>
         </div>
       </div>

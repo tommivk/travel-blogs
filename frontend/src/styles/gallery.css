@@ -2,9 +2,10 @@
   width: 100vw;
   height: 94vh;
   overflow-y: scroll;
+  position: relative;
 }
 
-.gallery-main-content{
+.gallery-main-content {
   background-color: #191e36;
   width: 85vw;
   height: 94vh;
@@ -13,6 +14,7 @@
   overflow-y: hidden;
   display: block;
   margin: auto;
+  position: relative;
 }
 
 .gallery-card {
@@ -44,6 +46,22 @@
   height: 0px;
   width: 200px;
   margin: 10px;
-  content: "";
+  content: '';
 }
 
+.gallery-upload-images-button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.gallery-filter-selection {
+  position: absolute;
+  color: white;
+  top: 5px;
+  right: 50px;
+}
+
+.gallery-top-content {
+  min-height: 50px;
+}

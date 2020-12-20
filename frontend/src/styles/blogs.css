@@ -1,4 +1,5 @@
 .blogs-main-container {
+  position: relative;
   overflow: auto;
   height: 94vh;
   width: 100vw;
@@ -9,6 +10,7 @@
 .blogs-main-content{
   width: 85vw;
   margin: auto;
+  position: relative;
 }
 
 .blogs-container {
@@ -21,8 +23,10 @@
 }
 
 .blogs-navigation {
-  height: 5vh;
+  height: 8vh;
+  min-height: 8vh;
   position: relative;
+  color: white;
 }
 
 .swiper-wrapper {
@@ -160,9 +164,14 @@
   cursor: pointer;
 }
 
+.display-mode-wrapper {
+  width: 98vw;
+  position: relative;
+}
+
 .display-mode-buttons {
   position: absolute;
-  right: 10px;
+  right: 0px;
   display: flex;
   align-items: center;
   z-index: 3;
@@ -196,4 +205,17 @@
   width: 350px;
   margin: 10px;
   content: "";
+}
+.blog-filter-selection {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+}
+
+.blogs-top-title h1 {
+  margin: 0;
+}
+
+.blog-swiper {
+  width: 100vw;
 }
