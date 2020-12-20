@@ -7,7 +7,7 @@
   display: block;
 }
 
-.blogs-main-content{
+.blogs-main-content {
   width: 85vw;
   margin: auto;
   position: relative;
@@ -204,12 +204,13 @@
   height: 0px;
   width: 350px;
   margin: 10px;
-  content: "";
+  content: '';
 }
+
 .blog-filter-selection {
   position: absolute;
   right: 20px;
-  top: 50%;
+  top: 5px;
 }
 
 .blogs-top-title h1 {

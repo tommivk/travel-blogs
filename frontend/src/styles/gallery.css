@@ -50,18 +50,24 @@
 }
 
 .gallery-upload-images-button {
-  position: absolute;
-  top: 0px;
-  right: 0px;
+  margin-left: 20px;
 }
 
 .gallery-filter-selection {
-  position: absolute;
   color: white;
-  top: 5px;
-  right: 50px;
+  align-self: center;
 }
 
 .gallery-top-content {
   min-height: 50px;
+}
+
+.blog-top-right-wrapper {
+  display: flex;
+}
+
+.blog-top-right-container {
+  position: absolute;
+  right: 0px;
+  z-index: 2;
 }

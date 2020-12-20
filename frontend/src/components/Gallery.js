@@ -98,14 +98,30 @@ const Gallery = ({
 
   return (
     <div className="gallery-main-container">
-      <div className="gallery-upload-images-button">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setUploadModalOpen(true)}
-        >
-          upload images
-        </Button>
+      <div className="blog-top-right-container">
+      <div className="blog-top-right-wrapper">
+        <div className="gallery-filter-selection">
+          Sort By{' '}
+          <Select
+            style={{ color: 'white' }}
+            onChange={({ target }) => setSortBy(target.value)}
+            value={sortBy}
+          >
+            <MenuItem value={'Best'}>Best</MenuItem>
+            <MenuItem value={'Newest'}>Newest</MenuItem>
+            <MenuItem value={'Oldest'}>Oldest</MenuItem>
+          </Select>
+        </div>
+        <div className="gallery-upload-images-button">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setUploadModalOpen(true)}
+          >
+            upload images
+          </Button>
+        </div>
+      </div>
       </div>
       <div className="gallery-main-content">
         <ImageUploadModal
@@ -119,38 +135,26 @@ const Gallery = ({
           handleMessage={handleMessage}
         ></ImageUploadModal>
         <div className="gallery-top-content">
-        {param.country && (
-          <div style={{ display: 'flex' }}>
-            <h1 style={{ color: 'white', marginTop: '0px' }}>
-              Pictures from {param.country}
-            </h1>
-            <Link to={'/gallery'}>
-              <Button style={{ color: 'white' }}>(X)</Button>
-            </Link>
-          </div>
-        )}
-        {param.city && (
-          <div style={{ display: 'flex' }}>
-            <h1 style={{ color: 'white', marginTop: '0px' }}>
-              Pictures from {param.city}
-            </h1>
-            <Link to={'/gallery'}>
-              <Button style={{ color: 'white' }}>(X)</Button>
-            </Link>
-          </div>
-        )}
-        <div className="gallery-filter-selection">
-          Sort By{' '}
-          <Select
-            style={{ color: 'white' }}
-            onChange={({ target }) => setSortBy(target.value)}
-            value={sortBy}
-          >
-            <MenuItem value={'Best'}>Best</MenuItem>
-            <MenuItem value={'Newest'}>Newest</MenuItem>
-            <MenuItem value={'Oldest'}>Oldest</MenuItem>
-          </Select>
-        </div>
+          {param.country && (
+            <div style={{ display: 'flex' }}>
+              <h1 style={{ color: 'white', marginTop: '0px' }}>
+                Pictures from {param.country}
+              </h1>
+              <Link to={'/gallery'}>
+                <Button style={{ color: 'white' }}>(X)</Button>
+              </Link>
+            </div>
+          )}
+          {param.city && (
+            <div style={{ display: 'flex' }}>
+              <h1 style={{ color: 'white', marginTop: '0px' }}>
+                Pictures from {param.city}
+              </h1>
+              <Link to={'/gallery'}>
+                <Button style={{ color: 'white' }}>(X)</Button>
+              </Link>
+            </div>
+          )}
         </div>
         <div className="gallery-cards-wrapper">
           <div className="gallery-cards">
