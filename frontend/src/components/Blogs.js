@@ -154,7 +154,8 @@ const Blogs = ({ allBlogs }) => {
         <div className="blogs-container">
           <div className="cards-container">
             {blogs.map((blog) => (
-              <Link id="main-blog-link" to={`/blogs/${blog.id}`}>
+              <div key={blog.id}>             
+               <Link id="main-blog-link" to={`/blogs/${blog.id}`}>
                 <div className="blog-card">
                   <div className="blog-header">
                     <div className="blog-title">
@@ -172,11 +173,12 @@ const Blogs = ({ allBlogs }) => {
                     <h4>{blog.description}</h4>
                   </div>
                   <div className="blog-star">
-                    <Star id="star" fontSize="medium"></Star>
+                    <Star id="star" fontSize="default"></Star>
                     <div id="blog-stars-count">{blog.stars.length}</div>
                   </div>
                 </div>
               </Link>
+              </div>
             ))}
             <div className="blog-pseudo-element"></div>
             <div className="blog-pseudo-element"></div>

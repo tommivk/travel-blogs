@@ -158,7 +158,7 @@ const Gallery = ({
         <div className="gallery-cards-wrapper">
           <div className="gallery-cards">
             {pictures.map((pic) => (
-              <div>
+              <div key={pic.id}>
                 <Link to={`/gallery/${pic.id}`} key={pic.id} style={{textDecoration: "none"}}>
                   <div className="gallery-card">
                     <img

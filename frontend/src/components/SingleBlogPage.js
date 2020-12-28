@@ -37,21 +37,21 @@ const CommentForm = ({ user, blog, setBlog }) => {
   }
 
   return (
-    <div className='comment-form-main-container'>
+    <div className="comment-form-main-container">
       <form onSubmit={handleCommentSubmit}>
-        <div className='comment-form-wrapper'>
+        <div className="comment-form-wrapper">
           <input
-            id='comment-form-input'
-            type='text'
+            id="comment-form-input"
+            type="text"
             value={comment}
-            autoComplete='off'
+            autoComplete="off"
             onChange={({ target }) => setComment(target.value)}
           ></input>
           <Button
-            id='comment-form-button'
-            variant='contained'
-            size='small'
-            type='submit'
+            id="comment-form-button"
+            variant="contained"
+            size="small"
+            type="submit"
           >
             send
           </Button>
@@ -118,52 +118,52 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
   }
 
   return (
-    <div className='main-blog-page-container'>
-      <Container maxWidth='md'>
+    <div className="main-blog-page-container">
+      <Container maxWidth="md">
         <div>
-          <h1 id='blog-title'>{blog.title}</h1>
-          <img src={blog.headerImageURL} alt='cover image' width='1000px'></img>
-          <div className='author-container'>
-            <div className='author-picture'>
-              <Avatar alt='author profile' src={blog.author.avatar} />
+          <h1 id="blog-title">{blog.title}</h1>
+          <img src={blog.headerImageURL} alt="cover image" width="1000px"></img>
+          <div className="author-container">
+            <div className="author-picture">
+              <Avatar alt="author profile" src={blog.author.avatar} />
             </div>
-            <div className='blog-info-container'>
-              <div className='author-username'>
-                <Link id='blog-author-link' to={`/users/${blog.author.id}`}>
+            <div className="blog-info-container">
+              <div className="author-username">
+                <Link id="blog-author-link" to={`/users/${blog.author.id}`}>
                   <h3>{blog.author.username}</h3>
                 </Link>
               </div>
-              <div className='blog-info-date'>
+              <div className="blog-info-date">
                 {blogDate.monthLong} {blogDate.day}
               </div>
             </div>
           </div>
           {ReactHtmlParser(blog.content)}
         </div>
-        <div className='vote-container'>
+        <div className="vote-container">
           <div>
             {blog.stars.includes(user.id) ? (
               <div>
                 <Star
-                  id='voted-star'
-                  fontSize='large'
+                  id="voted-star"
+                  fontSize="large"
                   onClick={() => handleStarChange('remove')}
                 ></Star>
               </div>
             ) : (
               <div>
                 <StarBorder
-                  id='unvoted-star'
-                  fontSize='large'
+                  id="unvoted-star"
+                  fontSize="large"
                   onClick={() => handleStarChange('add')}
                 ></StarBorder>
               </div>
             )}
           </div>
-          <div id='vote-count'> {blog.stars.length} stars</div>
+          <div id="vote-count"> {blog.stars.length} stars</div>
         </div>
-        <div className='blog-comment-section-container'>
-          <div className='blog-comment-form'>
+        <div className="blog-comment-section-container">
+          <div className="blog-comment-form">
             <CommentForm
               user={user}
               blog={blog}
@@ -173,22 +173,22 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
 
           <ul>
             {blog.comments.map((comment) => (
-              <div className='blog-comment'>
-                <li>
-                  <div className='blog-comment-top-section'>
+              <li key={comment.id}>
+                <div className="blog-comment">
+                  <div className="blog-comment-top-section">
                     <img src={comment.user.avatar}></img>
-                    <div className='blog-comment-username'>
+                    <div className="blog-comment-username">
                       <Link to={`/users/${comment.user.id}`}>
                         {comment.user.username}
                       </Link>
                     </div>
-                    <div className='blog-comment-date'>
+                    <div className="blog-comment-date">
                       {calculateDateDiff(comment.date)}
                     </div>
                   </div>
-                  <div className='blog-comment-content'>{comment.content}</div>
-                </li>
-              </div>
+                  <div className="blog-comment-content">{comment.content}</div>
+                </div>
+              </li>
             ))}
           </ul>
         </div>
