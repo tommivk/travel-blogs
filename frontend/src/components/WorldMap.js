@@ -103,8 +103,8 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
   const mapRef = useRef(null)
 
   useEffect(() => {
-    setFilteredPictures({pictures: null, filter: null})
-  },[])
+    setFilteredPictures({ pictures: null, filter: null })
+  }, [])
 
   useEffect(() => {
     if (param.lat && param.lng) {
@@ -114,7 +114,9 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
   }, [param.lat, param.lng])
 
   const getMarkers = () => {
-    if (!mapRef.current) return null
+
+    if (!mapRef.current || !user) return null
+
     let markers = []
     const maps = mapRef.current.maps_
 
@@ -122,8 +124,18 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
       const mcCopy = markerClusterer
 
       mcCopy.clearMarkers()
+      setMarkerClusterer(mcCopy)
 
       if (maps && picturesWithLocation && showPictures) {
+
+        if (showUserContentOnly) {
+          picturesWithLocation = user.pictures
+            ? user.pictures.filter(
+                (pic) => pic.location.lat !== null && pic.location.lng !== null
+              )
+            : []
+        }
+
         picturesWithLocation.map((pic) => {
           let marker = new maps.Marker({
             position: { lat: pic.location.lat, lng: pic.location.lng },
@@ -139,7 +151,11 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
       }
 
       if (blogs && showBlogs && maps && markerClusterer) {
-        blogs.map((blog) =>
+        let blogArray = []
+
+        showUserContentOnly ? (blogArray = user.blogs) : (blogArray = blogs)
+
+        blogArray.map((blog) =>
           blog.locations.map((loc) => {
             let marker = new maps.Marker({
               position: { lat: loc.lat, lng: loc.lng },
@@ -154,35 +170,21 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
           })
         )
       }
-
       mcCopy.addMarkers(markers)
       setMarkerClusterer(mcCopy)
     }
   }
 
   useEffect(() => {
-    if (user) {
-      if (showUserContentOnly) {
-        setPictures(user.pictures)
-        setBlogs(user.blogs)
-        getMarkers()
-      } else {
-        setPictures(allPictures)
-        setBlogs(allBlogs)
-      }
-    }
-  }, [showUserContentOnly])
-
-  useEffect(() => {
     setActivePopUp(null)
     if (mapRef.current) {
-      console.log('getMarkers')
+      getMarkers()
     }
   }, [showUserContentOnly, showBlogs, showPictures])
 
-  if (!allBlogs || !allPictures || !user) return null
+  if (!allBlogs || !allPictures || !user || !blogs) return null
 
-  const picturesWithLocation = pictures
+  let picturesWithLocation = pictures
     ? pictures.filter(
         (pic) => pic.location.lat !== null && pic.location.lng !== null
       )
@@ -227,7 +229,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
 
     setMarkerClusterer(clusterer)
   }
-
+ 
   return (
     <div
       style={{
@@ -237,19 +239,17 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         position: 'absolute',
       }}
     >
-       <div className="map-settings">
-      <div className={`${!showSettings && "tooltip tooltip-right"}`}>
-       <span className="tooltip-message">Settings</span>
-        <Settings
-          onClick={() => setShowSettings(!showSettings)}
-        ></Settings>
+      <div className="map-settings">
+        <div className={`${!showSettings && 'tooltip tooltip-right'}`}>
+          <span className="tooltip-message">Settings</span>
+          <Settings onClick={() => setShowSettings(!showSettings)}></Settings>
         </div>
       </div>
 
       {showSettings && (
         <div className="map-filter-box">
           <div>
-            Show My Content Only
+            Show My Own Content Only
             <Switch
               checked={showUserContentOnly}
               onChange={() => setShowUserContentOnly(!showUserContentOnly)}
