@@ -7,14 +7,13 @@
 
 .gallery-main-content {
   background-color: #191e36;
-  width: 85vw;
+  width: 100%;
   height: 94vh;
-  max-width: 85vw;
-  overflow-x: hidden;
+  margin-top: 50px;
   overflow-y: hidden;
-  display: block;
-  margin: auto;
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .gallery-card {
@@ -33,12 +32,13 @@
 }
 
 .gallery-cards-wrapper {
-
+  width: 85vw;
 }
 
 .gallery-cards {
   margin-top: 20px;
   width: 100%;
+  max-width: 85vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
