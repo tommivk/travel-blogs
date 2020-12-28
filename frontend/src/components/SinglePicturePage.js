@@ -6,7 +6,7 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import Explore from '@material-ui/icons/Explore'
-import ExploreOff from '@material-ui/icons/ExploreOff';
+import ExploreOff from '@material-ui/icons/ExploreOff'
 import Image from '@material-ui/icons/Image'
 import { Language } from '@material-ui/icons'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
@@ -68,11 +68,20 @@ const SinglePicturePage = ({
   picture,
   allPictures,
   setPicture,
+  filteredPictures,
+  setFilteredPictures,
   setAllPictures,
 }) => {
+  const [pictures, setPictures] = useState(allPictures)
   const [mapImage, setMapImage] = useState(null)
   const [showMap, setShowMap] = useState(false)
   const pictureHandle = useFullScreenHandle()
+
+  useEffect(() => {
+    if (filteredPictures.pictures) {
+      setPictures(filteredPictures.pictures)
+    }
+  }, [])
 
   useEffect(async () => {
     setShowMap(false)
@@ -88,6 +97,11 @@ const SinglePicturePage = ({
     }
   }, [picture])
 
+  const handleFilterRemove = () => {
+    setPictures(allPictures)
+    setFilteredPictures({ pictures: null, filter: null })
+  }
+
   const handleVote = async (direction) => {
     try {
       const response = await axios.put(
@@ -101,10 +115,10 @@ const SinglePicturePage = ({
       )
       setPicture(response.data)
 
-      const filteredPictures = await allPictures.map((pic) =>
+      const filteredPics = await allPictures.map((pic) =>
         pic.id === picture.id ? response.data : pic
       )
-      setAllPictures(filteredPictures)
+      setAllPictures(filteredPics)
     } catch (error) {
       console.log(error.message)
     }
@@ -122,22 +136,22 @@ const SinglePicturePage = ({
       )
 
       setPicture(response.data)
-      const filteredPictures = await allPictures.map((pic) =>
+      const filteredPics = await allPictures.map((pic) =>
         pic.id === picture.id ? response.data : pic
       )
-      setAllPictures(filteredPictures)
+      setAllPictures(filteredPics)
     } catch (error) {
       console.log(error.message)
     }
   }
 
-  if (!picture || !allPictures) return null
+  if (!picture || !pictures) return null
 
   const userVote = picture.votes.find(
     (vote) => vote.user.username === user.username
   )
 
-  let pictureIndex = allPictures.findIndex((pic) => pic.id === picture.id)
+  let pictureIndex = pictures.findIndex((pic) => pic.id === picture.id)
 
   return (
     <div
@@ -165,14 +179,14 @@ const SinglePicturePage = ({
             style={{
               width: '700px',
               display: 'flex',
+              height: '40px',
               justifyContent: 'space-between',
-              marginTop: '15px',
               marginBottom: '5px',
             }}
           >
-            <div>
+            <div style={{justifySelf:"center"}}>
               {pictureIndex - 1 >= 0 && (
-                <Link to={`/gallery/${allPictures[pictureIndex - 1].id}`}>
+                <Link to={`/gallery/${pictures[pictureIndex - 1].id}`}>
                   <Button color="primary" variant="contained">
                     Previous
                   </Button>
@@ -193,9 +207,9 @@ const SinglePicturePage = ({
               </h2>
             </div>
 
-            <div>
-              {allPictures.length > pictureIndex + 1 && (
-                <Link to={`/gallery/${allPictures[pictureIndex + 1].id}`}>
+            <div style={{justifySelf: "center"}}>
+              {pictures.length > pictureIndex + 1 && (
+                <Link to={`/gallery/${pictures[pictureIndex + 1].id}`}>
                   <Button color="primary" variant="contained">
                     Next
                   </Button>
@@ -274,7 +288,7 @@ const SinglePicturePage = ({
       )}
 
       {!mapImage && (
-        <div className="image-toggle-button" style={{cursor: "default"}}>
+        <div className="image-toggle-button" style={{ cursor: 'default' }}>
           <div className="tooltip">
             <span className="tooltip-message">No Location Specified</span>
             <ExploreOff fontSize="large"></ExploreOff>
@@ -345,8 +359,17 @@ const SinglePicturePage = ({
           <img src={picture.imgURL}></img>
         </div>
       </FullScreen>
-      <div className="picture-list-container">
-        {allPictures.map((pic) => (
+      <div className="picture-list-container" style={{ color: 'white' }}>
+        {filteredPictures.filter ? (
+          <div>
+            Pictures from {filteredPictures.filter} ({pictures.length})
+            <button onClick={handleFilterRemove}>Show All Pictures</button>
+          </div>
+        ) : (
+          <div>All Pictures ({pictures.length})</div>
+        )}
+
+        {pictures.map((pic) => (
           <div className="picture-list-picture-box">
             {pic.id === picture.id ? (
               <div className="picture-list-active-image">

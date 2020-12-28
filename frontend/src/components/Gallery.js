@@ -10,6 +10,7 @@ import '../styles/gallery.css'
 const Gallery = ({
   allPictures,
   setAllPictures,
+  setFilteredPictures,
   user,
   setUser,
   storage,
@@ -24,7 +25,7 @@ const Gallery = ({
   useEffect(() => {
     if (allPictures) {
       let sortedPictures = allPictures.slice()
-
+      setFilteredPictures({pictures: null, filter: null})
       switch (sortBy) {
         case 'Newest':
           sortedPictures.sort((a, b) => {
@@ -74,6 +75,7 @@ const Gallery = ({
           (p) => p.location.city.toLowerCase() === param.city.toLowerCase()
         )
         setPictures(filteredPics)
+        setFilteredPictures({ pictures: filteredPics, filter: param.city })
       }
 
       if (param.country) {
@@ -85,6 +87,7 @@ const Gallery = ({
             p.location.country.toLowerCase() === param.country.toLowerCase()
         )
         setPictures(filteredPics)
+        setFilteredPictures({ pictures: filteredPics, filter: param.country })
       }
     }
   }, [param.country, param.city, allPictures, sortBy])
@@ -98,29 +101,29 @@ const Gallery = ({
   return (
     <div className="gallery-main-container">
       <div className="blog-top-right-container">
-      <div className="blog-top-right-wrapper">
-        <div className="gallery-filter-selection">
-          Sort By{' '}
-          <Select
-            style={{ color: 'white' }}
-            onChange={({ target }) => setSortBy(target.value)}
-            value={sortBy}
-          >
-            <MenuItem value={'Best'}>Best</MenuItem>
-            <MenuItem value={'Newest'}>Newest</MenuItem>
-            <MenuItem value={'Oldest'}>Oldest</MenuItem>
-          </Select>
+        <div className="blog-top-right-wrapper">
+          <div className="gallery-filter-selection">
+            Sort By{' '}
+            <Select
+              style={{ color: 'white' }}
+              onChange={({ target }) => setSortBy(target.value)}
+              value={sortBy}
+            >
+              <MenuItem value={'Best'}>Best</MenuItem>
+              <MenuItem value={'Newest'}>Newest</MenuItem>
+              <MenuItem value={'Oldest'}>Oldest</MenuItem>
+            </Select>
+          </div>
+          <div className="gallery-upload-images-button">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setUploadModalOpen(true)}
+            >
+              upload images
+            </Button>
+          </div>
         </div>
-        <div className="gallery-upload-images-button">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setUploadModalOpen(true)}
-          >
-            upload images
-          </Button>
-        </div>
-      </div>
       </div>
       <div className="gallery-main-content">
         <ImageUploadModal
@@ -159,7 +162,11 @@ const Gallery = ({
           <div className="gallery-cards">
             {pictures.map((pic) => (
               <div key={pic.id}>
-                <Link to={`/gallery/${pic.id}`} key={pic.id} style={{textDecoration: "none"}}>
+                <Link
+                  to={`/gallery/${pic.id}`}
+                  key={pic.id}
+                  style={{ textDecoration: 'none' }}
+                >
                   <div className="gallery-card">
                     <img
                       src={pic.imgURL}
@@ -194,14 +201,14 @@ const Gallery = ({
                         }}
                       >
                         <div
-                        className= "tooltip"
+                          className="tooltip"
                           style={{
                             display: 'flex',
                             color: '#6c717a',
                             marginLeft: '4px',
                           }}
-                        > 
-                        <span className="tooltip-message">Points</span>
+                        >
+                          <span className="tooltip-message">Points</span>
                           <ArrowUpward></ArrowUpward>
                           <div
                             style={{ alignSelf: 'center', marginLeft: '3px' }}
@@ -209,7 +216,10 @@ const Gallery = ({
                             {pic.voteResult}
                           </div>
                         </div>
-                        <div className= "tooltip" style={{ color: '#6c717a', marginRight: '4px' }}>
+                        <div
+                          className="tooltip"
+                          style={{ color: '#6c717a', marginRight: '4px' }}
+                        >
                           <span className="tooltip-message">Comments</span>
                           <Sms></Sms> {pic.comments.length}
                         </div>

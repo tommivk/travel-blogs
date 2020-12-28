@@ -82,7 +82,7 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
   )
 }
 
-const WorldMap = ({ allBlogs, allPictures, user }) => {
+const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
   const [blogs, setBlogs] = useState(allBlogs)
   const [pictures, setPictures] = useState(allPictures)
   const [showSettings, setShowSettings] = useState(false)
@@ -101,6 +101,11 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
   const param = queryString.parse(useLocation().search)
   const handle = useFullScreenHandle()
   const mapRef = useRef(null)
+
+  useEffect(() => {
+    setFilteredPictures({pictures: null, filter: null})
+  },[])
+
   useEffect(() => {
     if (param.lat && param.lng) {
       setMapCenter({ lat: Number(param.lat), lng: Number(param.lng) })

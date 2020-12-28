@@ -46,6 +46,10 @@ const App = () => {
   const [userNotifications, setUserNotifications] = useState(null)
   const [allBlogs, setAllBlogs] = useState(null)
   const [allPictures, setAllPictures] = useState(null)
+  const [filteredPictures, setFilteredPictures] = useState({
+    pictures: null,
+    filter: null,
+  })
   const [picture, setPicture] = useState(null)
   const [allUsers, setAllUsers] = useState(null)
   const [message, setMessage] = useState({ type: '', message: '' })
@@ -143,7 +147,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -165,7 +169,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -181,19 +185,25 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
           ></Header>
-          <WorldMap allBlogs={allBlogs} allPictures={allPictures} user={user}></WorldMap>
+
+          <WorldMap
+            allBlogs={allBlogs}
+            allPictures={allPictures}
+            user={user}
+            setFilteredPictures={setFilteredPictures}
+          ></WorldMap>
         </Route>
         <Route path="/gallery/:id">
           <Header
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -203,6 +213,8 @@ const App = () => {
             picture={picture}
             allPictures={allPictures}
             setAllPictures={setAllPictures}
+            filteredPictures={filteredPictures}
+            setFilteredPictures={setFilteredPictures}
             setPicture={setPicture}
           ></SinglePicturePage>
         </Route>
@@ -211,7 +223,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -219,6 +231,7 @@ const App = () => {
           <Gallery
             allPictures={allPictures}
             setAllPictures={setAllPictures}
+            setFilteredPictures={setFilteredPictures}
             user={user}
             setUser={setUser}
             storage={storage}
@@ -230,7 +243,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -247,7 +260,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -264,7 +277,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
@@ -276,7 +289,7 @@ const App = () => {
             user={user}
             setUser={setUser}
             allPictures={allPictures}
-            allBlogs = {allBlogs}
+            allBlogs={allBlogs}
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
