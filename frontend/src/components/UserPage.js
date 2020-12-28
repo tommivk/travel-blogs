@@ -21,7 +21,6 @@ const UserPage = ({ userMatch, user, allUsers, setAllUsers }) => {
 
   useEffect(() => {
     if (userData && user) {
-      console.log(userData, user)
       setsubscribeBlogs(userData.blogSubscribers.includes(user.id))
       setSubscribePictures(userData.pictureSubscribers.includes(user.id))
     }
@@ -29,9 +28,7 @@ const UserPage = ({ userMatch, user, allUsers, setAllUsers }) => {
 
   if (!userData) return null
   
-  console.log(userData, user)
   const joinDate = DateTime.fromISO(userData.joinDate)
-  console.log(joinDate)
 
   const handleModalClose = () => {
     setModalOpen(false)

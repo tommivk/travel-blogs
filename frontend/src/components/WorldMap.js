@@ -15,8 +15,6 @@ import Switch from '@material-ui/core/Switch'
 import '../styles/worldMap.css'
 
 const PopUp = ({ selected, handle, type, setActivePopUp }) => {
-  console.log(selected)
-  console.log(type)
   if (type !== 'blog' && type !== 'image') return null
 
   const card = {
@@ -40,8 +38,6 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
           by:
           {selected.author.username}
         </p>
-
-        {/* <p>{selected.date}</p> */}
         <Link to={`/blogs/${selected.id}`}>
           <h3>Read</h3>
         </Link>
@@ -105,12 +101,10 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
   const param = queryString.parse(useLocation().search)
   const handle = useFullScreenHandle()
   const mapRef = useRef(null)
-  console.log('asd')
   useEffect(() => {
     if (param.lat && param.lng) {
       setMapCenter({ lat: Number(param.lat), lng: Number(param.lng) })
       setMapZoom(10)
-      console.log(mapCenter)
     }
   }, [param.lat, param.lng])
 
@@ -151,8 +145,6 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
             maps.event.addListener(marker, 'click', () =>
               setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
             )
-            console.log(marker)
-
             markers.push(marker)
           })
         )
@@ -221,7 +213,7 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
     const clusterer = new MarkerClusterer(map, markers, {
       imagePath:
         'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-      gridSize: 1,
+      gridSize: 10,
       minimumClusterSize: 2,
       zoomOnClick: false,
       maxZoom: 15,

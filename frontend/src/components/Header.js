@@ -24,14 +24,12 @@ const Header = ({
   userNotifications,
   setUserNotifications,
 }) => {
-  console.log(user)
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
   const [notificationMenuEl, setNotificationMenuEl] = useState(null)
   const [unreadNotifications, setUnreadNotifications] = useState([])
   const [readNotifications, setReadNotifications] = useState([])
   const [searchFilter, setSearchFilter] = useState('')
   const [searchModalOpen, setSearchModalOpen] = useState(false)
-  console.log(userNotifications)
   const history = useHistory()
 
   useEffect(() => {
@@ -46,8 +44,6 @@ const Header = ({
     }
   }, [userNotifications])
 
-  console.log(unreadNotifications)
-  console.log(readNotifications)
   const closeSearchModal = () => {
     setSearchModalOpen(false)
     setSearchFilter('')

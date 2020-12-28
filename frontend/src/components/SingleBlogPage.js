@@ -66,10 +66,7 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
 
   if (!blog) return null
   const dateNow = DateTime.local()
-  console.log(typeof blog.date)
   const blogDate = DateTime.fromISO(blog.date)
-
-  console.log(blogDate)
 
   const handleStarChange = async (action) => {
     console.log(user, blog)
@@ -84,13 +81,11 @@ const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
     )
     const newBlog = response.data
     setBlog(newBlog)
-    console.log(newBlog, allBlogs)
     const filteredBlogs = allBlogs.map((b) =>
       b.id === newBlog.id ? newBlog : b
     )
 
     setAllBlogs(filteredBlogs)
-    console.log(response)
   }
 
   const calculateDateDiff = (date) => {

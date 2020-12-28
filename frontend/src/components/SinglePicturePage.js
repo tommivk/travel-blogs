@@ -44,7 +44,6 @@ const CommentForm = ({
         pic.id === picture.id ? response.data : pic
       )
       setAllPictures(filteredPictures)
-      console.log(response.data)
     } catch (error) {
       console.log(error)
     }
@@ -312,9 +311,6 @@ const SinglePicturePage = ({
           <Link to={`/users/${picture.user.id}`}>
             <h2>{picture.user.username}</h2>
           </Link>
-        </div>
-        <div>
-          {/* <h4>Uploaded:</h4> {monthNames[date.getMonth()]} {date.getDate()} */}
         </div>
         <div>votes: {picture.votes.length}</div>
       </div>

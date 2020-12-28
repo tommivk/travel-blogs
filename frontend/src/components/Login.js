@@ -6,7 +6,6 @@ import { Button, TextField } from '@material-ui/core'
 const Login = ({ setUser, handleMessage }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  console.log(setUser)
   const handleLogin = async (e) => {
     e.preventDefault()
     try {

@@ -23,11 +23,9 @@ const UserSettings = ({ user, setUser, storage }) => {
           Authorization: `Bearer ${user.token}`,
         },
       })
-      console.log(user)
       const newUser = user
       newUser.avatar = uploadedPictureURL
       setUser(newUser)
-      console.log(user)
       window.localStorage.setItem('loggedTravelBlogUser', JSON.stringify(user))
       setImagePreview(null)
       setImage(null)
@@ -39,7 +37,6 @@ const UserSettings = ({ user, setUser, storage }) => {
   const handleImageUpload = async (e) => {
     e.preventDefault()
     const fbuser = firebase.auth().currentUser
-    console.log(fbuser)
     const userID = fbuser.uid
     let uploadTask = storage
       .ref()

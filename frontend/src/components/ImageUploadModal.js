@@ -122,7 +122,6 @@ const ImageUploadModal = ({
   const handleImageUpload = async (e) => {
     e.preventDefault()
     const fbuser = firebase.auth().currentUser
-    console.log(fbuser)
     const userID = fbuser.uid
     const imageID = uuidv4()
     let uploadTask = storage
@@ -156,9 +155,6 @@ const ImageUploadModal = ({
     )
   }
   const handleApiLoaded = (map, maps) => {
-    console.log(map)
-    console.log(maps)
-    console.log(map.center.lat(), map.center.lng())
   }
 
   const handleMapDrag = (e) => {

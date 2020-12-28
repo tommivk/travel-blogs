@@ -20,7 +20,6 @@ const UserImagesModal = ({
   setUploadModalOpen,
   setHeaderImageURL,
 }) => {
-  console.log(user)
   const handleImagePick = (image) => {
     setHeaderImageURL(image)
     closeModal()
@@ -182,11 +181,6 @@ const NewBlog = ({
               setAllPictures={setAllPictures}
               handleMessage={handleMessage}
             ></ImageUploadModal>
-            {/* <div>
-              <Button onClick={() => setUploadModalOpen(true)}>
-                upload images
-              </Button>
-            </div> */}
             <div className="new-blog-textfield">
               <TextField
                 label="Title"
@@ -215,11 +209,6 @@ const NewBlog = ({
                 setUploadModalOpen={setUploadModalOpen}
                 setHeaderImageURL={setHeaderImageURL}
               ></UserImagesModal>
-              {/* <TextField
-              onChange={({ target }) => setHeaderImageURL(target.value)}
-              variant='outlined'
-              style={{ height: '200px', width: '200px' }}
-            ></TextField> */}
             </div>
           </div>
           <div className="new-blog-nav-button-right">

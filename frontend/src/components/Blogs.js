@@ -20,12 +20,10 @@ const Blogs = ({ allBlogs }) => {
   const [sortBy, setSortBy] = useState('Newest')
 
   const param = queryString.parse(useLocation().search)
-  console.log(param)
 
   useEffect(() => {
     if (blogs && allBlogs) {
       let sortedBlogs = allBlogs.slice()
-      console.log(blogs)
       if (sortBy === 'Newest') {
         sortedBlogs.sort((a, b) => {
           if (DateTime.fromISO(a.date) < DateTime.fromISO(b.date)) {
@@ -59,7 +57,6 @@ const Blogs = ({ allBlogs }) => {
           })
         )
         setBlogs(blogMatches)
-        console.log(blogMatches)
       }
       if (param.city) {
         let blogMatches = []
@@ -70,7 +67,6 @@ const Blogs = ({ allBlogs }) => {
           })
         )
         setBlogs(blogMatches)
-        console.log(blogMatches)
       }
     }
   }, [sortBy, param.country, param.city])
@@ -95,8 +91,6 @@ const Blogs = ({ allBlogs }) => {
             <Swiper
               slidesPerView={1}
               navigation
-              onSlideChange={() => console.log('slide change')}
-              onSwiper={(swiper) => console.log(swiper)}
               style={{ textAlign: 'center' }}
             >
               {blogs.map(
@@ -107,7 +101,6 @@ const Blogs = ({ allBlogs }) => {
                         <img
                           src={blog.headerImageURL}
                           width="80%"
-                          onLoad={() => console.log('img loading')}
                         ></img>
                         <div className="swiper-blog-info">
                           <div className="swiper-blog-title">{blog.title}</div>
@@ -125,7 +118,6 @@ const Blogs = ({ allBlogs }) => {
       </div>
     )
   }
-  console.log(blogs)
 
   return (
     <div className="blogs-main-container">
@@ -183,14 +175,6 @@ const Blogs = ({ allBlogs }) => {
                     <Star id="star" fontSize="medium"></Star>
                     <div id="blog-stars-count">{blog.stars.length}</div>
                   </div>
-
-                  {/* <div className='blog-button'>
-                <Link to={`/blogs/${blog.id}`} id='blog-link'>
-                  <Button variant='outlined' color='primary'>
-                    Read
-                  </Button>
-                </Link>
-              </div> */}
                 </div>
               </Link>
             ))}

@@ -32,6 +32,7 @@
     border: 2px solid black;
     cursor: pointer;
 }
+
 .map-popup-close-button:hover {
     background-color: red;
 }

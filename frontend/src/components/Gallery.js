@@ -70,7 +70,6 @@ const Gallery = ({
         const picturesWithCity = sortedPictures.filter(
           (p) => p.location && p.location.city && p.location.city !== null
         )
-        console.log(picturesWithCity)
         const filteredPics = picturesWithCity.filter(
           (p) => p.location.city.toLowerCase() === param.city.toLowerCase()
         )
@@ -160,7 +159,7 @@ const Gallery = ({
           <div className="gallery-cards">
             {pictures.map((pic) => (
               <div>
-                <Link to={`/gallery/${pic.id}`} key={pic.id}>
+                <Link to={`/gallery/${pic.id}`} key={pic.id} style={{textDecoration: "none"}}>
                   <div className="gallery-card">
                     <img
                       src={pic.imgURL}

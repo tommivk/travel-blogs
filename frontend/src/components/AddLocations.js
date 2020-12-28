@@ -15,7 +15,6 @@ const AddLocations = ({ locations, setLocations }) => {
   }, [filter])
 
   const handleAddLocation = (city) => {
-    console.log(city)
     const newLocation = [
       {
         lat: city.latitude,
@@ -28,16 +27,6 @@ const AddLocations = ({ locations, setLocations }) => {
   }
   return (
     <div>
-      {/* {Location && (
-        <ul>
-          {locations.map((l) => (
-            <li>
-              {l.lat} {l.lng}
-            </li>
-          ))}
-        </ul>
-      )} */}
-      {/* Add locations */}
       <TextField
         variant='outlined'
         placeholder='search by city'
