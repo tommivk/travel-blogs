@@ -232,10 +232,15 @@ const WorldMap = ({ allBlogs, allPictures, user }) => {
         position: 'absolute',
       }}
     >
-      <Settings
-        id="settings-gear-icon"
-        onClick={() => setShowSettings(!showSettings)}
-      ></Settings>
+       <div className="map-settings">
+      <div className={`${!showSettings && "tooltip tooltip-right"}`}>
+       <span className="tooltip-message">Settings</span>
+        <Settings
+          onClick={() => setShowSettings(!showSettings)}
+        ></Settings>
+        </div>
+      </div>
+
       {showSettings && (
         <div className="map-filter-box">
           <div>

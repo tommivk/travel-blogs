@@ -2,3 +2,30 @@ body {
   margin: 0;
   background-color: #191e36;
 }
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip-message {
+  opacity: 0;
+  position: absolute;
+  top: 0px;
+  transform: translate(10%, -105%);
+  z-index: 50;
+  background: #0b1111;
+  color: white;
+  padding: 7px 10px 7px 10px;
+  white-space: nowrap;
+}
+
+.tooltip:hover .tooltip-message {
+  opacity: 1;
+  transition: opacity 0s linear 0.5s;
+}
+
+.tooltip.tooltip-right .tooltip-message {
+  top: 50%;
+  left: 100%;
+  font-size: 15px;
+}

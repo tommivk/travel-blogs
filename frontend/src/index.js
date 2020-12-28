@@ -87,7 +87,6 @@ const App = () => {
     }
   }, [user])
 
-  console.log(userNotifications)
   const blogMatch = useRouteMatch('/blogs/:id')
   let blog = null
 
@@ -129,9 +128,8 @@ const App = () => {
         <Alert
           style={{
             position: 'absolute',
-            top: '7vh',
-            left: '50%',
-            transform: 'translate(-50%, 0)',
+            bottom: '20px',
+            right: '50px',
             zIndex: '9999',
           }}
           severity={message.type}

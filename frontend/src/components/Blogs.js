@@ -173,7 +173,10 @@ const Blogs = ({ allBlogs }) => {
                     <h4>{blog.description}</h4>
                   </div>
                   <div className="blog-star">
+                    <div className="tooltip">
+                    <span className="tooltip-message">Stars</span>
                     <Star id="star" fontSize="default"></Star>
+                    </div>
                     <div id="blog-stars-count">{blog.stars.length}</div>
                   </div>
                 </div>

@@ -194,20 +194,23 @@ const Gallery = ({
                         }}
                       >
                         <div
+                        className= "tooltip"
                           style={{
                             display: 'flex',
                             color: '#6c717a',
                             marginLeft: '4px',
                           }}
-                        >
-                          <ArrowUpward></ArrowUpward>{' '}
+                        > 
+                        <span className="tooltip-message">Points</span>
+                          <ArrowUpward></ArrowUpward>
                           <div
                             style={{ alignSelf: 'center', marginLeft: '3px' }}
                           >
                             {pic.voteResult}
                           </div>
                         </div>
-                        <div style={{ color: '#6c717a', marginRight: '4px' }}>
+                        <div className= "tooltip" style={{ color: '#6c717a', marginRight: '4px' }}>
+                          <span className="tooltip-message">Comments</span>
                           <Sms></Sms> {pic.comments.length}
                         </div>
                       </div>

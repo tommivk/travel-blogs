@@ -6,6 +6,7 @@ import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import Fullscreen from '@material-ui/icons/Fullscreen'
 import Explore from '@material-ui/icons/Explore'
+import ExploreOff from '@material-ui/icons/ExploreOff';
 import Image from '@material-ui/icons/Image'
 import { Language } from '@material-ui/icons'
 import { FullScreen, useFullScreenHandle } from 'react-full-screen'
@@ -144,7 +145,7 @@ const SinglePicturePage = ({
         minHeight: '94vh',
         backgroundColor: '#191e36',
         position: 'relative',
-        overflowY: 'auto',
+        overflowY: 'scroll',
         overflowX: 'hidden',
       }}
     >
@@ -172,7 +173,6 @@ const SinglePicturePage = ({
             <div>
               {pictureIndex - 1 >= 0 && (
                 <Link to={`/gallery/${allPictures[pictureIndex - 1].id}`}>
-                  {' '}
                   <Button color="primary" variant="contained">
                     Previous
                   </Button>
@@ -196,7 +196,6 @@ const SinglePicturePage = ({
             <div>
               {allPictures.length > pictureIndex + 1 && (
                 <Link to={`/gallery/${allPictures[pictureIndex + 1].id}`}>
-                  {' '}
                   <Button color="primary" variant="contained">
                     Next
                   </Button>
@@ -208,18 +207,24 @@ const SinglePicturePage = ({
           {showMap ? (
             <div>
               <img src={mapImage} width="700px" height="400px"></img>
-              {picture.location.city && <p>{picture.location.city}</p>}{' '}
+              {picture.location.city && <p>{picture.location.city}</p>}
               {picture.location.country && <p>{picture.location.country}</p>}
               <Link
                 to={`/explore/?lat=${picture.location.lat}&lng=${picture.location.lng}`}
               >
-                <Language></Language>
+                <div style={{ width: 'fit-content' }}>
+                  <div className="tooltip">
+                    <span className="tooltip-message">Show On Map</span>
+                    <Language></Language>
+                  </div>
+                </div>
               </Link>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <img src={picture.imgURL} width="700px"></img>
-              <div style={{ alignSelf: 'flex-end' }}>
+              <div className="tooltip" style={{ alignSelf: 'flex-end' }}>
+                <span className="tooltip-message">View In Fullscreen</span>
                 <Fullscreen
                   id="picture-fullscreen-button"
                   onClick={pictureHandle.enter}
@@ -249,12 +254,31 @@ const SinglePicturePage = ({
 
       {mapImage && !showMap && (
         <div className="image-toggle-button">
-          <Explore fontSize="large" onClick={() => setShowMap(true)}></Explore>
+          <div className="tooltip">
+            <span className="tooltip-message">Show Location</span>
+            <Explore
+              fontSize="large"
+              onClick={() => setShowMap(true)}
+            ></Explore>
+          </div>
         </div>
       )}
       {showMap && (
         <div className="image-toggle-button">
-          <Image fontSize="large" onClick={() => setShowMap(false)}></Image>
+          <div className="tooltip">
+            <span className="tooltip-message">Show Picture</span>
+
+            <Image fontSize="large" onClick={() => setShowMap(false)}></Image>
+          </div>
+        </div>
+      )}
+
+      {!mapImage && (
+        <div className="image-toggle-button" style={{cursor: "default"}}>
+          <div className="tooltip">
+            <span className="tooltip-message">No Location Specified</span>
+            <ExploreOff fontSize="large"></ExploreOff>
+          </div>
         </div>
       )}
 
@@ -275,41 +299,42 @@ const SinglePicturePage = ({
       >
         <div className="vote-container-element">
           {userVote && userVote.dir === 1 ? (
-            <ArrowUpward onClick={() => handleVoteDelete()}></ArrowUpward>
+            <ArrowUpward
+              className="picture-vote-arrow"
+              onClick={() => handleVoteDelete()}
+            ></ArrowUpward>
           ) : null}
           {!userVote && (
-            <ArrowUpward onClick={() => handleVote(1)}></ArrowUpward>
+            <ArrowUpward
+              className="picture-vote-arrow"
+              onClick={() => handleVote(1)}
+            ></ArrowUpward>
           )}
         </div>
         <div className="vote-container-element">{picture.voteResult}</div>
         <div className="vote-container-element">
           {userVote && userVote.dir === -1 ? (
-            <ArrowDownward onClick={() => handleVoteDelete()}></ArrowDownward>
+            <ArrowDownward
+              className="picture-vote-arrow"
+              onClick={() => handleVoteDelete()}
+            ></ArrowDownward>
           ) : null}
           {!userVote && (
-            <ArrowDownward onClick={() => handleVote(-1)}></ArrowDownward>
+            <ArrowDownward
+              className="picture-vote-arrow"
+              onClick={() => handleVote(-1)}
+            ></ArrowDownward>
           )}
         </div>
       </div>
-      <div
-        style={{
-          height: '40%',
-          width: '15%',
-          backgroundColor: '#231A03',
-          position: 'absolute',
-          right: '8%',
-          top: '10%',
-          color: 'white',
-          textAlign: 'center',
-          borderRadius: '4%',
-        }}
-      >
-        <div style={{ margin: '4%' }}>
-          <img src={picture.user.avatar} width="70%"></img> 
-        </div>
+      <div className="picture-info-container">
+        <img src={picture.user.avatar}></img> 
         <div>
           <Link to={`/users/${picture.user.id}`}>
-            <h2>{picture.user.username}</h2>
+            <div className="tooltip">
+              <span className="tooltip-message">View Profile</span>
+              <h2>{picture.user.username}</h2>
+            </div>
           </Link>
         </div>
         <div>votes: {picture.votes.length}</div>
@@ -336,6 +361,7 @@ const SinglePicturePage = ({
             )}
           </div>
         ))}
+        <div className="picture-list-pseudo-element"></div>
       </div>
     </div>
   )

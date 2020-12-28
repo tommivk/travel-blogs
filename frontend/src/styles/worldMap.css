@@ -9,7 +9,7 @@
     color: white;
 }
 
-#settings-gear-icon {
+.map-settings{
     font-size: 2em;
     position: absolute;
     z-index: 100;
