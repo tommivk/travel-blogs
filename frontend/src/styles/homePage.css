@@ -57,9 +57,8 @@
     height: 20%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     border-bottom: 2px solid black;
-
 }
 
 .homepage-blog-wrapper {

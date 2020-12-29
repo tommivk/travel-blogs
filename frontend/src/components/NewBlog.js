@@ -181,27 +181,39 @@ const NewBlog = ({
               setAllPictures={setAllPictures}
               handleMessage={handleMessage}
             ></ImageUploadModal>
+            <div>
             <div className="new-blog-textfield">
               <TextField
                 label="Title"
                 variant="outlined"
+                value={title}
                 onChange={({ target }) => setTitle(target.value)}
               ></TextField>
             </div>
             <div className="new-blog-textfield">
               <TextField
                 label="Blog Description"
+                value={description}
                 onChange={({ target }) => setDescription(target.value)}
                 variant="outlined"
               ></TextField>
             </div>
+            </div>
             <div>
-              <Button onClick={() => setUserImageModalOpen(true)}>
-                Choose Cover Image
-              </Button>
-              {headerImageURL && (
-                <img src={headerImageURL} height="200px"></img>
-              )}
+              <div className="new-blog-image-preview">
+                {!headerImageURL && (
+                  <Button id ="new-blog-image-add-button" onClick={() => setUserImageModalOpen(true)}>
+                    Choose A Cover Image
+                  </Button>
+                )}
+                {headerImageURL && (
+                  <div className="new-blog-preview-image">
+                  <img src={headerImageURL}></img>
+                  <button id ="preview-image-close-button" onClick={()=>setHeaderImageURL(null)}>X</button>
+                  </div>
+                )}
+
+              </div>
               <UserImagesModal
                 closeModal={closeUserImageModal}
                 open={userImageModalOpen}
@@ -237,7 +249,7 @@ const NewBlog = ({
             <Editor
               value={content}
               init={{
-                height: 600,
+                height: 650,
                 menubar: true,
                 paste_data_images: true,
                 plugins: ['paste'],
@@ -269,7 +281,7 @@ const NewBlog = ({
             </Stepper>
           </div>
           <div className="location-select-wrapper">
-            <div>
+            <div className="new-blog-selected-locations">
               <h3>Locations selected</h3>
               {locations.map((loc) => (
                 <div>
