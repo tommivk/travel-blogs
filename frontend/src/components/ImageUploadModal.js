@@ -34,22 +34,22 @@ const ImageUploadModal = ({
   const handleLocationSelect = () => {
     const lat = markerPosition.lat
     const lng = markerPosition.lng
-    try{
-    axios
-      .get(
-        `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&accept-language=en&format=json`
-      )
-      .then((res) =>
-        setLocations([
-          {
-            lat,
-            lng,
-            city: res.data.address.city,
-            country: res.data.address.country,
-          },
-        ])
-      )
-    }catch(error){
+    try {
+      axios
+        .get(
+          `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&accept-language=en&format=json`
+        )
+        .then((res) =>
+          setLocations([
+            {
+              lat,
+              lng,
+              city: res.data.address.city,
+              country: res.data.address.country,
+            },
+          ])
+        )
+    } catch (error) {
       console.log(error)
     }
 
@@ -121,6 +121,11 @@ const ImageUploadModal = ({
 
   const handleImageUpload = async (e) => {
     e.preventDefault()
+    if (title.length < 5) {
+      handleMessage('error', 'Title must be at least 5 characters long')
+      setStep(1)
+      return
+    }
     const fbuser = firebase.auth().currentUser
     const userID = fbuser.uid
     const imageID = uuidv4()
@@ -154,8 +159,7 @@ const ImageUploadModal = ({
       }
     )
   }
-  const handleApiLoaded = (map, maps) => {
-  }
+  const handleApiLoaded = (map, maps) => {}
 
   const handleMapDrag = (e) => {
     setMarkerPosition({ lat: e.center.lat(), lng: e.center.lng() })
@@ -293,6 +297,7 @@ const ImageUploadModal = ({
                     <Input
                       placeholder="title"
                       style={{ color: 'white' }}
+                      value={title}
                       onChange={({ target }) => setTitle(target.value)}
                     ></Input>
                   </div>
