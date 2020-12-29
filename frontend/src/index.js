@@ -189,6 +189,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            activePage = "map"
           ></Header>
 
           <WorldMap
@@ -227,6 +228,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            activePage = "gallery"
           ></Header>
           <Gallery
             allPictures={allPictures}
@@ -281,6 +283,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            activePage = "blogs"
           ></Header>
           <Blogs allBlogs={allBlogs}></Blogs>
         </Route>

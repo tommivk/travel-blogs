@@ -184,7 +184,7 @@ const SinglePicturePage = ({
               marginBottom: '5px',
             }}
           >
-            <div style={{justifySelf:"center"}}>
+            <div style={{ justifySelf: 'center' }}>
               {pictureIndex - 1 >= 0 && (
                 <Link to={`/gallery/${pictures[pictureIndex - 1].id}`}>
                   <Button color="primary" variant="contained">
@@ -207,7 +207,7 @@ const SinglePicturePage = ({
               </h2>
             </div>
 
-            <div style={{justifySelf: "center"}}>
+            <div style={{ justifySelf: 'center' }}>
               {pictures.length > pictureIndex + 1 && (
                 <Link to={`/gallery/${pictures[pictureIndex + 1].id}`}>
                   <Button color="primary" variant="contained">
@@ -377,9 +377,9 @@ const SinglePicturePage = ({
               </div>
             ) : (
               <Link to={`/gallery/${pic.id}`}>
-                <div>
-                  <img src={pic.imgURL}></img>
-                </div>
+                  <div>
+                    <img src={pic.imgURL}></img>
+                  </div>
               </Link>
             )}
           </div>

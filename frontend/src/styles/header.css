@@ -43,7 +43,7 @@
 }
 
 .header-link:hover h1{
-    color: white
+    color: white;
 }
 
 .header-link a{
@@ -115,4 +115,22 @@
     max-height: 50vh;
     width: 20vw;
     overflow-y: scroll;
+}
+
+.header-link.map-page  {
+    color: white;
+    background-color: #191e36;
+}
+
+.header-link.blogs-page  {
+    background-color: #191e36;
+}
+
+.header-link.gallery-page {
+    background-color: #191e36;
+    color: white;
+}
+
+.header-link.gallery-page h1, .header-link.blogs-page h1 {
+    color: white;
 }

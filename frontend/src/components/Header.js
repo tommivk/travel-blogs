@@ -6,7 +6,6 @@ import {
   Search,
   Language,
   Notifications,
-  FormatIndentDecreaseTwoTone,
 } from '@material-ui/icons'
 import SearchModal from './SearchModal'
 import Menu from '@material-ui/core/Menu'
@@ -23,6 +22,7 @@ const Header = ({
   allUsers,
   userNotifications,
   setUserNotifications,
+  activePage,
 }) => {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null)
   const [notificationMenuEl, setNotificationMenuEl] = useState(null)
@@ -30,6 +30,7 @@ const Header = ({
   const [readNotifications, setReadNotifications] = useState([])
   const [searchFilter, setSearchFilter] = useState('')
   const [searchModalOpen, setSearchModalOpen] = useState(false)
+  const [titleActive, setTitleActive] = useState(false)
   const history = useHistory()
 
   useEffect(() => {
@@ -52,6 +53,7 @@ const Header = ({
   const handleMenuOpen = (e) => {
     setMenuAnchorEl(e.currentTarget)
   }
+  
   const handleMenuClose = () => {
     setMenuAnchorEl(null)
   }
@@ -59,6 +61,7 @@ const Header = ({
   const handleNotificationMenuOpen = (e) => {
     setNotificationMenuEl(e.currentTarget)
   }
+
   const handleNotificationMenuClose = () => {
     setNotificationMenuEl(null)
   }
@@ -122,7 +125,7 @@ const Header = ({
     const d = DateTime.fromISO(date)
     return `${d.weekYear}-${d.month}-${d.day} ${d.hour}:${d.minute}`
   }
-
+  console.log(activePage)
   return (
     <div className="main-header-container">
       <div>
@@ -132,7 +135,7 @@ const Header = ({
           searchFilter={searchFilter}
           setSearchFilter={setSearchFilter}
           allPictures={allPictures}
-          allBlogs = {allBlogs}
+          allBlogs={allBlogs}
           allUsers={allUsers}
         ></SearchModal>
       </div>
@@ -144,17 +147,35 @@ const Header = ({
       </div>
       <div className="header-link-container">
         <Link to="/blogs">
-          <div className="header-link">
+          <div
+            className={`header-link ${
+              !titleActive && activePage === 'blogs' && 'blogs-page'
+            }`}
+            onMouseEnter={() => setTitleActive(true)}
+            onMouseLeave={() => setTitleActive(false)}
+          >
             <h1>Blogs</h1>
           </div>
         </Link>
         <Link to="/gallery">
-          <div className="header-link">
+          <div
+            className={`header-link ${
+              !titleActive && activePage === 'gallery' && 'gallery-page'
+            }`}
+            onMouseEnter={() => setTitleActive(true)}
+            onMouseLeave={() => setTitleActive(false)}
+          >
             <h1>Gallery</h1>
           </div>
         </Link>
         <Link to="/explore" style={{ color: 'black' }}>
-          <div className="header-link">
+          <div
+            className={`header-link ${
+              !titleActive && activePage === 'map' && 'map-page'
+            }`}
+            onMouseEnter={() => setTitleActive(true)}
+            onMouseLeave={() => setTitleActive(false)}
+          >
             <Language fontSize="large" />
           </div>
         </Link>
@@ -189,7 +210,9 @@ const Header = ({
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
           <div className="notification-menu-content">
-            {userNotifications && userNotifications.length===0 && <div>You don't have any notifications</div>}
+            {userNotifications && userNotifications.length === 0 && (
+              <div>You don't have any notifications</div>
+            )}
             {unreadNotifications.map((n) => (
               <div
                 className="unread-notification notification-message"
