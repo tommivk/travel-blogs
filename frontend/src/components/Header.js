@@ -125,7 +125,7 @@ const Header = ({
     const d = DateTime.fromISO(date)
     return `${d.weekYear}-${d.month}-${d.day} ${d.hour}:${d.minute}`
   }
-  console.log(activePage)
+  
   return (
     <div className="main-header-container">
       <div>

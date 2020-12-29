@@ -2,6 +2,99 @@
     background-color: #191e36;
     height: 94vh;
     width: 100%;
+}
+
+.homepage-main-content {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.featured-picture-container {
+    height: 60vh;
+    width: 50%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.featured-picture {
+    height: 70%;
+    width: 70%;
+    display: block;
+    position: relative;
+}
+
+.featured-picture img {
+    height: 100%;
+}
+
+.newest-blogs {
+    height: 60vh;
+    max-height: 60vh;
+    width: 50%;
+    text-align: center;
+    display: block;
+    color: white;
+}
+.newest-blogs h1 {
+    height: 15%;
+    margin: 0;
+}
+
+#newest-blogs-header {
+    margin-top: 24.44px
+}
+
+.homepage-blogs {
+    height: 85%;
+    display: flex;
+    justify-content: center;
+}
+
+.homepage-blog {
+    height: 20%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 2px solid black;
+
+}
+
+.homepage-blog-wrapper {
+    width: 50%;
+    height: 85%;
+    border-top: 2px solid black;
+}
+
+.homepage-blog-image {
+    overflow: hidden;
+}
+
+.homepage-blog-image img {
+    max-height: 100%;
+    width: 130px;
+    object-fit: fill;
+    transition: transform 0.7s;
+}
+
+.homepage-blog-info {
+    text-align: left;
+}
+
+.homepage-blog-info p {
+    margin-left: 20px;
+}
+
+.homepage-blog:hover h1, .homepage-blog:hover p {
+    color: rgb(180, 155, 9);
+}
+.homepage-blog:hover .homepage-blog-image img {
+    transform: scale(1.2);
+    transition: transform 3s;
+}
+
+.featured-picture-container h3 {
+    margin: 5px;
 }
