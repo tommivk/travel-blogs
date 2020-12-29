@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 
 const pictureSchema = mongoose.Schema({
-  imgURL: String,
-  firebaseID: String,
+  imgURL: {type: String, required: true },
+  firebaseID: {type: String, required: true },
   date: Date,
-  public: Boolean,
-  title: String,
+  public: {type: Boolean, required: true },
+  title: {type: String, minlength: 3, required: true },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true
   },
   location: {
     lat: Number,

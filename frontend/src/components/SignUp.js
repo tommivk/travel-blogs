@@ -17,8 +17,8 @@ const SignUp = ({ handleMessage }) => {
       setPassword('')
       handleMessage('success', 'Signed Up Successfully')
     } catch (error) {
-      handleMessage('error', error.message)
-      console.log(error)
+      handleMessage('error', error.response.data.message)
+      console.log(error.response.data)
     }
   }
 

@@ -18,9 +18,17 @@ usersRouter.get('/', async (req, res) => {
 
 usersRouter.post('/', async (req, res) => {
   const body = req.body
+
   if (!body.username || !body.password) {
     return res.send(400).end()
   }
+
+  if (body.password.length < 5) {
+    return res
+      .status(400)
+      .send({ message: 'password must be at least 5 characters long' })
+  }
+
   try {
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)

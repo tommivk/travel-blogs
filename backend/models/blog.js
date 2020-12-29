@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 
 const blogSchema = mongoose.Schema({
-  title: String,
+  title: { type: String, minlength: 5, required: true },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
   date: Date,
-  description: String,
-  content: String,
+  description: { type: String, minlength: 5, required: true },
+  content: { type: String, minlength: 50, required: true },
   locations: [
     {
       lat: Number,
