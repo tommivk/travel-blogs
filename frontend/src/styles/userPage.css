@@ -11,6 +11,7 @@
 }
 
 .user-page-user-info{
+    position: relative;
     height: 300px;
     width: 300px;
     background-color: rgb(31, 25, 25);
@@ -26,4 +27,11 @@
     width: 20vw;
     height: 20vh;
     background-color: white;
+}
+
+.userpage-update-buttons {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%, 0);
 }

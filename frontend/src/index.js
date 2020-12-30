@@ -253,6 +253,8 @@ const App = () => {
           <UserPage
             userMatch={selectedUser}
             user={user}
+            setUser={setUser}
+            storage={storage}
             allUsers={allUsers}
             setAllUsers={setAllUsers}
           ></UserPage>

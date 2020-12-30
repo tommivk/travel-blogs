@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import firebase from 'firebase/app'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
@@ -6,16 +7,122 @@ import Modal from '@material-ui/core/Modal'
 import Checkbox from '@material-ui/core/Checkbox'
 import '../styles/userPage.css'
 
-const UserPage = ({ userMatch, user, allUsers, setAllUsers }) => {
+const UserPage = ({
+  userMatch,
+  user,
+  allUsers,
+  setAllUsers,
+  setUser,
+  storage,
+}) => {
   const [userData, setUserData] = useState(userMatch)
   const [content, setContent] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
   const [subscribeBlogs, setsubscribeBlogs] = useState(false)
   const [subscribePictures, setSubscribePictures] = useState(false)
+  const [isUser, setIsUser] = useState(false)
+  const [image, setImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState(null)
+  const [editUsername, setEditUsername] = useState(false)
+  const [newUsername, setNewUsername] = useState(user.username)
+
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0])
+      setImagePreview(URL.createObjectURL(e.target.files[0]))
+      URL.revokeObjectURL(e.target.files[0])
+    }
+  }
+
+  const handleCancelUpdate = () => {
+    setImagePreview(null)
+    setImage(null)
+    setEditUsername(false)
+    setNewUsername(user.username)
+  }
+  const updateUser = async (uploadedPictureURL) => {
+    const newUserData = {}
+
+    if (!uploadedPictureURL && newUsername === user.username) {
+      handleCancelUpdate()
+      return
+    }
+    if (uploadedPictureURL) {
+      newUserData.avatar = uploadedPictureURL
+    }
+    if (newUsername !== user.username) {
+      newUserData.username = newUsername
+    }
+
+    try {
+      const response = await axios.put(
+        'http://localhost:8008/api/users',
+        newUserData,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+
+      const updatedUser = response.data
+      updatedUser.fbtoken = user.fbtoken
+      setUser(updatedUser)
+      setUserData(response.data)
+      window.localStorage.setItem(
+        'loggedTravelBlogUser',
+        JSON.stringify(response.data)
+      )
+      handleCancelUpdate()
+      setNewUsername(response.data.username)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleUserUpdate = async (e) => {
+    e.preventDefault()
+    if (!image) {
+      updateUser()
+      return
+    }
+    const fbuser = firebase.auth().currentUser
+    const userID = fbuser.uid
+    let uploadTask = storage
+      .ref()
+      .child(`/avatars/${userID}/${image.name}`)
+      .put(image)
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        console.log('Upload is ' + progress + '% done')
+
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED:
+            console.log('Upload is paused')
+            break
+          case firebase.storage.TaskState.RUNNING:
+            console.log('Upload is running')
+            break
+        }
+      },
+      (error) => {
+        console.log('error happened')
+      },
+      () => {
+        uploadTask.snapshot.ref
+          .getDownloadURL()
+          .then((downloadURL) => updateUser(downloadURL))
+      }
+    )
+  }
 
   useEffect(() => {
     if (userMatch) {
       setUserData(userMatch)
+      userMatch.id === user.id ? setIsUser(true) : setIsUser(false)
     }
   }, [userMatch])
 
@@ -27,7 +134,7 @@ const UserPage = ({ userMatch, user, allUsers, setAllUsers }) => {
   }, [userData, modalOpen])
 
   if (!userData) return null
-  
+
   const joinDate = DateTime.fromISO(userData.joinDate)
 
   const handleModalClose = () => {
@@ -92,14 +199,54 @@ const UserPage = ({ userMatch, user, allUsers, setAllUsers }) => {
         </div>
       </Modal>
       <div className="user-page-user-info">
-        <img src={userData.avatar}></img>
-        <h1>{userData.username}</h1>
+        {isUser && (
+          <div>
+            <form onSubmit={handleUserUpdate}>
+              <input
+                type="file"
+                id="avatar-upload-button"
+                hidden
+                onChange={handleImageChange}
+              ></input>
+              <label htmlFor="avatar-upload-button">
+                {imagePreview ? (
+                  <img src={imagePreview}></img>
+                ) : (
+                  <img src={userData.avatar}></img>
+                )}
+              </label>
+              {image || (editUsername && newUsername !== user.username) ? (
+                <div className="userpage-update-buttons">
+                  <button onClick={() => handleCancelUpdate()}>Cancel</button>
+                  <button type="submit">Update</button>
+                </div>
+              ) : null}
+            </form>
+          </div>
+        )}
+        {!isUser && <img src={userData.avatar}></img>}
+
+        {editUsername && isUser ? (
+          <div>
+            <input
+              type="text"
+              value={newUsername}
+              onChange={({ target }) => setNewUsername(target.value)}
+            ></input>
+          </div>
+        ) : null}
+
+        {isUser && !editUsername && (
+          <h1 onClick={() => setEditUsername(true)}>{userData.username}</h1>
+        )}
+        {!isUser && <h1>{userData.username}</h1>}
+
         <div>
           Member Since {joinDate.monthLong} {joinDate.weekYear}
         </div>
         <div>Created Blogs: {userData.blogs.length}</div>
         <div>Uploaded Pictures: {userData.pictures.length}</div>
-        {userData.id !== user.id && (
+        {!isUser && (
           <div>
             <button onClick={() => setModalOpen(true)}>
               {isSubscribed() === true

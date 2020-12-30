@@ -49,7 +49,7 @@ const HomePage = ({ allBlogs, allPictures }) => {
                   <div className="homepage-blog">
                     <div className="homepage-blog-info">
                       <div>
-                        <h1>{blog.title}</h1>
+                        <h2>{blog.title}</h2>
                       </div>
                       <div>
                         <p>{blog.description}</p>

@@ -55,14 +55,14 @@ usersRouter.put('/', async (req, res) => {
     return res.status(401).json({ error: 'token missing or invalid' })
   }
 
-  const updatedUser = {
-    avatar: body.avatar,
-  }
-  const newUser = await User.findByIdAndUpdate(decodedToken.id, updatedUser, {
+  const user = await User.findByIdAndUpdate(decodedToken.id, body, {
     new: true,
   }).populate('pictures')
-  console.log(newUser.toJSON())
-  res.status(200).send(newUser.toJSON())
+
+  const newUser = user.toJSON()
+  newUser.token = token
+  console.log(user)
+  res.status(200).send(newUser)
 })
 
 usersRouter.put('/:id/subscription', async (req, res, next) => {

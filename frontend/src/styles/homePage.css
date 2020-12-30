@@ -86,7 +86,11 @@
     margin-left: 20px;
 }
 
-.homepage-blog:hover h1, .homepage-blog:hover p {
+.homepage-blog-info h2 {
+    margin: 5px;
+}
+
+.homepage-blog:hover h2, .homepage-blog:hover p {
     color: rgb(180, 155, 9);
 }
 .homepage-blog:hover .homepage-blog-image img {
