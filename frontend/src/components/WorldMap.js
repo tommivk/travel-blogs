@@ -136,7 +136,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         }
 
         for (let [key, value] of markerData) {
-          if (value.firebaseID) {
+          if (value.type === "picture") {
             markerData.delete(key)
           }
         }
@@ -151,7 +151,9 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
             setActivePopUp({ data: pic, type: 'image' })
           )
 
-          setMarkerData(new Map(markerData.set(marker, pic)))
+          setMarkerData(
+            new Map(markerData.set(marker, { type: 'picture', data: pic }))
+          )
           markers.push(marker)
         })
       }
@@ -162,11 +164,11 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         showUserContentOnly ? (blogArray = user.blogs) : (blogArray = blogs)
 
         for (let [key, value] of markerData) {
-          if (value.stars) {
+          if (value.type === "blog") {
             markerData.delete(key)
           }
         }
-
+        console.log(markerData.size)
         blogArray.map((blog) =>
           blog.locations.map((loc) => {
             let marker = new maps.Marker({
@@ -178,7 +180,9 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
             maps.event.addListener(marker, 'click', () =>
               setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
             )
-            setMarkerData(new Map(markerData.set(marker, blog)))
+            setMarkerData(
+              new Map(markerData.set(marker, { type: 'blog', data: blog }))
+            )
             markers.push(marker)
           })
         )
@@ -220,7 +224,9 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         setActivePopUp({ data: pic, type: 'image' })
       )
       markers.push(marker)
-      setMarkerData(new Map(markerData.set(marker, pic)))
+      setMarkerData(
+        new Map(markerData.set(marker, { type: 'picture', data: pic }))
+      )
     })
 
     blogs.map((blog) =>
@@ -233,7 +239,9 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         maps.event.addListener(marker, 'click', () =>
           setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
         )
-        setMarkerData(new Map(markerData.set(marker, blog)))
+        setMarkerData(
+          new Map(markerData.set(marker, { type: 'blog', data: blog }))
+        )
         markers.push(marker)
       })
     )
