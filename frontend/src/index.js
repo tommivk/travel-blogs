@@ -10,7 +10,6 @@ import SingleBlogPage from './components/SingleBlogPage'
 import SinglePicturePage from './components/SinglePicturePage'
 import Blogs from './components/Blogs'
 import UserPage from './components/UserPage'
-import UserSettings from './components/UserSettings'
 import ReactDOM from 'react-dom'
 import firebase from 'firebase/app'
 import Alert from '@material-ui/lab/Alert'
@@ -163,22 +162,6 @@ const App = () => {
             setAllPictures={setAllPictures}
             handleMessage={handleMessage}
           ></NewBlog>
-        </Route>
-        <Route path="/settings">
-          <Header
-            user={user}
-            setUser={setUser}
-            allPictures={allPictures}
-            allBlogs={allBlogs}
-            allUsers={allUsers}
-            userNotifications={userNotifications}
-            setUserNotifications={setUserNotifications}
-          ></Header>
-          <UserSettings
-            user={user}
-            setUser={setUser}
-            storage={storage}
-          ></UserSettings>
         </Route>
         <Route path="/explore">
           <Header

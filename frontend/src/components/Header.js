@@ -2,15 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import firebase from 'firebase/app'
 import { Link, useHistory } from 'react-router-dom'
-import {
-  Search,
-  Language,
-  Notifications,
-} from '@material-ui/icons'
+import { Search, Language, Notifications } from '@material-ui/icons'
 import SearchModal from './SearchModal'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import Settings from '@material-ui/icons/Settings'
 import { DateTime } from 'luxon'
 import '../styles/header.css'
 
@@ -53,7 +48,7 @@ const Header = ({
   const handleMenuOpen = (e) => {
     setMenuAnchorEl(e.currentTarget)
   }
-  
+
   const handleMenuClose = () => {
     setMenuAnchorEl(null)
   }
@@ -125,7 +120,7 @@ const Header = ({
     const d = DateTime.fromISO(date)
     return `${d.weekYear}-${d.month}-${d.day} ${d.hour}:${d.minute}`
   }
-  
+
   return (
     <div className="main-header-container">
       <div>
@@ -262,14 +257,12 @@ const Header = ({
             color: 'black',
           }}
         >
-          <MenuItem onClick={handleMenuClose}>Add new blog</MenuItem>
+          <MenuItem onClick={handleMenuClose}>Create New Blog</MenuItem>
+        </Link>
+        <Link to={`/users/${user.id}`} style={{textDecoration: "none", color: "black"}}>
+          <MenuItem onClick={handleMenuClose}>My Page</MenuItem>
         </Link>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>{' '}
-        <MenuItem onClick={handleMenuClose}>
-          <Link to="/settings">
-            <Settings></Settings>
-          </Link>
-        </MenuItem>
       </Menu>
     </div>
   )

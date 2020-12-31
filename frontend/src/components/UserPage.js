@@ -75,6 +75,11 @@ const UserPage = ({
       )
       handleCancelUpdate()
       setNewUsername(response.data.username)
+
+      const newUsers = allUsers.map((u) =>
+        u.id === user.id ? response.data : u
+      )
+      setAllUsers(newUsers)
     } catch (error) {
       console.log(error)
     }
@@ -215,10 +220,12 @@ const UserPage = ({
                   <img src={userData.avatar}></img>
                 )}
               </label>
-              {image || (editUsername && newUsername !== user.username) ? (
+              {image || editUsername ? (
                 <div className="userpage-update-buttons">
                   <button onClick={() => handleCancelUpdate()}>Cancel</button>
-                  <button type="submit">Update</button>
+                  {newUsername !== user.username && (
+                    <button type="submit">Update</button>
+                  )}
                 </div>
               ) : null}
             </form>
