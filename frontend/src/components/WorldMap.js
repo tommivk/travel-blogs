@@ -82,6 +82,101 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
   )
 }
 
+const ClusterPopUp = ({ content, setClusterContent, handle }) => {
+  const blogs = content.filter((c) => c.type === 'blog')
+  const pictures = content.filter((c) => c.type === 'picture')
+
+  const card = {
+    width: '205px',
+    height: '300px',
+    border: '2px solid black',
+    backgroundColor: '#191e36',
+    color: 'white',
+    textAlign: 'center',
+    borderRadius: '5px',
+    zIndex: '99999',
+    margin: '5px',
+  }
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: '50vw',
+        height: '60vh',
+        backgroundColor: 'rgba(0,0,0,0.7)',
+        borderRadius: '10px',
+        padding: '10px',
+        color: 'white',
+        transform: 'translate(-50%, -50%)',
+        overflow: 'auto',
+        zIndex: 999999,
+      }}
+    >
+      <button onClick={() => setClusterContent(null)}>close</button>
+      <h2>Pictures</h2>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+        }}
+      >
+        {pictures.map((pic) => (
+          <div style={card} key={pic.data.id}>
+            <h3>{pic.data.title}</h3>
+            <div style={{ position: 'relative' }}>
+              <img src={pic.data.imgURL} width="200" height="200"></img>
+              <div
+                style={{
+                  position: 'absolute',
+                  cursor: 'pointer',
+                  bottom: '1%',
+                  right: '2%',
+                }}
+                onClick={handle.enter}
+              >
+                <Fullscreen fontSize="large" color="secondary"></Fullscreen>
+              </div>
+            </div>
+
+            <Link to={`/gallery/${pic.data.id}`}>
+              <Button style={{ color: 'white' }}>Open In Gallery</Button>
+            </Link>
+          </div>
+        ))}
+      </div>
+      <h2>Blogs</h2>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+        }}
+      >
+        {blogs.map((blog) => (
+          <div style={card} key={blog.data.id}>
+            <h2>{blog.data.title}</h2>
+            <p>
+              by:
+              {blog.data.author.username}
+            </p>
+            <Link to={`/blogs/${blog.data.id}`}>
+              <h3>Read</h3>
+            </Link>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
   const [blogs, setBlogs] = useState(allBlogs)
   const [pictures, setPictures] = useState(allPictures)
@@ -93,6 +188,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
   const [mapCenter, setMapCenter] = useState({ lat: 59, lng: 30 })
   const [markerData, setMarkerData] = useState(new Map())
   const [mapZoom, setMapZoom] = useState(2)
+  const [clusterContent, setClusterContent] = useState(null)
   const [activePopUp, setActivePopUp] = useState({
     data: null,
     type: null,
@@ -194,7 +290,8 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
 
       mcCopy.addListener('click', (c) => {
         const markers = c.getMarkers()
-        markers.forEach((m) => console.log(markerData.get(m)))
+        const content = markers.map((m) => markerData.get(m))
+        setClusterContent(content)
       })
       setMarkerClusterer(mcCopy)
     }
@@ -260,7 +357,8 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
 
     clusterer.addListener('click', (c) => {
       const markers = c.getMarkers()
-      markers.forEach((m) => console.log(markerData.get(m)))
+      const content = markers.map((m) => markerData.get(m))
+      setClusterContent(content)
     })
 
     setMarkerClusterer(clusterer)
@@ -306,6 +404,14 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
             ></Switch>
           </div>
         </div>
+      )}
+
+      {clusterContent && (
+        <ClusterPopUp
+          content={clusterContent}
+          setClusterContent={setClusterContent}
+          handle={handle}
+        ></ClusterPopUp>
       )}
       <GoogleMapReact
         options={{ gestureHandling: 'greedy' }}
