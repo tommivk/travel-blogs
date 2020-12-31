@@ -135,6 +135,12 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
             : []
         }
 
+        for (let [key, value] of markerData) {
+          if (value.firebaseID) {
+            markerData.delete(key)
+          }
+        }
+
         picturesWithLocation.map((pic) => {
           let marker = new maps.Marker({
             position: { lat: pic.location.lat, lng: pic.location.lng },
@@ -144,15 +150,22 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
           maps.event.addListener(marker, 'click', () =>
             setActivePopUp({ data: pic, type: 'image' })
           )
+
           setMarkerData(new Map(markerData.set(marker, pic)))
           markers.push(marker)
         })
       }
-      console.log(markerData.entries())
+
       if (blogs && showBlogs && maps && markerClusterer) {
         let blogArray = []
 
         showUserContentOnly ? (blogArray = user.blogs) : (blogArray = blogs)
+
+        for (let [key, value] of markerData) {
+          if (value.stars) {
+            markerData.delete(key)
+          }
+        }
 
         blogArray.map((blog) =>
           blog.locations.map((loc) => {
@@ -176,7 +189,6 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         markers.forEach((m) => console.log(markerData.get(m)))
       })
       setMarkerClusterer(mcCopy)
-      console.log(markerData.entries())
     }
   }
 
