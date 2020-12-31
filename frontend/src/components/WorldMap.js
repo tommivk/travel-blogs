@@ -91,6 +91,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
   const [showBlogs, setShowBlogs] = useState(true)
   const [markerClusterer, setMarkerClusterer] = useState(null)
   const [mapCenter, setMapCenter] = useState({ lat: 59, lng: 30 })
+  const [markerData, setMarkerData] = useState(new Map())
   const [mapZoom, setMapZoom] = useState(2)
   const [activePopUp, setActivePopUp] = useState({
     data: null,
@@ -114,7 +115,6 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
   }, [param.lat, param.lng])
 
   const getMarkers = () => {
-
     if (!mapRef.current || !user) return null
 
     let markers = []
@@ -127,7 +127,6 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
       setMarkerClusterer(mcCopy)
 
       if (maps && picturesWithLocation && showPictures) {
-
         if (showUserContentOnly) {
           picturesWithLocation = user.pictures
             ? user.pictures.filter(
@@ -145,11 +144,11 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
           maps.event.addListener(marker, 'click', () =>
             setActivePopUp({ data: pic, type: 'image' })
           )
-
+          setMarkerData(new Map(markerData.set(marker, pic)))
           markers.push(marker)
         })
       }
-
+      console.log(markerData.entries())
       if (blogs && showBlogs && maps && markerClusterer) {
         let blogArray = []
 
@@ -166,12 +165,18 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
             maps.event.addListener(marker, 'click', () =>
               setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
             )
+            setMarkerData(new Map(markerData.set(marker, blog)))
             markers.push(marker)
           })
         )
       }
       mcCopy.addMarkers(markers)
+      mcCopy.addListener('click', (c) => {
+        const markers = c.getMarkers()
+        markers.forEach((m) => console.log(markerData.get(m)))
+      })
       setMarkerClusterer(mcCopy)
+      console.log(markerData.entries())
     }
   }
 
@@ -192,6 +197,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
 
   const mapsApiLoaded = (map, maps) => {
     let markers = []
+
     picturesWithLocation.map((pic) => {
       let marker = new maps.Marker({
         position: { lat: pic.location.lat, lng: pic.location.lng },
@@ -202,7 +208,9 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         setActivePopUp({ data: pic, type: 'image' })
       )
       markers.push(marker)
+      setMarkerData(new Map(markerData.set(marker, pic)))
     })
+
     blogs.map((blog) =>
       blog.locations.map((loc) => {
         let marker = new maps.Marker({
@@ -213,7 +221,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         maps.event.addListener(marker, 'click', () =>
           setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
         )
-
+        setMarkerData(new Map(markerData.set(marker, blog)))
         markers.push(marker)
       })
     )
@@ -225,11 +233,15 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
       zoomOnClick: false,
       maxZoom: 15,
     })
-    clusterer.addListener('click', (c) => console.log(c.getMarkers()))
+
+    clusterer.addListener('click', (c) => {
+      const markers = c.getMarkers()
+      markers.forEach((m) => console.log(markerData.get(m)))
+    })
 
     setMarkerClusterer(clusterer)
   }
- 
+
   return (
     <div
       style={{
