@@ -124,7 +124,6 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
       const mcCopy = markerClusterer
 
       mcCopy.clearMarkers()
-      setMarkerClusterer(mcCopy)
 
       if (maps && picturesWithLocation && showPictures) {
         if (showUserContentOnly) {
@@ -136,7 +135,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         }
 
         for (let [key, value] of markerData) {
-          if (value.type === "picture") {
+          if (value.type === 'picture') {
             markerData.delete(key)
           }
         }
@@ -164,11 +163,12 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         showUserContentOnly ? (blogArray = user.blogs) : (blogArray = blogs)
 
         for (let [key, value] of markerData) {
-          if (value.type === "blog") {
+          if (value.type === 'blog') {
             markerData.delete(key)
           }
         }
-        console.log(markerData.size)
+
+        console.log(blogArray)
         blogArray.map((blog) =>
           blog.locations.map((loc) => {
             let marker = new maps.Marker({
@@ -188,6 +188,10 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
         )
       }
       mcCopy.addMarkers(markers)
+      console.log(markerData.size)
+
+      mapRef.current.maps_.event.clearInstanceListeners(mcCopy)
+
       mcCopy.addListener('click', (c) => {
         const markers = c.getMarkers()
         markers.forEach((m) => console.log(markerData.get(m)))
