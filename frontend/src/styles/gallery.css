@@ -8,7 +8,7 @@
 .gallery-main-content {
   background-color: #191e36;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 20px;
   overflow-y: hidden;
   position: relative;
   display: flex;
@@ -22,7 +22,7 @@
   width: 200px;
   height: 280px;
   background-color: #231a03;
-  margin: 10px;
+  margin: 15px;
   border-radius: 4px;
   transition: transform 0.2s;
 }
@@ -42,13 +42,13 @@
   max-width: 85vw;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .pic-pseudo-element {
   height: 0px;
   width: 200px;
-  margin: 10px;
+  margin: 15px;
   content: '';
 }
 

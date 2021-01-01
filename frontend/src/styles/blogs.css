@@ -91,7 +91,7 @@
   margin-bottom: 5px;
   height: 90px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: column;
   align-items: center;
 }
@@ -143,13 +143,14 @@
 .blog-title {
   display: flex;
   justify-content: center;
-  width: 300px;
+  width: 240px;
 }
 
 .blog-title h1 {
   margin: 0;
+  margin-top: 5px;
   font-size: 1.2em;
-  max-width: 250px;
+  max-width: 240px;
 }
 
 .blog-description {
@@ -158,10 +159,9 @@
   margin-top: 25px;
 }
 
-.blog-description h4 {
+.blog-description p {
   padding-left: 20px;
   padding-right: 20px;
-  
 }
 
 #main-blog-link {
@@ -233,7 +233,7 @@
 }
 
 #blog-filter-select {
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 .blogs-top-title h1 {

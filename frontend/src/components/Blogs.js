@@ -176,7 +176,7 @@ const Blogs = ({ allBlogs }) => {
                     </div>
 
                     <div className="blog-description">
-                      <h4>{blog.description}</h4>
+                      <p>{blog.description}</p>
                     </div>
                     <div className="blog-star">
                       <div className="tooltip">

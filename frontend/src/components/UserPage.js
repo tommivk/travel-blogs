@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import firebase from 'firebase/app'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { DateTime } from 'luxon'
 import Modal from '@material-ui/core/Modal'
 import Checkbox from '@material-ui/core/Checkbox'
+import Edit from '@material-ui/icons/Edit'
 import '../styles/userPage.css'
 
 const UserPage = ({
@@ -215,47 +216,77 @@ const UserPage = ({
               ></input>
               <label htmlFor="avatar-upload-button">
                 {imagePreview ? (
-                  <img src={imagePreview}></img>
+                  <img
+                    src={imagePreview}
+                    className="userpage-avatar-image userpage-avatar-preview"
+                  ></img>
                 ) : (
-                  <img src={userData.avatar}></img>
+                  <div className="userpage-avatar-edit-container">
+                    <img
+                      src={userData.avatar}
+                      className="userpage-avatar-image"
+                    ></img>
+                    <Edit id="userpage-avatar-edit-icon"></Edit>
+                  </div>
                 )}
               </label>
-              {image || editUsername ? (
+              {imagePreview || editUsername ? (
                 <div className="userpage-update-buttons">
                   <button onClick={() => handleCancelUpdate()}>Cancel</button>
-                  {newUsername !== user.username && (
-                    <button type="submit">Update</button>
-                  )}
+                  <button type="submit">Update</button>
                 </div>
               ) : null}
             </form>
           </div>
         )}
-        {!isUser && <img src={userData.avatar}></img>}
-
-        {editUsername && isUser ? (
-          <div>
+        {!isUser && (
+          <img src={userData.avatar} className="userpage-avatar-image"></img>
+        )}
+        <div className="username-change-input">
+          {editUsername && isUser ? (
             <input
               type="text"
+              autoFocus={true}
               value={newUsername}
               onChange={({ target }) => setNewUsername(target.value)}
             ></input>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
 
         {isUser && !editUsername && (
-          <h1 onClick={() => setEditUsername(true)}>{userData.username}</h1>
+          <div
+            onClick={() => setEditUsername(true)}
+            className="username-edit-container"
+          >
+            <h1>{userData.username}</h1>
+            <Edit id="username-edit-icon"></Edit>
+          </div>
         )}
         {!isUser && <h1>{userData.username}</h1>}
+        {!editUsername && !imagePreview && (
+          <table className="userpage-user-info-table">
+            <tr>
+              <td>Member Since:</td>
+              <td>
+                {joinDate.monthLong} {joinDate.weekYear}
+              </td>
+            </tr>
 
-        <div>
-          Member Since {joinDate.monthLong} {joinDate.weekYear}
-        </div>
-        <div>Created Blogs: {userData.blogs.length}</div>
-        <div>Uploaded Pictures: {userData.pictures.length}</div>
+            <tr>
+              <td>Created Blogs: </td>
+              <td>{userData.blogs.length}</td>
+            </tr>
+            <tr>
+              <td>Uploaded Pictures:</td> <td>{userData.pictures.length}</td>
+            </tr>
+          </table>
+        )}
         {!isUser && (
           <div>
-            <button onClick={() => setModalOpen(true)}>
+            <button
+              id="userpage-subscribe-button"
+              onClick={() => setModalOpen(true)}
+            >
               {isSubscribed() === true
                 ? 'Modify Your Subscription'
                 : 'Subscribe'}
