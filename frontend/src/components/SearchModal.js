@@ -15,6 +15,7 @@ const SearchModal = ({
   const [searchCities, setSearchCities] = useState(true)
   const [searchCountries, setSearchCountries] = useState(true)
   const [searchPictures, setSearchPictures] = useState(true)
+  const [searchBlogs, setSearchBlogs] = useState(true)
   const [searchUsers, setSearchUsers] = useState(true)
 
   useEffect(() => {
@@ -73,7 +74,9 @@ const SearchModal = ({
   const foundPictureCountries = [...new Set(pictureCountryMatches)]
 
   const foundCities = [...new Set(foundBlogCities.concat(foundPictureCities))]
-  const foundCountries = [...new Set(foundBlogCountries.concat(foundPictureCountries))]
+  const foundCountries = [
+    ...new Set(foundBlogCountries.concat(foundPictureCountries)),
+  ]
 
   const foundUsers = allUsers.filter((user) =>
     user.username.toLowerCase().includes(searchFilter.toLowerCase())
@@ -81,6 +84,10 @@ const SearchModal = ({
 
   const foundPictures = allPictures.filter((pic) =>
     pic.title.toLowerCase().includes(searchFilter.toLowerCase())
+  )
+
+  const foundBlogs = allBlogs.filter((blog) =>
+    blog.title.toLowerCase().includes(searchFilter.toLowerCase())
   )
 
   return (
@@ -98,6 +105,16 @@ const SearchModal = ({
             onChange={({ target }) => setSearchFilter(target.value)}
           ></input>
           <div>
+            Blogs
+            <Checkbox
+              checked={searchBlogs}
+              onChange={() => setSearchBlogs(!searchBlogs)}
+            ></Checkbox>
+            Pictures
+            <Checkbox
+              checked={searchPictures}
+              onChange={() => setSearchPictures(!searchPictures)}
+            ></Checkbox>
             Cities
             <Checkbox
               checked={searchCities}
@@ -108,11 +125,6 @@ const SearchModal = ({
               checked={searchCountries}
               onChange={() => setSearchCountries(!searchCountries)}
             ></Checkbox>
-            Pictures
-            <Checkbox
-              checked={searchPictures}
-              onChange={() => setSearchPictures(!searchPictures)}
-            ></Checkbox>
             Users
             <Checkbox
               checked={searchUsers}
@@ -120,6 +132,25 @@ const SearchModal = ({
             ></Checkbox>
           </div>
           <div className="search-bottom-container">
+            <div className="search-bottom-section">
+              {searchBlogs && (
+                <div>
+                  <h2>Blogs</h2>
+                  <div>
+                    {foundBlogs.map((blog) => (
+                      <li>
+                        <Link
+                          to={`/blogs/${blog.id}`}
+                          onClick={closeSearchModal}
+                        >
+                          {blog.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="search-bottom-section">
               {searchPictures && (
                 <div>
@@ -132,7 +163,12 @@ const SearchModal = ({
                         <div>
                           {foundPictures.map((pic) => (
                             <li key={pic.id}>
-                              <Link to={`/gallery/${pic.id}`}>{pic.title}</Link>
+                              <Link
+                                to={`/gallery/${pic.id}`}
+                                onClick={closeSearchModal}
+                              >
+                                {pic.title}
+                              </Link>
                             </li>
                           ))}
                         </div>
@@ -150,18 +186,21 @@ const SearchModal = ({
                     'No cities found'
                   ) : (
                     <div>
-                      <ul>
+                      <table>
                         {foundCities.map((city) => (
-                          <li key={city}>
-                            {city}
+                          <tr key={city}>
+                            <td>{city}</td>
                             {foundPictureCities.includes(city) && (
                               <Link
                                 to={{
                                   pathname: '/gallery',
                                   search: `?city=${city}`,
                                 }}
+                                onClick={closeSearchModal}
                               >
-                                <button>Pictures</button>
+                                <td>
+                                  <button>Pictures</button>
+                                </td>
                               </Link>
                             )}
                             {foundBlogCities.includes(city) && (
@@ -170,13 +209,16 @@ const SearchModal = ({
                                   pathname: '/blogs',
                                   search: `?city=${city}`,
                                 }}
+                                onClick={closeSearchModal}
                               >
-                                <button>Blogs</button>
+                                <td>
+                                  <button>Blogs</button>
+                                </td>
                               </Link>
                             )}
-                          </li>
+                          </tr>
                         ))}
-                      </ul>
+                      </table>
                     </div>
                   )}
                 </div>
@@ -190,18 +232,21 @@ const SearchModal = ({
                     'No countries found'
                   ) : (
                     <div>
-                      <ul>
+                      <table style={{ width: '100%' }}>
                         {foundCountries.map((country) => (
-                          <li key={country}>
-                            {country}
+                          <tr key={country}>
+                            <td>{country}</td>
                             {foundPictureCountries.includes(country) && (
                               <Link
                                 to={{
                                   pathname: '/gallery',
                                   search: `?country=${country}`,
                                 }}
+                                onClick={closeSearchModal}
                               >
-                                <button>Pictures</button>
+                                <td>
+                                  <button>Pictures</button>
+                                </td>
                               </Link>
                             )}
                             {foundBlogCountries.includes(country) && (
@@ -210,13 +255,16 @@ const SearchModal = ({
                                   pathname: '/blogs',
                                   search: `?country=${country}`,
                                 }}
+                                onClick={closeSearchModal}
                               >
-                                <button>Blogs</button>
+                                <td>
+                                  <button>Blogs</button>
+                                </td>
                               </Link>
                             )}
-                          </li>
+                          </tr>
                         ))}
-                      </ul>
+                      </table>
                     </div>
                   )}
                 </div>
@@ -233,7 +281,10 @@ const SearchModal = ({
                       <ul>
                         {foundUsers.map((user) => (
                           <li key={user.username}>
-                            <Link to={`/users/${user.id}`}>
+                            <Link
+                              to={`/users/${user.id}`}
+                              onClick={closeSearchModal}
+                            >
                               {user.username}
                             </Link>
                           </li>

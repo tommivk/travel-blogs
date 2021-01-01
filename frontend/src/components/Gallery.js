@@ -25,7 +25,7 @@ const Gallery = ({
   useEffect(() => {
     if (allPictures) {
       let sortedPictures = allPictures.slice()
-      setFilteredPictures({pictures: null, filter: null})
+      setFilteredPictures({ pictures: null, filter: null })
       switch (sortBy) {
         case 'Newest':
           sortedPictures.sort((a, b) => {
@@ -140,7 +140,10 @@ const Gallery = ({
           {param.country && (
             <div style={{ display: 'flex' }}>
               <h1 style={{ color: 'white', marginTop: '0px' }}>
-                Pictures from {param.country}
+                Pictures from{' '}
+                <span style={{ color: 'rgb(180, 155, 9)' }}>
+                  {param.country}
+                </span>
               </h1>
               <Link to={'/gallery'}>
                 <Button style={{ color: 'white' }}>(X)</Button>
@@ -150,7 +153,8 @@ const Gallery = ({
           {param.city && (
             <div style={{ display: 'flex' }}>
               <h1 style={{ color: 'white', marginTop: '0px' }}>
-                Pictures from {param.city}
+                Pictures from{' '}
+                <span style={{ color: 'rgb(180, 155, 9)' }}>{param.city}</span>
               </h1>
               <Link to={'/gallery'}>
                 <Button style={{ color: 'white' }}>(X)</Button>
