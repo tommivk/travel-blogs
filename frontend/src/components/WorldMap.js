@@ -144,7 +144,7 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
               </div>
             </div>
 
-            <Link to={`/gallery/${pic.data.id}`}>
+            <Link target= "_blank" to={`/gallery/${pic.data.id}`}>
               <Button style={{ color: 'white' }}>Open In Gallery</Button>
             </Link>
           </div>
@@ -178,8 +178,8 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
 }
 
 const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
-  const [blogs, setBlogs] = useState(allBlogs)
-  const [pictures, setPictures] = useState(allPictures)
+  const [blogs, setBlogs] = useState(null)
+  const [pictures, setPictures] = useState(null)
   const [showSettings, setShowSettings] = useState(false)
   const [showUserContentOnly, setShowUserContentOnly] = useState(false)
   const [showPictures, setShowPictures] = useState(true)
@@ -202,6 +202,11 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
   useEffect(() => {
     setFilteredPictures({ pictures: null, filter: null })
   }, [])
+
+  useEffect(()=>{
+    setBlogs(allBlogs)
+    setPictures(allPictures)
+  },[allBlogs, allPictures])
 
   useEffect(() => {
     if (param.lat && param.lng) {
@@ -302,9 +307,9 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
     if (mapRef.current) {
       getMarkers()
     }
-  }, [showUserContentOnly, showBlogs, showPictures])
+  }, [showUserContentOnly, showBlogs, showPictures, blogs, pictures])
 
-  if (!allBlogs || !allPictures || !user || !blogs) return null
+  if (!allBlogs || !allPictures || !user || !blogs || !pictures) return null
 
   let picturesWithLocation = pictures
     ? pictures.filter(

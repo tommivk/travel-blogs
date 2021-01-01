@@ -43,13 +43,14 @@ const storage = firebase.storage()
 const App = () => {
   const [user, setUser] = useState(null)
   const [userNotifications, setUserNotifications] = useState(null)
-  const [allBlogs, setAllBlogs] = useState(null)
-  const [allPictures, setAllPictures] = useState(null)
+  const [allBlogs, setAllBlogs] = useState([])
+  const [allPictures, setAllPictures] = useState([])
   const [filteredPictures, setFilteredPictures] = useState({
     pictures: null,
     filter: null,
   })
   const [picture, setPicture] = useState(null)
+  const [blog, setBlog] = useState(null)
   const [allUsers, setAllUsers] = useState(null)
   const [message, setMessage] = useState({ type: '', message: '' })
 
@@ -91,14 +92,7 @@ const App = () => {
   }, [user])
 
   const blogMatch = useRouteMatch('/blogs/:id')
-  let blog = null
-
-  if (allBlogs) {
-    blog = blogMatch
-      ? allBlogs.find((blog) => blog.id === blogMatch.params.id)
-      : null
-  }
-
+  
   const pictureMatch = useRouteMatch('/gallery/:id')
 
   useEffect(() => {
@@ -106,7 +100,12 @@ const App = () => {
       const pic = allPictures.find((pic) => pic.id === pictureMatch.params.id)
       setPicture(pic)
     }
-  }, [pictureMatch])
+    if(allBlogs && blogMatch){
+      const foundBlog = allBlogs.find((blog) => blog.id === blogMatch.params.id)
+      setBlog(foundBlog)
+    }
+   
+  }, [pictureMatch, blogMatch])
 
   const userMatch = useRouteMatch('/users/:id')
   let selectedUser = null
@@ -253,7 +252,8 @@ const App = () => {
             setUserNotifications={setUserNotifications}
           ></Header>
           <SingleBlogPage
-            blogMatch={blog}
+            blog={blog}
+            setBlog={setBlog}
             allBlogs={allBlogs}
             setAllBlogs={setAllBlogs}
             user={user}

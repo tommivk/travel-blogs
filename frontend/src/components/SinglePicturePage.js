@@ -72,7 +72,7 @@ const SinglePicturePage = ({
   setFilteredPictures,
   setAllPictures,
 }) => {
-  const [pictures, setPictures] = useState(allPictures)
+  const [pictures, setPictures] = useState(null)
   const [mapImage, setMapImage] = useState(null)
   const [showMap, setShowMap] = useState(false)
   const pictureHandle = useFullScreenHandle()
@@ -80,8 +80,10 @@ const SinglePicturePage = ({
   useEffect(() => {
     if (filteredPictures.pictures) {
       setPictures(filteredPictures.pictures)
+    }else {
+      setPictures(allPictures)
     }
-  }, [])
+  }, [allPictures])
 
   useEffect(async () => {
     setShowMap(false)
@@ -96,6 +98,8 @@ const SinglePicturePage = ({
       setMapImage(null)
     }
   }, [picture])
+
+  if(!picture || !pictures) return null
 
   const handleFilterRemove = () => {
     setPictures(allPictures)
@@ -145,7 +149,6 @@ const SinglePicturePage = ({
     }
   }
 
-  if (!picture || !pictures) return null
 
   const userVote = picture.votes.find(
     (vote) => vote.user.username === user.username

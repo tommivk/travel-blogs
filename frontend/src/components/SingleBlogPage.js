@@ -61,9 +61,8 @@ const CommentForm = ({ user, blog, setBlog }) => {
   )
 }
 
-const SingleBlogPage = ({ blogMatch, user, setAllBlogs, allBlogs }) => {
-  const [blog, setBlog] = useState(blogMatch)
-
+const SingleBlogPage = ({ blog, setBlog, user, setAllBlogs, allBlogs }) => {
+  console.log(blog, allBlogs)
   if (!blog) return null
   const dateNow = DateTime.local()
   const blogDate = DateTime.fromISO(blog.date)

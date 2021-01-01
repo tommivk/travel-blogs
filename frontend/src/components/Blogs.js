@@ -15,12 +15,16 @@ import 'swiper/components/navigation/navigation.scss'
 SwiperCore.use([Navigation])
 
 const Blogs = ({ allBlogs }) => {
-  const [blogs, setBlogs] = useState(allBlogs)
+  const [blogs, setBlogs] = useState(null)
   const [displayMode, setDisplayMode] = useState(0)
   const [sortBy, setSortBy] = useState('Newest')
 
   const param = queryString.parse(useLocation().search)
 
+  useEffect(() => {
+    setBlogs(allBlogs)
+  },[allBlogs])
+   
   useEffect(() => {
     if (blogs && allBlogs) {
       let sortedBlogs = allBlogs.slice()

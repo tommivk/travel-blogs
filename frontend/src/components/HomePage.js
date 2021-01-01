@@ -5,7 +5,7 @@ import { Button } from '@material-ui/core'
 import '../styles/homePage.css'
 
 const HomePage = ({ allBlogs, allPictures }) => {
-  if (!allBlogs || !allPictures) return null
+  if (allBlogs.length === 0 || allPictures.length === 0) return null
 
   const newestBlogs = allBlogs
     .sort((a, b) => {
@@ -20,6 +20,7 @@ const HomePage = ({ allBlogs, allPictures }) => {
     .slice(0, 5)
 
   console.log(newestBlogs)
+ 
   return (
     <div className="homepage-main-container">
       <div className="homepage-main-content">
