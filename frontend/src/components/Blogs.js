@@ -141,11 +141,9 @@ const Blogs = ({ allBlogs }) => {
             {param.country && <h1>Blogs about {param.country}</h1>}
           </div>
           <div className="blog-filter-selection">
-            <div>
-            Sort By
-            </div>
+            <div>Sort By</div>
             <Select
-              id={"blog-filter-select"}
+              id={'blog-filter-select'}
               style={{ color: 'white' }}
               onChange={({ target }) => setSortBy(target.value)}
               value={sortBy}
@@ -161,32 +159,39 @@ const Blogs = ({ allBlogs }) => {
               <div key={blog.id}>
                 <Link id="main-blog-link" to={`/blogs/${blog.id}`}>
                   <div className="blog-card">
-                    <div className="blog-header">
-                      <div className="blog-title">
-                        <h1>{blog.title.toUpperCase()}</h1>
-                      </div>
-                      <div className="blog-author-username">
-                       Written by {blog.author.username}
-                      </div>
-                    </div>
                     <div className="blog-image">
                       {blog.headerImageURL && (
                         <img src={blog.headerImageURL} width="300px"></img>
                       )}
                     </div>
-
-                    <div className="blog-description">
-                      <p>{blog.description}</p>
-                    </div>
-                    <div className="blog-star">
-                      <div className="tooltip">
-                        <span className="tooltip-message">Stars</span>
-                        <Star id="star" fontSize="default"></Star>
+                    <div className="blog-card-right">
+                      <div className="blog-header">
+                        <div className="blog-author-info">
+                          <div>
+                            <img src={blog.author.avatar}></img>
+                          </div>
+                          <div>By {blog.author.username}</div>
+                        </div>
+                        <div className="blog-title">
+                          <h1>{blog.title.toUpperCase()}</h1>
+                        </div>
+                        <div className="blog-description">
+                          <p>{blog.description}</p>
+                        </div>
                       </div>
-                      <div id="blog-stars-count">{blog.stars.length}</div>
-                    </div>
-                    <div className="blog-date">
-                        {DateTime.fromISO(blog.date).monthShort} {DateTime.fromISO(blog.date).day}
+
+                      <div className="blog-star">
+                        <div className="tooltip">
+                          <span className="tooltip-message">Stars</span>
+                          <Star id="star" fontSize="default"></Star>
+                        </div>
+                        <div id="blog-stars-count">{blog.stars.length}</div>
+                      </div>
+                      <div className="blog-date">
+                        {DateTime.fromISO(blog.date).monthShort}{' '}
+                        {DateTime.fromISO(blog.date).day}{' '}
+                        {DateTime.fromISO(blog.date).year}
+                      </div>
                     </div>
                   </div>
                 </Link>

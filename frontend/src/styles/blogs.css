@@ -52,18 +52,27 @@
 
 .blog-card {
   position: relative;
-  height: 400px;
-  width: 350px;
+  height: 350px;
+  width: 500px;
   background-color: #231a03;
-  border-radius: 8px;
+  border-radius: 10px;
   margin: 10px;
   margin-bottom: 15px;
   transition: transform 0.2s;
   text-align: center;
+  display: flex;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
 .blog-card:hover {
   transform: scale(1.05);
+}
+
+.blog-card-right {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .cards-container {
@@ -76,24 +85,23 @@
 }
 
 .blog-image {
-  width: 350px;
-  max-width: 300px;
-  height: 200px;
+  width: 50%;
+  height: 100%;
+  min-width: 50%;
+  background-color: aquamarine;
 }
 .blog-image img {
   object-fit: fill;
-  width: 350px;
-  height: 200px;
+  height: 100%;
+  width: 100%;
+  min-width: 100%;
 }
 
 .blog-header {
-  position: relative;
-  margin-bottom: 5px;
-  height: 90px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  align-items: center;
+  position: absolute;
+  top: 65px;
+  left: 15px;
+  text-align: left;
 }
 
 .author-avatar {
@@ -111,7 +119,7 @@
 .blog-star {
   position: absolute;
   display: flex;
-  top:6px;
+  bottom: 0px;
   left: 8px;
   font-size: 0.9em;
 }
@@ -127,7 +135,7 @@
 .blog-date {
   position: absolute;
   right: 8px;
-  top: 5px;
+  bottom: 5px;
 }
 
 #blog-stars-count {
@@ -136,32 +144,33 @@
   margin-left: 2px;
 }
 
-.blog-author-username {
+.blog-author-info {
   font-size: 0.8em;
+  display: flex;
+  align-items: center;
+}
+
+.blog-author-info img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 5px;
 }
 
 .blog-title {
-  display: flex;
-  justify-content: center;
-  width: 240px;
 }
 
 .blog-title h1 {
   margin: 0;
   margin-top: 5px;
-  font-size: 1.2em;
+  font-size: 2em;
   max-width: 240px;
 }
 
 .blog-description {
-  font-size: 1em;
-  width: 350px;
-  margin-top: 25px;
 }
 
 .blog-description p {
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 #main-blog-link {
@@ -219,7 +228,7 @@
 
 .blog-pseudo-element {
   height: 0px;
-  width: 350px;
+  width: 500px;
   margin: 10px;
   content: '';
 }
