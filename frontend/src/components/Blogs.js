@@ -26,7 +26,7 @@ const Blogs = ({ allBlogs }) => {
   }, [allBlogs])
 
   useEffect(() => {
-    if (blogs && allBlogs) {
+    if (allBlogs) {
       let sortedBlogs = allBlogs.slice()
       if (sortBy === 'Newest') {
         sortedBlogs.sort((a, b) => {
@@ -172,7 +172,7 @@ const Blogs = ({ allBlogs }) => {
                           </div>
                           <div>By {blog.author.username}</div>
                         </div>
-                        <div className="blog-title">
+                        <div className={`blog-title ${blog.title.length > 22 && "long-blog-title"}`}>
                           <h1>{blog.title.toUpperCase()}</h1>
                         </div>
                         <div className="blog-description">
