@@ -21,7 +21,7 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
     width: '205px',
     height: '300px',
     border: '2px solid black',
-    backgroundColor: type === 'image' ? '#191e36' : 'darkred',
+    backgroundColor: type === 'image' ? '#191e36' : 'rgb(29, 26, 26)',
     transform: 'translate(5%, -110%)',
     color: 'white',
     textAlign: 'center',
@@ -260,9 +260,8 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
 
       if (blogs && showBlogs && maps && markerClusterer) {
         let blogArray = []
-
         showUserContentOnly ? (blogArray = user.blogs) : (blogArray = blogs)
-
+        
         for (let [key, value] of markerData) {
           if (value.type === 'blog') {
             markerData.delete(key)
