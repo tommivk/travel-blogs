@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import queryString from 'query-string'
-import ImageUploadModal from './ImageUploadModal'
-import { Link, useLocation } from 'react-router-dom'
-import { Button, Container, Select, MenuItem } from '@material-ui/core'
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
-import Sms from '@material-ui/icons/Sms'
-import '../styles/gallery.css'
+import React, { useEffect, useState } from 'react';
+import queryString from 'query-string';
+import PropTypes from 'prop-types';
+import Sms from '@material-ui/icons/Sms';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import { Link, useLocation } from 'react-router-dom';
+import { Button, Select, MenuItem } from '@material-ui/core';
+import ImageUploadModal from './ImageUploadModal';
+import '../styles/gallery.css';
 
 const Gallery = ({
   allPictures,
@@ -16,102 +17,104 @@ const Gallery = ({
   storage,
   handleMessage,
 }) => {
-  const [uploadModalOpen, setUploadModalOpen] = useState(false)
-  const [pictures, setPictures] = useState(allPictures)
-  const [sortBy, setSortBy] = useState('Newest')
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [pictures, setPictures] = useState(allPictures);
+  const [sortBy, setSortBy] = useState('Newest');
 
-  const param = queryString.parse(useLocation().search)
+  const param = queryString.parse(useLocation().search);
 
   useEffect(() => {
     if (allPictures) {
-      let sortedPictures = allPictures.slice()
-      setFilteredPictures({ pictures: null, filter: null })
+      const sortedPictures = allPictures.slice();
+      setFilteredPictures({ pictures: null, filter: null });
       switch (sortBy) {
         case 'Newest':
           sortedPictures.sort((a, b) => {
             if (a.date < b.date) {
-              return 1
+              return 1;
             }
             if (a.date > b.date) {
-              return -1
+              return -1;
             }
-            return 0
-          })
-          setPictures(sortedPictures)
-          break
+            return 0;
+          });
+          setPictures(sortedPictures);
+          break;
         case 'Best':
           sortedPictures.sort((a, b) => {
             if (a.voteResult < b.voteResult) {
-              return 1
+              return 1;
             }
             if (a.voteResult > b.voteResult) {
-              return -1
+              return -1;
             }
-            return 0
-          })
-          setPictures(sortedPictures)
-          break
+            return 0;
+          });
+          setPictures(sortedPictures);
+          break;
         case 'Oldest':
           sortedPictures.sort((a, b) => {
             if (a.date > b.date) {
-              return 1
+              return 1;
             }
             if (a.date < b.date) {
-              return -1
+              return -1;
             }
-            return 0
-          })
-          setPictures(sortedPictures)
-          break
+            return 0;
+          });
+          setPictures(sortedPictures);
+          break;
         default:
-          break
+          break;
       }
 
       if (param.city) {
         const picturesWithCity = sortedPictures.filter(
-          (p) => p.location && p.location.city && p.location.city !== null
-        )
+          (p) => p.location && p.location.city && p.location.city !== null,
+        );
         const filteredPics = picturesWithCity.filter(
-          (p) => p.location.city.toLowerCase() === param.city.toLowerCase()
-        )
-        setPictures(filteredPics)
-        setFilteredPictures({ pictures: filteredPics, filter: param.city })
+          (p) => p.location.city.toLowerCase() === param.city.toLowerCase(),
+        );
+        setPictures(filteredPics);
+        setFilteredPictures({ pictures: filteredPics, filter: param.city });
       }
 
       if (param.country) {
         const picturesWithCountry = sortedPictures.filter(
-          (p) => p.location.country !== null
-        )
+          (p) => p.location.country !== null,
+        );
+
         const filteredPics = picturesWithCountry.filter(
-          (p) =>
-            p.location.country.toLowerCase() === param.country.toLowerCase()
-        )
-        setPictures(filteredPics)
-        setFilteredPictures({ pictures: filteredPics, filter: param.country })
+          (p) => p.location.country.toLowerCase() === param.country.toLowerCase(),
+        );
+
+        setPictures(filteredPics);
+        setFilteredPictures({ pictures: filteredPics, filter: param.country });
       }
     }
-  }, [param.country, param.city, allPictures, sortBy])
+  }, [param.country, param.city, allPictures, sortBy]);
 
   const closeUploadModal = () => {
-    setUploadModalOpen(false)
-  }
+    setUploadModalOpen(false);
+  };
 
-  if (!pictures) return null
+  if (!pictures) return null;
 
   return (
     <div className="gallery-main-container">
       <div className="blog-top-right-container">
         <div className="blog-top-right-wrapper">
           <div className="gallery-filter-selection">
-            Sort By{' '}
+            Sort By
+            {' '}
             <Select
               style={{ color: 'white' }}
               onChange={({ target }) => setSortBy(target.value)}
               value={sortBy}
             >
-              <MenuItem value={'Best'}>Best</MenuItem>
-              <MenuItem value={'Newest'}>Newest</MenuItem>
-              <MenuItem value={'Oldest'}>Oldest</MenuItem>
+              <MenuItem value="Best">Best</MenuItem>
+              <MenuItem value="Newest">Newest</MenuItem>
+              <MenuItem value="Oldest">Oldest</MenuItem>
             </Select>
           </div>
           <div className="gallery-upload-images-button">
@@ -135,17 +138,18 @@ const Gallery = ({
           allPictures={allPictures}
           setAllPictures={setAllPictures}
           handleMessage={handleMessage}
-        ></ImageUploadModal>
+        />
         <div className="gallery-top-content">
           {param.country && (
             <div style={{ display: 'flex' }}>
               <h1 style={{ color: 'white', marginTop: '0px' }}>
-                Pictures from{' '}
+                Pictures from
+                {' '}
                 <span style={{ color: 'rgb(180, 155, 9)' }}>
                   {param.country}
                 </span>
               </h1>
-              <Link to={'/gallery'}>
+              <Link to="/gallery">
                 <Button style={{ color: 'white' }}>(X)</Button>
               </Link>
             </div>
@@ -153,10 +157,11 @@ const Gallery = ({
           {param.city && (
             <div style={{ display: 'flex' }}>
               <h1 style={{ color: 'white', marginTop: '0px' }}>
-                Pictures from{' '}
+                Pictures from
+                {' '}
                 <span style={{ color: 'rgb(180, 155, 9)' }}>{param.city}</span>
               </h1>
-              <Link to={'/gallery'}>
+              <Link to="/gallery">
                 <Button style={{ color: 'white' }}>(X)</Button>
               </Link>
             </div>
@@ -176,8 +181,9 @@ const Gallery = ({
                       src={pic.imgURL}
                       height="200"
                       width="200"
+                      alt=""
                       style={{ borderRadius: '4px' }}
-                    ></img>
+                    />
 
                     <h4
                       style={{
@@ -213,7 +219,7 @@ const Gallery = ({
                           }}
                         >
                           <span className="tooltip-message">Points</span>
-                          <ArrowUpward></ArrowUpward>
+                          <ArrowUpward />
                           <div
                             style={{ alignSelf: 'center', marginLeft: '3px' }}
                           >
@@ -225,7 +231,8 @@ const Gallery = ({
                           style={{ color: '#6c717a', marginRight: '4px' }}
                         >
                           <span className="tooltip-message">Comments</span>
-                          <Sms></Sms> {pic.comments.length}
+                          <Sms />
+                          {pic.comments.length}
                         </div>
                       </div>
                     </div>
@@ -233,17 +240,27 @@ const Gallery = ({
                 </Link>
               </div>
             ))}
-            <div className="pic-pseudo-element"></div>
-            <div className="pic-pseudo-element"></div>
-            <div className="pic-pseudo-element"></div>
-            <div className="pic-pseudo-element"></div>
-            <div className="pic-pseudo-element"></div>
-            <div className="pic-pseudo-element"></div>
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Gallery
+Gallery.propTypes = {
+  allPictures: PropTypes.instanceOf(Array).isRequired,
+  setAllPictures: PropTypes.func.isRequired,
+  setFilteredPictures: PropTypes.func.isRequired,
+  user: PropTypes.instanceOf(Object).isRequired,
+  setUser: PropTypes.func.isRequired,
+  storage: PropTypes.instanceOf(Object).isRequired,
+  handleMessage: PropTypes.func.isRequired,
+};
+
+export default Gallery;

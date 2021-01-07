@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { Modal, Checkbox } from '@material-ui/core'
-import { Link } from 'react-router-dom'
-import '../styles/searchModal.css'
+/* eslint-disable jsx-a11y/no-autofocus */
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Modal, Checkbox } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import '../styles/searchModal.css';
 
 const SearchModal = ({
   open,
@@ -12,89 +14,84 @@ const SearchModal = ({
   allBlogs,
   allUsers,
 }) => {
-  const [searchCities, setSearchCities] = useState(true)
-  const [searchCountries, setSearchCountries] = useState(true)
-  const [searchPictures, setSearchPictures] = useState(true)
-  const [searchBlogs, setSearchBlogs] = useState(true)
-  const [searchUsers, setSearchUsers] = useState(true)
+  const [searchCities, setSearchCities] = useState(true);
+  const [searchCountries, setSearchCountries] = useState(true);
+  const [searchPictures, setSearchPictures] = useState(true);
+  const [searchBlogs, setSearchBlogs] = useState(true);
+  const [searchUsers, setSearchUsers] = useState(true);
 
   useEffect(() => {
-    setSearchCities(true)
-    setSearchCountries(true)
-    setSearchPictures(true)
-    setSearchUsers(true)
-  }, [open])
+    setSearchCities(true);
+    setSearchCountries(true);
+    setSearchPictures(true);
+    setSearchUsers(true);
+  }, [open]);
 
-  if (!open || !allPictures || !allBlogs) return null
+  if (!open || !allPictures || !allBlogs) return null;
 
-  let blogCityMatches = []
-  let blogCountryMatches = []
+  const blogCityMatches = [];
+  const blogCountryMatches = [];
 
-  allBlogs.map((blog) =>
-    blog.locations.map((loc) => {
-      if (
-        loc.city &&
-        loc.city.toLowerCase().includes(searchFilter.toLowerCase())
-      ) {
-        blogCityMatches.push(loc.city)
-      }
-      if (
-        loc.country &&
-        loc.country.toLowerCase().includes(searchFilter.toLowerCase())
-      ) {
-        blogCountryMatches.push(loc.country)
-      }
-    })
-  )
+  allBlogs.map((blog) => blog.locations.map((loc) => {
+    if (
+      loc.city
+        && loc.city.toLowerCase().includes(searchFilter.toLowerCase())
+    ) {
+      blogCityMatches.push(loc.city);
+    }
+    if (
+      loc.country
+        && loc.country.toLowerCase().includes(searchFilter.toLowerCase())
+    ) {
+      blogCountryMatches.push(loc.country);
+    }
+  }));
 
-  const foundBlogCities = [...new Set(blogCityMatches)]
-  const foundBlogCountries = [...new Set(blogCountryMatches)]
+  const foundBlogCities = [...new Set(blogCityMatches)];
+  const foundBlogCountries = [...new Set(blogCountryMatches)];
 
-  let pictureCityMatches = []
-  let pictureCountryMatches = []
+  const pictureCityMatches = [];
+  const pictureCountryMatches = [];
 
   allPictures.map((pic) => {
     if (
-      pic.location &&
-      pic.location.city &&
-      pic.location.city.toLowerCase().includes(searchFilter.toLowerCase())
+      pic.location
+      && pic.location.city
+      && pic.location.city.toLowerCase().includes(searchFilter.toLowerCase())
     ) {
-      pictureCityMatches.push(pic.location.city)
+      pictureCityMatches.push(pic.location.city);
     }
     if (
-      pic.location &&
-      pic.location.country &&
-      pic.location.country.toLowerCase().includes(searchFilter.toLowerCase())
+      pic.location
+      && pic.location.country
+      && pic.location.country.toLowerCase().includes(searchFilter.toLowerCase())
     ) {
-      pictureCountryMatches.push(pic.location.country)
+      pictureCountryMatches.push(pic.location.country);
     }
-  })
+  });
 
-  const foundPictureCities = [...new Set(pictureCityMatches)]
-  const foundPictureCountries = [...new Set(pictureCountryMatches)]
+  const foundPictureCities = [...new Set(pictureCityMatches)];
+  const foundPictureCountries = [...new Set(pictureCountryMatches)];
 
-  const foundCities = [...new Set(foundBlogCities.concat(foundPictureCities))]
+  const foundCities = [...new Set(foundBlogCities.concat(foundPictureCities))];
   const foundCountries = [
     ...new Set(foundBlogCountries.concat(foundPictureCountries)),
-  ]
+  ];
 
-  const foundUsers = allUsers.filter((user) =>
-    user.username.toLowerCase().includes(searchFilter.toLowerCase())
-  )
+  const foundUsers = allUsers
+    .filter((user) => user.username.toLowerCase().includes(searchFilter.toLowerCase()));
 
-  const foundPictures = allPictures.filter((pic) =>
-    pic.title.toLowerCase().includes(searchFilter.toLowerCase())
-  )
+  const foundPictures = allPictures
+    .filter((pic) => pic.title.toLowerCase().includes(searchFilter.toLowerCase()));
 
-  const foundBlogs = allBlogs.filter((blog) =>
-    blog.title.toLowerCase().includes(searchFilter.toLowerCase())
-  )
+  const foundBlogs = allBlogs
+    .filter((blog) => blog.title.toLowerCase().includes(searchFilter.toLowerCase()));
 
   return (
     <div>
       <Modal open={open} onClose={closeSearchModal}>
         <div className="modal-content">
-          <button style={{ float: 'right' }} onClick={closeSearchModal}>
+          <button type="button" style={{ float: 'right' }} onClick={closeSearchModal}>
             close
           </button>
           <input
@@ -103,33 +100,33 @@ const SearchModal = ({
             autoFocus
             value={searchFilter}
             onChange={({ target }) => setSearchFilter(target.value)}
-          ></input>
+          />
           <div>
             Blogs
             <Checkbox
               checked={searchBlogs}
               onChange={() => setSearchBlogs(!searchBlogs)}
-            ></Checkbox>
+            />
             Pictures
             <Checkbox
               checked={searchPictures}
               onChange={() => setSearchPictures(!searchPictures)}
-            ></Checkbox>
+            />
             Cities
             <Checkbox
               checked={searchCities}
               onChange={() => setSearchCities(!searchCities)}
-            ></Checkbox>
+            />
             Countries
             <Checkbox
               checked={searchCountries}
               onChange={() => setSearchCountries(!searchCountries)}
-            ></Checkbox>
+            />
             Users
             <Checkbox
               checked={searchUsers}
               onChange={() => setSearchUsers(!searchUsers)}
-            ></Checkbox>
+            />
           </div>
           <div className="search-bottom-container">
             <div className="search-bottom-section">
@@ -199,7 +196,7 @@ const SearchModal = ({
                                 onClick={closeSearchModal}
                               >
                                 <td>
-                                  <button>Pictures</button>
+                                  <button type="button">Pictures</button>
                                 </td>
                               </Link>
                             )}
@@ -212,7 +209,7 @@ const SearchModal = ({
                                 onClick={closeSearchModal}
                               >
                                 <td>
-                                  <button>Blogs</button>
+                                  <button type="button">Blogs</button>
                                 </td>
                               </Link>
                             )}
@@ -245,7 +242,7 @@ const SearchModal = ({
                                 onClick={closeSearchModal}
                               >
                                 <td>
-                                  <button>Pictures</button>
+                                  <button type="button">Pictures</button>
                                 </td>
                               </Link>
                             )}
@@ -258,7 +255,7 @@ const SearchModal = ({
                                 onClick={closeSearchModal}
                               >
                                 <td>
-                                  <button>Blogs</button>
+                                  <button type="button">Blogs</button>
                                 </td>
                               </Link>
                             )}
@@ -299,7 +296,17 @@ const SearchModal = ({
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default SearchModal
+SearchModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  searchFilter: PropTypes.string.isRequired,
+  setSearchFilter: PropTypes.func.isRequired,
+  closeSearchModal: PropTypes.func.isRequired,
+  allPictures: PropTypes.instanceOf(Array).isRequired,
+  allBlogs: PropTypes.instanceOf(Array).isRequired,
+  allUsers: PropTypes.instanceOf(Array).isRequired,
+};
+
+export default SearchModal;

@@ -1,21 +1,27 @@
-import React, { useState, useEffect, useRef } from 'react'
-import GoogleMapReact from 'google-map-react'
-import queryString from 'query-string'
-import MarkerClusterer from '@googlemaps/markerclustererplus'
-import { FullScreen, useFullScreenHandle } from 'react-full-screen'
-import Fullscreen from '@material-ui/icons/Fullscreen'
-import { Link, useLocation } from 'react-router-dom'
-import { Button } from '@material-ui/core'
-import pictureIcon from '../images/photo_camera.svg'
-import blogIcon from '../images/message.svg'
-import ChatOutlined from '@material-ui/icons/ChatOutlined'
-import PhotoCamera from '@material-ui/icons/PhotoCamera'
-import Settings from '@material-ui/icons/Settings'
-import Switch from '@material-ui/core/Switch'
-import '../styles/worldMap.css'
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable prefer-const */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable no-underscore-dangle */
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import GoogleMapReact from 'google-map-react';
+import queryString from 'query-string';
+import MarkerClusterer from '@googlemaps/markerclustererplus';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import Fullscreen from '@material-ui/icons/Fullscreen';
+import { Link, useLocation } from 'react-router-dom';
+import { Button } from '@material-ui/core';
+import Settings from '@material-ui/icons/Settings';
+import Switch from '@material-ui/core/Switch';
+import pictureIcon from '../images/photo_camera.svg';
+import blogIcon from '../images/message.svg';
+import '../styles/worldMap.css';
 
-const PopUp = ({ selected, handle, type, setActivePopUp }) => {
-  if (type !== 'blog' && type !== 'image') return null
+const PopUp = ({
+  selected, handle, type, setActivePopUp,
+}) => {
+  if (type !== 'blog' && type !== 'image') return null;
 
   const card = {
     width: '205px',
@@ -27,9 +33,9 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
     textAlign: 'center',
     borderRadius: '5px',
     zIndex: '99999',
-  }
+  };
 
-  if (type === 'blog')
+  if (type === 'blog') {
     return (
       <div style={card}>
         <h1>{selected.title}</h1>
@@ -42,19 +48,21 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
           <h3>Read</h3>
         </Link>
         <button
+          type="button"
           className="map-popup-close-button"
           onClick={() => setActivePopUp(null)}
         >
           X
         </button>
       </div>
-    )
+    );
+  }
   return (
     <div>
       <div style={card}>
         <h2>{selected.title}</h2>
         <div style={{ position: 'relative' }}>
-          <img src={selected.imgURL} width="200" height="200"></img>
+          <img src={selected.imgURL} width="200" height="200" alt="" />
           <div
             style={{
               position: 'absolute',
@@ -64,7 +72,7 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
             }}
             onClick={handle.enter}
           >
-            <Fullscreen fontSize="large" color="secondary"></Fullscreen>
+            <Fullscreen fontSize="large" color="secondary" />
           </div>
         </div>
 
@@ -72,6 +80,7 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
           <Button style={{ color: 'white' }}>Open In Gallery</Button>
         </Link>
         <button
+          type="button"
           className="map-popup-close-button"
           onClick={() => setActivePopUp(null)}
         >
@@ -79,12 +88,19 @@ const PopUp = ({ selected, handle, type, setActivePopUp }) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
+
+PopUp.propTypes = {
+  selected: PropTypes.instanceOf(Object).isRequired,
+  handle: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  setActivePopUp: PropTypes.func.isRequired,
+};
 
 const ClusterPopUp = ({ content, setClusterContent, handle }) => {
-  const blogs = content.filter((c) => c.type === 'blog')
-  const pictures = content.filter((c) => c.type === 'picture')
+  const blogs = content.filter((c) => c.type === 'blog');
+  const pictures = content.filter((c) => c.type === 'picture');
 
   const card = {
     width: '205px',
@@ -96,7 +112,7 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
     borderRadius: '5px',
     zIndex: '99999',
     margin: '5px',
-  }
+  };
 
   return (
     <div
@@ -115,7 +131,7 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
         zIndex: 999999,
       }}
     >
-      <button onClick={() => setClusterContent(null)}>close</button>
+      <button type="button" onClick={() => setClusterContent(null)}>close</button>
       <h2>Pictures</h2>
       <div
         style={{
@@ -130,7 +146,7 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
           <div style={card} key={pic.data.id}>
             <h3>{pic.data.title}</h3>
             <div style={{ position: 'relative' }}>
-              <img src={pic.data.imgURL} width="200" height="200"></img>
+              <img src={pic.data.imgURL} width="200" height="200" alt="" />
               <div
                 style={{
                   position: 'absolute',
@@ -140,11 +156,11 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
                 }}
                 onClick={handle.enter}
               >
-                <Fullscreen fontSize="large" color="secondary"></Fullscreen>
+                <Fullscreen fontSize="large" color="secondary" />
               </div>
             </div>
 
-            <Link target= "_blank" to={`/gallery/${pic.data.id}`}>
+            <Link target="_blank" to={`/gallery/${pic.data.id}`}>
               <Button style={{ color: 'white' }}>Open In Gallery</Button>
             </Link>
           </div>
@@ -174,182 +190,183 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
-  const [blogs, setBlogs] = useState(null)
-  const [pictures, setPictures] = useState(null)
-  const [showSettings, setShowSettings] = useState(false)
-  const [showUserContentOnly, setShowUserContentOnly] = useState(false)
-  const [showPictures, setShowPictures] = useState(true)
-  const [showBlogs, setShowBlogs] = useState(true)
-  const [markerClusterer, setMarkerClusterer] = useState(null)
-  const [mapCenter, setMapCenter] = useState({ lat: 59, lng: 30 })
-  const [markerData, setMarkerData] = useState(new Map())
-  const [mapZoom, setMapZoom] = useState(2)
-  const [clusterContent, setClusterContent] = useState(null)
+ClusterPopUp.propTypes = {
+  content: PropTypes.instanceOf(Array).isRequired,
+  setClusterContent: PropTypes.func.isRequired,
+  handle: PropTypes.func.isRequired,
+};
+
+const WorldMap = ({
+  allBlogs, allPictures, user, setFilteredPictures,
+}) => {
+  const [blogs, setBlogs] = useState(null);
+  const [pictures, setPictures] = useState(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showUserContentOnly, setShowUserContentOnly] = useState(false);
+  const [showPictures, setShowPictures] = useState(true);
+  const [showBlogs, setShowBlogs] = useState(true);
+  const [markerClusterer, setMarkerClusterer] = useState(null);
+  const [mapCenter, setMapCenter] = useState({ lat: 59, lng: 30 });
+  const [markerData, setMarkerData] = useState(new Map());
+  const [mapZoom, setMapZoom] = useState(2);
+  const [clusterContent, setClusterContent] = useState(null);
   const [activePopUp, setActivePopUp] = useState({
     data: null,
     type: null,
     blogLocation: null,
-  })
+  });
 
-  const param = queryString.parse(useLocation().search)
-  const handle = useFullScreenHandle()
-  const mapRef = useRef(null)
+  const param = queryString.parse(useLocation().search);
+  const handle = useFullScreenHandle();
+  const mapRef = useRef(null);
+
+  let picturesWithLocation = pictures
+    ? pictures.filter(
+      (pic) => pic.location.lat !== null && pic.location.lng !== null,
+    )
+    : [];
 
   useEffect(() => {
-    setFilteredPictures({ pictures: null, filter: null })
-  }, [])
+    setFilteredPictures({ pictures: null, filter: null });
+  }, []);
 
-  useEffect(()=>{
-    setBlogs(allBlogs)
-    setPictures(allPictures)
-  },[allBlogs, allPictures])
+  useEffect(() => {
+    setBlogs(allBlogs);
+    setPictures(allPictures);
+  }, [allBlogs, allPictures]);
 
   useEffect(() => {
     if (param.lat && param.lng) {
-      setMapCenter({ lat: Number(param.lat), lng: Number(param.lng) })
-      setMapZoom(10)
+      setMapCenter({ lat: Number(param.lat), lng: Number(param.lng) });
+      setMapZoom(10);
     }
-  }, [param.lat, param.lng])
+  }, [param.lat, param.lng]);
 
+  // eslint-disable-next-line consistent-return
   const getMarkers = () => {
-    if (!mapRef.current || !user) return null
+    if (!mapRef.current || !user) return null;
 
-    let markers = []
-    const maps = mapRef.current.maps_
+    const markers = [];
+    const maps = mapRef.current.maps_;
 
     if (markerClusterer) {
-      const mcCopy = markerClusterer
+      const mcCopy = markerClusterer;
 
-      mcCopy.clearMarkers()
+      mcCopy.clearMarkers();
 
       if (maps && picturesWithLocation && showPictures) {
         if (showUserContentOnly) {
           picturesWithLocation = user.pictures
             ? user.pictures.filter(
-                (pic) => pic.location.lat !== null && pic.location.lng !== null
-              )
-            : []
+              (pic) => pic.location.lat !== null && pic.location.lng !== null,
+            )
+            : [];
         }
 
         for (let [key, value] of markerData) {
           if (value.type === 'picture') {
-            markerData.delete(key)
+            markerData.delete(key);
           }
         }
 
         picturesWithLocation.map((pic) => {
-          let marker = new maps.Marker({
+          const marker = new maps.Marker({
             position: { lat: pic.location.lat, lng: pic.location.lng },
             icon: pictureIcon,
             title: 'Picture',
-          })
-          maps.event.addListener(marker, 'click', () =>
-            setActivePopUp({ data: pic, type: 'image' })
-          )
+          });
+          maps.event.addListener(marker, 'click', () => setActivePopUp({ data: pic, type: 'image' }));
 
           setMarkerData(
-            new Map(markerData.set(marker, { type: 'picture', data: pic }))
-          )
-          markers.push(marker)
-        })
+            new Map(markerData.set(marker, { type: 'picture', data: pic })),
+          );
+          markers.push(marker);
+        });
       }
 
       if (blogs && showBlogs && maps && markerClusterer) {
-        let blogArray = []
-        showUserContentOnly ? (blogArray = user.blogs) : (blogArray = blogs)
-        
+        let blogArray = [];
+        if (showUserContentOnly) {
+          blogArray = user.blogs;
+        } else {
+          blogArray = blogs;
+        }
+
         for (let [key, value] of markerData) {
           if (value.type === 'blog') {
-            markerData.delete(key)
+            markerData.delete(key);
           }
         }
 
-        console.log(blogArray)
-        blogArray.map((blog) =>
-          blog.locations.map((loc) => {
-            let marker = new maps.Marker({
-              position: { lat: loc.lat, lng: loc.lng },
-              icon: blogIcon,
-              title: 'Blog',
-            })
+        console.log(blogArray);
+        blogArray.map((blog) => blog.locations.map((loc) => {
+          const marker = new maps.Marker({
+            position: { lat: loc.lat, lng: loc.lng },
+            icon: blogIcon,
+            title: 'Blog',
+          });
 
-            maps.event.addListener(marker, 'click', () =>
-              setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
-            )
-            setMarkerData(
-              new Map(markerData.set(marker, { type: 'blog', data: blog }))
-            )
-            markers.push(marker)
-          })
-        )
+          maps.event.addListener(marker, 'click', () => setActivePopUp({ data: blog, type: 'blog', blogLocation: loc }));
+          setMarkerData(
+            new Map(markerData.set(marker, { type: 'blog', data: blog })),
+          );
+          markers.push(marker);
+        }));
       }
-      mcCopy.addMarkers(markers)
-      console.log(markerData.size)
+      mcCopy.addMarkers(markers);
+      console.log(markerData.size);
 
-      mapRef.current.maps_.event.clearInstanceListeners(mcCopy)
+      mapRef.current.maps_.event.clearInstanceListeners(mcCopy);
 
       mcCopy.addListener('click', (c) => {
-        const markers = c.getMarkers()
-        const content = markers.map((m) => markerData.get(m))
-        setClusterContent(content)
-      })
-      setMarkerClusterer(mcCopy)
+        const clusterMarkers = c.getMarkers();
+        const content = clusterMarkers.map((m) => markerData.get(m));
+        setClusterContent(content);
+      });
+      setMarkerClusterer(mcCopy);
     }
-  }
+  };
 
   useEffect(() => {
-    setActivePopUp(null)
+    setActivePopUp(null);
     if (mapRef.current) {
-      getMarkers()
+      getMarkers();
     }
-  }, [showUserContentOnly, showBlogs, showPictures, blogs, pictures])
+  }, [showUserContentOnly, showBlogs, showPictures, blogs, pictures]);
 
-  if (!allBlogs || !allPictures || !user || !blogs || !pictures) return null
-
-  let picturesWithLocation = pictures
-    ? pictures.filter(
-        (pic) => pic.location.lat !== null && pic.location.lng !== null
-      )
-    : []
+  if (!allBlogs || !allPictures || !user || !blogs || !pictures) return null;
 
   const mapsApiLoaded = (map, maps) => {
-    let markers = []
+    const markers = [];
 
     picturesWithLocation.map((pic) => {
-      let marker = new maps.Marker({
+      const marker = new maps.Marker({
         position: { lat: pic.location.lat, lng: pic.location.lng },
         icon: pictureIcon,
         title: 'Picture',
-      })
-      maps.event.addListener(marker, 'click', () =>
-        setActivePopUp({ data: pic, type: 'image' })
-      )
-      markers.push(marker)
+      });
+      maps.event.addListener(marker, 'click', () => setActivePopUp({ data: pic, type: 'image' }));
+      markers.push(marker);
       setMarkerData(
-        new Map(markerData.set(marker, { type: 'picture', data: pic }))
-      )
-    })
+        new Map(markerData.set(marker, { type: 'picture', data: pic })),
+      );
+    });
 
-    blogs.map((blog) =>
-      blog.locations.map((loc) => {
-        let marker = new maps.Marker({
-          position: { lat: loc.lat, lng: loc.lng },
-          icon: blogIcon,
-          title: 'Blog',
-        })
-        maps.event.addListener(marker, 'click', () =>
-          setActivePopUp({ data: blog, type: 'blog', blogLocation: loc })
-        )
-        setMarkerData(
-          new Map(markerData.set(marker, { type: 'blog', data: blog }))
-        )
-        markers.push(marker)
-      })
-    )
+    blogs.map((blog) => blog.locations.map((loc) => {
+      const marker = new maps.Marker({
+        position: { lat: loc.lat, lng: loc.lng },
+        icon: blogIcon,
+        title: 'Blog',
+      });
+      maps.event.addListener(marker, 'click', () => setActivePopUp({ data: blog, type: 'blog', blogLocation: loc }));
+      setMarkerData(
+        new Map(markerData.set(marker, { type: 'blog', data: blog })),
+      );
+      markers.push(marker);
+    }));
     const clusterer = new MarkerClusterer(map, markers, {
       imagePath:
         'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
@@ -357,16 +374,16 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
       minimumClusterSize: 2,
       zoomOnClick: false,
       maxZoom: 15,
-    })
+    });
 
     clusterer.addListener('click', (c) => {
-      const markers = c.getMarkers()
-      const content = markers.map((m) => markerData.get(m))
-      setClusterContent(content)
-    })
+      const clusterMarkers = c.getMarkers();
+      const content = clusterMarkers.map((m) => markerData.get(m));
+      setClusterContent(content);
+    });
 
-    setMarkerClusterer(clusterer)
-  }
+    setMarkerClusterer(clusterer);
+  };
 
   return (
     <div
@@ -380,7 +397,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
       <div className="map-settings">
         <div className={`${!showSettings && 'tooltip tooltip-right'}`}>
           <span className="tooltip-message">Settings</span>
-          <Settings onClick={() => setShowSettings(!showSettings)}></Settings>
+          <Settings onClick={() => setShowSettings(!showSettings)} />
         </div>
       </div>
 
@@ -391,21 +408,21 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
             <Switch
               checked={showUserContentOnly}
               onChange={() => setShowUserContentOnly(!showUserContentOnly)}
-            ></Switch>
+            />
           </div>
           <div>
             Show blogs
             <Switch
               checked={showBlogs}
               onChange={() => setShowBlogs(!showBlogs)}
-            ></Switch>
+            />
           </div>
           <div>
             Show pictures
             <Switch
               checked={showPictures}
               onChange={() => setShowPictures(!showPictures)}
-            ></Switch>
+            />
           </div>
         </div>
       )}
@@ -415,7 +432,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
           content={clusterContent}
           setClusterContent={setClusterContent}
           handle={handle}
-        ></ClusterPopUp>
+        />
       )}
       <GoogleMapReact
         options={{ gestureHandling: 'greedy' }}
@@ -436,7 +453,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
             lng={activePopUp.data.location.lng}
             type={activePopUp.type}
             setActivePopUp={setActivePopUp}
-          ></PopUp>
+          />
         )}
 
         {activePopUp && activePopUp.data && activePopUp.type === 'blog' && (
@@ -447,7 +464,7 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
             lng={activePopUp.blogLocation.lng}
             type={activePopUp.type}
             setActivePopUp={setActivePopUp}
-          ></PopUp>
+          />
         )}
       </GoogleMapReact>
 
@@ -461,12 +478,19 @@ const WorldMap = ({ allBlogs, allPictures, user, setFilteredPictures }) => {
               justifyContent: 'center',
             }}
           >
-            <img src={activePopUp.data.imgURL}></img>
+            <img src={activePopUp.data.imgURL} alt="" />
           </div>
         )}
       </FullScreen>
     </div>
-  )
-}
+  );
+};
 
-export default WorldMap
+WorldMap.propTypes = {
+  allBlogs: PropTypes.instanceOf(Array).isRequired,
+  allPictures: PropTypes.instanceOf(Array).isRequired,
+  user: PropTypes.instanceOf(Object).isRequired,
+  setFilteredPictures: PropTypes.func.isRequired,
+};
+
+export default WorldMap;

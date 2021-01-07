@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
-import firebase from 'firebase/app'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
-import { DateTime } from 'luxon'
-import Modal from '@material-ui/core/Modal'
-import Checkbox from '@material-ui/core/Checkbox'
-import Edit from '@material-ui/icons/Edit'
-import '../styles/userPage.css'
+/* eslint-disable jsx-a11y/no-autofocus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/no-unescaped-entities */
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import firebase from 'firebase/app';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { DateTime } from 'luxon';
+import Modal from '@material-ui/core/Modal';
+import Checkbox from '@material-ui/core/Checkbox';
+import Edit from '@material-ui/icons/Edit';
+import '../styles/userPage.css';
 
 const UserPage = ({
   userMatch,
@@ -16,43 +21,43 @@ const UserPage = ({
   setUser,
   storage,
 }) => {
-  const [userData, setUserData] = useState(userMatch)
-  const [content, setContent] = useState(0)
-  const [modalOpen, setModalOpen] = useState(false)
-  const [subscribeBlogs, setsubscribeBlogs] = useState(false)
-  const [subscribePictures, setSubscribePictures] = useState(false)
-  const [isUser, setIsUser] = useState(false)
-  const [image, setImage] = useState(null)
-  const [imagePreview, setImagePreview] = useState(null)
-  const [editUsername, setEditUsername] = useState(false)
-  const [newUsername, setNewUsername] = useState(user.username)
+  const [userData, setUserData] = useState(userMatch);
+  const [content, setContent] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [subscribeBlogs, setsubscribeBlogs] = useState(false);
+  const [subscribePictures, setSubscribePictures] = useState(false);
+  const [isUser, setIsUser] = useState(false);
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [editUsername, setEditUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState(user.username);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
-      setImage(e.target.files[0])
-      setImagePreview(URL.createObjectURL(e.target.files[0]))
-      URL.revokeObjectURL(e.target.files[0])
+      setImage(e.target.files[0]);
+      setImagePreview(URL.createObjectURL(e.target.files[0]));
+      URL.revokeObjectURL(e.target.files[0]);
     }
-  }
+  };
 
   const handleCancelUpdate = () => {
-    setImagePreview(null)
-    setImage(null)
-    setEditUsername(false)
-    setNewUsername(user.username)
-  }
+    setImagePreview(null);
+    setImage(null);
+    setEditUsername(false);
+    setNewUsername(user.username);
+  };
   const updateUser = async (uploadedPictureURL) => {
-    const newUserData = {}
+    const newUserData = {};
 
     if (!uploadedPictureURL && newUsername === user.username) {
-      handleCancelUpdate()
-      return
+      handleCancelUpdate();
+      return;
     }
     if (uploadedPictureURL) {
-      newUserData.avatar = uploadedPictureURL
+      newUserData.avatar = uploadedPictureURL;
     }
     if (newUsername !== user.username) {
-      newUserData.username = newUsername
+      newUserData.username = newUsername;
     }
 
     try {
@@ -63,99 +68,103 @@ const UserPage = ({
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
-      )
+        },
+      );
 
-      const updatedUser = response.data
-      updatedUser.fbtoken = user.fbtoken
-      setUser(updatedUser)
-      setUserData(response.data)
+      const updatedUser = response.data;
+      updatedUser.fbtoken = user.fbtoken;
+      setUser(updatedUser);
+      setUserData(response.data);
       window.localStorage.setItem(
         'loggedTravelBlogUser',
-        JSON.stringify(response.data)
-      )
-      handleCancelUpdate()
-      setNewUsername(response.data.username)
+        JSON.stringify(response.data),
+      );
+      handleCancelUpdate();
+      setNewUsername(response.data.username);
 
-      const newUsers = allUsers.map((u) =>
-        u.id === user.id ? response.data : u
-      )
-      setAllUsers(newUsers)
+      const newUsers = allUsers.map((u) => (u.id === user.id ? response.data : u));
+      setAllUsers(newUsers);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleUserUpdate = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!image) {
-      updateUser()
-      return
+      updateUser();
+      return;
     }
-    const fbuser = firebase.auth().currentUser
-    const userID = fbuser.uid
-    let uploadTask = storage
+    const fbuser = firebase.auth().currentUser;
+    const userID = fbuser.uid;
+    const uploadTask = storage
       .ref()
       .child(`/avatars/${userID}/${image.name}`)
-      .put(image)
+      .put(image);
 
     uploadTask.on(
       'state_changed',
       (snapshot) => {
-        let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        console.log('Upload is ' + progress + '% done')
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is  ${progress} % done`);
 
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED:
-            console.log('Upload is paused')
-            break
+            console.log('Upload is paused');
+            break;
           case firebase.storage.TaskState.RUNNING:
-            console.log('Upload is running')
-            break
+            console.log('Upload is running');
+            break;
+          default:
+            break;
         }
       },
       (error) => {
-        console.log('error happened')
+        console.log('error happened', error);
       },
       () => {
         uploadTask.snapshot.ref
           .getDownloadURL()
-          .then((downloadURL) => updateUser(downloadURL))
-      }
-    )
-  }
+          .then((downloadURL) => updateUser(downloadURL));
+      },
+    );
+  };
 
   useEffect(() => {
     if (userMatch) {
-      setUserData(userMatch)
-      userMatch.id === user.id ? setIsUser(true) : setIsUser(false)
+      setUserData(userMatch);
+      if (userMatch.id === user.id) {
+        setIsUser(true);
+      } else {
+        setUser(false);
+      }
     }
-  }, [userMatch])
+  }, [userMatch]);
 
   useEffect(() => {
     if (userData && user) {
-      setsubscribeBlogs(userData.blogSubscribers.includes(user.id))
-      setSubscribePictures(userData.pictureSubscribers.includes(user.id))
+      setsubscribeBlogs(userData.blogSubscribers.includes(user.id));
+      setSubscribePictures(userData.pictureSubscribers.includes(user.id));
     }
-  }, [userData, modalOpen])
+  }, [userData, modalOpen]);
 
-  if (!userData) return null
+  if (!userData) return null;
 
-  const joinDate = DateTime.fromISO(userData.joinDate)
+  const joinDate = DateTime.fromISO(userData.joinDate);
 
   const handleModalClose = () => {
-    setModalOpen(false)
-  }
+    setModalOpen(false);
+  };
 
   const isSubscribed = () => {
     if (
-      userData.blogSubscribers.includes(user.id) ||
-      userData.pictureSubscribers.includes(user.id)
+      userData.blogSubscribers.includes(user.id)
+      || userData.pictureSubscribers.includes(user.id)
     ) {
-      return true
+      return true;
     }
-    return false
-  }
+    return false;
+  };
 
   const handleSubscription = async () => {
     try {
@@ -169,39 +178,40 @@ const UserPage = ({
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
-      )
-      setUserData(response.data)
-      const newUsers = allUsers.map((u) =>
-        u.id === response.data.id ? response.data : u
-      )
-      setAllUsers(newUsers)
-      setModalOpen(false)
+        },
+      );
+      setUserData(response.data);
+      const newUsers = allUsers.map((u) => (u.id === response.data.id ? response.data : u));
+      setAllUsers(newUsers);
+      setModalOpen(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="user-page-main-container">
       <Modal open={modalOpen} onClose={handleModalClose}>
         <div className="subscribe-modal">
-          <h2>Subscribe to {userData.username}</h2>
+          <h2>
+            Subscribe to
+            {userData.username}
+          </h2>
           <div>
             Blogs
             <Checkbox
               checked={subscribeBlogs}
               onChange={() => setsubscribeBlogs(!subscribeBlogs)}
-            ></Checkbox>
+            />
           </div>
           <div>
             Pictures
             <Checkbox
               checked={subscribePictures}
               onChange={() => setSubscribePictures(!subscribePictures)}
-            ></Checkbox>
+            />
           </div>
-          <button onClick={handleSubscription}>OK</button>
+          <button type="button" onClick={handleSubscription}>OK</button>
         </div>
       </Modal>
       <div className="user-page-user-info">
@@ -213,26 +223,28 @@ const UserPage = ({
                 id="avatar-upload-button"
                 hidden
                 onChange={handleImageChange}
-              ></input>
+              />
               <label htmlFor="avatar-upload-button">
                 {imagePreview ? (
                   <img
                     src={imagePreview}
                     className="userpage-avatar-image userpage-avatar-preview"
-                  ></img>
+                    alt="preview"
+                  />
                 ) : (
                   <div className="userpage-avatar-edit-container">
                     <img
                       src={userData.avatar}
                       className="userpage-avatar-image"
-                    ></img>
-                    <Edit id="userpage-avatar-edit-icon"></Edit>
+                      alt="avatar"
+                    />
+                    <Edit id="userpage-avatar-edit-icon" />
                   </div>
                 )}
               </label>
               {imagePreview || editUsername ? (
                 <div className="userpage-update-buttons">
-                  <button onClick={() => handleCancelUpdate()}>Cancel</button>
+                  <button type="button" onClick={() => handleCancelUpdate()}>Cancel</button>
                   <button type="submit">Update</button>
                 </div>
               ) : null}
@@ -240,16 +252,16 @@ const UserPage = ({
           </div>
         )}
         {!isUser && (
-          <img src={userData.avatar} className="userpage-avatar-image"></img>
+          <img src={userData.avatar} className="userpage-avatar-image" alt="" />
         )}
         <div className="username-change-input">
           {editUsername && isUser ? (
             <input
               type="text"
-              autoFocus={true}
+              autoFocus
               value={newUsername}
               onChange={({ target }) => setNewUsername(target.value)}
-            ></input>
+            />
           ) : null}
         </div>
 
@@ -259,7 +271,7 @@ const UserPage = ({
             className="username-edit-container"
           >
             <h1>{userData.username}</h1>
-            <Edit id="username-edit-icon"></Edit>
+            <Edit id="username-edit-icon" />
           </div>
         )}
         {!isUser && <h1>{userData.username}</h1>}
@@ -268,7 +280,8 @@ const UserPage = ({
             <tr>
               <td>Member Since:</td>
               <td>
-                {joinDate.monthLong} {joinDate.weekYear}
+                {joinDate.monthLong}
+                {joinDate.weekYear}
               </td>
             </tr>
 
@@ -277,13 +290,15 @@ const UserPage = ({
               <td>{userData.blogs.length}</td>
             </tr>
             <tr>
-              <td>Uploaded Pictures:</td> <td>{userData.pictures.length}</td>
+              <td>Uploaded Pictures:</td>
+              <td>{userData.pictures.length}</td>
             </tr>
           </table>
         )}
         {!isUser && (
           <div>
             <button
+              type="button"
               id="userpage-subscribe-button"
               onClick={() => setModalOpen(true)}
             >
@@ -294,15 +309,16 @@ const UserPage = ({
           </div>
         )}
       </div>
-      <button onClick={() => setContent(0)}>Pictures</button>
-      <button onClick={() => setContent(1)}>Blogs</button>
+      <button type="button" onClick={() => setContent(0)}>Pictures</button>
+      <button type="button" onClick={() => setContent(1)}>Blogs</button>
       {content === 0 && (
         <div>
-          {userData.username}'s Uploaded Pictures
+          {userData.username}
+          's Uploaded Pictures
           <div>
             {userData.pictures.map((p) => (
               <Link to={`/gallery/${p.id}`}>
-                <img src={p.imgURL}></img>
+                <img src={p.imgURL} alt="" />
               </Link>
             ))}
           </div>
@@ -310,7 +326,8 @@ const UserPage = ({
       )}
       {content === 1 && (
         <div>
-          {userData.username}'s Blogs
+          {userData.username}
+          's Blogs
           <div>
             {userData.blogs.length === 0 ? (
               <div>No blogs created yet</div>
@@ -323,7 +340,20 @@ const UserPage = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default UserPage
+UserPage.defaultProps = {
+  userMatch: null,
+};
+
+UserPage.propTypes = {
+  userMatch: PropTypes.instanceOf(Object),
+  user: PropTypes.instanceOf(Object).isRequired,
+  allUsers: PropTypes.instanceOf(Array).isRequired,
+  setAllUsers: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
+  storage: PropTypes.instanceOf(Object).isRequired,
+};
+
+export default UserPage;

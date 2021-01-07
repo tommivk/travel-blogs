@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
-import { Button } from '@material-ui/core'
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
-import ArrowDownward from '@material-ui/icons/ArrowDownward'
-import Fullscreen from '@material-ui/icons/Fullscreen'
-import Explore from '@material-ui/icons/Explore'
-import ExploreOff from '@material-ui/icons/ExploreOff'
-import Image from '@material-ui/icons/Image'
-import { Language } from '@material-ui/icons'
-import { FullScreen, useFullScreenHandle } from 'react-full-screen'
-import '../styles/singlePicturePage.css'
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Button } from '@material-ui/core';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Fullscreen from '@material-ui/icons/Fullscreen';
+import Explore from '@material-ui/icons/Explore';
+import ExploreOff from '@material-ui/icons/ExploreOff';
+import Image from '@material-ui/icons/Image';
+import { Language } from '@material-ui/icons';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import '../styles/singlePicturePage.css';
 
-const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY
-const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY
+const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
+// const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY;
 
 const CommentForm = ({
   picture,
@@ -22,13 +23,13 @@ const CommentForm = ({
   allPictures,
   setAllPictures,
 }) => {
-  const [comment, setComment] = useState('')
+  const [comment, setComment] = useState('');
 
   const handleCommentSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const newComment = {
       content: comment,
-    }
+    };
     try {
       const response = await axios.post(
         `http://localhost:8008/api/pictures/${picture.id}/comment`,
@@ -37,18 +38,19 @@ const CommentForm = ({
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
-      )
-      setPicture(response.data)
-      setComment('')
-      const filteredPictures = allPictures.map((pic) =>
-        pic.id === picture.id ? response.data : pic
-      )
-      setAllPictures(filteredPictures)
+        },
+      );
+      setPicture(response.data);
+      setComment('');
+
+      const filteredPictures = allPictures
+        .map((pic) => (pic.id === picture.id ? response.data : pic));
+
+      setAllPictures(filteredPictures);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   return (
     <div>
       <form onSubmit={handleCommentSubmit}>
@@ -56,12 +58,20 @@ const CommentForm = ({
           type="text"
           value={comment}
           onChange={({ target }) => setComment(target.value)}
-        ></input>
-        <button>Send</button>
+        />
+        <button type="button">Send</button>
       </form>
     </div>
-  )
-}
+  );
+};
+
+CommentForm.propTypes = {
+  picture: PropTypes.instanceOf(Object).isRequired,
+  user: PropTypes.instanceOf(Object).isRequired,
+  setPicture: PropTypes.func.isRequired,
+  allPictures: PropTypes.instanceOf(Array).isRequired,
+  setAllPictures: PropTypes.func.isRequired,
+};
 
 const SinglePicturePage = ({
   user,
@@ -72,39 +82,39 @@ const SinglePicturePage = ({
   setFilteredPictures,
   setAllPictures,
 }) => {
-  const [pictures, setPictures] = useState(null)
-  const [mapImage, setMapImage] = useState(null)
-  const [showMap, setShowMap] = useState(false)
-  const pictureHandle = useFullScreenHandle()
+  const [pictures, setPictures] = useState(null);
+  const [mapImage, setMapImage] = useState(null);
+  const [showMap, setShowMap] = useState(false);
+  const pictureHandle = useFullScreenHandle();
 
   useEffect(() => {
     if (filteredPictures.pictures) {
-      setPictures(filteredPictures.pictures)
-    }else {
-      setPictures(allPictures)
+      setPictures(filteredPictures.pictures);
+    } else {
+      setPictures(allPictures);
     }
-  }, [allPictures])
+  }, [allPictures]);
 
   useEffect(async () => {
-    setShowMap(false)
+    setShowMap(false);
 
     if (picture && picture.location.lat && picture.location.lng) {
-      const lat = picture.location.lat.toFixed(6)
-      const lng = picture.location.lng.toFixed(6)
+      const lat = picture.location.lat.toFixed(6);
+      const lng = picture.location.lng.toFixed(6);
       setMapImage(
-        `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=11&size=700x400&markers=color:red|${lat},${lng}&key=${API_KEY}`
-      )
+        `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=11&size=700x400&markers=color:red|${lat},${lng}&key=${API_KEY}`,
+      );
     } else {
-      setMapImage(null)
+      setMapImage(null);
     }
-  }, [picture])
+  }, [picture]);
 
-  if(!picture || !pictures) return null
+  if (!picture || !pictures) return null;
 
   const handleFilterRemove = () => {
-    setPictures(allPictures)
-    setFilteredPictures({ pictures: null, filter: null })
-  }
+    setPictures(allPictures);
+    setFilteredPictures({ pictures: null, filter: null });
+  };
 
   const handleVote = async (direction) => {
     try {
@@ -115,18 +125,18 @@ const SinglePicturePage = ({
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
-      )
-      setPicture(response.data)
+        },
+      );
+      setPicture(response.data);
 
-      const filteredPics = await allPictures.map((pic) =>
-        pic.id === picture.id ? response.data : pic
-      )
-      setAllPictures(filteredPics)
+      const filteredPics = await allPictures
+        .map((pic) => (pic.id === picture.id ? response.data : pic));
+
+      setAllPictures(filteredPics);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
 
   const handleVoteDelete = async () => {
     try {
@@ -136,25 +146,24 @@ const SinglePicturePage = ({
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
-      )
+        },
+      );
 
-      setPicture(response.data)
-      const filteredPics = await allPictures.map((pic) =>
-        pic.id === picture.id ? response.data : pic
-      )
-      setAllPictures(filteredPics)
+      setPicture(response.data);
+      const filteredPics = await allPictures
+        .map((pic) => (pic.id === picture.id ? response.data : pic));
+
+      setAllPictures(filteredPics);
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
-
+  };
 
   const userVote = picture.votes.find(
-    (vote) => vote.user.username === user.username
-  )
+    (vote) => vote.user.username === user.username,
+  );
 
-  let pictureIndex = pictures.findIndex((pic) => pic.id === picture.id)
+  const pictureIndex = pictures.findIndex((pic) => pic.id === picture.id);
 
   return (
     <div
@@ -223,7 +232,7 @@ const SinglePicturePage = ({
 
           {showMap ? (
             <div>
-              <img src={mapImage} width="700px" height="400px"></img>
+              <img src={mapImage} width="700px" height="400px" alt="map" />
               {picture.location.city && <p>{picture.location.city}</p>}
               {picture.location.country && <p>{picture.location.country}</p>}
               <Link
@@ -232,20 +241,20 @@ const SinglePicturePage = ({
                 <div style={{ width: 'fit-content' }}>
                   <div className="tooltip">
                     <span className="tooltip-message">Show On Map</span>
-                    <Language></Language>
+                    <Language />
                   </div>
                 </div>
               </Link>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <img src={picture.imgURL} width="700px"></img>
+              <img src={picture.imgURL} width="700px" alt="" />
               <div className="tooltip" style={{ alignSelf: 'flex-end' }}>
                 <span className="tooltip-message">View In Fullscreen</span>
                 <Fullscreen
                   id="picture-fullscreen-button"
                   onClick={pictureHandle.enter}
-                ></Fullscreen>
+                />
               </div>
             </div>
           )}
@@ -258,11 +267,13 @@ const SinglePicturePage = ({
             setPicture={setPicture}
             allPictures={allPictures}
             setAllPictures={setAllPictures}
-          ></CommentForm>
+          />
           <ul>
             {picture.comments.map((comment) => (
               <li key={comment.id}>
-                {comment.user.username}: {comment.content}
+                {comment.user.username}
+                :
+                {comment.content}
               </li>
             ))}
           </ul>
@@ -276,7 +287,7 @@ const SinglePicturePage = ({
             <Explore
               fontSize="large"
               onClick={() => setShowMap(true)}
-            ></Explore>
+            />
           </div>
         </div>
       )}
@@ -285,7 +296,7 @@ const SinglePicturePage = ({
           <div className="tooltip">
             <span className="tooltip-message">Show Picture</span>
 
-            <Image fontSize="large" onClick={() => setShowMap(false)}></Image>
+            <Image fontSize="large" onClick={() => setShowMap(false)} />
           </div>
         </div>
       )}
@@ -294,7 +305,7 @@ const SinglePicturePage = ({
         <div className="image-toggle-button" style={{ cursor: 'default' }}>
           <div className="tooltip">
             <span className="tooltip-message">No Location Specified</span>
-            <ExploreOff fontSize="large"></ExploreOff>
+            <ExploreOff fontSize="large" />
           </div>
         </div>
       )}
@@ -319,13 +330,13 @@ const SinglePicturePage = ({
             <ArrowUpward
               className="picture-vote-arrow"
               onClick={() => handleVoteDelete()}
-            ></ArrowUpward>
+            />
           ) : null}
           {!userVote && (
             <ArrowUpward
               className="picture-vote-arrow"
               onClick={() => handleVote(1)}
-            ></ArrowUpward>
+            />
           )}
         </div>
         <div className="vote-container-element">{picture.voteResult}</div>
@@ -334,18 +345,18 @@ const SinglePicturePage = ({
             <ArrowDownward
               className="picture-vote-arrow"
               onClick={() => handleVoteDelete()}
-            ></ArrowDownward>
+            />
           ) : null}
           {!userVote && (
             <ArrowDownward
               className="picture-vote-arrow"
               onClick={() => handleVote(-1)}
-            ></ArrowDownward>
+            />
           )}
         </div>
       </div>
       <div className="picture-info-container">
-        <img src={picture.user.avatar}></img> 
+        <img src={picture.user.avatar} alt="avatar" />
         <div>
           <Link to={`/users/${picture.user.id}`}>
             <div className="tooltip">
@@ -354,43 +365,69 @@ const SinglePicturePage = ({
             </div>
           </Link>
         </div>
-        <div>votes: {picture.votes.length}</div>
+        <div>
+          votes:
+          {picture.votes.length}
+        </div>
       </div>
 
       <FullScreen handle={pictureHandle}>
         <div className="fullscreen-image">
-          <img src={picture.imgURL}></img>
+          <img src={picture.imgURL} alt="" />
         </div>
       </FullScreen>
       <div className="picture-list-container" style={{ color: 'white' }}>
         {filteredPictures.filter ? (
           <div>
-            Pictures from {filteredPictures.filter} ({pictures.length})
-            <button onClick={handleFilterRemove}>Show All Pictures</button>
+            Pictures from
+            {filteredPictures.filter}
+            (
+            {pictures.length}
+            )
+            <button type="button" onClick={handleFilterRemove}>Show All Pictures</button>
           </div>
         ) : (
-          <div>All Pictures ({pictures.length})</div>
+          <div>
+            All Pictures
+            (
+            {pictures.length}
+            )
+          </div>
         )}
 
         {pictures.map((pic) => (
           <div className="picture-list-picture-box">
             {pic.id === picture.id ? (
               <div className="picture-list-active-image">
-                <img src={pic.imgURL}></img>
+                <img src={pic.imgURL} alt="" />
               </div>
             ) : (
               <Link to={`/gallery/${pic.id}`}>
-                  <div>
-                    <img src={pic.imgURL}></img>
-                  </div>
+                <div>
+                  <img src={pic.imgURL} alt="" />
+                </div>
               </Link>
             )}
           </div>
         ))}
-        <div className="picture-list-pseudo-element"></div>
+        <div className="picture-list-pseudo-element" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SinglePicturePage
+SinglePicturePage.defaultProps = {
+  picture: null,
+};
+
+SinglePicturePage.propTypes = {
+  picture: PropTypes.instanceOf(Object),
+  user: PropTypes.instanceOf(Object).isRequired,
+  setPicture: PropTypes.func.isRequired,
+  allPictures: PropTypes.instanceOf(Array).isRequired,
+  setAllPictures: PropTypes.func.isRequired,
+  filteredPictures: PropTypes.instanceOf(Object).isRequired,
+  setFilteredPictures: PropTypes.func.isRequired,
+};
+
+export default SinglePicturePage;

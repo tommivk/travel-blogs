@@ -1,26 +1,24 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { DateTime } from 'luxon'
-import { Button } from '@material-ui/core'
-import '../styles/homePage.css'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { DateTime } from 'luxon';
+import '../styles/homePage.css';
 
 const HomePage = ({ allBlogs, allPictures }) => {
-  if (allBlogs.length === 0 || allPictures.length === 0) return null
+  if (allBlogs.length === 0 || allPictures.length === 0) return null;
 
   const newestBlogs = allBlogs
     .sort((a, b) => {
       if (DateTime.fromISO(a.date) < DateTime.fromISO(b.date)) {
-        return 1
+        return 1;
       }
       if (DateTime.fromISO(a.date) > DateTime.fromISO(b.date)) {
-        return -1
+        return -1;
       }
-      return 0
+      return 0;
     })
-    .slice(0, 5)
+    .slice(0, 5);
 
-  console.log(newestBlogs)
- 
   return (
     <div className="homepage-main-container">
       <div className="homepage-main-content">
@@ -28,7 +26,7 @@ const HomePage = ({ allBlogs, allPictures }) => {
           <h1>Featured Picture</h1>
           <div className="featured-picture">
             <Link to={`/gallery/${allPictures[0].id}`}>
-              <img src={allPictures[0].imgURL}></img>
+              <img src={allPictures[0].imgURL} alt="featured" />
             </Link>
           </div>
           <Link
@@ -58,7 +56,7 @@ const HomePage = ({ allBlogs, allPictures }) => {
                     </div>
                     <div className="homepage-blog-image">
                       {blog.headerImageURL && (
-                        <img src={blog.headerImageURL}></img>
+                        <img src={blog.headerImageURL} alt="blog" />
                       )}
                     </div>
                   </div>
@@ -69,7 +67,12 @@ const HomePage = ({ allBlogs, allPictures }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+HomePage.propTypes = {
+  allBlogs: PropTypes.instanceOf(Array).isRequired,
+  allPictures: PropTypes.instanceOf(Array).isRequired,
+};
+
+export default HomePage;

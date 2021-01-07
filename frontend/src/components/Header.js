@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import firebase from 'firebase/app'
-import { Link, useHistory } from 'react-router-dom'
-import { Search, Language, Notifications } from '@material-ui/icons'
-import SearchModal from './SearchModal'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import { DateTime } from 'luxon'
-import '../styles/header.css'
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import firebase from 'firebase/app';
+import { Link, useHistory } from 'react-router-dom';
+import { Search, Language, Notifications } from '@material-ui/icons';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { DateTime } from 'luxon';
+import SearchModal from './SearchModal';
+import '../styles/header.css';
 
 const Header = ({
   user,
@@ -19,47 +23,47 @@ const Header = ({
   setUserNotifications,
   activePage,
 }) => {
-  const [menuAnchorEl, setMenuAnchorEl] = useState(null)
-  const [notificationMenuEl, setNotificationMenuEl] = useState(null)
-  const [unreadNotifications, setUnreadNotifications] = useState([])
-  const [readNotifications, setReadNotifications] = useState([])
-  const [searchFilter, setSearchFilter] = useState('')
-  const [searchModalOpen, setSearchModalOpen] = useState(false)
-  const [titleActive, setTitleActive] = useState(false)
-  const history = useHistory()
+  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+  const [notificationMenuEl, setNotificationMenuEl] = useState(null);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
+  const [readNotifications, setReadNotifications] = useState([]);
+  const [searchFilter, setSearchFilter] = useState('');
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [titleActive, setTitleActive] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if (userNotifications) {
       setUnreadNotifications(
-        userNotifications.filter((n) => !n.readBy.includes(user.id))
-      )
+        userNotifications.filter((n) => !n.readBy.includes(user.id)),
+      );
 
       setReadNotifications(
-        userNotifications.filter((n) => n.readBy.includes(user.id))
-      )
+        userNotifications.filter((n) => n.readBy.includes(user.id)),
+      );
     }
-  }, [userNotifications])
+  }, [userNotifications]);
 
   const closeSearchModal = () => {
-    setSearchModalOpen(false)
-    setSearchFilter('')
-  }
+    setSearchModalOpen(false);
+    setSearchFilter('');
+  };
 
   const handleMenuOpen = (e) => {
-    setMenuAnchorEl(e.currentTarget)
-  }
+    setMenuAnchorEl(e.currentTarget);
+  };
 
   const handleMenuClose = () => {
-    setMenuAnchorEl(null)
-  }
+    setMenuAnchorEl(null);
+  };
 
   const handleNotificationMenuOpen = (e) => {
-    setNotificationMenuEl(e.currentTarget)
-  }
+    setNotificationMenuEl(e.currentTarget);
+  };
 
   const handleNotificationMenuClose = () => {
-    setNotificationMenuEl(null)
-  }
+    setNotificationMenuEl(null);
+  };
 
   const handleNotificationMessageClick = async (n) => {
     try {
@@ -70,56 +74,56 @@ const Header = ({
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
-        }
-      )
-      let newNotifications = userNotifications.map((notification) =>
-        notification.id === n.id ? res.data : notification
-      )
-      setUserNotifications(newNotifications)
-      const readnotifications = readNotifications.filter((x) => x.id !== n.id)
-      setReadNotifications(readnotifications)
+        },
+      );
+      const newNotifications = userNotifications
+        .map((notification) => (notification.id === n.id ? res.data : notification));
+
+      setUserNotifications(newNotifications);
+      const readnotifications = readNotifications.filter((x) => x.id !== n.id);
+      setReadNotifications(readnotifications);
       const unreadnotifications = unreadNotifications.filter(
-        (x) => x.id !== n.id
-      )
-      setUnreadNotifications(unreadnotifications)
-      setNotificationMenuEl(null)
+        (x) => x.id !== n.id,
+      );
+      setUnreadNotifications(unreadnotifications);
+      setNotificationMenuEl(null);
       if (n.content.contentType === 'blog') {
-        history.push(`/blogs/${n.content.contentID}`)
+        history.push(`/blogs/${n.content.contentID}`);
       }
       if (n.content.contentType === 'picture') {
-        history.push(`/gallery/${n.content.contentID}`)
+        history.push(`/gallery/${n.content.contentID}`);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleReadNotificationClick = (n) => {
     if (n.content.contentType === 'blog') {
-      history.push(`/blogs/${n.content.contentID}`)
+      history.push(`/blogs/${n.content.contentID}`);
     }
     if (n.content.contentType === 'picture') {
-      history.push(`/gallery/${n.content.contentID}`)
+      history.push(`/gallery/${n.content.contentID}`);
     }
-  }
+  };
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedTravelBlogUser')
-    setUser(null)
+    window.localStorage.removeItem('loggedTravelBlogUser');
+    setUser(null);
 
     firebase
       .auth()
       .signOut()
       .then(() => console.log('signout successful'))
-      .catch((error) => console.log('error happened'))
+      .catch((error) => console.log('error happened', error));
 
-    setMenuAnchorEl(null)
-  }
+    setMenuAnchorEl(null);
+  };
 
   const formatDate = (date) => {
-    const d = DateTime.fromISO(date)
-    return `${d.weekYear}-${d.month}-${d.day} ${d.hour}:${d.minute}`
-  }
+    const d = DateTime.fromISO(date);
+    return `${d.weekYear}-${d.month}-${d.day} ${d.hour}:${d.minute}`;
+  };
 
   return (
     <div className="main-header-container">
@@ -132,7 +136,7 @@ const Header = ({
           allPictures={allPictures}
           allBlogs={allBlogs}
           allUsers={allUsers}
-        ></SearchModal>
+        />
       </div>
 
       <div className="header-title">
@@ -180,7 +184,7 @@ const Header = ({
         <Search
           id="header-search-icon"
           onClick={() => setSearchModalOpen(true)}
-        ></Search>
+        />
         <div
           className="notification-container"
           onClick={handleNotificationMenuOpen}
@@ -238,7 +242,7 @@ const Header = ({
             width="40"
             alt="avatar"
             style={{ borderRadius: '50%' }}
-          ></img>
+          />
         </div>
       </div>
       <Menu
@@ -259,13 +263,31 @@ const Header = ({
         >
           <MenuItem onClick={handleMenuClose}>Create New Blog</MenuItem>
         </Link>
-        <Link to={`/users/${user.id}`} style={{textDecoration: "none", color: "black"}}>
+        <Link
+          to={`/users/${user.id}`}
+          style={{ textDecoration: 'none', color: 'black' }}
+        >
           <MenuItem onClick={handleMenuClose}>My Page</MenuItem>
         </Link>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>{' '}
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+Header.defaultProps = {
+  activePage: '',
+};
+
+Header.propTypes = {
+  user: PropTypes.instanceOf(Object).isRequired,
+  setUser: PropTypes.func.isRequired,
+  allPictures: PropTypes.instanceOf(Array).isRequired,
+  allBlogs: PropTypes.instanceOf(Array).isRequired,
+  allUsers: PropTypes.instanceOf(Array).isRequired,
+  userNotifications: PropTypes.instanceOf(Array).isRequired,
+  setUserNotifications: PropTypes.func.isRequired,
+  activePage: PropTypes.string,
+};
+
+export default Header;
