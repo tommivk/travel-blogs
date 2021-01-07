@@ -194,6 +194,7 @@ const Blogs = ({ allBlogs }) => {
                         </div>
                         <div>
                           By
+                          {' '}
                           {blog.author.username}
                         </div>
                       </div>

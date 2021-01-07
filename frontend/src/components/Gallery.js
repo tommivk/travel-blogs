@@ -231,8 +231,10 @@ const Gallery = ({
                           style={{ color: '#6c717a', marginRight: '4px' }}
                         >
                           <span className="tooltip-message">Comments</span>
-                          <Sms />
-                          {pic.comments.length}
+                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Sms />
+                            {pic.comments.length}
+                          </div>
                         </div>
                       </div>
                     </div>

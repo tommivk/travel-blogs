@@ -53,16 +53,23 @@
 
 .blog-card {
   position: relative;
-  height: 350px;
-  width: 500px;
+  height: 16vw;
+  width: 23vw;
   background-color: rgb(29, 26, 26);
   border-radius: 8px;
-  margin: 15px;
+  margin: 1vw;
   transition: transform 0.2s;
   text-align: center;
   display: flex;
-  padding: 15px;
+  padding: 3%;
   box-sizing: border-box;
+}
+
+.blog-pseudo-element {
+  height: 0px;
+  width: 23vw;
+  margin: 1vw;
+  content: '';
 }
 
 .blog-card:hover {
@@ -80,7 +87,7 @@
   justify-self: flex-start;
   flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
+  width: 80%;
 }
 
 .blog-image {
@@ -89,6 +96,7 @@
   min-width: 50%;
   background-color: rgba(44, 48, 47, 0.301);
 }
+
 .blog-image img {
   object-fit: fill;
   height: 100%;
@@ -98,10 +106,11 @@
 }
 
 .blog-header {
-  position: absolute;
-  top: 65px;
-  left: 15px;
+  position: relative;
+  top: 20%;
+  left: 8%;
   text-align: left;
+  width: 100%;
 }
 
 .author-avatar {
@@ -120,12 +129,13 @@
   position: absolute;
   display: flex;
   bottom: 0px;
-  left: 8px;
-  font-size: 0.9em;
+  left: 2%;
+  font-size: 0.7vw;
 }
 
 #star {
   color: rgb(180, 155, 9);
+  font-size: 1vw;
 }
 
 .blog-button #blog-link {
@@ -134,8 +144,9 @@
 
 .blog-date {
   position: absolute;
-  right: 8px;
+  right: 2%;
   bottom: 5px;
+  font-size: 0.7vw;
 }
 
 #blog-stars-count {
@@ -151,35 +162,45 @@
 }
 
 .blog-author-info img {
-  width: 40px;
-  height: 40px;
+  width: 2vw;
+  height: 2vw;
   border-radius: 50%;
   margin-right: 5px;
   filter: grayscale(100%);
 }
 
 .blog-title {
-
+  width: 95%;
+  position: relative;
+  overflow-wrap: break-all;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .blog-title h1 {
   margin: 0;
   margin-top: 5px;
-  font-size: 2em;
-  max-width: 220px;
-  overflow-wrap: break-word;
+  font-size: 1.4vw;
+  width: 100%;
 }
 
 .blog-title.long-blog-title h1 {
-  font-size: 1.5em;
+  font-size: 1vw;
 }
 
 .blog-description {
+  width: 95%;
 }
 
 .blog-description p {
   max-width: 220px;
   overflow-wrap: break-word;
+  margin: 0;
+  margin-top: 5px;
+  font-size: 0.8vw;
 }
 
 #main-blog-link {
@@ -238,13 +259,6 @@
   font-size: 1.5em;
   font-weight: 600;
   font-style: italic;
-}
-
-.blog-pseudo-element {
-  height: 0px;
-  width: 500px;
-  margin: 15px;
-  content: '';
 }
 
 .blog-filter-selection {
