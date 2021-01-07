@@ -20,7 +20,7 @@
   
   #vote-count {
     position: relative;
-    margin-left: 10px;
+    margin-left: 5px;
     margin-top: auto; 
     margin-bottom: auto;
   }
@@ -36,6 +36,7 @@
 
   .blog-info-container {
     display: flex;  
+    margin: 10px;
   }
 
   .blog-info-date {
@@ -75,9 +76,7 @@
   .comment-form-wrapper {
     position: relative;
     background-color: aliceblue;
-    width: 100%;
-
-    
+    width: 100%;    
   }
 
   .comment-form-main-container {

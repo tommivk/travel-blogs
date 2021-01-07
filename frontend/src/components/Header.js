@@ -153,7 +153,7 @@ const Header = ({
             onMouseEnter={() => setTitleActive(true)}
             onMouseLeave={() => setTitleActive(false)}
           >
-            <h1>Blogs</h1>
+            <h1>BLOGS</h1>
           </div>
         </Link>
         <Link to="/gallery">
@@ -164,7 +164,7 @@ const Header = ({
             onMouseEnter={() => setTitleActive(true)}
             onMouseLeave={() => setTitleActive(false)}
           >
-            <h1>Gallery</h1>
+            <h1>GALLERY</h1>
           </div>
         </Link>
         <Link to="/explore" style={{ color: 'black' }}>
