@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+/* eslint-disable no-param-reassign */
+const mongoose = require('mongoose');
 
 const notificationSchema = mongoose.Schema({
   sender: {
@@ -23,16 +24,16 @@ const notificationSchema = mongoose.Schema({
     contentID: { type: String },
   },
   createdAt: Date,
-})
+});
 
 notificationSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
   },
-})
+});
 
-const Notification = mongoose.model('Notification', notificationSchema)
+const Notification = mongoose.model('Notification', notificationSchema);
 
-module.exports = Notification
+module.exports = Notification;

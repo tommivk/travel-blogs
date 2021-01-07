@@ -1,15 +1,16 @@
-const mongoose = require('mongoose')
+/* eslint-disable no-param-reassign */
+const mongoose = require('mongoose');
 
 const pictureSchema = mongoose.Schema({
-  imgURL: {type: String, required: true },
-  firebaseID: {type: String, required: true },
+  imgURL: { type: String, required: true },
+  firebaseID: { type: String, required: true },
   date: Date,
-  public: {type: Boolean, required: true },
-  title: {type: String, minlength: 3, required: true },
+  public: { type: Boolean, required: true },
+  title: { type: String, minlength: 3, required: true },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
   location: {
     lat: Number,
@@ -35,14 +36,14 @@ const pictureSchema = mongoose.Schema({
       ref: 'Comment',
     },
   ],
-})
+});
 
 pictureSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
   },
-})
-const Picture = mongoose.model('Picture', pictureSchema)
-module.exports = Picture
+});
+const Picture = mongoose.model('Picture', pictureSchema);
+module.exports = Picture;

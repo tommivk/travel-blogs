@@ -1,43 +1,41 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
-const loginRouter = require('express').Router()
-const User = require('../models/user')
-const admin = require('firebase-admin')
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const loginRouter = require('express').Router();
+const admin = require('firebase-admin');
+const User = require('../models/user');
 
 loginRouter.post('/', async (req, res, next) => {
   try {
-    const body = req.body
+    const { body } = req;
     if (!body.username || !body.password) {
-      return res.send(401).end()
+      return res.send(401).end();
     }
 
-    const user = await User.findOne({ username: body.username })
+    const user = await User.findOne({ username: body.username });
 
-    const passwordCorrect =
-      user === null
-        ? false
-        : await bcrypt.compare(body.password, user.passwordHash)
+    const passwordCorrect = user === null
+      ? false : await bcrypt.compare(body.password, user.passwordHash);
 
     if (!(user && passwordCorrect)) {
       return res.status(401).json({
         error: 'invalid username or password',
-      })
+      });
     }
 
-    await user.populate('pictures').populate('blogs').execPopulate()
+    await user.populate('pictures').populate('blogs').execPopulate();
 
     const userForToken = {
       username: user.username,
       id: user._id,
-    }
+    };
 
-    const token = jwt.sign(userForToken, process.env.SECRET)
-    console.log(token)
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
     const fbtoken = await admin
       .auth()
-      .createCustomToken(userForToken.id.toString() + process.env.FBSECRET)
+      .createCustomToken(userForToken.id.toString() + process.env.FBSECRET);
 
-    res.status(200).send({
+    return res.status(200).send({
       token,
       fbtoken,
       avatar: user.avatar,
@@ -45,10 +43,10 @@ loginRouter.post('/', async (req, res, next) => {
       pictures: user.pictures,
       blogs: user.blogs,
       id: user._id,
-    })
+    });
   } catch (error) {
-    next(error)
+    return next(error);
   }
-})
+});
 
-module.exports = loginRouter
+module.exports = loginRouter;
