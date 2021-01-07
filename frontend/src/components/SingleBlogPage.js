@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -6,6 +8,7 @@ import { Button } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Star from '@material-ui/icons/Star';
 import StarBorder from '@material-ui/icons/StarBorder';
+import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
 import Avatar from '@material-ui/core/Avatar';
 import ReactHtmlParser from 'react-html-parser';
 import '../styles/singleBlogPage.css';
@@ -71,6 +74,8 @@ CommentForm.propTypes = {
 const SingleBlogPage = ({
   blog, setBlog, user, setAllBlogs, allBlogs,
 }) => {
+  const [showComments, setShowComments] = useState(false);
+
   console.log(blog, allBlogs);
   if (!blog) return null;
   const dateNow = DateTime.local();
@@ -127,11 +132,17 @@ const SingleBlogPage = ({
     <div className="main-blog-page-container">
       <Container maxWidth="md">
         <div>
-          <h1 id="blog-title">{blog.title}</h1>
-          <img src={blog.headerImageURL} alt="cover" width="1000px" />
-          <div className="author-container">
-            <div className="author-picture">
-              <Avatar alt="author profile" src={blog.author.avatar} />
+          <div style={{ textAlign: 'center' }}>
+            <h1 id="blog-title">{blog.title}</h1>
+            <div>
+              {blog.description}
+            </div>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <div className="author-container">
+              <div className="author-picture">
+                <Avatar alt="author profile" src={blog.author.avatar} />
+              </div>
             </div>
             <div className="blog-info-container">
               <div className="author-username">
@@ -141,10 +152,14 @@ const SingleBlogPage = ({
               </div>
               <div className="blog-info-date">
                 {blogDate.monthLong}
+                {' '}
                 {blogDate.day}
+                {' '}
+                {blogDate.year}
               </div>
             </div>
           </div>
+          <img src={blog.headerImageURL} alt="cover" width="1000px" />
           {ReactHtmlParser(blog.content)}
         </div>
         <div className="vote-container">
@@ -169,38 +184,46 @@ const SingleBlogPage = ({
           </div>
           <div id="vote-count">
             {blog.stars.length}
-            stars
+            {' '}
+          </div>
+          <div id="comment-count" onClick={() => setShowComments(!showComments)}>
+            <ChatBubbleOutline id="blog-comments-icon" />
+            {blog.comments.length}
           </div>
         </div>
         <div className="blog-comment-section-container">
-          <div className="blog-comment-form">
-            <CommentForm
-              user={user}
-              blog={blog}
-              setBlog={setBlog}
-            />
-          </div>
-
-          <ul>
-            {blog.comments.map((comment) => (
-              <li key={comment.id}>
-                <div className="blog-comment">
-                  <div className="blog-comment-top-section">
-                    <img src={comment.user.avatar} alt="avatar" />
-                    <div className="blog-comment-username">
-                      <Link to={`/users/${comment.user.id}`}>
-                        {comment.user.username}
-                      </Link>
-                    </div>
-                    <div className="blog-comment-date">
-                      {calculateDateDiff(comment.date)}
-                    </div>
-                  </div>
-                  <div className="blog-comment-content">{comment.content}</div>
+          {showComments
+            && (
+              <div>
+                <div className="blog-comment-form">
+                  <CommentForm
+                    user={user}
+                    blog={blog}
+                    setBlog={setBlog}
+                  />
                 </div>
-              </li>
-            ))}
-          </ul>
+                <ul>
+                  {blog.comments.map((comment) => (
+                    <li key={comment.id}>
+                      <div className="blog-comment">
+                        <div className="blog-comment-top-section">
+                          <img src={comment.user.avatar} alt="avatar" />
+                          <div className="blog-comment-username">
+                            <Link to={`/users/${comment.user.id}`}>
+                              {comment.user.username}
+                            </Link>
+                          </div>
+                          <div className="blog-comment-date">
+                            {calculateDateDiff(comment.date)}
+                          </div>
+                        </div>
+                        <div className="blog-comment-content">{comment.content}</div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
         </div>
       </Container>
     </div>

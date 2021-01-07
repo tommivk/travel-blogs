@@ -6,7 +6,8 @@
 
   .vote-container {
     display: flex;
-    margin-top: 20px;
+    margin-top: 40px;
+    margin-bottom: 10px;
   }
 
   #voted-star {
@@ -63,8 +64,8 @@
   #blog-title {
     text-align: center;
     font-size: 4em;
-    margin-top: 0;
-    margin-bottom: 10px;
+    margin-top: 50px;
+    margin-bottom: 30px;
   }
 
   .blog-comment-form {
@@ -99,7 +100,9 @@
     background-color: rgb(150, 16, 16);
     color: white
   }
-
+  .blog-comment-section-container {
+    margin-bottom: 50px;
+  }
   .blog-comment-section-container ul{
     list-style: none;
   }
@@ -140,4 +143,20 @@
 
   .blog-comment-content {
     font-size: 1.2em;
+  }
+
+  .show-comments-button {
+    text-align: center;
+  }
+
+  #comment-count {
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  #blog-comments-icon {
+    margin-right: 5px;
+    margin-left: 5px;
   }
