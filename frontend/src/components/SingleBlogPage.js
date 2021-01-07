@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -14,7 +14,9 @@ import ReactHtmlParser from 'react-html-parser';
 import '../styles/singleBlogPage.css';
 import { DateTime } from 'luxon';
 
-const CommentForm = ({ user, blog, setBlog }) => {
+const CommentForm = ({
+  user, blog, setBlog, allBlogs, setAllBlogs,
+}) => {
   const [comment, setComment] = useState('');
 
   const handleCommentSubmit = async (e) => {
@@ -32,7 +34,10 @@ const CommentForm = ({ user, blog, setBlog }) => {
           },
         },
       );
-      setBlog(response.data);
+      const newBlog = response.data;
+      setBlog(newBlog);
+      const filteredBlogs = allBlogs.map((b) => (b.id === newBlog.id ? newBlog : b));
+      setAllBlogs(filteredBlogs);
       console.log(response.data);
       setComment('');
     } catch (error) {
@@ -69,12 +74,19 @@ CommentForm.propTypes = {
   user: PropTypes.instanceOf(Object).isRequired,
   blog: PropTypes.instanceOf(Object).isRequired,
   setBlog: PropTypes.func.isRequired,
+  allBlogs: PropTypes.instanceOf(Array).isRequired,
+  setAllBlogs: PropTypes.func.isRequired,
 };
 
 const SingleBlogPage = ({
   blog, setBlog, user, setAllBlogs, allBlogs,
 }) => {
   const [showComments, setShowComments] = useState(false);
+
+  useEffect(() => {
+    console.log('sadsad');
+    console.log(blog);
+  }, [blog]);
 
   console.log(blog, allBlogs);
   if (!blog) return null;
@@ -200,6 +212,8 @@ const SingleBlogPage = ({
                     user={user}
                     blog={blog}
                     setBlog={setBlog}
+                    allBlogs={allBlogs}
+                    setAllBlogs={setAllBlogs}
                   />
                 </div>
                 <ul>
