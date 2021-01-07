@@ -59,7 +59,7 @@ const CommentForm = ({
           value={comment}
           onChange={({ target }) => setComment(target.value)}
         />
-        <button type="button">Send</button>
+        <button type="submit">Send</button>
       </form>
     </div>
   );
