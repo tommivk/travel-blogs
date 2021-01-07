@@ -428,7 +428,7 @@ const ImageUploadModal = ({
 ImageUploadModal.propTypes = {
   user: PropTypes.instanceOf(Object).isRequired,
   setUser: PropTypes.func.isRequired,
-  storage: PropTypes.func.isRequired,
+  storage: PropTypes.instanceOf(Object).isRequired,
   uploadModalOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   allPictures: PropTypes.instanceOf(Array).isRequired,

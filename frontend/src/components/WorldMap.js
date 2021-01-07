@@ -196,7 +196,7 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
 ClusterPopUp.propTypes = {
   content: PropTypes.instanceOf(Array).isRequired,
   setClusterContent: PropTypes.func.isRequired,
-  handle: PropTypes.func.isRequired,
+  handle: PropTypes.instanceOf(Object).isRequired,
 };
 
 const WorldMap = ({

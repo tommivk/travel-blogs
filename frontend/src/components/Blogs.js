@@ -83,8 +83,8 @@ const Blogs = ({ allBlogs }) => {
   if (displayMode === 1) {
     return (
       <div className="blogs-main-container swiper-wrapper">
-        <div className="display-mode-wrapper">
-          <div className="display-mode-buttons">
+        <div className="swiper-display-mode-wrapper">
+          <div className="swiper-display-mode-buttons">
             <CropLandscape
               id="blog-single-display-mode-button"
               onClick={() => setDisplayMode(1)}
@@ -124,37 +124,9 @@ const Blogs = ({ allBlogs }) => {
 
   return (
     <div className="blogs-main-container">
-      <div className="display-mode-wrapper">
-        <div className="display-mode-buttons">
-          <CropLandscape
-            id="blog-single-display-mode-button"
-            onClick={() => setDisplayMode(1)}
-          />
-          <BorderAll
-            id="blog-multi-display-mode-button"
-            onClick={() => setDisplayMode(0)}
-          />
-        </div>
-      </div>
-      <div className="blogs-main-content">
-        <div className="blogs-navigation">
-          <div className="blogs-top-title">
-            {param.city
-            && (
-            <h1>
-              Blogs about
-              {param.city}
-            </h1>
-            )}
-            {param.country
-            && (
-            <h1>
-              Blogs about
-              {param.country}
-            </h1>
-            )}
-          </div>
-          <div className="blog-filter-selection">
+      <div className="blogs-navigation">
+        <div className="blog-filter-selection">
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <div>Sort By</div>
             <Select
               id="blog-filter-select"
@@ -166,59 +138,94 @@ const Blogs = ({ allBlogs }) => {
               <MenuItem value="Newest">Newest</MenuItem>
             </Select>
           </div>
+          <div className="display-mode-wrapper">
+            <div className="display-mode-buttons">
+              <CropLandscape
+                id="blog-single-display-mode-button"
+                onClick={() => setDisplayMode(1)}
+              />
+              <BorderAll
+                id="blog-multi-display-mode-button"
+                onClick={() => setDisplayMode(0)}
+              />
+            </div>
+          </div>
         </div>
+      </div>
+      <div className="blogs-main-content">
+        <div className="blogs-top-title">
+          {param.city
+            && (
+            <h1>
+              Blogs about
+              {' '}
+              <span style={{ color: 'rgb(180, 155, 9)' }}>
+                {param.city}
+              </span>
+            </h1>
+            )}
+          {param.country
+            && (
+            <h1>
+              Blogs about
+              {' '}
+              <span style={{ color: 'rgb(180, 155, 9)' }}>
+                {param.country}
+              </span>
+            </h1>
+            )}
+        </div>
+
         <div className="blogs-container">
           <div className="cards-container">
             {blogs.map((blog) => (
-              <div key={blog.id}>
-                <Link id="main-blog-link" to={`/blogs/${blog.id}`}>
-                  <div className="blog-card">
-                    <div className="blog-image">
-                      {blog.headerImageURL && (
-                        <img src={blog.headerImageURL} alt="blog-header" width="300px" />
-                      )}
+              <Link id="main-blog-link" to={`/blogs/${blog.id}`} key={blog.id}>
+                <div className="blog-card">
+                  <div className="blog-image">
+                    {blog.headerImageURL && (
+                      <img src={blog.headerImageURL} alt="blog-header" width="300px" />
+                    )}
+                  </div>
+                  <div className="blog-card-right">
+                    <div className="blog-header">
+                      <div className="blog-author-info">
+                        <div>
+                          <img src={blog.author.avatar} alt="avatar" />
+                        </div>
+                        <div>
+                          By
+                          {blog.author.username}
+                        </div>
+                      </div>
+                      <div
+                        className={`blog-title ${
+                          blog.title.length > 22 && 'long-blog-title'
+                        }`}
+                      >
+                        <h1>{blog.title.toUpperCase()}</h1>
+                      </div>
+                      <div className="blog-description">
+                        <p>{blog.description}</p>
+                      </div>
                     </div>
-                    <div className="blog-card-right">
-                      <div className="blog-header">
-                        <div className="blog-author-info">
-                          <div>
-                            <img src={blog.author.avatar} alt="avatar" />
-                          </div>
-                          <div>
-                            By
-                            {blog.author.username}
-                          </div>
-                        </div>
-                        <div
-                          className={`blog-title ${
-                            blog.title.length > 22 && 'long-blog-title'
-                          }`}
-                        >
-                          <h1>{blog.title.toUpperCase()}</h1>
-                        </div>
-                        <div className="blog-description">
-                          <p>{blog.description}</p>
-                        </div>
-                      </div>
 
-                      <div className="blog-star">
-                        <div className="tooltip">
-                          <span className="tooltip-message">Stars</span>
-                          <Star id="star" fontSize="default" />
-                        </div>
-                        <div id="blog-stars-count">{blog.stars.length}</div>
+                    <div className="blog-star">
+                      <div className="tooltip">
+                        <span className="tooltip-message">Stars</span>
+                        <Star id="star" fontSize="default" />
                       </div>
-                      <div className="blog-date">
-                        {DateTime.fromISO(blog.date).monthShort}
-                        {' '}
-                        {DateTime.fromISO(blog.date).day}
-                        {' '}
-                        {DateTime.fromISO(blog.date).year}
-                      </div>
+                      <div id="blog-stars-count">{blog.stars.length}</div>
+                    </div>
+                    <div className="blog-date">
+                      {DateTime.fromISO(blog.date).monthShort}
+                      {' '}
+                      {DateTime.fromISO(blog.date).day}
+                      {' '}
+                      {DateTime.fromISO(blog.date).year}
                     </div>
                   </div>
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
             <div className="blog-pseudo-element" />
             <div className="blog-pseudo-element" />
