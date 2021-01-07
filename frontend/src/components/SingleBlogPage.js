@@ -13,6 +13,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ReactHtmlParser from 'react-html-parser';
 import '../styles/singleBlogPage.css';
 import { DateTime } from 'luxon';
+import calculateDateDiff from '../utils/calculateDateDiff';
 
 const CommentForm = ({
   user, blog, setBlog, allBlogs, setAllBlogs,
@@ -90,7 +91,6 @@ const SingleBlogPage = ({
 
   console.log(blog, allBlogs);
   if (!blog) return null;
-  const dateNow = DateTime.local();
   const blogDate = DateTime.fromISO(blog.date);
 
   const handleStarChange = async (action) => {
@@ -109,35 +109,6 @@ const SingleBlogPage = ({
     const filteredBlogs = allBlogs.map((b) => (b.id === newBlog.id ? newBlog : b));
 
     setAllBlogs(filteredBlogs);
-  };
-
-  const calculateDateDiff = (date) => {
-    const daysAgo = Math.floor(dateNow.diff(DateTime.fromISO(date)).as('days'));
-    if (daysAgo >= 1) {
-      if (daysAgo === 1) {
-        return '1 day ago';
-      }
-      return `${daysAgo} days ago`;
-    }
-    const hoursAgo = Math.floor(
-      dateNow.diff(DateTime.fromISO(date)).as('hours'),
-    );
-    if (hoursAgo >= 1) {
-      if (hoursAgo === 1) {
-        return '1 hour ago';
-      }
-      return `${hoursAgo} hours ago`;
-    }
-    const minutesAgo = Math.floor(
-      dateNow.diff(DateTime.fromISO(date)).as('minutes'),
-    );
-    if (minutesAgo >= 1) {
-      if (minutesAgo === 1) {
-        return '1 minute ago';
-      }
-      return `${minutesAgo} minutes ago`;
-    }
-    return 'less than a minute ago';
   };
 
   return (

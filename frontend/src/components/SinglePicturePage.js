@@ -11,6 +11,7 @@ import ExploreOff from '@material-ui/icons/ExploreOff';
 import Image from '@material-ui/icons/Image';
 import { Language } from '@material-ui/icons';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import calculateDateDiff from '../utils/calculateDateDiff';
 import '../styles/singlePicturePage.css';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
@@ -271,9 +272,18 @@ const SinglePicturePage = ({
           <ul>
             {picture.comments.map((comment) => (
               <li key={comment.id}>
-                {comment.user.username}
-                :
-                {comment.content}
+                <div className="picture-comment">
+                  <div className="picture-comment-author">
+                    <img src={comment.user.avatar} alt="avatar" />
+                    {comment.user.username}
+                    <div className="picture-comment-date">
+                      {calculateDateDiff(comment.date)}
+                    </div>
+                  </div>
+                  <div className="picture-comment-content">
+                    {comment.content}
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
