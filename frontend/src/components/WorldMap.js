@@ -403,27 +403,42 @@ const WorldMap = ({
 
       {showSettings && (
         <div className="map-filter-box">
-          <div>
-            Show My Own Content Only
-            <Switch
-              checked={showUserContentOnly}
-              onChange={() => setShowUserContentOnly(!showUserContentOnly)}
-            />
-          </div>
-          <div>
-            Show blogs
-            <Switch
-              checked={showBlogs}
-              onChange={() => setShowBlogs(!showBlogs)}
-            />
-          </div>
-          <div>
-            Show pictures
-            <Switch
-              checked={showPictures}
-              onChange={() => setShowPictures(!showPictures)}
-            />
-          </div>
+          <h1>Show</h1>
+          <table>
+            <tr>
+              <td>
+                My Content Only
+              </td>
+              <td>
+                <Switch
+                  checked={showUserContentOnly}
+                  onChange={() => setShowUserContentOnly(!showUserContentOnly)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Blogs
+              </td>
+              <td>
+                <Switch
+                  checked={showBlogs}
+                  onChange={() => setShowBlogs(!showBlogs)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Pictures
+              </td>
+              <td>
+                <Switch
+                  checked={showPictures}
+                  onChange={() => setShowPictures(!showPictures)}
+                />
+              </td>
+            </tr>
+          </table>
         </div>
       )}
 
