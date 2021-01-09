@@ -184,37 +184,39 @@ const SearchModal = ({
                   ) : (
                     <div>
                       <table>
-                        {foundCities.map((city) => (
-                          <tr key={city}>
-                            <td>{city}</td>
-                            {foundPictureCities.includes(city) && (
-                              <Link
-                                to={{
-                                  pathname: '/gallery',
-                                  search: `?city=${city}`,
-                                }}
-                                onClick={closeSearchModal}
-                              >
-                                <td>
-                                  <button type="button">Pictures</button>
-                                </td>
-                              </Link>
-                            )}
-                            {foundBlogCities.includes(city) && (
-                              <Link
-                                to={{
-                                  pathname: '/blogs',
-                                  search: `?city=${city}`,
-                                }}
-                                onClick={closeSearchModal}
-                              >
-                                <td>
-                                  <button type="button">Blogs</button>
-                                </td>
-                              </Link>
-                            )}
-                          </tr>
-                        ))}
+                        <tbody>
+                          {foundCities.map((city) => (
+                            <tr key={city}>
+                              <td>{city}</td>
+                              {foundPictureCities.includes(city) && (
+                                <Link
+                                  to={{
+                                    pathname: '/gallery',
+                                    search: `?city=${city}`,
+                                  }}
+                                  onClick={closeSearchModal}
+                                >
+                                  <td>
+                                    <button type="button">Pictures</button>
+                                  </td>
+                                </Link>
+                              )}
+                              {foundBlogCities.includes(city) && (
+                                <Link
+                                  to={{
+                                    pathname: '/blogs',
+                                    search: `?city=${city}`,
+                                  }}
+                                  onClick={closeSearchModal}
+                                >
+                                  <td>
+                                    <button type="button">Blogs</button>
+                                  </td>
+                                </Link>
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
                       </table>
                     </div>
                   )}
@@ -230,37 +232,39 @@ const SearchModal = ({
                   ) : (
                     <div>
                       <table style={{ width: '100%' }}>
-                        {foundCountries.map((country) => (
-                          <tr key={country}>
-                            <td>{country}</td>
-                            {foundPictureCountries.includes(country) && (
-                              <Link
-                                to={{
-                                  pathname: '/gallery',
-                                  search: `?country=${country}`,
-                                }}
-                                onClick={closeSearchModal}
-                              >
-                                <td>
-                                  <button type="button">Pictures</button>
-                                </td>
-                              </Link>
-                            )}
-                            {foundBlogCountries.includes(country) && (
-                              <Link
-                                to={{
-                                  pathname: '/blogs',
-                                  search: `?country=${country}`,
-                                }}
-                                onClick={closeSearchModal}
-                              >
-                                <td>
-                                  <button type="button">Blogs</button>
-                                </td>
-                              </Link>
-                            )}
-                          </tr>
-                        ))}
+                        <tbody>
+                          {foundCountries.map((country) => (
+                            <tr key={country}>
+                              <td>{country}</td>
+                              {foundPictureCountries.includes(country) && (
+                                <Link
+                                  to={{
+                                    pathname: '/gallery',
+                                    search: `?country=${country}`,
+                                  }}
+                                  onClick={closeSearchModal}
+                                >
+                                  <td>
+                                    <button type="button">Pictures</button>
+                                  </td>
+                                </Link>
+                              )}
+                              {foundBlogCountries.includes(country) && (
+                                <Link
+                                  to={{
+                                    pathname: '/blogs',
+                                    search: `?country=${country}`,
+                                  }}
+                                  onClick={closeSearchModal}
+                                >
+                                  <td>
+                                    <button type="button">Blogs</button>
+                                  </td>
+                                </Link>
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
                       </table>
                     </div>
                   )}
