@@ -142,7 +142,9 @@ const SingleBlogPage = ({
               </div>
             </div>
           </div>
-          <img src={blog.headerImageURL} alt="cover" width="1000px" />
+          {blog.headerImageURL
+          && <img src={blog.headerImageURL} alt="cover" width="1000px" />}
+
           {ReactHtmlParser(blog.content)}
         </div>
         <div className="vote-container">
