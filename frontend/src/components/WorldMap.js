@@ -103,8 +103,8 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
   const pictures = content.filter((c) => c.type === 'picture');
 
   const card = {
-    width: '205px',
-    height: '300px',
+    width: '11vw',
+    height: '16vw',
     border: '2px solid black',
     backgroundColor: '#191e36',
     color: 'white',
@@ -131,64 +131,77 @@ const ClusterPopUp = ({ content, setClusterContent, handle }) => {
         zIndex: 999999,
       }}
     >
-      <button type="button" onClick={() => setClusterContent(null)}>close</button>
-      <h2>Pictures</h2>
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-        }}
-      >
-        {pictures.map((pic) => (
-          <div style={card} key={pic.data.id}>
-            <h3>{pic.data.title}</h3>
-            <div style={{ position: 'relative' }}>
-              <img src={pic.data.imgURL} width="200" height="200" alt="" />
-              <div
-                style={{
-                  position: 'absolute',
-                  cursor: 'pointer',
-                  bottom: '1%',
-                  right: '2%',
-                }}
-                onClick={handle.enter}
-              >
-                <Fullscreen fontSize="large" color="secondary" />
-              </div>
-            </div>
+      <div style={{ position: 'relative', padding: '6px', boxSizing: 'border-box' }}>
+        <button id="cluster-close-button" type="button" onClick={() => setClusterContent(null)}>X</button>
+        {pictures.length > 0
+        && (
+        <div>
+          <h2 style={{ textAlign: 'center' }}>Pictures</h2>
 
-            <Link target="_blank" to={`/gallery/${pic.data.id}`}>
-              <Button style={{ color: 'white' }}>Open In Gallery</Button>
-            </Link>
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+          }}
+          >
+
+            {pictures.map((pic) => (
+              <div style={card} key={pic.data.id}>
+                <h3>{pic.data.title}</h3>
+                <div style={{ position: 'relative' }}>
+                  <img src={pic.data.imgURL} width="100%" alt="" />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      cursor: 'pointer',
+                      bottom: '1%',
+                      right: '2%',
+                    }}
+                    onClick={handle.enter}
+                  >
+                    <Fullscreen fontSize="large" color="secondary" />
+                  </div>
+                </div>
+
+                <Link target="_blank" to={`/gallery/${pic.data.id}`}>
+                  <Button style={{ color: 'white' }}>Open In Gallery</Button>
+                </Link>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+        )}
       </div>
-      <h2>Blogs</h2>
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-        }}
-      >
-        {blogs.map((blog) => (
-          <div style={card} key={blog.data.id}>
-            <h2>{blog.data.title}</h2>
-            <p>
-              by:
-              {blog.data.author.username}
-            </p>
-            <Link to={`/blogs/${blog.data.id}`}>
-              <h3>Read</h3>
-            </Link>
-          </div>
-        ))}
+      {blogs.length > 0
+      && (
+      <div>
+        <h2 style={{ textAlign: 'center' }}>Blogs</h2>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+          }}
+        >
+          {blogs.map((blog) => (
+            <div style={card} key={blog.data.id}>
+              <h2>{blog.data.title}</h2>
+              <p>
+                by:
+                {blog.data.author.username}
+              </p>
+              <Link to={`/blogs/${blog.data.id}`}>
+                <h3>Read</h3>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
+      )}
     </div>
   );
 };
@@ -405,39 +418,41 @@ const WorldMap = ({
         <div className="map-filter-box">
           <h1>Show</h1>
           <table>
-            <tr>
-              <td>
-                My Content Only
-              </td>
-              <td>
-                <Switch
-                  checked={showUserContentOnly}
-                  onChange={() => setShowUserContentOnly(!showUserContentOnly)}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Blogs
-              </td>
-              <td>
-                <Switch
-                  checked={showBlogs}
-                  onChange={() => setShowBlogs(!showBlogs)}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Pictures
-              </td>
-              <td>
-                <Switch
-                  checked={showPictures}
-                  onChange={() => setShowPictures(!showPictures)}
-                />
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>
+                  My Content Only
+                </td>
+                <td>
+                  <Switch
+                    checked={showUserContentOnly}
+                    onChange={() => setShowUserContentOnly(!showUserContentOnly)}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Blogs
+                </td>
+                <td>
+                  <Switch
+                    checked={showBlogs}
+                    onChange={() => setShowBlogs(!showBlogs)}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Pictures
+                </td>
+                <td>
+                  <Switch
+                    checked={showPictures}
+                    onChange={() => setShowPictures(!showPictures)}
+                  />
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       )}

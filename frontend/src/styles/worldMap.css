@@ -17,6 +17,7 @@
     text-align: center;
     font-size: 1.6rem;
 }
+
 .map-filter-box table{
   width: 100%;
 
@@ -39,11 +40,11 @@
 .map-popup-close-button {
     position: absolute;
     width: 30px;
+    height: 30px;
     top: 0px;
     right: 0px;
     transform: translate(50%, -50%);
     border-radius: 50%;
-    padding: 6px;
     font-weight: 700;
     background-color: rgb(46, 39, 39);
     color: white;
@@ -53,5 +54,23 @@
 }
 
 .map-popup-close-button:hover {
+    background-color: red;
+}
+
+#cluster-close-button {
+    position: absolute;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    top: 0px;
+    right: 0px;
+    transform: translate(30%, -30%);
+    cursor: pointer;
+    outline: none;
+    background-color: rgb(46, 39, 39);
+    color: white;
+}
+
+#cluster-close-button:hover {
     background-color: red;
 }
