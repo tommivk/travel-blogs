@@ -22,8 +22,9 @@ const IndexModal = ({
             position: 'absolute',
             top: '50%',
             left: '50%',
-            transform: 'translate(-50%, -50%)',
-            backgroundColor: 'white',
+            transform: 'translate(-50%, -44%)',
+            outline: 'none',
+            color: 'white',
           }}
         >
           {modalOpen.modal === 'login' ? (

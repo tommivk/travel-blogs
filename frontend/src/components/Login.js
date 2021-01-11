@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import firebase from 'firebase/app';
 import axios from 'axios';
 import { Button, TextField } from '@material-ui/core';
+import '../styles/login.css';
 
 const Login = ({ setUser, handleMessage }) => {
   const [username, setUsername] = useState('');
@@ -30,28 +31,33 @@ const Login = ({ setUser, handleMessage }) => {
     }
   };
   return (
-    <div>
+    <div className="login-form">
+      <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <TextField
-          id="outlined-textarea"
-          variant="outlined"
-          type="text"
-          placeholder="Username"
-          autoComplete="off"
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
-        <br />
-        <TextField
-          id="outlined-textarea"
-          placeholder="Password"
-          variant="outlined"
-          type="password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-        <br />
-        <Button type="submit" color="primary" variant="contained">
+        <div className="login-input-container">
+          <div className="login-username-wrapper">
+            <TextField
+              id="login-username-textfield"
+              variant="outlined"
+              type="text"
+              placeholder="Username"
+              autoComplete="off"
+              value={username}
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </div>
+          <div className="login-password-wrapper">
+            <TextField
+              id="login-password-textfield"
+              placeholder="Password"
+              variant="outlined"
+              type="password"
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </div>
+        </div>
+        <Button id="login-form-button" type="submit" color="primary" variant="contained">
           Login
         </Button>
       </form>

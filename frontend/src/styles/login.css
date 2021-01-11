@@ -1,0 +1,41 @@
+.login-form {
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 10%;
+    background-color: rgba(0,0,0,0.75);
+    color: white;
+    width: 15vw;
+    min-width: 200px;
+    height: fit-content;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#login-username-textfield, #login-password-textfield {
+    color: white;
+    background-color: rgba(0,0,0,0.8);
+}
+
+#login-form-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.login-input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-username-wrapper {
+    margin: 10px;
+    width: 80%;
+}
+
+.login-password-wrapper {
+    width: 80%;
+}

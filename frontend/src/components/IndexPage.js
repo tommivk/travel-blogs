@@ -20,16 +20,23 @@ const IndexPage = ({ setUser, message, handleMessage }) => {
   };
   const closeModal = () => {
     setModalOpen({ open: false, modal: '' });
+    setMouseOnImage(false);
   };
 
   return (
     <div className="index-page-main-container">
-      <div className={`video-container ${mouseOnImage && 'video-blur'}`}>
+      <div className="indexpage-title">
+        <h1>TravelBlogs</h1>
+      </div>
+      <div className="indexpage-login-link" onClick={openLoginModal}>
+        <h1>Login</h1>
+      </div>
+      <div className={`video-container ${(mouseOnImage || modalOpen.open) && 'video-blur'}`}>
         <video loop autoPlay muted>
           <source src={bgvideo} type="video/mp4" />
         </video>
       </div>
-      <div className={`svg-wrapper ${mouseOnImage && 'mouse-over'}`}>
+      <div className={`svg-wrapper ${(mouseOnImage || modalOpen.open) && 'mouse-over'}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="80vh"
@@ -607,7 +614,7 @@ const IndexPage = ({ setUser, message, handleMessage }) => {
           zIndex: '999',
         }}
       >
-        {modalOpen && (
+        {modalOpen.open && (
           <IndexModal
             handleMessage={handleMessage}
             modalOpen={modalOpen}
@@ -615,21 +622,18 @@ const IndexPage = ({ setUser, message, handleMessage }) => {
             setUser={setUser}
           />
         )}
+        {!modalOpen.open && (
         <Button
-          style={{ margin: '20px', zIndex: '3' }}
+          id="indexpage-signup-button"
           onClick={openSignUpModal}
           onMouseOver={() => setMouseOnImage(true)}
           size="large"
-          variant="outlined"
+          variant="contained"
           color="secondary"
         >
           Sign Up
         </Button>
-        <div style={{ cursor: 'pointer', zIndex: '999' }}>
-          Already a member?
-          {' '}
-          <span onClick={openLoginModal}>Login</span>
-        </div>
+        )}
       </div>
 
     </div>

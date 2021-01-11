@@ -1,0 +1,40 @@
+.signup-form {
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 10%;
+    background-color: rgba(0,0,0,0.75);
+    color: white;
+    width: 15vw;
+    min-width: 200px;
+    height: fit-content;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#signup-username-textfield, #signup-password-textfield {
+    color: white;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.signup-input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.signup-username-wrapper {
+    margin: 10px;
+    width: 80%;
+}
+
+.signup-password-wrapper {
+    width: 80%;
+} 
+
+#signup-form-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

@@ -57,3 +57,32 @@ path {
 .svg-path {
     min-height: 100vh;
 }
+
+.indexpage-title {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    color: white;
+    font-size: 2rem;
+}
+
+.indexpage-title h1, .indexpage-login-link h1 {
+    margin: 0px;
+}
+
+.indexpage-login-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+#indexpage-signup-button {
+    z-index: 10;
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translate(-50%, 0px);
+}

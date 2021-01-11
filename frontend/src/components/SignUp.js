@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Button, TextField } from '@material-ui/core';
+import '../styles/signup.css';
 
 const SignUp = ({ handleMessage }) => {
   const [username, setUsername] = useState('');
@@ -24,28 +25,33 @@ const SignUp = ({ handleMessage }) => {
   };
 
   return (
-    <div>
+    <div className="signup-form">
+      <h2>Sign up</h2>
       <form onSubmit={handleSignup}>
-        <TextField
-          id="outlined-textarea"
-          variant="outlined"
-          type="text"
-          label="Username"
-          autoComplete="off"
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
-        <br />
-        <TextField
-          id="outlined-textarea"
-          label="Password"
-          variant="outlined"
-          type="password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-        <br />
-        <Button type="submit" color="primary" variant="contained">
+        <div className="signup-input-container">
+          <div className="signup-username-wrapper">
+            <TextField
+              id="signup-username-textfield"
+              variant="outlined"
+              type="text"
+              placeholder="Username"
+              autoComplete="off"
+              value={username}
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </div>
+          <div className="signup-password-wrapper">
+            <TextField
+              id="signup-password-textfield"
+              placeholder="Password"
+              variant="outlined"
+              type="password"
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </div>
+        </div>
+        <Button id="signup-form-button" type="submit" color="primary" variant="contained">
           Sign up
         </Button>
       </form>
