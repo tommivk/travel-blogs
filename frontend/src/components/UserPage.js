@@ -136,7 +136,7 @@ const UserPage = ({
       if (userMatch.id === user.id) {
         setIsUser(true);
       } else {
-        setUser(false);
+        setIsUser(false);
       }
     }
   }, [userMatch]);
