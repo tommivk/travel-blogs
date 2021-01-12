@@ -177,14 +177,7 @@ const Gallery = ({
                   style={{ textDecoration: 'none' }}
                 >
                   <div className="gallery-card">
-                    <img
-                      src={pic.imgURL}
-                      height="200"
-                      width="200"
-                      alt=""
-                      style={{ borderRadius: '4px' }}
-                    />
-
+                    <img src={pic.imgURL} alt="" />
                     <h4
                       style={{
                         marginTop: '2px',
