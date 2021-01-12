@@ -62,6 +62,16 @@
 .search-result-table {
     width: 100%;
 }
-.search-result-button {
-   
+
+.search-result-table tr:nth-child(even){
+    background-color: rgb(43, 48, 53)
+}
+
+.searchresult-left {
+   width: 60%;
+}
+
+
+.disabled-button {
+   background-color: rgb(46, 38, 38);
 }

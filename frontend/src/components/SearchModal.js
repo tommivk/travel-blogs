@@ -197,8 +197,8 @@ const SearchModal = ({
                         <tbody>
                           {foundCities.map((city) => (
                             <tr key={city}>
-                              <td>{city}</td>
-                              {foundPictureCities.includes(city) && (
+                              <td className="searchresult-left">{city}</td>
+                              {foundPictureCities.includes(city) ? (
                                 <Link
                                   to={{
                                     pathname: '/gallery',
@@ -210,8 +210,8 @@ const SearchModal = ({
                                     <button type="button">Pictures</button>
                                   </td>
                                 </Link>
-                              )}
-                              {foundBlogCities.includes(city) && (
+                              ) : <button type="button" className="disabled-button">Pictures</button>}
+                              {foundBlogCities.includes(city) ? (
                                 <Link
                                   to={{
                                     pathname: '/blogs',
@@ -223,7 +223,10 @@ const SearchModal = ({
                                     <button type="button">Blogs</button>
                                   </td>
                                 </Link>
-                              )}
+                              )
+                                : (
+                                  <button type="button" className="disabled-button">Blogs</button>
+                                )}
                             </tr>
                           ))}
                         </tbody>
@@ -245,8 +248,8 @@ const SearchModal = ({
                         <tbody>
                           {foundCountries.map((country) => (
                             <tr key={country}>
-                              <td>{country}</td>
-                              {foundPictureCountries.includes(country) && (
+                              <td className="searchresult-left">{country}</td>
+                              {foundPictureCountries.includes(country) ? (
                                 <Link
                                   to={{
                                     pathname: '/gallery',
@@ -258,8 +261,8 @@ const SearchModal = ({
                                     <button type="button">Pictures</button>
                                   </td>
                                 </Link>
-                              )}
-                              {foundBlogCountries.includes(country) && (
+                              ) : <button type="button" className="disabled-button">Pictures</button>}
+                              {foundBlogCountries.includes(country) ? (
                                 <Link
                                   to={{
                                     pathname: '/blogs',
@@ -271,7 +274,7 @@ const SearchModal = ({
                                     <button type="button">Blogs</button>
                                   </td>
                                 </Link>
-                              )}
+                              ) : <button type="button" className="disabled-button">Blogs</button>}
                             </tr>
                           ))}
                         </tbody>
