@@ -101,32 +101,42 @@ const SearchModal = ({
             value={searchFilter}
             onChange={({ target }) => setSearchFilter(target.value)}
           />
-          <div>
-            Blogs
-            <Checkbox
-              checked={searchBlogs}
-              onChange={() => setSearchBlogs(!searchBlogs)}
-            />
-            Pictures
-            <Checkbox
-              checked={searchPictures}
-              onChange={() => setSearchPictures(!searchPictures)}
-            />
-            Cities
-            <Checkbox
-              checked={searchCities}
-              onChange={() => setSearchCities(!searchCities)}
-            />
-            Countries
-            <Checkbox
-              checked={searchCountries}
-              onChange={() => setSearchCountries(!searchCountries)}
-            />
-            Users
-            <Checkbox
-              checked={searchUsers}
-              onChange={() => setSearchUsers(!searchUsers)}
-            />
+          <div className="searchmodal-filters">
+            <div>
+              <Checkbox
+                checked={searchBlogs}
+                onChange={() => setSearchBlogs(!searchBlogs)}
+              />
+              Blogs
+            </div>
+            <div>
+              <Checkbox
+                checked={searchPictures}
+                onChange={() => setSearchPictures(!searchPictures)}
+              />
+              Pictures
+            </div>
+            <div>
+              <Checkbox
+                checked={searchCities}
+                onChange={() => setSearchCities(!searchCities)}
+              />
+              Cities
+            </div>
+            <div>
+              <Checkbox
+                checked={searchCountries}
+                onChange={() => setSearchCountries(!searchCountries)}
+              />
+              Countries
+            </div>
+            <div>
+              <Checkbox
+                checked={searchUsers}
+                onChange={() => setSearchUsers(!searchUsers)}
+              />
+              Users
+            </div>
           </div>
           <div className="search-bottom-container">
             <div className="search-bottom-section">
@@ -183,7 +193,7 @@ const SearchModal = ({
                     'No cities found'
                   ) : (
                     <div>
-                      <table>
+                      <table className="search-result-table">
                         <tbody>
                           {foundCities.map((city) => (
                             <tr key={city}>
@@ -196,7 +206,7 @@ const SearchModal = ({
                                   }}
                                   onClick={closeSearchModal}
                                 >
-                                  <td>
+                                  <td className="search-result-button">
                                     <button type="button">Pictures</button>
                                   </td>
                                 </Link>
@@ -231,7 +241,7 @@ const SearchModal = ({
                     'No countries found'
                   ) : (
                     <div>
-                      <table style={{ width: '100%' }}>
+                      <table className="search-result-table">
                         <tbody>
                           {foundCountries.map((country) => (
                             <tr key={country}>
