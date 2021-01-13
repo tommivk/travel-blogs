@@ -10,17 +10,20 @@
     transform: translate(-50%, -50%);
   }
 
-  .image-toggle-button {
-    position: absolute;
-    top: 23%;
-    right: 28%;
-    width: fit-content;
-    background-color: #FFFFFF;
-    cursor: pointer;
-  }
-
   .vote-container-element {
     height: 33.333%;
+  }
+
+  .picture-vote-container {
+    box-sizing: border-box;
+    background-color: #231A03;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 20%;
+    color: white;
+    width: fit-content;
+    height: fit-content;
+    text-align: center;
   }
 
   .picture-vote-arrow {
@@ -28,28 +31,43 @@
   }
 
   .picture-list-container{
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    height: 600px;
-    max-height: 600px;
+    height: 28vw;
     overflow-x: hidden;
-    overflow-y: scroll;
-    width: 320px;
+    overflow-y: hidden;
+    width: 18vw;
     background-color: #231A03;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: flex-start;
     border-radius: 10px;
+    position: relative;
+    top: 10vh;
+    color: white;
+    text-align: center;
   }
 
-  .picture-list-container::-webkit-scrollbar {
+  .picture-list-top {
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: center;
+    height: fit-content;
+    /* background-color: red; */
+    width: 100%;
+    position: sticky;
+  }
+
+  .picture-list-flex-box {
+    height: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    justify-content: center;
+    align-content: flex-start;
+  }
+
+  .picture-list-flex-box::-webkit-scrollbar {
     width: 10px;
     background-color: rgb(49, 36, 36);
   }
   
-  .picture-list-container::-webkit-scrollbar-thumb {
+  .picture-list-flex-box::-webkit-scrollbar-thumb {
     background: rgba(83, 113, 197, 0.829);
     border-radius: 5px;
   }
@@ -59,12 +77,12 @@
   }
 
   .picture-list-picture-box img{
-    width: 120px;
-    height: 120px;
+    width: 6vw;
+    height: 6vw;
   }
 
   .picture-list-active-image{
-   transform: scale(1.1);
+    transform: scale(1.1);
    border: 2px solid rgb(255, 255, 255);
   }
 
@@ -76,16 +94,13 @@
   .picture-comment-container{
     display: flex;
     flex-direction: column;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%,0%);
   }
 
   .comment-container{
     margin-top: 20px;
     align-self: center;
     color: white;
-    width: 100%;
+    width: 70%;
     text-align: center;
   }
 
@@ -97,12 +112,13 @@
   .picture-comment {
     border-bottom: 2px solid black;
     text-align: left;
+    position: relative;
   }
 
   .picture-comment-content {
     margin: 15px;
     margin-left: 30px;
-    font-size: 1.1em;
+    font-size: 1em;
   }
 
   .picture-comment-date {
@@ -130,12 +146,11 @@
     height: 400px;
     width: 300px;
     background-color: #231A03;
-    position: absolute;
-    left: 8%;
-    top: 10%;
     color: white;
     text-align: center;
     border-radius: 4%;
+    position: relative;
+    top: 10vh;
   }
 
   .picture-info-container img {
@@ -146,7 +161,27 @@
   }
 
   .picture-list-pseudo-element {
-    width: 120px;
+    width: 6vw;
     height: 0;
     margin: 14px;
+  }
+
+  .picture-container-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .image-toggle-button {
+    width: fit-content;
+    height: fit-content;
+    margin-left: 10px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+  }
+
+  #picture-comment-delete-button {
+    position: absolute;
+    right: 0px;
+    bottom: 5%;
   }
