@@ -90,52 +90,59 @@ const SearchModal = ({
   return (
     <div>
       <Modal open={open} onClose={closeSearchModal}>
-        <div className="modal-content">
-          <button type="button" style={{ float: 'right' }} onClick={closeSearchModal}>
-            close
-          </button>
-          <input
-            autoComplete="off"
-            id="search-modal-input"
-            autoFocus
-            value={searchFilter}
-            onChange={({ target }) => setSearchFilter(target.value)}
-          />
-          <div className="searchmodal-filters">
-            <div>
-              <Checkbox
-                checked={searchBlogs}
-                onChange={() => setSearchBlogs(!searchBlogs)}
-              />
-              Blogs
-            </div>
-            <div>
-              <Checkbox
-                checked={searchPictures}
-                onChange={() => setSearchPictures(!searchPictures)}
-              />
-              Pictures
-            </div>
-            <div>
-              <Checkbox
-                checked={searchCities}
-                onChange={() => setSearchCities(!searchCities)}
-              />
-              Cities
-            </div>
-            <div>
-              <Checkbox
-                checked={searchCountries}
-                onChange={() => setSearchCountries(!searchCountries)}
-              />
-              Countries
-            </div>
-            <div>
-              <Checkbox
-                checked={searchUsers}
-                onChange={() => setSearchUsers(!searchUsers)}
-              />
-              Users
+        <div className="search-modal-container">
+          <div className="search-modal-top">
+            <button type="button" id="search-modal-close-button" onClick={closeSearchModal}>
+              X
+            </button>
+            <input
+              autoComplete="off"
+              id="search-modal-input"
+              autoFocus
+              value={searchFilter}
+              onChange={({ target }) => setSearchFilter(target.value)}
+            />
+            <div className="searchmodal-filters">
+              <div>
+                <Checkbox
+                  style={{ color: 'red' }}
+                  checked={searchBlogs}
+                  onChange={() => setSearchBlogs(!searchBlogs)}
+                />
+                Blogs
+              </div>
+              <div>
+                <Checkbox
+                  style={{ color: 'red' }}
+                  checked={searchPictures}
+                  onChange={() => setSearchPictures(!searchPictures)}
+                />
+                Pictures
+              </div>
+              <div>
+                <Checkbox
+                  style={{ color: 'red' }}
+                  checked={searchCities}
+                  onChange={() => setSearchCities(!searchCities)}
+                />
+                Cities
+              </div>
+              <div>
+                <Checkbox
+                  style={{ color: 'red' }}
+                  checked={searchCountries}
+                  onChange={() => setSearchCountries(!searchCountries)}
+                />
+                Countries
+              </div>
+              <div>
+                <Checkbox
+                  style={{ color: 'red' }}
+                  checked={searchUsers}
+                  onChange={() => setSearchUsers(!searchUsers)}
+                />
+                Users
+              </div>
             </div>
           </div>
           <div className="search-bottom-container">
@@ -198,35 +205,38 @@ const SearchModal = ({
                           {foundCities.map((city) => (
                             <tr key={city}>
                               <td className="searchresult-left">{city}</td>
-                              {foundPictureCities.includes(city) ? (
-                                <Link
-                                  to={{
-                                    pathname: '/gallery',
-                                    search: `?city=${city}`,
-                                  }}
-                                  onClick={closeSearchModal}
-                                >
-                                  <td className="search-result-button">
-                                    <button type="button">Pictures</button>
-                                  </td>
-                                </Link>
-                              ) : <button type="button" className="disabled-button">Pictures</button>}
-                              {foundBlogCities.includes(city) ? (
-                                <Link
-                                  to={{
-                                    pathname: '/blogs',
-                                    search: `?city=${city}`,
-                                  }}
-                                  onClick={closeSearchModal}
-                                >
-                                  <td>
-                                    <button type="button">Blogs</button>
-                                  </td>
-                                </Link>
-                              )
-                                : (
-                                  <button type="button" className="disabled-button">Blogs</button>
-                                )}
+                              <td>
+                                {foundPictureCities.includes(city) ? (
+                                  <Link
+                                    to={{
+                                      pathname: '/gallery',
+                                      search: `?city=${city}`,
+                                    }}
+                                    onClick={closeSearchModal}
+                                  >
+                                    <button type="button" className="search-result-button">
+                                      Pictures
+                                    </button>
+                                  </Link>
+                                )
+                                  : (
+                                    <button type="button" disabled className="search-result-button--disabled">Pictures</button>
+                                  )}
+                                {foundBlogCities.includes(city) ? (
+                                  <Link
+                                    to={{
+                                      pathname: '/blogs',
+                                      search: `?city=${city}`,
+                                    }}
+                                    onClick={closeSearchModal}
+                                  >
+                                    <button type="button" className="search-result-button">Blogs</button>
+                                  </Link>
+                                )
+                                  : (
+                                    <button type="button" disabled className="search-result-button--disabled">Blogs</button>
+                                  )}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -249,32 +259,31 @@ const SearchModal = ({
                           {foundCountries.map((country) => (
                             <tr key={country}>
                               <td className="searchresult-left">{country}</td>
-                              {foundPictureCountries.includes(country) ? (
-                                <Link
-                                  to={{
-                                    pathname: '/gallery',
-                                    search: `?country=${country}`,
-                                  }}
-                                  onClick={closeSearchModal}
-                                >
-                                  <td>
-                                    <button type="button">Pictures</button>
-                                  </td>
-                                </Link>
-                              ) : <button type="button" className="disabled-button">Pictures</button>}
-                              {foundBlogCountries.includes(country) ? (
-                                <Link
-                                  to={{
-                                    pathname: '/blogs',
-                                    search: `?country=${country}`,
-                                  }}
-                                  onClick={closeSearchModal}
-                                >
-                                  <td>
-                                    <button type="button">Blogs</button>
-                                  </td>
-                                </Link>
-                              ) : <button type="button" className="disabled-button">Blogs</button>}
+                              <td>
+                                {foundPictureCountries.includes(country) ? (
+                                  <Link
+                                    to={{
+                                      pathname: '/gallery',
+                                      search: `?country=${country}`,
+                                    }}
+                                    onClick={closeSearchModal}
+                                  >
+                                    <button type="button" className="search-result-button">Pictures</button>
+                                  </Link>
+                                ) : <button type="button" disabled className="search-result-button--disabled">Pictures</button>}
+                                {foundBlogCountries.includes(country) ? (
+
+                                  <Link
+                                    to={{
+                                      pathname: '/blogs',
+                                      search: `?country=${country}`,
+                                    }}
+                                    onClick={closeSearchModal}
+                                  >
+                                    <button type="button" className="search-result-button">Blogs</button>
+                                  </Link>
+                                ) : <button type="button" disabled className="search-result-button--disabled">Blogs</button>}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
