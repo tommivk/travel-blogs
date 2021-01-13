@@ -41,7 +41,7 @@ picturesRouter.delete('/:id/vote', async (req, res) => {
     const user = await User.findById(decodedToken.id);
 
     const usersVote = await picture.votes.find(
-      (vote) => vote.user.toString() === user._id.toString()
+      (vote) => vote.user.toString() === user._id.toString(),
     );
 
     if (!usersVote) {
@@ -234,6 +234,53 @@ picturesRouter.post('/:id/comment', async (req, res) => {
     return res.json(newPicture.toJSON());
   } catch (error) {
     return console.log(error);
+  }
+});
+
+picturesRouter.delete('/:pictureId/comments/:commentId', async (req, res, next) => {
+  try {
+    const { pictureId, commentId } = req.params;
+
+    const token = getTokenFrom(req);
+
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    const picture = await Picture.findById(pictureId);
+    const comment = await Comment.findById(commentId);
+
+    if (!comment || !picture || !user) {
+      return res.status(400).send();
+    }
+
+    if (!picture.comments.includes(commentId)) {
+      return res.status(400).send();
+    }
+
+    if (comment.user.toString() !== user._id.toString()) {
+      return res.status(401).send();
+    }
+
+    picture.comments = picture.comments.filter((c) => c._id.toString() !== commentId);
+    const newPicture = await picture.save();
+
+    await Comment.findByIdAndDelete(commentId);
+
+    await newPicture.populate('user')
+      .populate('votes.user')
+      .populate({
+        path: 'comments',
+        model: 'Comment',
+        populate: { path: 'user', model: 'User' },
+      }).execPopulate();
+
+    return res.send(newPicture);
+  } catch (error) {
+    return next(error);
   }
 });
 

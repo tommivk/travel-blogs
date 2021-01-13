@@ -112,14 +112,18 @@ const SingleBlogPage = ({
   };
 
   const handleCommentDelete = async (blogId, commentId) => {
-    const response = await axios.delete(`http://localhost:8008/api/blogs/${blogId}/comments/${commentId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-    setBlog(response.data);
-    setAllBlogs((allBlogs.map((b) => (b.id === blog.id ? response.data : b))));
+    try {
+      const response = await axios.delete(`http://localhost:8008/api/blogs/${blogId}/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+      setBlog(response.data);
+      setAllBlogs((allBlogs.map((b) => (b.id === blog.id ? response.data : b))));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

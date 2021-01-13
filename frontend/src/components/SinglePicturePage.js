@@ -160,6 +160,20 @@ const SinglePicturePage = ({
     }
   };
 
+  const handleCommentDelete = async (pictureId, commentId) => {
+    try {
+      const response = await axios.delete(`http://localhost:8008/api/pictures/${pictureId}/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      setPicture(response.data);
+      setAllPictures(allPictures.map((p) => (p.id === pictureId ? response.data : p)));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const userVote = picture.votes.find(
     (vote) => vote.user.username === user.username,
   );
@@ -283,6 +297,7 @@ const SinglePicturePage = ({
                   <div className="picture-comment-content">
                     {comment.content}
                   </div>
+                  {comment.user.id === user.id && <div><button type="button" onClick={() => handleCommentDelete(picture.id, comment.id)}>Delete comment</button></div>}
                 </div>
               </li>
             ))}
