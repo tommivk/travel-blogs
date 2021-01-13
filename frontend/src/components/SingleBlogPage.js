@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import Star from '@material-ui/icons/Star';
 import StarBorder from '@material-ui/icons/StarBorder';
 import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
+import Explore from '@material-ui/icons/Explore';
 import Avatar from '@material-ui/core/Avatar';
 import ReactHtmlParser from 'react-html-parser';
 import '../styles/singleBlogPage.css';
@@ -83,6 +84,7 @@ const SingleBlogPage = ({
   blog, setBlog, user, setAllBlogs, allBlogs,
 }) => {
   const [showComments, setShowComments] = useState(false);
+  const [showLocations, setShowLocations] = useState(false);
 
   useEffect(() => {
     console.log('sadsad');
@@ -128,6 +130,30 @@ const SingleBlogPage = ({
 
   return (
     <div className="main-blog-page-container">
+      <Explore id="blog-location-toggle" onClick={() => setShowLocations(!showLocations)} />
+      {showLocations
+       && (
+       <div className="blog-locations-container">
+         <h3>Locations</h3>
+         {blog.locations.length > 0
+           ? (
+             <table>
+               <tbody>
+                 {blog.locations.map((loc) => (
+                   <tr>
+                     <td>
+                       {loc.city}
+                     </td>
+                     <td>{loc.country}</td>
+                   </tr>
+                 ))}
+               </tbody>
+             </table>
+           )
+           : <p>No locations</p>}
+         <button id="blog-locations-close-button" type="button" onClick={() => setShowLocations(false)}>X</button>
+       </div>
+       )}
       <Container maxWidth="md">
         <div>
           <div style={{ textAlign: 'center' }}>
