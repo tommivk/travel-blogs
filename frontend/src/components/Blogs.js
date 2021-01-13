@@ -62,8 +62,8 @@ const Blogs = ({ allBlogs }) => {
             blogMatches.push(blog);
           }
         }));
-
-        setBlogs(blogMatches);
+        const foundBlogs = [...new Set(blogMatches)];
+        setBlogs(foundBlogs);
       }
       if (param.city) {
         const blogMatches = [];
@@ -72,8 +72,8 @@ const Blogs = ({ allBlogs }) => {
             blogMatches.push(blog);
           }
         }));
-
-        setBlogs(blogMatches);
+        const foundBlogs = [...new Set(blogMatches)];
+        setBlogs(foundBlogs);
       }
     }
   }, [sortBy, param.country, param.city]);
