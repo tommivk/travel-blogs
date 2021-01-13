@@ -111,6 +111,17 @@ const SingleBlogPage = ({
     setAllBlogs(filteredBlogs);
   };
 
+  const handleCommentDelete = async (blogId, commentId) => {
+    const response = await axios.delete(`http://localhost:8008/api/blogs/${blogId}/comments/${commentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+    setBlog(response.data);
+    setAllBlogs((allBlogs.map((b) => (b.id === blog.id ? response.data : b))));
+  };
+
   return (
     <div className="main-blog-page-container">
       <Container maxWidth="md">
@@ -205,6 +216,8 @@ const SingleBlogPage = ({
                           </div>
                         </div>
                         <div className="blog-comment-content">{comment.content}</div>
+                        {comment.user.id === user.id
+                         && <div><button type="button" onClick={() => handleCommentDelete(blog.id, comment.id)}>Delete</button></div> }
                       </div>
                     </li>
                   ))}

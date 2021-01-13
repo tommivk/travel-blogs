@@ -84,6 +84,48 @@ blogsRouter.post('/', async (req, res, next) => {
   }
 });
 
+blogsRouter.delete('/:blogId/comments/:commentId', async (req, res, next) => {
+  try {
+    const { blogId, commentId } = req.params;
+    const token = getTokenFrom(req);
+
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    const comment = await Comment.findById(commentId);
+
+    if (comment.user.toString() !== user._id.toString()) {
+      return res.status(401).send();
+    }
+
+    const blog = await Blog.findById(blogId);
+
+    if (!blog.comments.includes(commentId)) {
+      return res.status(400).send();
+    }
+
+    blog.comments = blog.comments.filter((c) => c._id.toString() !== commentId);
+    const newBlog = await blog.save();
+
+    await Comment.findByIdAndDelete(commentId);
+
+    await newBlog.populate({
+      path: 'comments',
+      model: 'Comment',
+      populate: { path: 'user', model: 'User' },
+    })
+      .populate({ path: 'author', model: 'User' }).execPopulate();
+
+    return res.send(newBlog);
+  } catch (error) {
+    return next(error);
+  }
+});
+
 blogsRouter.post('/:id/comments', async (req, res, next) => {
   try {
     const blogId = req.params.id;
