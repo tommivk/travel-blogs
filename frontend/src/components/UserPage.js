@@ -281,6 +281,7 @@ const UserPage = ({
               <td>Member Since:</td>
               <td>
                 {joinDate.monthLong}
+                {' '}
                 {joinDate.weekYear}
               </td>
             </tr>
@@ -313,8 +314,10 @@ const UserPage = ({
       <button type="button" onClick={() => setContent(1)}>Blogs</button>
       {content === 0 && (
         <div>
-          {userData.username}
-          's Uploaded Pictures
+          {isUser
+            ? 'My' : `${userData.username}'s` }
+            {' '}
+          Uploaded Pictures
           <div>
             {userData.pictures.map((p) => (
               <Link to={`/gallery/${p.id}`}>
@@ -326,8 +329,9 @@ const UserPage = ({
       )}
       {content === 1 && (
         <div>
-          {userData.username}
-          's Blogs
+          {isUser ? 'My' : `${userData.username}'s`}
+          {' '}
+          Blogs
           <div>
             {userData.blogs.length === 0 ? (
               <div>No blogs created yet</div>

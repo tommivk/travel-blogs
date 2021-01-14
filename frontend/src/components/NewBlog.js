@@ -2,8 +2,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
+import firebase from 'firebase/app';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -12,70 +14,10 @@ import { Editor } from '@tinymce/tinymce-react';
 import EditLocation from '@material-ui/icons/EditLocation';
 import Subject from '@material-ui/icons/Subject';
 import Visibility from '@material-ui/icons/Visibility';
-import { Button, TextField, Modal } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import AddLocations from './AddLocations';
 import ImageUploadModal from './ImageUploadModal';
 import '../styles/newBlog.css';
-
-const UserImagesModal = ({
-  open,
-  closeModal,
-  user,
-  setUploadModalOpen,
-  setHeaderImageURL,
-}) => {
-  const handleImagePick = (image) => {
-    setHeaderImageURL(image);
-    closeModal();
-  };
-  return (
-    <Modal open={open} onClose={closeModal}>
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '60vw',
-          height: '55vh',
-          backgroundColor: '#33302a',
-          color: 'white',
-        }}
-      >
-        <div
-          className="user-image-modal-content"
-          style={{ height: '100%', width: '100%' }}
-        >
-          <h2>My Images</h2>
-          <div className="user-image-modal-pictures">
-            {user.pictures.map((pic) => (
-              <img
-                onClick={() => handleImagePick(pic.imgURL)}
-                src={pic.imgURL}
-                alt=""
-              />
-            ))}
-          </div>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => setUploadModalOpen(true)}
-          >
-            Upload Images
-          </Button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-UserImagesModal.propTypes = {
-  open: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  user: PropTypes.instanceOf(Object).isRequired,
-  setUploadModalOpen: PropTypes.func.isRequired,
-  setHeaderImageURL: PropTypes.func.isRequired,
-};
 
 const getSteps = () => ['Set Title', 'Write Content', 'Add Locations', 'Preview And Submit'];
 
@@ -93,10 +35,10 @@ const NewBlog = ({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [activeStep, setActiveStep] = useState(0);
-  const [headerImageURL, setHeaderImageURL] = useState(null);
+  const [headerImage, setHeaderImage] = useState(null);
+  const [headerImagePreview, setHeaderImagePreview] = useState(null);
   const [locations, setLocations] = useState([]);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
-  const [userImageModalOpen, setUserImageModalOpen] = useState(false);
   const steps = getSteps();
 
   const handleNext = () => {
@@ -114,17 +56,13 @@ const NewBlog = ({
     setUploadModalOpen(false);
   };
 
-  const closeUserImageModal = () => {
-    setUserImageModalOpen(false);
-  };
-
   const handleLocationRemove = (location) => {
     let locationCopy = locations;
     locationCopy = locationCopy.filter((loc) => loc !== location);
     setLocations(locationCopy);
   };
-  const handleBlogSubmit = async (e) => {
-    e.preventDefault();
+
+  const handleMongoUpload = async (headerPictureURL) => {
     try {
       const response = await axios.post(
         'http://localhost:8008/api/blogs',
@@ -133,7 +71,7 @@ const NewBlog = ({
           content,
           title,
           description,
-          headerImageURL,
+          headerImageURL: headerPictureURL,
           locations,
         },
         {
@@ -151,6 +89,53 @@ const NewBlog = ({
       console.log(error.message);
     }
     setActiveStep(4);
+  };
+
+  const handleBlogSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const fbuser = firebase.auth().currentUser;
+      const userID = fbuser.uid;
+      const imageID = uuidv4();
+      const uploadTask = storage
+        .ref()
+        .child(`/blogcovers/${userID}/${imageID}`)
+        .put(headerImage);
+
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log(`Upload is ${progress} % done`);
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED:
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING:
+              console.log('Upload is running');
+              break;
+            default:
+              break;
+          }
+        },
+        (error) => {
+          console.log('error happened', error);
+        },
+        () => {
+          uploadTask.snapshot.ref
+            .getDownloadURL()
+            .then((headerPictureURL) => handleMongoUpload(headerPictureURL));
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    if (!e.target.files[0]) return;
+    setHeaderImage(e.target.files[0]);
+    setHeaderImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
   const stepperIcons = (p) => {
@@ -212,34 +197,22 @@ const NewBlog = ({
             </div>
             <div>
               <div className="new-blog-image-preview">
-                {!headerImageURL && (
-                  <Button
-                    id="new-blog-image-add-button"
-                    onClick={() => setUserImageModalOpen(true)}
-                  >
-                    Choose A Cover Image
-                  </Button>
+                {!headerImagePreview && (
+                  <input type="file" onChange={handleImageChange} />
                 )}
-                {headerImageURL && (
+                {headerImagePreview && (
                   <div className="new-blog-preview-image">
-                    <img src={headerImageURL} alt="preview" />
+                    <img src={headerImagePreview} alt="preview" />
                     <button
                       type="button"
                       id="preview-image-close-button"
-                      onClick={() => setHeaderImageURL(null)}
+                      onClick={() => setHeaderImagePreview(null)}
                     >
                       X
                     </button>
                   </div>
                 )}
               </div>
-              <UserImagesModal
-                closeModal={closeUserImageModal}
-                open={userImageModalOpen}
-                user={user}
-                setUploadModalOpen={setUploadModalOpen}
-                setHeaderImageURL={setHeaderImageURL}
-              />
             </div>
           </div>
           <div className="new-blog-nav-button-right">
