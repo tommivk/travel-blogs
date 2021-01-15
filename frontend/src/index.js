@@ -238,6 +238,8 @@ const App = () => {
             storage={storage}
             allUsers={allUsers}
             setAllUsers={setAllUsers}
+            allBlogs={allBlogs}
+            setAllBlogs={setAllBlogs}
           />
         </Route>
         <Route path="/blogs/:id">

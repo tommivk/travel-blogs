@@ -18,6 +18,8 @@ const UserPage = ({
   user,
   allUsers,
   setAllUsers,
+  allBlogs,
+  setAllBlogs,
   setUser,
   storage,
 }) => {
@@ -45,6 +47,36 @@ const UserPage = ({
     setImage(null);
     setEditUsername(false);
     setNewUsername(user.username);
+  };
+
+  const handleBlogDelete = async (blog) => {
+    try {
+      const storageRef = storage.ref();
+      const fbuser = firebase.auth().currentUser;
+      const userID = fbuser.uid;
+
+      if (blog.headerImageURL) {
+        await storageRef.child(`/blogcovers/${userID}/${blog.headerImageID}`).delete();
+      }
+
+      await axios.delete(`http://localhost:8008/api/blogs/${blog.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
+
+      const newUser = { ...user, blogs: user.blogs.filter((b) => b.id !== blog.id) };
+      setUser(newUser);
+      setUserData(newUser);
+      const newUsers = allUsers.map((u) => (u.id === user.id ? newUser : u));
+      setAllUsers(newUsers);
+
+      window.localStorage.setItem(
+        'loggedTravelBlogUser',
+        JSON.stringify(newUser),
+      );
+
+      const newBlogs = allBlogs.filter((b) => b.id !== blog.id);
+      setAllBlogs(newBlogs);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const updateUser = async (uploadedPictureURL) => {
@@ -144,8 +176,9 @@ const UserPage = ({
 
   useEffect(() => {
     if (userData && user) {
-      setsubscribeBlogs(userData.blogSubscribers.includes(user.id));
-      setSubscribePictures(userData.pictureSubscribers.includes(user.id));
+      console.log(userData, user);
+      // setsubscribeBlogs(userData.blogSubscribers.includes(user.id));
+      // setSubscribePictures(userData.pictureSubscribers.includes(user.id));
     }
   }, [userData, modalOpen]);
 
@@ -362,6 +395,8 @@ UserPage.propTypes = {
   setAllUsers: PropTypes.func.isRequired,
   setUser: PropTypes.func.isRequired,
   storage: PropTypes.instanceOf(Object).isRequired,
+  allBlogs: PropTypes.instanceOf(Array).isRequired,
+  setAllBlogs: PropTypes.func.isRequired,
 };
 
 export default UserPage;
