@@ -101,7 +101,8 @@ blogsRouter.delete('/:blogId', async (req, res, next) => {
     if (blog.author._id.toString() !== user._id.toString()) {
       return res.status(401).send();
     }
-
+    user.blogs = user.blogs.filter((b) => b._id.toString() !== blogId);
+    await user.save();
     await Blog.findByIdAndDelete(blogId);
     return res.status(200).send();
   } catch (error) {
