@@ -53,6 +53,7 @@ blogsRouter.post('/', async (req, res, next) => {
       content: body.content,
       stars: [],
       headerImageURL: body.headerImageURL,
+      headerImageID: body.headerImageID,
       locations: body.locations,
       comments: [],
     });

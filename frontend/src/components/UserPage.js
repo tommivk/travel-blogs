@@ -46,6 +46,7 @@ const UserPage = ({
     setEditUsername(false);
     setNewUsername(user.username);
   };
+
   const updateUser = async (uploadedPictureURL) => {
     const newUserData = {};
 
@@ -337,7 +338,10 @@ const UserPage = ({
               <div>No blogs created yet</div>
             ) : (
               userData.blogs.map((b) => (
-                <Link to={`/blogs/${b.id}`}>{b.title}</Link>
+                <div>
+                  <Link to={`/blogs/${b.id}`}>{b.title}</Link>
+                  <button type="button" onClick={() => handleBlogDelete(b)}>Delete</button>
+                </div>
               ))
             )}
           </div>

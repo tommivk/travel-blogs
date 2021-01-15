@@ -26,6 +26,7 @@ const blogSchema = mongoose.Schema({
     },
   ],
   headerImageURL: String,
+  headerImageID: String,
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId,

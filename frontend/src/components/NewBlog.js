@@ -62,7 +62,7 @@ const NewBlog = ({
     setLocations(locationCopy);
   };
 
-  const handleMongoUpload = async (headerPictureURL) => {
+  const handleMongoUpload = async (headerPictureURL, headerImageID) => {
     try {
       const response = await axios.post(
         'http://localhost:8008/api/blogs',
@@ -72,6 +72,7 @@ const NewBlog = ({
           title,
           description,
           headerImageURL: headerPictureURL,
+          headerImageID,
           locations,
         },
         {
@@ -124,7 +125,7 @@ const NewBlog = ({
         () => {
           uploadTask.snapshot.ref
             .getDownloadURL()
-            .then((headerPictureURL) => handleMongoUpload(headerPictureURL));
+            .then((headerPictureURL) => handleMongoUpload(headerPictureURL, imageID));
         },
       );
     } catch (error) {
