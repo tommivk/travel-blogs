@@ -5,13 +5,20 @@ const api = supertest(app)
 const User = require('../models/user')
 const Blog = require('../models/blog')
 
+const user = {
+  username: 'testuser',
+  password: 'testpassword',
+}
+
 let token
 let blogID
 
 const newBlog = {
   title: 'blog title',
   description: 'blog description',
-  content: 'blog content',
+  content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  headerImageURL: 'pictureURL',
+  headerImageID: '1344-2232'
 }
 
 beforeAll(async () => {
@@ -19,11 +26,11 @@ beforeAll(async () => {
   await Blog.deleteMany({})
   await api
     .post('/api/users')
-    .send({ username: 'testuser', password: 'testpassword' })
+    .send({ username: user.username, password: user.password })
 
   const res = await api
     .post('/api/login')
-    .send({ username: 'testuser', password: 'testpassword' })
+    .send({ username: user.username, password: user.password })
 
   token = `Bearer ${res.body.token}`
 })
@@ -61,6 +68,41 @@ test('Correct fields are returned after new blog submit', async () => {
   expect(response.body.author.pictures).toBeDefined()
   expect(response.body.author.id).toBeDefined()
   expect(response.body.author.username).toBe('testuser')
+  expect(response.body.headerImageURL).toBe('pictureURL')
+  expect(response.body.headerImageID).toBe('1344-2232')
+})
+
+test('Blogs get request returns correct data', async () => {
+  const response = await api.get('/api/blogs').expect(200)
+
+  expect(response.body.length).toBe(2)
+
+  expect(response.body[0].stars).toBeDefined()
+  expect(response.body[0].comments).toBeDefined()
+  expect(response.body[0].description).toBeDefined()
+  expect(response.body[0].date).toBeDefined()
+  expect(response.body[0].content).toBeDefined()
+  expect(response.body[0].locations).toBeDefined()
+  expect(response.body[0].id).toBeDefined()
+  expect(response.body[0].author).toBeDefined()
+  expect(response.body[0].author.avatar).toBeDefined()
+  expect(response.body[0].author.pictures).toBeDefined()
+  expect(response.body[0].author.id).toBeDefined()
+
+  expect(response.body[1].stars).toBeDefined()
+  expect(response.body[1].comments).toBeDefined()
+  expect(response.body[1].description).toBeDefined()
+  expect(response.body[1].date).toBeDefined()
+  expect(response.body[1].content).toBeDefined()
+  expect(response.body[1].locations).toBeDefined()
+  expect(response.body[1].id).toBeDefined()
+  expect(response.body[1].author).toBeDefined()
+  expect(response.body[1].author.avatar).toBeDefined()
+  expect(response.body[1].author.pictures).toBeDefined()
+  expect(response.body[1].author.id).toBeDefined()
+  expect(response.body[1].author.username).toBe('testuser')
+  expect(response.body[1].headerImageURL).toBe('pictureURL')
+  expect(response.body[1].headerImageID).toBe('1344-2232')
 })
 
 test('Correct fields are returned after blog comment submit', async () => {
@@ -69,6 +111,21 @@ test('Correct fields are returned after blog comment submit', async () => {
     .set('Authorization', token)
     .send({ content: 'new comment' })
     .expect(200)
+
+  expect(response.body.stars).toBeDefined()
+  expect(response.body.comments).toBeDefined()
+  expect(response.body.description).toBeDefined()
+  expect(response.body.date).toBeDefined()
+  expect(response.body.content).toBeDefined()
+  expect(response.body.locations).toBeDefined()
+  expect(response.body.id).toBeDefined()
+  expect(response.body.author).toBeDefined()
+  expect(response.body.author.avatar).toBeDefined()
+  expect(response.body.author.pictures).toBeDefined()
+  expect(response.body.author.id).toBeDefined()
+  expect(response.body.author.username).toBe('testuser')
+  expect(response.body.headerImageURL).toBe('pictureURL')
+  expect(response.body.headerImageID).toBe('1344-2232')
 
   expect(response.body.comments[0].user).toBeDefined()
   expect(response.body.comments[0].date).toBeDefined()
@@ -107,6 +164,8 @@ test('Adding star works correctly and correct fields are returned', async () => 
   expect(response.body.author.pictures).toBeDefined()
   expect(response.body.author.id).toBeDefined()
   expect(response.body.author.username).toBe('testuser')
+  expect(response.body.headerImageURL).toBe('pictureURL')
+  expect(response.body.headerImageID).toBe('1344-2232')
 
   expect(response.body.comments[0].user).toBeDefined()
   expect(response.body.comments[0].date).toBeDefined()
@@ -148,6 +207,8 @@ test('Removing star works correctly and correct fields are returned', async () =
   expect(response.body.author.pictures).toBeDefined()
   expect(response.body.author.id).toBeDefined()
   expect(response.body.author.username).toBe('testuser')
+  expect(response.body.headerImageURL).toBe('pictureURL')
+  expect(response.body.headerImageID).toBe('1344-2232')
 
   expect(response.body.comments[0].user).toBeDefined()
   expect(response.body.comments[0].date).toBeDefined()
@@ -185,6 +246,14 @@ test('Invalid star action returns 401', async () => {
 
 test('Missing star action returns 401', async () => {
   await api.put(`/api/blogs/${blogID}/star`).expect(401)
+})
+
+test('Deleting blog works in mongo', async () => {
+  let blogs = await Blog.find({})
+  expect(blogs.length).toBe(2)
+  await api.delete(`/api/blogs/${blogID}`).set('Authorization', token).expect(204)
+  blogs = await Blog.find({})
+  expect(blogs.length).toBe(1)
 })
 
 afterAll(async () => {

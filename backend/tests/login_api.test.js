@@ -28,11 +28,25 @@ test('login returns 401 with incorrect username', async () => {
     .expect(401)
 })
 
-test('login returns 401 without password', async () => {
+test('login returns 401 with empty password', async () => {
+  await api
+    .post('/api/login')
+    .send({ username: 'testuser', password: '' })
+    .expect(401)
+})
+
+test('login returns 401 with empty fields', async () => {
+  await api
+    .post('/api/login')
+    .send({ username: '', password: '' })
+    .expect(401)
+})
+
+test('login returns 401 without password field', async () => {
   await api.post('/api/login').send({ username: 'testuser' }).expect(401)
 })
 
-test('login returns 401 without username', async () => {
+test('login returns 401 without username field', async () => {
   await api.post('/api/login').send({ password: 'testpassword' }).expect(401)
 })
 
@@ -53,11 +67,15 @@ test('login returns correct fields', async () => {
     .send({ username: 'testuser', password: 'testpassword' })
     .expect(200)
 
+  expect(response.body.passwordHash).not.toBeDefined()
   expect(response.body.username).toBeDefined()
   expect(response.body.token).toBeDefined()
+  expect(response.body.fbtoken).toBeDefined()
   expect(response.body.avatar).toBeDefined()
   expect(response.body.id).toBeDefined()
   expect(response.body.pictures).toBeDefined()
+  expect(response.body.blogs).toBeDefined()
+  expect(response.body.joinDate).toBeDefined()
 
   expect(response.body.username).toEqual('testuser')
 })
