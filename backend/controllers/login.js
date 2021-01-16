@@ -43,6 +43,7 @@ loginRouter.post('/', async (req, res, next) => {
       pictures: user.pictures,
       blogs: user.blogs,
       id: user._id,
+      joinDate: user.joinDate,
     });
   } catch (error) {
     return next(error);
