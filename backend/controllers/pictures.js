@@ -225,6 +225,8 @@ picturesRouter.post('/', async (req, res, next) => {
       await notification.save();
     }
 
+    await savedPicture.populate('user').execPopulate();
+
     return res.json(savedPicture.toJSON());
   } catch (error) {
     return next(error);
