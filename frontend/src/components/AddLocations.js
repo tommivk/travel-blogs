@@ -36,8 +36,8 @@ const AddLocations = ({ locations, setLocations }) => {
         {searchResult
         && searchResult.data
         && searchResult.data.map((city) => (
-          <div style={{ display: 'flex' }}>
-            <li key={city.city}>
+          <div style={{ display: 'flex' }} key={city.city}>
+            <li>
               {city.city}
               {', '}
               {city.country}

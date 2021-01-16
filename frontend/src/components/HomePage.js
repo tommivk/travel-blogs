@@ -44,6 +44,7 @@ const HomePage = ({ allBlogs, allPictures }) => {
                 <Link
                   style={{ textDecoration: 'none', color: 'white' }}
                   to={`/blogs/${blog.id}`}
+                  key={blog.id}
                 >
                   <div className="homepage-blog">
                     <div className="homepage-blog-info">

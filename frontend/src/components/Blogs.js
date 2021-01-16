@@ -102,7 +102,7 @@ const Blogs = ({ allBlogs }) => {
             >
               {blogs.map(
                 (blog) => blog.headerImageURL && (
-                <SwiperSlide>
+                <SwiperSlide key={blog.id}>
                   <Link to={`/blogs/${blog.id}`}>
                     <img src={blog.headerImageURL} width="80%" alt="blog-header" />
                     <div className="swiper-blog-info">

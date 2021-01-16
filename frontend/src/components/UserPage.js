@@ -312,23 +312,24 @@ const UserPage = ({
         {!isUser && <h1>{userData.username}</h1>}
         {!editUsername && !imagePreview && (
           <table className="userpage-user-info-table">
-            <tr>
-              <td>Member Since:</td>
-              <td>
-                {joinDate.monthLong}
-                {' '}
-                {joinDate.weekYear}
-              </td>
-            </tr>
-
-            <tr>
-              <td>Created Blogs: </td>
-              <td>{userData.blogs.length}</td>
-            </tr>
-            <tr>
-              <td>Uploaded Pictures:</td>
-              <td>{userData.pictures.length}</td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>Member Since:</td>
+                <td>
+                  {joinDate.monthLong}
+                  {' '}
+                  {joinDate.weekYear}
+                </td>
+              </tr>
+              <tr>
+                <td>Created Blogs: </td>
+                <td>{userData.blogs.length}</td>
+              </tr>
+              <tr>
+                <td>Uploaded Pictures:</td>
+                <td>{userData.pictures.length}</td>
+              </tr>
+            </tbody>
           </table>
         )}
         {!isUser && (

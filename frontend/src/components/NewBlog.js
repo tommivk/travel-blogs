@@ -156,7 +156,7 @@ const NewBlog = ({
           <div className="new-blog-stepper-container">
             <Stepper alternativeLabel activeStep={activeStep}>
               {steps.map((step, index) => (
-                <Step>
+                <Step key={step}>
                   <StepLabel
                     onClick={() => setActiveStep(index)}
                     StepIconComponent={stepperIcons}
