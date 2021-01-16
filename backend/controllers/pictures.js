@@ -46,9 +46,11 @@ picturesRouter.delete('/:pictureId', async (req, res, next) => {
       return res.status(401).send();
     }
 
-    user.pictures = user.pictures.filter((pic) => pic._id !== pictureId);
+    user.pictures = user.pictures.filter((pic) => pic._id.toString() !== pictureId.toString());
     await user.save();
+
     await Picture.findByIdAndDelete(pictureId);
+
     return res.status(204).send();
   } catch (error) {
     return next(error);
