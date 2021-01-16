@@ -122,7 +122,7 @@ const UserPage = ({
 
     try {
       const response = await axios.put(
-        'http://localhost:8008/api/users',
+        `http://localhost:8008/api/users/${user.id}`,
         newUserData,
         {
           headers: {
