@@ -25,6 +25,36 @@ picturesRouter.get('/', async (req, res) => {
   res.json(pictures.map((p) => p.toJSON()));
 });
 
+picturesRouter.delete('/:pictureId', async (req, res, next) => {
+  try {
+    const { pictureId } = req.params;
+    const token = getTokenFrom(req);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    const picture = await Picture.findById(pictureId);
+
+    if (!user || !picture) {
+      return res.status(500).send();
+    }
+
+    if (user._id.toString() !== picture.user._id.toString()) {
+      return res.status(401).send();
+    }
+
+    user.pictures = user.pictures.filter((pic) => pic._id !== pictureId);
+    await user.save();
+    await Picture.findByIdAndDelete(pictureId);
+    return res.status(204).send();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 picturesRouter.delete('/:id/vote', async (req, res) => {
   try {
     const picture = await Picture.findById(req.params.id);
