@@ -13,16 +13,20 @@ const getTokenFrom = (request) => {
   return null;
 };
 
-picturesRouter.get('/', async (req, res) => {
-  const pictures = await Picture.find({})
-    .populate('user')
-    .populate('votes.user')
-    .populate({
-      path: 'comments',
-      model: 'Comment',
-      populate: { path: 'user', model: 'User' },
-    });
-  res.json(pictures.map((p) => p.toJSON()));
+picturesRouter.get('/', async (req, res, next) => {
+  try {
+    const pictures = await Picture.find({})
+      .populate('user')
+      .populate('votes.user')
+      .populate({
+        path: 'comments',
+        model: 'Comment',
+        populate: { path: 'user', model: 'User' },
+      });
+    return res.json(pictures.map((p) => p.toJSON()));
+  } catch (error) {
+    return next(error);
+  }
 });
 
 picturesRouter.delete('/:pictureId', async (req, res, next) => {
@@ -57,7 +61,7 @@ picturesRouter.delete('/:pictureId', async (req, res, next) => {
   }
 });
 
-picturesRouter.delete('/:id/vote', async (req, res) => {
+picturesRouter.delete('/:id/vote', async (req, res, next) => {
   try {
     const picture = await Picture.findById(req.params.id);
     if (!picture) {
@@ -104,15 +108,15 @@ picturesRouter.delete('/:id/vote', async (req, res) => {
       })
       .execPopulate();
 
-    res.json(newPicture);
+    return res.json(newPicture);
   } catch (error) {
-    console.log(error);
+    return next(error);
   }
 });
 
-picturesRouter.put('/:id/vote', async (req, res) => {
-  const { body } = req;
+picturesRouter.put('/:id/vote', async (req, res, next) => {
   try {
+    const { body } = req;
     const picture = await Picture.findById(req.params.id);
 
     if (!picture) {
@@ -172,20 +176,20 @@ picturesRouter.put('/:id/vote', async (req, res) => {
     console.log(updatedPicture);
     res.json(updatedPicture.toJSON());
   } catch (error) {
-    console.log(error);
+    return next(error);
   }
 });
 
-picturesRouter.post('/', async (req, res) => {
-  const { body } = req;
-  const token = getTokenFrom(req);
-  const decodedToken = jwt.verify(token, process.env.SECRET);
-  console.log(body);
-  if (!token || !decodedToken) {
-    return res.status(401).json({ error: 'token missing or invalid' });
-  }
-
+picturesRouter.post('/', async (req, res, next) => {
   try {
+    const { body } = req;
+    const token = getTokenFrom(req);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
     const user = await User.findById(decodedToken.id);
 
     const newPicture = new Picture({
@@ -223,16 +227,16 @@ picturesRouter.post('/', async (req, res) => {
 
     return res.json(savedPicture.toJSON());
   } catch (error) {
-    console.log(error);
-    return res.status(500).send();
+    return next(error);
   }
 });
 
-picturesRouter.post('/:id/comment', async (req, res) => {
-  const { body } = req;
-  const pictureId = req.params.id;
-  const token = getTokenFrom(req);
+picturesRouter.post('/:id/comment', async (req, res, next) => {
   try {
+    const { body } = req;
+    const pictureId = req.params.id;
+    const token = getTokenFrom(req);
+
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
     if (!token || !decodedToken) {
@@ -265,7 +269,7 @@ picturesRouter.post('/:id/comment', async (req, res) => {
     console.log(newPicture);
     return res.json(newPicture.toJSON());
   } catch (error) {
-    return console.log(error);
+    return next(error);
   }
 });
 
