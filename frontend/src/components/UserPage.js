@@ -175,10 +175,10 @@ const UserPage = ({
   }, [userMatch]);
 
   useEffect(() => {
-    if (userData && user) {
+    if (userData && user && userData.id !== user.id) {
       console.log(userData, user);
-      // setsubscribeBlogs(userData.blogSubscribers.includes(user.id));
-      // setSubscribePictures(userData.pictureSubscribers.includes(user.id));
+      setsubscribeBlogs(userData.blogSubscribers.includes(user.id));
+      setSubscribePictures(userData.pictureSubscribers.includes(user.id));
     }
   }, [userData, modalOpen]);
 
@@ -192,8 +192,9 @@ const UserPage = ({
 
   const isSubscribed = () => {
     if (
-      userData.blogSubscribers.includes(user.id)
-      || userData.pictureSubscribers.includes(user.id)
+      userData.id !== user.id
+      && (userData.blogSubscribers.includes(user.id)
+      || userData.pictureSubscribers.includes(user.id))
     ) {
       return true;
     }
