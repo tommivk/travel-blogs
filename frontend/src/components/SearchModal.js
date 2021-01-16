@@ -150,18 +150,22 @@ const SearchModal = ({
               {searchBlogs && (
                 <div>
                   <h2>Blogs</h2>
-                  <div>
-                    {foundBlogs.map((blog) => (
-                      <li>
-                        <Link
-                          to={`/blogs/${blog.id}`}
-                          onClick={closeSearchModal}
-                        >
-                          {blog.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </div>
+
+                    {foundBlogs.length === 0 ? 'No Blogs Found'
+                      : (
+                        <div>
+                          {foundBlogs.map((blog) => (
+                            <li>
+                              <Link
+                                to={`/blogs/${blog.id}`}
+                                onClick={closeSearchModal}
+                              >
+                                {blog.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </div>
+                      ) }
                 </div>
               )}
             </div>
