@@ -240,6 +240,8 @@ const App = () => {
             setAllUsers={setAllUsers}
             allBlogs={allBlogs}
             setAllBlogs={setAllBlogs}
+            allPictures={allPictures}
+            setAllPictures={setAllPictures}
           />
         </Route>
         <Route path="/blogs/:id">

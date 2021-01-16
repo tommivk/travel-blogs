@@ -20,6 +20,8 @@ const UserPage = ({
   setAllUsers,
   allBlogs,
   setAllBlogs,
+  allPictures,
+  setAllPictures,
   setUser,
   storage,
 }) => {
@@ -47,6 +49,31 @@ const UserPage = ({
     setImage(null);
     setEditUsername(false);
     setNewUsername(user.username);
+  };
+
+  const handlePictureDelete = async (picture) => {
+    try {
+      const storageRef = storage.ref();
+      const fbuser = firebase.auth().currentUser;
+      const userID = fbuser.uid;
+      await storageRef.child(`/images/${userID}/${picture.firebaseID}`).delete();
+
+      await axios.delete(`http://localhost:8008/api/pictures/${picture.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
+
+      const newUser = { ...user, pictures: user.pictures.filter((pic) => pic.id !== picture.id) };
+      setUser(newUser);
+      setUserData(newUser);
+      const newUsers = allUsers.map((u) => (u.id === user.id ? newUser : u));
+      setAllUsers(newUsers);
+      const newPictures = allPictures.filter((p) => p.id !== picture.id);
+      setAllPictures(newPictures);
+      window.localStorage.setItem(
+        'loggedTravelBlogUser',
+        JSON.stringify(newUser),
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleBlogDelete = async (blog) => {
@@ -356,9 +383,12 @@ const UserPage = ({
           Uploaded Pictures
           <div>
             {userData.pictures.map((p) => (
-              <Link to={`/gallery/${p.id}`}>
-                <img src={p.imgURL} alt="" />
-              </Link>
+              <div>
+                <Link to={`/gallery/${p.id}`}>
+                  <img src={p.imgURL} alt="" />
+                </Link>
+                {isUser && <button type="button" onClick={() => handlePictureDelete(p)}>delete</button>}
+              </div>
             ))}
           </div>
         </div>
@@ -375,7 +405,8 @@ const UserPage = ({
               userData.blogs.map((b) => (
                 <div>
                   <Link to={`/blogs/${b.id}`}>{b.title}</Link>
-                  <button type="button" onClick={() => handleBlogDelete(b)}>Delete</button>
+                  {isUser
+                  && <button type="button" onClick={() => handleBlogDelete(b)}>Delete</button>}
                 </div>
               ))
             )}
@@ -399,6 +430,8 @@ UserPage.propTypes = {
   storage: PropTypes.instanceOf(Object).isRequired,
   allBlogs: PropTypes.instanceOf(Array).isRequired,
   setAllBlogs: PropTypes.func.isRequired,
+  allPictures: PropTypes.instanceOf(Array).isRequired,
+  setAllPictures: PropTypes.func.isRequired,
 };
 
 export default UserPage;
