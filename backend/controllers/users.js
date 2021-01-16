@@ -46,23 +46,32 @@ usersRouter.post('/', async (req, res) => {
   }
 });
 
-usersRouter.put('/', async (req, res) => {
-  const { body } = req;
-  const token = getTokenFrom(req);
-  const decodedToken = jwt.verify(token, process.env.SECRET);
+usersRouter.put('/:userId', async (req, res, next) => {
+  try {
+    const { body } = req;
+    const { userId } = req.params;
+    const token = getTokenFrom(req);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
 
-  if (!token || !decodedToken) {
-    return res.status(401).json({ error: 'token missing or invalid' });
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    if (userId.toString() !== decodedToken.id.toString()) {
+      return res.status(401).send();
+    }
+
+    const user = await User.findByIdAndUpdate(decodedToken.id, body, {
+      new: true,
+    }).populate('pictures').populate('blogs');
+
+    const newUser = user.toJSON();
+    newUser.token = token;
+
+    return res.status(200).send(newUser);
+  } catch (error) {
+    return next(error);
   }
-
-  const user = await User.findByIdAndUpdate(decodedToken.id, body, {
-    new: true,
-  }).populate('pictures');
-
-  const newUser = user.toJSON();
-  newUser.token = token;
-
-  return res.status(200).send(newUser);
 });
 
 usersRouter.put('/:id/subscription', async (req, res, next) => {
