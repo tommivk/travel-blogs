@@ -168,7 +168,6 @@ const ImageUploadModal = ({
       },
     );
   };
-  // const handleApiLoaded = (map, maps) => {};
 
   const handleMapDrag = (e) => {
     setMarkerPosition({ lat: e.center.lat(), lng: e.center.lng() });
@@ -238,7 +237,6 @@ const ImageUploadModal = ({
               }}
               defaultCenter={{ lat: 59, lng: 30 }}
               defaultZoom={1}
-              // onChange={(e) => handleMapChange(e)}
               onDrag={(e) => handleMapDrag(e)}
             />
           </div>

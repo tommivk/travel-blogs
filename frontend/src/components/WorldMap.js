@@ -285,10 +285,17 @@ const WorldMap = ({
           }
         }
 
+        const pictureMarker = {
+          url: pictureIcon,
+          size: new maps.Size(24, 24),
+          origin: new maps.Point(0, 0),
+          anchor: new maps.Point(0, 24),
+        };
+
         picturesWithLocation.map((pic) => {
           const marker = new maps.Marker({
             position: { lat: pic.location.lat, lng: pic.location.lng },
-            icon: pictureIcon,
+            icon: pictureMarker,
             title: 'Picture',
           });
           maps.event.addListener(marker, 'click', () => setActivePopUp({ data: pic, type: 'image' }));
@@ -314,11 +321,17 @@ const WorldMap = ({
           }
         }
 
-        console.log(blogArray);
+        const blogMarker = {
+          url: blogIcon,
+          size: new maps.Size(24, 24),
+          origin: new maps.Point(0, 0),
+          anchor: new maps.Point(0, 24),
+        };
+
         blogArray.map((blog) => blog.locations.map((loc) => {
           const marker = new maps.Marker({
             position: { lat: loc.lat, lng: loc.lng },
-            icon: blogIcon,
+            icon: blogMarker,
             title: 'Blog',
           });
 
@@ -355,10 +368,17 @@ const WorldMap = ({
   const mapsApiLoaded = (map, maps) => {
     const markers = [];
 
+    const pictureMarker = {
+      url: pictureIcon,
+      size: new maps.Size(24, 24),
+      origin: new maps.Point(0, 0),
+      anchor: new maps.Point(0, 24),
+    };
+
     picturesWithLocation.map((pic) => {
       const marker = new maps.Marker({
         position: { lat: pic.location.lat, lng: pic.location.lng },
-        icon: pictureIcon,
+        icon: pictureMarker,
         title: 'Picture',
       });
       maps.event.addListener(marker, 'click', () => setActivePopUp({ data: pic, type: 'image' }));
@@ -368,10 +388,17 @@ const WorldMap = ({
       );
     });
 
+    const blogMarker = {
+      url: blogIcon,
+      size: new maps.Size(24, 24),
+      origin: new maps.Point(0, 0),
+      anchor: new maps.Point(0, 24),
+    };
+
     blogs.map((blog) => blog.locations.map((loc) => {
       const marker = new maps.Marker({
         position: { lat: loc.lat, lng: loc.lng },
-        icon: blogIcon,
+        icon: blogMarker,
         title: 'Blog',
       });
       maps.event.addListener(marker, 'click', () => setActivePopUp({ data: blog, type: 'blog', blogLocation: loc }));
@@ -380,6 +407,7 @@ const WorldMap = ({
       );
       markers.push(marker);
     }));
+
     const clusterer = new MarkerClusterer(map, markers, {
       imagePath:
         'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
