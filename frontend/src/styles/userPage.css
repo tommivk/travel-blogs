@@ -39,6 +39,8 @@
   bottom: 0px;
   left: 50%;
   transform: translate(-50%, 0);
+  display: flex;
+  margin-bottom: 5%;
 }
 
 .username-change-input input[type='text'] {
@@ -108,4 +110,25 @@
   bottom: 20px;
   left: 50%;
   transform: translate(-50%, 0);
+}
+
+#edit-profile-button {
+  color: white;
+  background-color: green;
+  margin-bottom: 5%;
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+#profile-update-cancel-button {
+  margin-left: 5px;
+  color: white;
+}
+
+#profile-update-submit-button {
+  color: white;
+  background-color: green;
+  margin-left: 5px;
 }

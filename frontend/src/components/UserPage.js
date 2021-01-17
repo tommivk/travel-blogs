@@ -11,6 +11,7 @@ import { DateTime } from 'luxon';
 import Modal from '@material-ui/core/Modal';
 import Checkbox from '@material-ui/core/Checkbox';
 import Edit from '@material-ui/icons/Edit';
+import Button from '@material-ui/core/Button';
 import ConfirmDialog from './ConfirmDialog';
 import '../styles/userPage.css';
 
@@ -34,6 +35,7 @@ const UserPage = ({
   const [isUser, setIsUser] = useState(false);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [editProfile, setEditProfile] = useState(false);
   const [editUsername, setEditUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(user.username);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -54,6 +56,7 @@ const UserPage = ({
     setImage(null);
     setEditUsername(false);
     setNewUsername(user.username);
+    setEditProfile(false);
   };
 
   const handlePictureDelete = async (picture) => {
@@ -285,18 +288,6 @@ const UserPage = ({
 
   return (
     <div className="user-page-main-container">
-      {/* <Dialog open={dialogOpen} onClose={handleDialogClose}>
-        <DialogTitle>{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {dialogText}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button onClick={handleDialogConfirm}>OK</Button>
-        </DialogActions>
-      </Dialog> */}
       <ConfirmDialog
         dialogTitle={dialogTitle}
         dialogText={dialogText}
@@ -328,7 +319,7 @@ const UserPage = ({
         </div>
       </Modal>
       <div className="user-page-user-info">
-        {isUser && (
+        {isUser && editProfile && (
           <div>
             <form onSubmit={handleUserUpdate}>
               <input
@@ -355,18 +346,25 @@ const UserPage = ({
                   </div>
                 )}
               </label>
-              {imagePreview || editUsername ? (
+              { editProfile ? (
                 <div className="userpage-update-buttons">
-                  <button type="button" onClick={() => handleCancelUpdate()}>Cancel</button>
-                  <button type="submit">Update</button>
+                  <Button id="profile-update-cancel-button" type="button" onClick={() => handleCancelUpdate()}>Cancel</Button>
+                  <Button id="profile-update-submit-button" variant="contained" type="submit">Update</Button>
                 </div>
-              ) : null}
+              ) : null }
             </form>
           </div>
         )}
-        {!isUser && (
-          <img src={userData.avatar} className="userpage-avatar-image" alt="" />
+
+        {isUser && !editProfile && (
+          <div>
+            <img src={userData.avatar} className="userpage-avatar-image" alt="" />
+            <div><Button id="edit-profile-button" variant="contained" onClick={() => setEditProfile(true)}>Edit Profile</Button></div>
+          </div>
         )}
+
+        {!isUser && <img src={userData.avatar} className="userpage-avatar-image" alt="" />}
+
         <div className="username-change-input">
           {editUsername && isUser ? (
             <input
@@ -378,7 +376,7 @@ const UserPage = ({
           ) : null}
         </div>
 
-        {isUser && !editUsername && (
+        {isUser && editProfile && !editUsername ? (
           <div
             onClick={() => setEditUsername(true)}
             className="username-edit-container"
@@ -386,9 +384,11 @@ const UserPage = ({
             <h1>{userData.username}</h1>
             <Edit id="username-edit-icon" />
           </div>
-        )}
-        {!isUser && <h1>{userData.username}</h1>}
-        {!editUsername && !imagePreview && (
+        ) : null}
+
+        {!editProfile && <h1>{userData.username}</h1>}
+
+        {!editProfile && (
           <table className="userpage-user-info-table">
             <tbody>
               <tr>
