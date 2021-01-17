@@ -1,4 +1,7 @@
 {
+"env": {
+    "cypress/globals": true
+},
 "extends": "airbnb",
 "rules" : {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
@@ -7,5 +10,8 @@
 "globals": {
     "window": true,
     "localStorage": true
-}
+},
+"plugins": [
+    "react", "jest", "cypress"
+]
 }
