@@ -30,7 +30,7 @@ const IndexModal = ({
           {modalOpen.modal === 'login' ? (
             <Login setUser={setUser} handleMessage={handleMessage} />
           ) : (
-            <SignUp handleMessage={handleMessage} />
+            <SignUp handleMessage={handleMessage} closeModal={closeModal} />
           )}
         </div>
       </Modal>

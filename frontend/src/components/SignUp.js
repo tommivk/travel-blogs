@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Button, TextField } from '@material-ui/core';
 import '../styles/signup.css';
 
-const SignUp = ({ handleMessage }) => {
+const SignUp = ({ handleMessage, closeModal }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,6 +18,7 @@ const SignUp = ({ handleMessage }) => {
       setUsername('');
       setPassword('');
       handleMessage('success', 'Signed Up Successfully');
+      closeModal();
     } catch (error) {
       handleMessage('error', error.response.data.message);
       console.log(error.response.data);
@@ -61,6 +62,7 @@ const SignUp = ({ handleMessage }) => {
 
 SignUp.propTypes = {
   handleMessage: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 
 export default SignUp;
