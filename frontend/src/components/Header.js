@@ -20,13 +20,11 @@ const Header = ({
   allBlogs,
   allUsers,
   userNotifications,
-  setUserNotifications,
   activePage,
 }) => {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [notificationMenuEl, setNotificationMenuEl] = useState(null);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
-  const [readNotifications, setReadNotifications] = useState([]);
   const [searchFilter, setSearchFilter] = useState('');
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [titleActive, setTitleActive] = useState(false);
@@ -34,13 +32,8 @@ const Header = ({
 
   useEffect(() => {
     if (userNotifications) {
-      setUnreadNotifications(
-        userNotifications.filter((n) => !n.readBy.includes(user.id)),
-      );
-
-      setReadNotifications(
-        userNotifications.filter((n) => n.readBy.includes(user.id)),
-      );
+      const unread = userNotifications.filter((n) => !n.readBy.includes(user.id));
+      setUnreadNotifications(unread);
     }
   }, [userNotifications]);
 
@@ -76,17 +69,15 @@ const Header = ({
           },
         },
       );
-      const newNotifications = userNotifications
-        .map((notification) => (notification.id === n.id ? res.data : notification));
-
-      setUserNotifications(newNotifications);
-      const readnotifications = readNotifications.filter((x) => x.id !== n.id);
-      setReadNotifications(readnotifications);
+      console.log(res.data);
       const unreadnotifications = unreadNotifications.filter(
         (x) => x.id !== n.id,
       );
-      setUnreadNotifications(unreadnotifications);
+
+      setUnreadNotifications([...unreadnotifications]);
+
       setNotificationMenuEl(null);
+
       if (n.content.contentType === 'blog') {
         history.push(`/blogs/${n.content.contentID}`);
       }
@@ -95,15 +86,6 @@ const Header = ({
       }
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const handleReadNotificationClick = (n) => {
-    if (n.content.contentType === 'blog') {
-      history.push(`/blogs/${n.content.contentID}`);
-    }
-    if (n.content.contentType === 'picture') {
-      history.push(`/gallery/${n.content.contentID}`);
     }
   };
 
@@ -122,7 +104,7 @@ const Header = ({
 
   const formatDate = (date) => {
     const d = DateTime.fromISO(date);
-    return `${d.weekYear}-${d.month}-${d.day} ${d.hour}:${d.minute}`;
+    return `${d.monthShort} ${d.day} ${d.weekYear} ${d.hour}:${d.minute}`;
   };
 
   return (
@@ -209,8 +191,8 @@ const Header = ({
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
           <div className="notification-menu-content">
-            {userNotifications && userNotifications.length === 0 && (
-              <div>You don't have any notifications</div>
+            {unreadNotifications.length === 0 && (
+              <div className="no-notifications-message">You don't have any new notifications</div>
             )}
             {unreadNotifications.map((n) => (
               <div
@@ -218,16 +200,7 @@ const Header = ({
                 onClick={() => handleNotificationMessageClick(n)}
               >
                 {n.content.message}
-                <div>{formatDate(n.createdAt)}</div>
-              </div>
-            ))}
-            {readNotifications.map((n) => (
-              <div
-                className="read-notification notification-message"
-                onClick={() => handleReadNotificationClick(n)}
-              >
-                {n.content.message}
-                <div>{formatDate(n.createdAt)}</div>
+                {n.createdAt && <div>{formatDate(n.createdAt)}</div>}
               </div>
             ))}
           </div>
@@ -286,7 +259,6 @@ Header.propTypes = {
   allBlogs: PropTypes.instanceOf(Array).isRequired,
   allUsers: PropTypes.instanceOf(Array).isRequired,
   userNotifications: PropTypes.instanceOf(Array).isRequired,
-  setUserNotifications: PropTypes.func.isRequired,
   activePage: PropTypes.string,
 };
 

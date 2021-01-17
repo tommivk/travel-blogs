@@ -66,8 +66,6 @@
     font-family: helvetica, sans-serif;
 }
 
-
-
 #header-search-icon {
     font-size: 1.8em;
     margin: auto;
@@ -110,15 +108,24 @@
     text-decoration: line-through;
 }
 
-.notification-message{
+.notification-message {
     cursor: pointer;
     margin: 20px;
 }
 
+.no-notifications-message {
+    margin: 20px;
+}
+
+.notification-message:hover {
+    font-weight: bold;
+}
+
 .notification-menu-content {
     max-height: 50vh;
-    width: 20vw;
+    width: fit-content;
     overflow-y: scroll;
+    outline: none;
 }
 
 .header-link.map-page  {
