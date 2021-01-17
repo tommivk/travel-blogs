@@ -11,6 +11,7 @@ import { DateTime } from 'luxon';
 import Modal from '@material-ui/core/Modal';
 import Checkbox from '@material-ui/core/Checkbox';
 import Edit from '@material-ui/icons/Edit';
+import ConfirmDialog from './ConfirmDialog';
 import '../styles/userPage.css';
 
 const UserPage = ({
@@ -35,6 +36,10 @@ const UserPage = ({
   const [imagePreview, setImagePreview] = useState(null);
   const [editUsername, setEditUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(user.username);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogText, setDialogText] = useState('');
+  const [dialogFunction, setDialogFunction] = useState(null);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
@@ -251,8 +256,54 @@ const UserPage = ({
     }
   };
 
+  const handleDialogOpen = (title, text, func) => {
+    setDialogTitle(title);
+    setDialogText(text);
+    setDialogFunction(() => func);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogTitle('');
+    setDialogText('');
+    setDialogFunction(null);
+    setDialogOpen(false);
+  };
+
+  const handleDialogConfirm = () => {
+    try {
+      dialogFunction().then(() => {
+        setDialogTitle('');
+        setDialogText('');
+        setDialogFunction(null);
+        setDialogOpen(false);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="user-page-main-container">
+      {/* <Dialog open={dialogOpen} onClose={handleDialogClose}>
+        <DialogTitle>{dialogTitle}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {dialogText}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose}>Cancel</Button>
+          <Button onClick={handleDialogConfirm}>OK</Button>
+        </DialogActions>
+      </Dialog> */}
+      <ConfirmDialog
+        dialogTitle={dialogTitle}
+        dialogText={dialogText}
+        dialogOpen={dialogOpen}
+        handleDialogConfirm={handleDialogConfirm}
+        handleDialogClose={handleDialogClose}
+      />
       <Modal open={modalOpen} onClose={handleModalClose}>
         <div className="subscribe-modal">
           <h2>
@@ -387,7 +438,7 @@ const UserPage = ({
                 <Link to={`/gallery/${p.id}`}>
                   <img src={p.imgURL} alt="" />
                 </Link>
-                {isUser && <button type="button" onClick={() => handlePictureDelete(p)}>delete</button>}
+                {isUser && <button type="button" onClick={() => handleDialogOpen('Delete picture?', '', () => handlePictureDelete(p))}>delete</button>}
               </div>
             ))}
           </div>
@@ -406,7 +457,7 @@ const UserPage = ({
                 <div>
                   <Link to={`/blogs/${b.id}`}>{b.title}</Link>
                   {isUser
-                  && <button type="button" onClick={() => handleBlogDelete(b)}>Delete</button>}
+                  && <button type="button" onClick={() => handleDialogOpen('Delete blog?', '', () => handleBlogDelete(b))}>Delete</button>}
                 </div>
               ))
             )}

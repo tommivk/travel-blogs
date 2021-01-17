@@ -12,6 +12,7 @@ import Image from '@material-ui/icons/Image';
 import { Language } from '@material-ui/icons';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import calculateDateDiff from '../utils/calculateDateDiff';
+import ConfirmDialog from './ConfirmDialog';
 import '../styles/singlePicturePage.css';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
@@ -86,6 +87,10 @@ const SinglePicturePage = ({
   const [pictures, setPictures] = useState(null);
   const [mapImage, setMapImage] = useState(null);
   const [showMap, setShowMap] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogText, setDialogText] = useState('');
+  const [dialogFunction, setDialogFunction] = useState(null);
   const pictureHandle = useFullScreenHandle();
 
   useEffect(() => {
@@ -111,6 +116,33 @@ const SinglePicturePage = ({
   }, [picture]);
 
   if (!picture || !pictures) return null;
+
+  const handleDialogOpen = (title, text, func) => {
+    setDialogTitle(title);
+    setDialogText(text);
+    setDialogFunction(() => func);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogTitle('');
+    setDialogText('');
+    setDialogFunction(null);
+    setDialogOpen(false);
+  };
+
+  const handleDialogConfirm = () => {
+    try {
+      dialogFunction().then(() => {
+        setDialogTitle('');
+        setDialogText('');
+        setDialogFunction(null);
+        setDialogOpen(false);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleFilterRemove = () => {
     setPictures(allPictures);
@@ -194,7 +226,13 @@ const SinglePicturePage = ({
         justifyContent: 'space-evenly',
       }}
     >
-
+      <ConfirmDialog
+        dialogTitle={dialogTitle}
+        dialogText={dialogText}
+        dialogOpen={dialogOpen}
+        handleDialogConfirm={handleDialogConfirm}
+        handleDialogClose={handleDialogClose}
+      />
       <div className="picture-info-container">
         <h2>Uploaded by</h2>
         <img src={picture.user.avatar} alt="avatar" />
@@ -384,7 +422,7 @@ const SinglePicturePage = ({
                   <div className="picture-comment-content">
                     <p>{comment.content}</p>
                   </div>
-                  {comment.user.id === user.id && <div><button type="button" id="picture-comment-delete-button" onClick={() => handleCommentDelete(picture.id, comment.id)}>Delete comment</button></div>}
+                  {comment.user.id === user.id && <div><button type="button" id="picture-comment-delete-button" onClick={() => handleDialogOpen('Delete Comment?', '', () => handleCommentDelete(picture.id, comment.id))}>Delete comment</button></div>}
                 </div>
               </li>
             ))}

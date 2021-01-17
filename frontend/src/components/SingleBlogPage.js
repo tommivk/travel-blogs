@@ -14,6 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ReactHtmlParser from 'react-html-parser';
 import '../styles/singleBlogPage.css';
 import { DateTime } from 'luxon';
+import ConfirmDialog from './ConfirmDialog';
 import calculateDateDiff from '../utils/calculateDateDiff';
 
 const CommentForm = ({
@@ -85,15 +86,44 @@ const SingleBlogPage = ({
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [showLocations, setShowLocations] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogText, setDialogText] = useState('');
+  const [dialogFunction, setDialogFunction] = useState(null);
 
   useEffect(() => {
-    console.log('sadsad');
     console.log(blog);
   }, [blog]);
 
-  console.log(blog, allBlogs);
   if (!blog) return null;
   const blogDate = DateTime.fromISO(blog.date);
+
+  const handleDialogOpen = (title, text, func) => {
+    setDialogTitle(title);
+    setDialogText(text);
+    setDialogFunction(() => func);
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogTitle('');
+    setDialogText('');
+    setDialogFunction(null);
+    setDialogOpen(false);
+  };
+
+  const handleDialogConfirm = () => {
+    try {
+      dialogFunction().then(() => {
+        setDialogTitle('');
+        setDialogText('');
+        setDialogFunction(null);
+        setDialogOpen(false);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleStarChange = async (action) => {
     console.log(user, blog);
@@ -130,6 +160,13 @@ const SingleBlogPage = ({
 
   return (
     <div className="main-blog-page-container">
+      <ConfirmDialog
+        dialogTitle={dialogTitle}
+        dialogText={dialogText}
+        dialogOpen={dialogOpen}
+        handleDialogConfirm={handleDialogConfirm}
+        handleDialogClose={handleDialogClose}
+      />
       <Explore id="blog-location-toggle" onClick={() => setShowLocations(!showLocations)} />
       {showLocations
        && (
@@ -247,7 +284,7 @@ const SingleBlogPage = ({
                         </div>
                         <div className="blog-comment-content">{comment.content}</div>
                         {comment.user.id === user.id
-                         && <div><button type="button" onClick={() => handleCommentDelete(blog.id, comment.id)}>Delete</button></div> }
+                         && <div><button type="button" onClick={() => handleDialogOpen('Delete Comment?', '', () => handleCommentDelete(blog.id, comment.id))}>Delete</button></div> }
                       </div>
                     </li>
                   ))}
