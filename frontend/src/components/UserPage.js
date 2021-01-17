@@ -299,23 +299,39 @@ const UserPage = ({
         <div className="subscribe-modal">
           <h2>
             Subscribe to
+            {' '}
             {userData.username}
           </h2>
-          <div>
-            Blogs
-            <Checkbox
-              checked={subscribeBlogs}
-              onChange={() => setsubscribeBlogs(!subscribeBlogs)}
-            />
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  Blogs
+                </td>
+                <td>
+                  <Checkbox
+                    checked={subscribeBlogs}
+                    onChange={() => setsubscribeBlogs(!subscribeBlogs)}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Pictures
+                </td>
+                <td>
+                  <Checkbox
+                    checked={subscribePictures}
+                    onChange={() => setSubscribePictures(!subscribePictures)}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="subscription-modal-buttons">
+            <Button variant="contained" id="subscription-submit-button" type="button" onClick={handleSubscription}>OK</Button>
+            <Button onClick={handleModalClose} id="subscription-cancel-button">Cancel</Button>
           </div>
-          <div>
-            Pictures
-            <Checkbox
-              checked={subscribePictures}
-              onChange={() => setSubscribePictures(!subscribePictures)}
-            />
-          </div>
-          <button type="button" onClick={handleSubscription}>OK</button>
         </div>
       </Modal>
       <div className="user-page-user-info">

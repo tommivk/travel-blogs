@@ -25,13 +25,48 @@
 }
 
 .subscribe-modal {
+  box-sizing: border-box;
+  padding: 20px;
   position: absolute;
   left: 50%;
   top: 30%;
   transform: translate(-50%, -50%);
-  width: 20vw;
-  height: 20vh;
-  background-color: white;
+  width: fit-content;
+  height: fit-content;
+  background-color: rgb(22, 27, 56);
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.subscribe-modal table {
+  width: 60%;
+  align-self: center;
+  text-align: left;
+}
+
+.subscription-modal-buttons {
+  position: relative;
+  justify-content: center;
+  width: 100%;
+}
+
+#subscription-submit-button {
+  width: fit-content;
+  align-self: center;
+  justify-self: center;
+  color: white;
+  background-color: green;
+  margin-top: 10%;
+}
+
+#subscription-cancel-button {
+  color: white;
+  position: absolute;
+  left: -15px;
+  bottom: -15px;
+  font-size: 0.8em;
 }
 
 .userpage-update-buttons {
