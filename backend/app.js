@@ -40,6 +40,12 @@ app.use('/api/blogs', blogsRouter);
 app.use('/api/pictures', picturesRouter);
 app.use('/api/notifications', noticationsRouter);
 
+if (process.env.NODE_ENV === 'test') {
+  // eslint-disable-next-line global-require
+  const testingRouter = require('./controllers/testing');
+  app.use('/api/testing', testingRouter);
+}
+
 const errorHandler = (error, req, res, next) => {
   console.log('error: ', error.message);
 
