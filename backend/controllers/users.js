@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
+const Notification = require('../models/notification');
 
 const getTokenFrom = (request) => {
   const authorization = request.get('authorization');
@@ -40,6 +41,19 @@ usersRouter.post('/', async (req, res) => {
     });
 
     const savedUser = await user.save();
+
+    const notification = new Notification({
+      receivers: [savedUser.id],
+      readBy: [],
+      content: {
+        message: `Welcome to travelblogs ${savedUser.username}!`,
+        contentType: 'welcome',
+        contentID: '',
+      },
+    });
+
+    await notification.save();
+
     return res.json(savedUser.toJSON());
   } catch (error) {
     return res.status(400).send(error);
