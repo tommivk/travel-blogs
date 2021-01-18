@@ -62,7 +62,7 @@ const NewBlog = ({
     setLocations(locationCopy);
   };
 
-  const handleMongoUpload = async (headerPictureURL, headerImageID) => {
+  const handleMongoUpload = async (headerImageURL, headerImageID) => {
     try {
       const response = await axios.post(
         'http://localhost:8008/api/blogs',
@@ -71,7 +71,7 @@ const NewBlog = ({
           content,
           title,
           description,
-          headerImageURL: headerPictureURL,
+          headerImageURL,
           headerImageID,
           locations,
         },
@@ -95,6 +95,10 @@ const NewBlog = ({
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
     try {
+      if (!headerImage) {
+        return handleMongoUpload();
+      }
+
       const fbuser = firebase.auth().currentUser;
       const userID = fbuser.uid;
       const imageID = uuidv4();
@@ -103,7 +107,7 @@ const NewBlog = ({
         .child(`/blogcovers/${userID}/${imageID}`)
         .put(headerImage);
 
-      uploadTask.on(
+      return uploadTask.on(
         'state_changed',
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -129,7 +133,7 @@ const NewBlog = ({
         },
       );
     } catch (error) {
-      console.log(error);
+      return console.log(error);
     }
   };
 
