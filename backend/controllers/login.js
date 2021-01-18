@@ -11,7 +11,7 @@ loginRouter.post('/', async (req, res, next) => {
       return res.send(401).end();
     }
 
-    const user = await User.findOne({ username: body.username });
+    const user = await User.findOne({ username: body.username }).populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } }).populate('pictures');
 
     const passwordCorrect = user === null
       ? false : await bcrypt.compare(body.password, user.passwordHash);
@@ -21,8 +21,6 @@ loginRouter.post('/', async (req, res, next) => {
         error: 'invalid username or password',
       });
     }
-
-    await user.populate('pictures').populate('blogs').execPopulate();
 
     const userForToken = {
       username: user.username,

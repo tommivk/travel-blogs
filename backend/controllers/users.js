@@ -13,7 +13,7 @@ const getTokenFrom = (request) => {
 };
 
 usersRouter.get('/', async (req, res) => {
-  const users = await User.find({}).populate('blogs').populate('pictures');
+  const users = await User.find({}).populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } }).populate('pictures');
   res.json(users.map((user) => user.toJSON()));
 });
 
