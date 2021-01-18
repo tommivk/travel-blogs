@@ -4,15 +4,15 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-}
-
-.user-page-main-container img {
-  width: 100px;
+  height: 94vh;
+  max-height: 94vh;
+  overflow-y: auto;
 }
 
 .user-page-user-info {
   position: relative;
-  height: 300px;
+  height: 330px;
+  min-height: 330px;
   width: 300px;
   background-color: rgb(31, 25, 25);
   margin: 20px;
@@ -145,6 +145,8 @@
   bottom: 20px;
   left: 50%;
   transform: translate(-50%, 0);
+  color: white;
+  background-color: rgb(15, 88, 117);
 }
 
 #edit-profile-button {
@@ -166,4 +168,58 @@
   color: white;
   background-color: green;
   margin-left: 5px;
+}
+
+.userpage-blogs-container {
+  width: 80vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-items: center;
+}
+
+.userpage-blogs-container p {
+  width: 100%;
+  text-align: center;
+}
+
+.userpage-pictures-container {
+  width: 80vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.userpage-pictures-container p{
+  width: 100%;
+  text-align: center;
+}
+
+#userpage-blog-delete-button {
+  position: absolute;
+  z-index: 5;
+  right: 0px;
+  top: 0px;
+  transform: translate(-25%, 100%);
+  cursor: pointer;
+  color: white;
+  background-color: rgb(128, 9, 9);
+}
+
+#userpage-picture-delete-button {
+  position: absolute;
+  z-index: 5;
+  right: 0px;
+  top: 0px;
+  transform: translate(-25%, 50%);
+  cursor: pointer;
+  color: white;
+  background-color: rgb(128, 9, 9);
+}
+
+.userpage-blog-card-wrapper, .userpage-pictures-wrapper{
+  position: relative;
+}
+
+.userpage-content-title {
+  text-align: center;
 }

@@ -6,12 +6,19 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase/app';
 import axios from 'axios';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import Modal from '@material-ui/core/Modal';
 import Checkbox from '@material-ui/core/Checkbox';
 import Edit from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
+import Star from '@material-ui/icons/Star';
+import Sms from '@material-ui/icons/Sms';
+import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import ConfirmDialog from './ConfirmDialog';
 import '../styles/userPage.css';
 
@@ -28,7 +35,7 @@ const UserPage = ({
   storage,
 }) => {
   const [userData, setUserData] = useState(userMatch);
-  const [content, setContent] = useState(0);
+  const [content, setContent] = useState('blogs');
   const [modalOpen, setModalOpen] = useState(false);
   const [subscribeBlogs, setsubscribeBlogs] = useState(false);
   const [subscribePictures, setSubscribePictures] = useState(false);
@@ -286,6 +293,10 @@ const UserPage = ({
     }
   };
 
+  const handleRadioChange = (e) => {
+    setContent(e.target.value);
+  };
+
   return (
     <div className="user-page-main-container">
       <ConfirmDialog
@@ -365,7 +376,8 @@ const UserPage = ({
               { editProfile ? (
                 <div className="userpage-update-buttons">
                   <Button id="profile-update-cancel-button" type="button" onClick={() => handleCancelUpdate()}>Cancel</Button>
-                  <Button id="profile-update-submit-button" variant="contained" type="submit">Update</Button>
+                  {(imagePreview || newUsername !== user.username)
+                  && <Button id="profile-update-submit-button" variant="contained" type="submit">Update</Button> }
                 </div>
               ) : null }
             </form>
@@ -375,7 +387,7 @@ const UserPage = ({
         {isUser && !editProfile && (
           <div>
             <img src={userData.avatar} className="userpage-avatar-image" alt="" />
-            <div><Button id="edit-profile-button" variant="contained" onClick={() => setEditProfile(true)}>Edit Profile</Button></div>
+            <div><Button id="edit-profile-button" variant="contained" onClick={() => setEditProfile(true)}>Edit My Profile</Button></div>
           </div>
         )}
 
@@ -428,7 +440,8 @@ const UserPage = ({
         )}
         {!isUser && (
           <div>
-            <button
+            <Button
+              variant="contained"
               type="button"
               id="userpage-subscribe-button"
               onClick={() => setModalOpen(true)}
@@ -436,47 +449,177 @@ const UserPage = ({
               {isSubscribed() === true
                 ? 'Modify Your Subscription'
                 : 'Subscribe'}
-            </button>
+            </Button>
           </div>
         )}
       </div>
-      <button type="button" onClick={() => setContent(0)}>Pictures</button>
-      <button type="button" onClick={() => setContent(1)}>Blogs</button>
-      {content === 0 && (
+      <FormControl>
+        <RadioGroup row aria-label="position" defaultValue={content} onChange={handleRadioChange}>
+          <FormControlLabel value="blogs" control={<Radio />} label="Blogs" />
+          <FormControlLabel value="pictures" control={<Radio />} label="Pictures" />
+        </RadioGroup>
+      </FormControl>
+      {content === 'pictures' && (
         <div>
-          {isUser
-            ? 'My' : `${userData.username}'s` }
-            {' '}
-          Uploaded Pictures
-          <div>
-            {userData.pictures.map((p) => (
-              <div>
-                <Link to={`/gallery/${p.id}`}>
-                  <img src={p.imgURL} alt="" />
-                </Link>
-                {isUser && <button type="button" onClick={() => handleDialogOpen('Delete picture?', '', () => handlePictureDelete(p))}>delete</button>}
-              </div>
-            ))}
+          <div className="userpage-content-title">
+            <h2>
+              {isUser
+                ? 'My' : `${userData.username}'s` }
+              {' '}
+              Uploaded Pictures
+            </h2>
+          </div>
+          <div className="userpage-pictures-container">
+            {userData.pictures.length === 0
+              ? <p>No pictures uploaded yet</p>
+              : (
+                userData.pictures.map((pic) => (
+                  <div className="userpage-pictures-wrapper">
+                    <Link
+                      to={`/gallery/${pic.id}`}
+                      key={pic.id}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <div className="gallery-card">
+                        <img src={pic.imgURL} alt="" />
+                        <h4
+                          style={{
+                            marginTop: '2px',
+                            marginBottom: '5px',
+                            textAlign: 'center',
+                            color: '#FFFFFF',
+                          }}
+                        >
+                          {pic.title}
+                        </h4>
+                        <div
+                          style={{
+                            position: 'absolute',
+                            bottom: '0px',
+                            width: '100%',
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              width: '100%',
+                              marginBottom: '3px',
+                            }}
+                          >
+                            <div
+                              className="tooltip"
+                              style={{
+                                display: 'flex',
+                                color: '#6c717a',
+                                marginLeft: '4px',
+                              }}
+                            >
+                              <span className="tooltip-message">Points</span>
+                              <ArrowUpward />
+                              <div
+                                style={{ alignSelf: 'center', marginLeft: '3px' }}
+                              >
+                                {pic.voteResult}
+                              </div>
+                            </div>
+                            <div
+                              className="tooltip"
+                              style={{ color: '#6c717a', marginRight: '4px' }}
+                            >
+                              <span className="tooltip-message">Comments</span>
+                              <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <Sms />
+                                {pic.comments.length}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                    {isUser && <Button variant="contained" id="userpage-picture-delete-button" type="button" onClick={() => handleDialogOpen('Delete picture?', '', () => handlePictureDelete(pic))}>delete</Button>}
+                  </div>
+                ))
+              )}
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
+            <div className="pic-pseudo-element" />
           </div>
         </div>
       )}
-      {content === 1 && (
+      {content === 'blogs' && (
         <div>
-          {isUser ? 'My' : `${userData.username}'s`}
-          {' '}
-          Blogs
-          <div>
+          <div className="userpage-content-title">
+            <h2>
+              {isUser ? 'My' : `${userData.username}'s`}
+              {' '}
+              Blogs
+            </h2>
+          </div>
+          <div className="userpage-blogs-container">
             {userData.blogs.length === 0 ? (
-              <div>No blogs created yet</div>
+              <p>No blogs created yet</p>
             ) : (
-              userData.blogs.map((b) => (
-                <div>
-                  <Link to={`/blogs/${b.id}`}>{b.title}</Link>
+              userData.blogs.map((blog) => (
+                <div className="userpage-blog-card-wrapper">
+                  <Link id="main-blog-link" to={`/blogs/${blog.id}`} key={blog.id}>
+                    <div className="blog-card">
+                      <div className="blog-image">
+                        {blog.headerImageURL && (
+                          <img src={blog.headerImageURL} alt="blog-header" width="300px" />
+                        )}
+                      </div>
+                      <div className="blog-card-right">
+                        <div className="blog-header">
+                          <div className="blog-author-info">
+                            <div>
+                              <img src={blog.author.avatar} alt="avatar" />
+                            </div>
+                            <div>
+                              By
+                              {' '}
+                              {blog.author.username}
+                            </div>
+                          </div>
+                          <div
+                            className={`blog-title ${
+                              blog.title.length > 22 && 'long-blog-title'
+                            }`}
+                          >
+                            <h1>{blog.title.toUpperCase()}</h1>
+                          </div>
+                          <div className="blog-description">
+                            <p>{blog.description}</p>
+                          </div>
+                        </div>
+                        <div className="blog-star">
+                          <div className="tooltip">
+                            <span className="tooltip-message">Stars</span>
+                            <Star id="star" fontSize="default" />
+                          </div>
+                          <div id="blog-stars-count">{blog.stars.length}</div>
+                        </div>
+                        <div className="blog-date">
+                          {DateTime.fromISO(blog.date).monthShort}
+                          {' '}
+                          {DateTime.fromISO(blog.date).day}
+                          {' '}
+                          {DateTime.fromISO(blog.date).year}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
                   {isUser
-                  && <button type="button" onClick={() => handleDialogOpen('Delete blog?', '', () => handleBlogDelete(b))}>Delete</button>}
+                    && <Button variant="contained" id="userpage-blog-delete-button" type="button" onClick={() => handleDialogOpen('Delete blog?', '', () => handleBlogDelete(blog))}>Delete Blog</Button>}
                 </div>
               ))
             )}
+            <div className="blog-pseudo-element" />
+            <div className="blog-pseudo-element" />
+            <div className="blog-pseudo-element" />
           </div>
         </div>
       )}
