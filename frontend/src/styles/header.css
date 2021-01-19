@@ -124,7 +124,7 @@
 .notification-menu-content {
     max-height: 50vh;
     width: fit-content;
-    overflow-y: scroll;
+    overflow-y: auto;
     outline: none;
 }
 
