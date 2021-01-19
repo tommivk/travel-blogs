@@ -61,7 +61,6 @@
   transition: transform 0.2s;
   text-align: center;
   display: flex;
-  padding: 3%;
   box-sizing: border-box;
 }
 
@@ -106,11 +105,15 @@
 }
 
 .blog-header {
+  box-sizing: border-box;
   position: relative;
   top: 20%;
-  left: 8%;
+  left: 0;
   text-align: left;
   width: 100%;
+  padding-right: 5%;
+  padding-left: 8%;
+  padding-bottom: 4%;
 }
 
 .author-avatar {
