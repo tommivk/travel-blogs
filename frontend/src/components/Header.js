@@ -210,6 +210,7 @@ const Header = ({
           onClick={handleMenuOpen}
         >
           <img
+            id="header-user-avatar"
             src={user.avatar}
             height="40"
             width="40"
@@ -234,7 +235,7 @@ const Header = ({
             color: 'black',
           }}
         >
-          <MenuItem onClick={handleMenuClose}>Create New Blog</MenuItem>
+          <MenuItem id="create-new-blog" onClick={handleMenuClose}>Create New Blog</MenuItem>
         </Link>
         <Link
           to={`/users/${user.id}`}

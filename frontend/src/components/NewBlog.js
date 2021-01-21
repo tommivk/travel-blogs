@@ -185,6 +185,7 @@ const NewBlog = ({
             <div>
               <div className="new-blog-textfield">
                 <TextField
+                  id="new-blog-title-textfield"
                   label="Title"
                   variant="outlined"
                   value={title}
@@ -193,6 +194,7 @@ const NewBlog = ({
               </div>
               <div className="new-blog-textfield">
                 <TextField
+                  id="new-blog-description-textfield"
                   label="Blog Description"
                   value={description}
                   onChange={({ target }) => setDescription(target.value)}
@@ -256,7 +258,7 @@ const NewBlog = ({
           </div>
           <div className="new-blog-bottom-navigation">
             <Button onClick={handleBack}>Back</Button>
-            <Button onClick={handleNext}>Next</Button>
+            <Button onClick={handleNext} id="new-blog-next-button">Next</Button>
           </div>
         </div>
       );
@@ -284,6 +286,7 @@ const NewBlog = ({
                 <div>
                   {loc.city}
                   ,
+                  {' '}
                   {loc.country}
                   <span onClick={() => handleLocationRemove(loc)}>(x)</span>
                 </div>
@@ -298,7 +301,7 @@ const NewBlog = ({
           </div>
           <div className="new-blog-bottom-navigation">
             <Button onClick={handleBack}>Back</Button>
-            <Button onClick={handleNext}>Next</Button>
+            <Button onClick={handleNext} id="new-blog-next-button">Next</Button>
           </div>
         </div>
       );
@@ -325,7 +328,7 @@ const NewBlog = ({
             </div>
             <div>
               <form onSubmit={handleBlogSubmit}>
-                <Button className="new-blog-nav-button-right" type="submit">
+                <Button id="blog-submit-button" className="new-blog-nav-button-right" type="submit">
                   Submit
                 </Button>
               </form>

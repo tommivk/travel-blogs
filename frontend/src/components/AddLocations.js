@@ -28,21 +28,23 @@ const AddLocations = ({ locations, setLocations }) => {
   return (
     <div>
       <TextField
+        id="location-search-textfield"
         variant="outlined"
         placeholder="search by city"
         onChange={({ target }) => SetFilter(target.value)}
       />
-      <ul>
+      <ul id="location-list">
         {searchResult
         && searchResult.data
         && searchResult.data.map((city) => (
           <div style={{ display: 'flex' }} key={city.city}>
-            <li>
+            <li id="location-list-element">
               {city.city}
               {', '}
               {city.country}
             </li>
             <Button
+              id="location-select-button"
               onClick={() => handleAddLocation(city)}
               variant="outlined"
               color="secondary"
