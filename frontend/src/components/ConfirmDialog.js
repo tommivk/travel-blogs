@@ -19,8 +19,8 @@ const ConfirmDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleDialogClose}>Cancel</Button>
-        <Button onClick={handleDialogConfirm}>OK</Button>
+        <Button id="confirm-dialog-cancel-button" onClick={handleDialogClose}>Cancel</Button>
+        <Button id="confirm-dialog-ok-button" onClick={handleDialogConfirm}>OK</Button>
       </DialogActions>
     </Dialog>
   </div>

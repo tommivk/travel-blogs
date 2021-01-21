@@ -127,7 +127,7 @@ const Header = ({
         </Link>
       </div>
       <div className="header-link-container">
-        <Link to="/blogs">
+        <Link id="header-blogs-link" to="/blogs">
           <div
             className={`header-link ${
               !titleActive && activePage === 'blogs' && 'blogs-page'
@@ -241,7 +241,7 @@ const Header = ({
           to={`/users/${user.id}`}
           style={{ textDecoration: 'none', color: 'black' }}
         >
-          <MenuItem onClick={handleMenuClose}>My Page</MenuItem>
+          <MenuItem id="my-page-menulink" onClick={handleMenuClose}>My Page</MenuItem>
         </Link>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
