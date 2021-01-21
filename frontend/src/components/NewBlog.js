@@ -84,6 +84,10 @@ const NewBlog = ({
       setContent('');
       setTitle('');
       setAllBlogs(allBlogs.concat(response.data));
+      const userCopy = { ...user };
+      userCopy.blogs.unshift(response.data);
+      window.localStorage.setItem('loggedTravelBlogUser', JSON.stringify(userCopy));
+      setUser(userCopy);
       handleMessage('success', 'Blog Submitted!');
     } catch (error) {
       handleMessage('error', error.message);

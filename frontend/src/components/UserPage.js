@@ -52,11 +52,12 @@ const UserPage = ({
 
   useEffect(() => {
     if (userMatch) {
-      setUserData(userMatch);
       if (userMatch.id === user.id) {
         setIsUser(true);
+        setUserData(user);
       } else {
         setIsUser(false);
+        setUserData(userMatch);
       }
     }
   }, [userMatch]);
