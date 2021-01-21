@@ -1,5 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
+import 'cypress-iframe';
+
 describe('Indexpage', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:8008/api/testing/reset');
@@ -25,5 +27,51 @@ describe('Indexpage', function () {
     cy.get('#login-form-button').click();
     cy.contains('BLOGS');
     cy.contains('GALLERY');
+  });
+});
+
+describe('User can create new blog', function () {
+  it('New blog can be created', function () {
+    cy.get('#header-user-avatar').click();
+    cy.contains('Create New Blog');
+    cy.get('#create-new-blog').click();
+    cy.contains('Set Title');
+    cy.contains('Write Content');
+    cy.contains('Add Locations');
+    cy.contains('Preview And Submit');
+    cy.get('#new-blog-title-textfield').type('Test blog');
+    cy.get('#new-blog-description-textfield').type('Description for test blog');
+    cy.get('.new-blog-nav-button-right').click();
+    cy.contains('Set Title');
+    cy.contains('Write Content');
+    cy.contains('Add Locations');
+    cy.contains('Preview And Submit');
+    cy.contains('File');
+    cy.contains('Edit');
+    cy.contains('View');
+    cy.contains('Format');
+    cy.get('.tox-notification__dismiss').click();
+    cy.frameLoaded();
+    cy.iframe().type('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ');
+    cy.get('#new-blog-next-button').click();
+    cy.contains('Set Title');
+    cy.contains('Write Content');
+    cy.contains('Add Locations');
+    cy.contains('Preview And Submit');
+    cy.contains('Locations selected');
+    cy.get('#location-search-textfield').type('Tokyo');
+    cy.wait(5000);
+    cy.contains('Tokyo, Japan');
+    cy.get('#location-select-button').click();
+    cy.get('#new-blog-next-button').click();
+    cy.contains('Set Title');
+    cy.contains('Write Content');
+    cy.contains('Add Locations');
+    cy.contains('Preview And Submit');
+    cy.get('#blog-submit-button').click();
+    cy.get('[href="/blogs"] > .header-link > h1').click();
+    cy.contains('By testuser');
+    cy.contains('TEST BLOG');
+    cy.contains('Description for test blog');
   });
 });
