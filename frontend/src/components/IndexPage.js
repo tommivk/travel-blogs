@@ -9,7 +9,9 @@ import handPicture from '../images/hand.png';
 import bgvideo from '../videos/background.mp4';
 import '../styles/indexPage.css';
 
-const IndexPage = ({ setUser, message, handleMessage }) => {
+const IndexPage = ({
+  setUser, message, handleMessage, allUsers, setAllUsers,
+}) => {
   const [modalOpen, setModalOpen] = useState({ open: false, modal: '' });
   const [mouseOnImage, setMouseOnImage] = useState(false);
   const openSignUpModal = () => {
@@ -620,6 +622,8 @@ const IndexPage = ({ setUser, message, handleMessage }) => {
             modalOpen={modalOpen}
             closeModal={closeModal}
             setUser={setUser}
+            allUsers={allUsers}
+            setAllUsers={setAllUsers}
           />
         )}
         {!modalOpen.open && (
@@ -644,6 +648,8 @@ IndexPage.propTypes = {
   setUser: PropTypes.func.isRequired,
   message: PropTypes.instanceOf(Object).isRequired,
   handleMessage: PropTypes.func.isRequired,
+  allUsers: PropTypes.instanceOf(Array).isRequired,
+  setAllUsers: PropTypes.func.isRequired,
 };
 
 export default IndexPage;

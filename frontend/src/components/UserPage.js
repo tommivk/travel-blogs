@@ -50,6 +50,17 @@ const UserPage = ({
   const [dialogText, setDialogText] = useState('');
   const [dialogFunction, setDialogFunction] = useState(null);
 
+  useEffect(() => {
+    if (userMatch) {
+      setUserData(userMatch);
+      if (userMatch.id === user.id) {
+        setIsUser(true);
+      } else {
+        setIsUser(false);
+      }
+    }
+  }, [userMatch]);
+
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -204,17 +215,6 @@ const UserPage = ({
       },
     );
   };
-
-  useEffect(() => {
-    if (userMatch) {
-      setUserData(userMatch);
-      if (userMatch.id === user.id) {
-        setIsUser(true);
-      } else {
-        setIsUser(false);
-      }
-    }
-  }, [userMatch]);
 
   useEffect(() => {
     if (userData && user && userData.id !== user.id) {

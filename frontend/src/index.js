@@ -120,6 +120,8 @@ const App = () => {
         setUser={setUser}
         message={message}
         handleMessage={handleMessage}
+        allUsers={allUsers}
+        setAllUsers={setAllUsers}
       />
     );
   }

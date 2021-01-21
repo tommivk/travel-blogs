@@ -5,7 +5,7 @@ import Login from './Login';
 import SignUp from './SignUp';
 
 const IndexModal = ({
-  modalOpen, closeModal, setUser, handleMessage,
+  modalOpen, closeModal, setUser, setAllUsers, handleMessage, allUsers,
 }) => {
   if (!modalOpen.open) return null;
   if (modalOpen.modal !== 'login' && modalOpen.modal !== 'signup') return null;
@@ -30,7 +30,12 @@ const IndexModal = ({
           {modalOpen.modal === 'login' ? (
             <Login setUser={setUser} handleMessage={handleMessage} />
           ) : (
-            <SignUp handleMessage={handleMessage} closeModal={closeModal} />
+            <SignUp
+              allUsers={allUsers}
+              setAllUsers={setAllUsers}
+              handleMessage={handleMessage}
+              closeModal={closeModal}
+            />
           )}
         </div>
       </Modal>
@@ -43,6 +48,8 @@ IndexModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
   setUser: PropTypes.func.isRequired,
   handleMessage: PropTypes.func.isRequired,
+  allUsers: PropTypes.instanceOf(Array).isRequired,
+  setAllUsers: PropTypes.func.isRequired,
 };
 
 export default IndexModal;

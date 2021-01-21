@@ -4,17 +4,21 @@ import axios from 'axios';
 import { Button, TextField } from '@material-ui/core';
 import '../styles/signup.css';
 
-const SignUp = ({ handleMessage, closeModal }) => {
+const SignUp = ({
+  handleMessage, closeModal, allUsers, setAllUsers,
+}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8008/api/users', {
+      const response = await axios.post('http://localhost:8008/api/users', {
         username,
         password,
       });
+      console.log(response);
+      setAllUsers(allUsers.concat(response.data));
       setUsername('');
       setPassword('');
       handleMessage('success', 'Signed Up Successfully');
@@ -63,6 +67,8 @@ const SignUp = ({ handleMessage, closeModal }) => {
 SignUp.propTypes = {
   handleMessage: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
+  setAllUsers: PropTypes.func.isRequired,
+  allUsers: PropTypes.instanceOf(Array).isRequired,
 };
 
 export default SignUp;
