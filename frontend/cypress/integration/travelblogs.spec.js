@@ -69,9 +69,45 @@ describe('User can create new blog', function () {
     cy.contains('Add Locations');
     cy.contains('Preview And Submit');
     cy.get('#blog-submit-button').click();
-    cy.get('[href="/blogs"] > .header-link > h1').click();
+    cy.get('#header-blogs-link').click();
     cy.contains('By testuser');
     cy.contains('TEST BLOG');
     cy.contains('Description for test blog');
+  });
+  describe('Blog content', function () {
+    it('Blog content is displayed', function () {
+      cy.get('#main-blog-link').click();
+      cy.contains('Test blog');
+      cy.contains('Description for test blog');
+      cy.contains('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ');
+      cy.get('#blog-location-toggle').click();
+      cy.contains('Locations');
+      cy.contains('Tokyo');
+      cy.contains('Japan');
+    });
+    describe('Blogs on user page', function () {
+      it('Blog content is displayed on user page', function () {
+        cy.get('#header-user-avatar').click();
+        cy.get('#my-page-menulink').click();
+        cy.contains('TEST BLOG');
+        cy.contains('Description for test blog');
+      });
+      it('Blog deleting works', function () {
+        cy.get('#userpage-blog-delete-button').click();
+        cy.get('#confirm-dialog-ok-button').click();
+        cy.contains('TEST BLOG').should('not.exist');
+        cy.contains('Description for test blog').should('not.exist');
+        cy.get('#header-blogs-link').click();
+        cy.contains('TEST BLOG').should('not.exist');
+        cy.contains('Description for test blog').should('not.exist');
+        cy.reload();
+        cy.contains('TEST BLOG').should('not.exist');
+        cy.contains('Description for test blog').should('not.exist');
+        cy.get('#header-user-avatar').click();
+        cy.get('#my-page-menulink').click();
+        cy.contains('TEST BLOG').should('not.exist');
+        cy.contains('Description for test blog').should('not.exist');
+      });
+    });
   });
 });
