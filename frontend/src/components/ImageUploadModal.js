@@ -12,7 +12,7 @@ import Explore from '@material-ui/icons/Explore';
 import Room from '@material-ui/icons/Room';
 import GoogleMapReact from 'google-map-react';
 import { v4 as uuidv4 } from 'uuid';
-import imageModalBG from '../images/imagemodalbg.jpg';
+// import imageModalBG from '../images/imagemodalbg.jpg';
 import AddLocations from './AddLocations';
 import '../styles/imageUploadModal.css';
 
@@ -270,28 +270,14 @@ const ImageUploadModal = ({
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '60%',
-            height: '60%',
-            backgroundImage: `url(${imageModalBG})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover',
-            backgroundPosition: 'left bottom',
-            color: 'white',
-            outline: '2px solid black',
-          }}
-        >
+        <div className="image-upload-modal-main-container">
           <h2
             style={{
               textAlign: 'center',
             }}
           >
             <span
+              id="image-upload-modal-title"
               style={{
                 width: 'fit-content',
                 backgroundColor: 'rgb(0,0,0)',
@@ -302,16 +288,8 @@ const ImageUploadModal = ({
               Upload Images
             </span>
           </h2>
-          <div style={{ position: 'absolute', top: '20%', left: '42%' }}>
-            <div
-              style={{
-                // border: '3px solid black',
-                width: '300px',
-                height: '300px',
-                textAlign: 'center',
-                // backgroundColor: 'rgba(0,0,0,0.7)',
-              }}
-            >
+          <div className="upload-modal-middle-container">
+            <div className="upload-modal-midddle-content">
               {imagePreview && step === 0 && (
                 <img alt="" src={imagePreview} height="300" width="300" />
               )}
@@ -359,9 +337,7 @@ const ImageUploadModal = ({
               )}
             </div>
 
-            <div
-              style={{ position: 'relative', textAlign: 'center', top: '10px' }}
-            >
+            <div>
               {image && step < 4 ? (
                 <div>
                   {step > 0 && (

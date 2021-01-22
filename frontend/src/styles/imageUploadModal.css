@@ -1,3 +1,31 @@
+.image-upload-modal-main-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background-image: url("../images/imagemodalbg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: left bottom;
+  color: white;
+  outline: 2px solid black;
+}
+
+.upload-modal-middle-container {
+  position: absolute;
+  top: 20%;
+  left: 42%;
+  text-align: center;
+}
+
+.upload-modal-midddle-content {
+  width: 300px;
+  height: 300px;
+  text-align: center;
+}
+
 #upload-modal-choose-image-button  {
   background-color: red;
 }
@@ -67,9 +95,6 @@
   bottom: 3%;
 }
 
-.image-modal-upload-form {
-}
-
 #upload-progress-bar {
   margin-bottom: 10px;
   width: 90%;
@@ -80,6 +105,7 @@
   color: white;
   font-size: 2vh;
 }
+
 #image-modal-upload-button:hover {
   background-color: rgb(48, 219, 33);
   transform: scale(1.02);
@@ -143,20 +169,90 @@
 #upload-modal-next-button {
   background-color: rgb(41, 41, 126);
   margin-left: 5px;
+  margin-top: 10px;
   color: white;
 }
+
 #upload-modal-next-button:hover {
   background-color: rgb(56, 56, 179);
 }
 
 #upload-modal-back-button {
+  margin-top: 10px;
   background-color: rgb(30, 34, 32);
   color: white;
 }
+
 #upload-modal-back-button:hover {
   background-color: rgb(110, 101, 101);
 }
 
 .upload-modal-preview-container h3 {
   color:rgb(129, 129, 129)
+}
+
+@media (max-width: 1700px) {
+  .image-upload-modal-main-container {
+    width: 85%;
+    height: 85%;
+  }
+  .upload-modal-middle-container {
+    left: 40%;
+  }
+}
+
+@media (max-width: 1400px) {
+  .upload-modal-preview-container {
+    width: 30%;
+  }
+  .upload-modal-middle-container {
+    left: 27%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .upload-modal-preview-container.final-step {
+    width: 30%;
+  }
+}
+@media (max-width: 1200px) {
+    .upload-modal-preview-container.final-step {
+    width: 50%;
+  }
+  .upload-modal-preview-container.final-step {
+    width: 40%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .upload-modal-preview-container.final-step {
+    width: 50%;
+  }
+  .upload-modal-preview-container {
+    width: 40%;
+  }
+  .upload-modal-middle-container {
+    left: 10%;
+  }
+  #image-upload-modal-title {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .upload-modal-middle-container {
+    left: 2%;
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 700px) {
+  .upload-modal-preview-container.final-step {
+    width: 70%;
+  }
+  .upload-modal-preview-container {
+    width: 45%;
+  }
+  .upload-modal-midddle-content {
+    width: 200px;
+    height: 300px;
+  }
 }
