@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase/app';
 import axios from 'axios';
 import {
   Button,
   Modal,
-  Input,
   LinearProgress,
-  Switch,
+  TextField,
 } from '@material-ui/core';
 import Explore from '@material-ui/icons/Explore';
 import Room from '@material-ui/icons/Room';
@@ -15,6 +14,7 @@ import GoogleMapReact from 'google-map-react';
 import { v4 as uuidv4 } from 'uuid';
 import imageModalBG from '../images/imagemodalbg.jpg';
 import AddLocations from './AddLocations';
+import '../styles/imageUploadModal.css';
 
 const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY;
 
@@ -36,8 +36,15 @@ const ImageUploadModal = ({
   const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [step, setStep] = useState(0);
+  const [uploadBarVisible, setUploadBarVisible] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [markerPosition, setMarkerPosition] = useState(null);
+
+  useEffect(() => {
+    if (step === 2 && locations.length > 0) {
+      setStep(3);
+    }
+  }, [locations]);
 
   const handleLocationSelect = () => {
     const { lat, lng } = { lat: markerPosition.lat, lng: markerPosition.lng };
@@ -68,9 +75,16 @@ const ImageUploadModal = ({
     URL.revokeObjectURL(e.target.files[0]);
   };
 
+  const handleSetPublicity = (selection) => {
+    setPublishToGallery(selection);
+    setStep(4);
+  };
+
   const cancelImage = () => {
     setImage(null);
     setImagePreview(null);
+    setTitle('');
+    setLocations([]);
     setStep(0);
   };
 
@@ -118,7 +132,9 @@ const ImageUploadModal = ({
       setTitle('');
       setLocations([]);
       setStep(0);
+      setUploadProgress(0);
       setPublishToGallery(false);
+      setUploadBarVisible(false);
       handleMessage('success', 'Image uploaded!');
     } catch (error) {
       handleMessage('error', error.message);
@@ -133,6 +149,7 @@ const ImageUploadModal = ({
       setStep(1);
       return;
     }
+    setUploadBarVisible(true);
     const fbuser = firebase.auth().currentUser;
     const userID = fbuser.uid;
     const imageID = uuidv4();
@@ -266,6 +283,7 @@ const ImageUploadModal = ({
             backgroundSize: 'cover',
             backgroundPosition: 'left bottom',
             color: 'white',
+            outline: '2px solid black',
           }}
         >
           <h2
@@ -290,6 +308,7 @@ const ImageUploadModal = ({
                 // border: '3px solid black',
                 width: '300px',
                 height: '300px',
+                textAlign: 'center',
                 // backgroundColor: 'rgba(0,0,0,0.7)',
               }}
             >
@@ -298,20 +317,22 @@ const ImageUploadModal = ({
               )}
               {step === 1 && (
                 <div>
-                  <div>Choose title</div>
+                  <h3>Choose title</h3>
                   <div>
-                    <Input
+                    <TextField
+                      id="image-upload-title-input"
                       placeholder="title"
-                      style={{ color: 'white' }}
                       value={title}
                       onChange={({ target }) => setTitle(target.value)}
+                      variant="outlined"
+                      autoFocus
                     />
                   </div>
                 </div>
               )}
               {step === 2 && (
                 <div>
-                  <div>Choose location</div>
+                  <h3>Choose location</h3>
                   search for city
                   <AddLocations
                     locations={locations}
@@ -329,89 +350,115 @@ const ImageUploadModal = ({
               )}
               {step === 3 && (
                 <div>
-                  <div>Publish This Image To Gallery?</div>
-                  <div>{publishToGallery ? 'Yes' : 'No'}</div>
-                  <Switch
-                    checked={publishToGallery}
-                    onChange={() => setPublishToGallery(!publishToGallery)}
-                  />
+                  <h3>Publish This Image To Gallery?</h3>
+                  <div className="upload-modal-publicicity-select-buttons">
+                    <Button id="upload-modal-yes-button" variant="contained" onClick={() => handleSetPublicity(true)}>Yes</Button>
+                    <Button id="upload-modal-red-button" variant="contained" onClick={() => handleSetPublicity(false)}>No</Button>
+                  </div>
                 </div>
               )}
             </div>
-
-            <LinearProgress variant="determinate" value={uploadProgress} />
 
             <div
               style={{ position: 'relative', textAlign: 'center', top: '10px' }}
             >
-              {image ? (
+              {image && step < 4 ? (
                 <div>
-                  <Button
-                    onClick={cancelImage}
-                    variant="contained"
-                    style={{ marginRight: '5px' }}
-                  >
-                    Cancel
-                  </Button>
                   {step > 0 && (
-                    <Button onClick={handlePreviousStep}>Back</Button>
+                    <Button id="upload-modal-back-button" variant="contained" onClick={handlePreviousStep}>{'<-'}</Button>
                   )}
-                  {step < 4 && (
-                    <Button variant="contained" onClick={handleNextStep}>
-                      next
+                  {step < 3 && (
+                    <Button id="upload-modal-next-button" variant="contained" onClick={handleNextStep}>
+                      {step === 2 ? 'skip' : 'next'}
                     </Button>
                   )}
                 </div>
-              ) : (
-                <input type="file" onChange={handleImageChange} />
-              )}
+              ) : null}
             </div>
           </div>
 
+          {!image && (
+          <div className="upload-modal-image-form">
+            <label id="upload-modal-file-label" htmlFor="upload-modal-file-input">
+              <input type="file" id="upload-modal-file-input" hidden onChange={handleImageChange} />
+              Choose Image
+            </label>
+          </div>
+          )}
+
           {step !== 0 && (
             <div
-              style={{
-                position: 'absolute',
-                right: '2%',
-                top: '3%',
-                width: '25%',
-                height: '94%',
-                // overflowY: 'scroll',
-                textAlign: 'center',
-                border: '2px solid black',
-                borderRadius: '2%',
-                overflow: 'hidden',
-                backgroundColor: '#1d1f1e',
-              }}
+              className={`upload-modal-preview-container ${step === 4 && 'final-step'}`}
             >
+              {step < 4
+              && (
+              <Button
+                type="button"
+                variant="contained"
+                onClick={cancelImage}
+                id="image-modal-preview-cancel-button"
+              >
+                Cancel
+              </Button>
+              )}
               {step > 0 && (
                 <div>
                   <h2>Preview</h2>
 
-                  <img alt="" src={imagePreview} height="150" width="150" />
-                  <p>{title}</p>
+                  <img alt="" src={imagePreview} height="130" width="130" />
+                  {step > 1 && <h3>Image Info</h3>}
+                  <table className="image-upload-preview-table">
+                    <tbody>
+                      {step > 1
+                      && (
+                      <tr>
+                        <td>Title:</td>
+                        <td>{title}</td>
+                      </tr>
+                      )}
 
-                  <p>Location</p>
-                  <div>
-                    {locations.length > 0
-                    && `Country: ${locations[locations.length - 1].country}`}
-                  </div>
-                  <div>
-                    {locations.length > 0
-                    && `City: ${locations[locations.length - 1].city}`}
-                  </div>
-
-                  <p>
-                    Publish to gallery:
-                    {publishToGallery ? 'yes' : 'no'}
-                  </p>
-
+                      {step > 3
+                      && (
+                      <tr>
+                        <td>Public:</td>
+                        <td>{publishToGallery ? 'yes' : 'no'}</td>
+                      </tr>
+                      )}
+                    </tbody>
+                  </table>
+                    {locations.length > 0 && <h3>Location</h3> }
+                  <table className="image-upload-preview-table">
+                    <tbody>
+                      {locations.length > 0
+                      && (
+                      <>
+                        <tr>
+                          <td>Country:</td>
+                          <td>
+                            {locations[locations.length - 1].country}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>City:</td>
+                          <td>{locations[locations.length - 1].city}</td>
+                        </tr>
+                      </>
+                      ) }
+                    </tbody>
+                  </table>
                   {step === 4 && (
-                    <form onSubmit={handleImageUpload}>
-                      <Button variant="contained" color="primary" type="submit">
-                        Upload
-                      </Button>
-                    </form>
+                    <div className="image-modal-preview-bottom">
+                      {uploadBarVisible
+                      && <LinearProgress id="upload-progress-bar" variant="determinate" value={uploadProgress} /> }
+                      <div className="image-modal-upload-form">
+                        <form onSubmit={handleImageUpload}>
+                          <Button variant="contained" id="image-modal-final-cancel-button" onClick={() => setStep(3)}>{'<-'}</Button>
+                          <Button id="image-modal-upload-button" variant="contained" type="submit">
+                            Upload
+                          </Button>
+                        </form>
+                      </div>
+                    </div>
                   )}
                 </div>
               )}

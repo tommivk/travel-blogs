@@ -1,0 +1,162 @@
+#upload-modal-choose-image-button  {
+  background-color: red;
+}
+
+.upload-modal-image-form {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#upload-modal-file-label {
+  display: inline-block;
+  background-color: rgb(50, 22, 117);
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+#upload-modal-file-label:hover {
+  background-color: rgb(65, 30, 145);
+}
+
+.upload-modal-preview-container {
+  position: absolute;
+  right: 2%;
+  top: 3%;
+  width: 25%;
+  height: 94%;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 2%;
+  overflow: hidden;
+  background-color: #1d1f1e;
+  transition: all 0.7s ease-out;
+}
+
+.upload-modal-preview-container.final-step {
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  width: 25%;
+  height: 94%;
+  transform: translate(50%, -50%);
+}
+
+.image-upload-preview-table {
+  text-align: left;
+  width: fit-content;
+  /* margin-left: 5%; */
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.image-upload-preview-table tr h3{
+  text-align: center;
+}
+
+.image-modal-preview-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 3%;
+}
+
+.image-modal-upload-form {
+}
+
+#upload-progress-bar {
+  margin-bottom: 10px;
+  width: 90%;
+}
+
+#image-modal-upload-button {
+  background-color: rgb(25, 182, 11);
+  color: white;
+  font-size: 2vh;
+}
+#image-modal-upload-button:hover {
+  background-color: rgb(48, 219, 33);
+  transform: scale(1.02);
+}
+
+#image-modal-preview-cancel-button {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, 0px);
+  cursor: pointer;
+}
+
+#image-modal-preview-cancel-button:hover {
+  background-color: rgb(110, 101, 101);
+}
+
+#image-modal-final-cancel-button {
+  position: absolute;
+  bottom: 3px;
+  background-color: rgb(30, 34, 32);
+  color: white;
+  left: 14px;
+  z-index: 5;
+}
+
+
+#image-modal-final-cancel-button:hover {
+  background-color: rgb(51, 58, 54); 
+}
+
+.upload-modal-publicicity-select-buttons {
+  margin-top: 30px;
+}
+
+#upload-modal-yes-button {
+  background-color: rgb(27, 90, 27);
+  margin-right: 5px;
+  color: white;
+}
+
+#upload-modal-yes-button:hover {
+  background-color: rgb(31, 133, 31);
+}
+
+#upload-modal-red-button {
+  background-color: rgb(141, 19, 19);
+  margin-left: 5px;
+  color: white;
+}
+
+#upload-modal-red-button:hover {
+  background-color: rgb(177, 29, 29);
+}
+
+#image-upload-title-input {
+  background-color: rgba(48, 42, 42,0.4);
+  color: white;
+}
+
+#upload-modal-next-button {
+  background-color: rgb(41, 41, 126);
+  margin-left: 5px;
+  color: white;
+}
+#upload-modal-next-button:hover {
+  background-color: rgb(56, 56, 179);
+}
+
+#upload-modal-back-button {
+  background-color: rgb(30, 34, 32);
+  color: white;
+}
+#upload-modal-back-button:hover {
+  background-color: rgb(110, 101, 101);
+}
+
+.upload-modal-preview-container h3 {
+  color:rgb(129, 129, 129)
+}
