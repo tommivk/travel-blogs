@@ -275,10 +275,12 @@
 #blog-filter-select {
   margin-left: 15px;
 }
+
 .blogs-top-title {
   margin-top: 30px;
   margin-bottom: 30px;
 }
+
 .blogs-top-title h1 {
   margin: 0px;
   color: white;
@@ -291,4 +293,40 @@
 
 .blogs-main-container.swiper-wrapper {
   overflow: hidden;
+}
+
+@media (max-width: 1500px) {
+  .blog-card, .blog-pseudo-element {
+    height: 20vw;
+    width: 28.75vw;
+  }
+}
+
+@media (max-width: 1400px) {
+  .blog-card, .blog-pseudo-element {
+    height: 24vw;
+    width: 34.5vw;
+  }
+}
+
+@media (max-width: 1000px) {
+  .blog-card, .blog-pseudo-element {
+    height: 27vw;
+    width: 38.8vw;
+  }
+
+.cards-container {
+  width: 90%;
+  }
+}
+
+@media (max-width: 850px) {
+  .blog-card, .blog-pseudo-element {
+    height: 50vw;
+    width: 71.88vw;
+  }
+
+.cards-container {
+  width: 90%;
+  }
 }

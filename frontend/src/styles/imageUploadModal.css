@@ -220,6 +220,9 @@
   .upload-modal-preview-container.final-step {
     width: 40%;
   }
+  .upload-modal-preview-container {
+    width: 35%;
+  }
 }
 
 @media (max-width: 1000px) {
