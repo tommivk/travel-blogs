@@ -245,6 +245,7 @@ const App = () => {
             setAllBlogs={setAllBlogs}
             allPictures={allPictures}
             setAllPictures={setAllPictures}
+            handleMessage={handleMessage}
           />
         </Route>
         <Route path="/blogs/:id">

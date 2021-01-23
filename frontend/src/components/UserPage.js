@@ -33,6 +33,7 @@ const UserPage = ({
   setAllPictures,
   setUser,
   storage,
+  handleMessage,
 }) => {
   const [userData, setUserData] = useState(userMatch);
   const [content, setContent] = useState('blogs');
@@ -98,6 +99,7 @@ const UserPage = ({
         'loggedTravelBlogUser',
         JSON.stringify(newUser),
       );
+      handleMessage('success', 'Picture deleted');
     } catch (error) {
       console.log(error);
     }
@@ -128,6 +130,7 @@ const UserPage = ({
 
       const newBlogs = allBlogs.filter((b) => b.id !== blog.id);
       setAllBlogs(newBlogs);
+      handleMessage('success', 'Blog deleted');
     } catch (error) {
       console.log(error);
     }
@@ -643,6 +646,7 @@ UserPage.propTypes = {
   setAllBlogs: PropTypes.func.isRequired,
   allPictures: PropTypes.instanceOf(Array).isRequired,
   setAllPictures: PropTypes.func.isRequired,
+  handleMessage: PropTypes.func.isRequired,
 };
 
 export default UserPage;
