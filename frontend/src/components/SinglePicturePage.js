@@ -204,6 +204,7 @@ const SinglePicturePage = ({
       setAllPictures(allPictures.map((p) => (p.id === pictureId ? response.data : p)));
       handleMessage('success', 'Comment Deleted');
     } catch (error) {
+      handleMessage('error', error.response.data.message);
       console.log(error);
     }
   };

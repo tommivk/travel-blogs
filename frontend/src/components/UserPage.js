@@ -101,6 +101,7 @@ const UserPage = ({
       );
       handleMessage('success', 'Picture deleted');
     } catch (error) {
+      handleMessage('error', error.response.data.message);
       console.log(error);
     }
   };
@@ -132,6 +133,7 @@ const UserPage = ({
       setAllBlogs(newBlogs);
       handleMessage('success', 'Blog deleted');
     } catch (error) {
+      handleMessage('error', error.response.data.message);
       console.log(error);
     }
   };
