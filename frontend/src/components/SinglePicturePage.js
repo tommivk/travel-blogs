@@ -83,6 +83,7 @@ const SinglePicturePage = ({
   filteredPictures,
   setFilteredPictures,
   setAllPictures,
+  handleMessage,
 }) => {
   const [pictures, setPictures] = useState(null);
   const [mapImage, setMapImage] = useState(null);
@@ -201,6 +202,7 @@ const SinglePicturePage = ({
       });
       setPicture(response.data);
       setAllPictures(allPictures.map((p) => (p.id === pictureId ? response.data : p)));
+      handleMessage('success', 'Comment Deleted');
     } catch (error) {
       console.log(error);
     }
@@ -485,6 +487,7 @@ SinglePicturePage.propTypes = {
   setAllPictures: PropTypes.func.isRequired,
   filteredPictures: PropTypes.instanceOf(Object).isRequired,
   setFilteredPictures: PropTypes.func.isRequired,
+  handleMessage: PropTypes.func.isRequired,
 };
 
 export default SinglePicturePage;

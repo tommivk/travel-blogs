@@ -200,6 +200,7 @@ const App = () => {
             filteredPictures={filteredPictures}
             setFilteredPictures={setFilteredPictures}
             setPicture={setPicture}
+            handleMessage={handleMessage}
           />
         </Route>
         <Route path="/gallery">
@@ -262,6 +263,7 @@ const App = () => {
             allBlogs={allBlogs}
             setAllBlogs={setAllBlogs}
             user={user}
+            handleMessage={handleMessage}
           />
         </Route>
         <Route path="/blogs">

@@ -82,7 +82,7 @@ CommentForm.propTypes = {
 };
 
 const SingleBlogPage = ({
-  blog, setBlog, user, setAllBlogs, allBlogs,
+  blog, setBlog, user, setAllBlogs, allBlogs, handleMessage,
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [showLocations, setShowLocations] = useState(false);
@@ -153,6 +153,7 @@ const SingleBlogPage = ({
         });
       setBlog(response.data);
       setAllBlogs((allBlogs.map((b) => (b.id === blog.id ? response.data : b))));
+      handleMessage('success', 'Comment Deleted');
     } catch (error) {
       console.log(error);
     }
@@ -307,6 +308,7 @@ SingleBlogPage.propTypes = {
   user: PropTypes.instanceOf(Object).isRequired,
   setAllBlogs: PropTypes.func.isRequired,
   allBlogs: PropTypes.instanceOf(Array).isRequired,
+  handleMessage: PropTypes.func.isRequired,
 };
 
 export default SingleBlogPage;
