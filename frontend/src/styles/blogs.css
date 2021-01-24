@@ -133,12 +133,12 @@
   display: flex;
   bottom: 0px;
   left: 2%;
-  font-size: 0.7vw;
+  font-size: 1em;
 }
 
 #star {
   color: rgb(180, 155, 9);
-  font-size: 1vw;
+  font-size: 1.1em;
 }
 
 .blog-button #blog-link {
@@ -149,7 +149,7 @@
   position: absolute;
   right: 2%;
   bottom: 5px;
-  font-size: 0.7vw;
+  font-size: 0.8em;
 }
 
 #blog-stars-count {
@@ -165,8 +165,8 @@
 }
 
 .blog-author-info img {
-  width: 2vw;
-  height: 2vw;
+  width: 2em;
+  height: 2em;
   border-radius: 50%;
   margin-right: 5px;
   filter: grayscale(100%);
@@ -186,12 +186,12 @@
 .blog-title h1 {
   margin: 0;
   margin-top: 5px;
-  font-size: 1.4vw;
+  font-size:1.1em;
   width: 100%;
 }
 
 .blog-title.long-blog-title h1 {
-  font-size: 1vw;
+  font-size: 1em;
 }
 
 .blog-description {
@@ -203,7 +203,7 @@
   overflow-wrap: break-word;
   margin: 0;
   margin-top: 5px;
-  font-size: 0.8vw;
+  font-size: 1em;
 }
 
 #main-blog-link {
