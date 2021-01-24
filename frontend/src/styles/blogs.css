@@ -131,7 +131,7 @@
 .blog-star {
   position: absolute;
   display: flex;
-  bottom: 0px;
+  bottom: 5px;
   left: 2%;
   font-size: 1em;
 }
@@ -153,9 +153,8 @@
 }
 
 #blog-stars-count {
-  margin-top: auto;
-  margin-bottom: auto;
   margin-left: 2px;
+  font-size: 1em;
 }
 
 .blog-author-info {
