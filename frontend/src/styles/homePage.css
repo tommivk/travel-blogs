@@ -188,3 +188,21 @@
     font-size: 0.6em;
     font-weight: 400;
 }
+
+@media (max-width: 1100px) {
+    .home-page-top-blog-info {
+        width: 50%;
+    }
+}
+
+@media (max-width: 1000px) {
+    #homepage-swiper {
+        display: none;
+    }
+}
+
+@media (max-width: 700px) {
+    .home-page-top-blog-info {
+        width: 70%;
+    }
+}
