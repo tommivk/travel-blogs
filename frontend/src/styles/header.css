@@ -146,3 +146,8 @@
 .header-link.gallery-page h1, .header-link.blogs-page h1 {
     color: white;
 }
+
+.header-top-right-icons {
+    display: flex;
+    align-items: center;
+}

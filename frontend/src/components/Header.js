@@ -162,7 +162,7 @@ const Header = ({
         </Link>
       </div>
 
-      <div style={{ display: 'flex' }}>
+      <div className="header-top-right-icons">
         <Search
           id="header-search-icon"
           onClick={() => setSearchModalOpen(true)}
