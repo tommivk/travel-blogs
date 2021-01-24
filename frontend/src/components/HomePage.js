@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import SwiperCore, { Autoplay } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import '../styles/homePage.css';
 
+SwiperCore.use([Autoplay]);
+
 const HomePage = ({ allBlogs, allPictures }) => {
-  if (allBlogs.length === 0 || allPictures.length === 0) return null;
+  if (allBlogs.length === 0) return null;
 
   const newestBlogs = allBlogs
     .sort((a, b) => {
@@ -16,28 +20,26 @@ const HomePage = ({ allBlogs, allPictures }) => {
         return -1;
       }
       return 0;
-    })
-    .slice(0, 5);
+    });
+
+  const featured = allBlogs[allBlogs.length - 1];
 
   return (
     <div className="homepage-main-container">
-      <div className="homepage-main-content">
-        <div className="featured-picture-container">
-          <h1>Featured Picture</h1>
-          <div className="featured-picture">
-            <Link to={`/gallery/${allPictures[0].id}`}>
-              <img src={allPictures[0].imgURL} alt="featured" />
-            </Link>
+      <div className="home-page-top-section">
+        <Link to={`/blogs/${featured.id}`}>
+          <img alt="" src={featured.headerImageURL} />
+          <div className="home-page-top-section-overlay">
+            <div className="home-page-top-blog-info">
+              <div id="homepage-featured">Featured</div>
+              <h1>{featured.title}</h1>
+              <p>{featured.description}</p>
+            </div>
           </div>
-          <Link
-            style={{ textDecoration: 'none', color: 'white' }}
-            to={`/gallery/${allPictures[0].id}`}
-          >
-            <h3>{allPictures[0].title}</h3>
-          </Link>
-        </div>
+        </Link>
+      </div>
+      <div className="homepage-main-content">
         <div className="newest-blogs">
-          <h1 id="newest-blogs-header">Newest Blogs</h1>
           <div className="homepage-blogs">
             <div className="homepage-blog-wrapper">
               {newestBlogs.map((blog) => (
@@ -54,10 +56,19 @@ const HomePage = ({ allBlogs, allPictures }) => {
                       <div>
                         <p>{blog.description}</p>
                       </div>
+                      <div>
+                        <p id="homepage-blog-date">
+                          {DateTime.fromISO(blog.date).monthShort}
+                          {' '}
+                          {DateTime.fromISO(blog.date).day}
+                          {' '}
+                          {DateTime.fromISO(blog.date).year}
+                        </p>
+                      </div>
                     </div>
                     <div className="homepage-blog-image">
                       {blog.headerImageURL && (
-                        <img src={blog.headerImageURL} alt="blog" />
+                      <img src={blog.headerImageURL} alt="blog" />
                       )}
                     </div>
                   </div>
@@ -66,6 +77,23 @@ const HomePage = ({ allBlogs, allPictures }) => {
             </div>
           </div>
         </div>
+        <Swiper
+          slidesPerView={1}
+          id="homepage-swiper"
+          autoplay={{ delay: 5000 }}
+          allowTouchMove={false}
+        >
+          {allPictures.map((pic) => (
+            <SwiperSlide key={pic.id}>
+              <Link id="homepage-picture-link" to={`/gallery/${pic.id}`}>
+                <img src={pic.imgURL} alt="" />
+                <div className="homepage-swiper-title">
+                  <h3>{pic.title}</h3>
+                </div>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
