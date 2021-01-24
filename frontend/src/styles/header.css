@@ -16,8 +16,8 @@
     margin: auto;
     display: flex;
     cursor: pointer;
-   margin-top: 0;
-   margin-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
   
 }
 
@@ -28,6 +28,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: background-color 0.5s;
 }
 
 .header-link h1{
