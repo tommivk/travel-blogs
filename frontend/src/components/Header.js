@@ -109,18 +109,6 @@ const Header = ({
 
   return (
     <div className="main-header-container">
-      <div>
-        <SearchModal
-          open={searchModalOpen}
-          closeSearchModal={closeSearchModal}
-          searchFilter={searchFilter}
-          setSearchFilter={setSearchFilter}
-          allPictures={allPictures}
-          allBlogs={allBlogs}
-          allUsers={allUsers}
-        />
-      </div>
-
       <div className="header-title">
         <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
           <h1>TravelBlogs</h1>
@@ -167,6 +155,17 @@ const Header = ({
           id="header-search-icon"
           onClick={() => setSearchModalOpen(true)}
         />
+        <div>
+          <SearchModal
+            open={searchModalOpen}
+            closeSearchModal={closeSearchModal}
+            searchFilter={searchFilter}
+            setSearchFilter={setSearchFilter}
+            allPictures={allPictures}
+            allBlogs={allBlogs}
+            allUsers={allUsers}
+          />
+        </div>
         <div
           className="notification-container"
           onClick={handleNotificationMenuOpen}

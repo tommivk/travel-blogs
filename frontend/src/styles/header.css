@@ -6,6 +6,7 @@
     height: 6vh;
     background-color: white;
     overflow: hidden;
+    position: relative;
 }
 
 .main-header-container a{
@@ -13,21 +14,21 @@
 }
 
 .header-link-container {
-    margin: auto;
     display: flex;
     cursor: pointer;
-    margin-top: 0;
-    margin-bottom: 0;
-  
+    position: absolute;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
 }
 
 .header-link{
     width: 9vw;
     height: 100%;
-    top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+    justify-self: center;
     transition: background-color 0.5s;
 }
 
@@ -57,6 +58,7 @@
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 10px;
+    justify-self: flex-start;
 }
 
 .header-title h1{
