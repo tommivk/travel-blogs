@@ -26,6 +26,7 @@
     width: 9vw;
     height: 100%;
     display: flex;
+    min-width: fit-content;
     justify-content: center;
     align-items: center;
     justify-self: center;
@@ -36,6 +37,8 @@
     margin: 0;
     text-decoration: none;
     color: black;
+    padding-right: 5px;
+    padding-left: 5px;
     font-size: 1.3em;
     font-family: helvetica, sans-serif;
 }
@@ -153,4 +156,44 @@
 .header-top-right-icons {
     display: flex;
     align-items: center;
+}
+
+#burger {
+    display: none;
+}
+
+#burger-blogs {
+    display: none;
+}
+
+#burger-gallery {
+    display: none;
+}
+
+#burger-explore {
+    display: none;
+}
+
+@media (max-width: 800px){
+    #burger {
+        display: block;
+        align-self: center;
+        margin-right: 10px;
+        font-size: 2em;
+        cursor: pointer;
+    }
+
+    #burger-blogs, #burger-gallery, #burger-explore {
+        display: block;
+        color: black;
+        text-decoration: none;
+    }
+
+    .header-top-right-icons {
+        display: none;
+    }
+
+    .header-link {
+        display: none;
+    }
 }

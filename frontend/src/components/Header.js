@@ -8,6 +8,7 @@ import firebase from 'firebase/app';
 import { Link, useHistory } from 'react-router-dom';
 import { Search, Language, Notifications } from '@material-ui/icons';
 import Menu from '@material-ui/core/Menu';
+import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { DateTime } from 'luxon';
 import SearchModal from './SearchModal';
@@ -218,6 +219,7 @@ const Header = ({
           />
         </div>
       </div>
+      <MenuIcon id="burger" onClick={handleMenuOpen} />
       <Menu
         anchorEl={menuAnchorEl}
         keepMounted
@@ -227,6 +229,15 @@ const Header = ({
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
+        <Link to="/blogs" id="burger-blogs">
+          <MenuItem onClick={handleMenuClose}>Blogs</MenuItem>
+        </Link>
+        <Link to="/gallery" id="burger-gallery">
+          <MenuItem onClick={handleMenuClose}>Gallery</MenuItem>
+        </Link>
+        <Link to="explore" id="burger-explore">
+          <MenuItem onClick={handleMenuClose}>Explore</MenuItem>
+        </Link>
         <Link
           to="/createblog"
           style={{
