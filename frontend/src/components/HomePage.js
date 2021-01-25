@@ -87,6 +87,7 @@ const HomePage = ({ allBlogs, allPictures }) => {
           autoplay={{ delay: 4000 }}
           allowTouchMove={false}
           speed={3000}
+          loop
         >
           {allPictures.map((pic) => (
             <SwiperSlide key={pic.id}>
