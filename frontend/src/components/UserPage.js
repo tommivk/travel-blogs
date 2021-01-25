@@ -269,7 +269,10 @@ const UserPage = ({
       const newUsers = allUsers.map((u) => (u.id === response.data.id ? response.data : u));
       setAllUsers(newUsers);
       setModalOpen(false);
+      const subMessage = isSubscribed() ? 'Subsciption modified' : 'Subscription added';
+      handleMessage('success', subMessage);
     } catch (error) {
+      handleMessage('error', error.response.data.message);
       console.log(error);
     }
   };
