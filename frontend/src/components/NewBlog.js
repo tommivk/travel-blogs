@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import Stepper from '@material-ui/core/Stepper';
@@ -15,6 +16,13 @@ import EditLocation from '@material-ui/icons/EditLocation';
 import Subject from '@material-ui/icons/Subject';
 import Visibility from '@material-ui/icons/Visibility';
 import { Button, TextField } from '@material-ui/core';
+import Explore from '@material-ui/icons/Explore';
+import Avatar from '@material-ui/core/Avatar';
+import ReactHtmlParser from 'react-html-parser';
+import { DateTime } from 'luxon';
+import StarBorder from '@material-ui/icons/StarBorder';
+import ChatBubbleOutline from '@material-ui/icons/ChatBubbleOutline';
+import Container from '@material-ui/core/Container';
 import AddLocations from './AddLocations';
 import ImageUploadModal from './ImageUploadModal';
 import '../styles/newBlog.css';
@@ -39,6 +47,7 @@ const NewBlog = ({
   const [headerImagePreview, setHeaderImagePreview] = useState(null);
   const [locations, setLocations] = useState([]);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [uploadedBlogID, setUploadedBlogID] = useState(null);
   const steps = getSteps();
 
   useEffect(() => {
@@ -87,17 +96,22 @@ const NewBlog = ({
       );
       setContent('');
       setTitle('');
+      setDescription('');
+      setHeaderImage(null);
+      setLocations([]);
+      setHeaderImagePreview(null);
       setAllBlogs(allBlogs.concat(response.data));
       const userCopy = { ...user };
       userCopy.blogs.unshift(response.data);
       window.localStorage.setItem('loggedTravelBlogUser', JSON.stringify(userCopy));
       setUser(userCopy);
+      setUploadedBlogID(response.data.id);
       handleMessage('success', 'Blog Submitted!');
     } catch (error) {
       handleMessage('error', error.message);
       console.log(error.message);
     }
-    setActiveStep(4);
+    setActiveStep(5);
   };
 
   const handleBlogSubmit = async (e) => {
@@ -235,8 +249,8 @@ const NewBlog = ({
               </div>
             </div>
           </div>
-          <div className="new-blog-nav-button-right">
-            <Button onClick={handleNext}>Next</Button>
+          <div>
+            <Button variant="contained" onClick={handleNext} id="new-blog-next-button">Next</Button>
           </div>
         </div>
       );
@@ -270,8 +284,8 @@ const NewBlog = ({
             />
           </div>
           <div className="new-blog-bottom-navigation">
-            <Button onClick={handleBack}>Back</Button>
-            <Button onClick={handleNext} id="new-blog-next-button">Next</Button>
+            <Button variant="contained" onClick={handleBack} id="new-blog-back-button">Back</Button>
+            <Button variant="contained" onClick={handleNext} id="new-blog-next-button">Next</Button>
           </div>
         </div>
       );
@@ -313,8 +327,8 @@ const NewBlog = ({
             </div>
           </div>
           <div className="new-blog-bottom-navigation">
-            <Button onClick={handleBack}>Back</Button>
-            <Button onClick={handleNext} id="new-blog-next-button">Next</Button>
+            <Button variant="contained" onClick={handleBack} id="new-blog-back-button">Back</Button>
+            <Button variant="contained" onClick={handleNext} id="new-blog-next-button">Next</Button>
           </div>
         </div>
       );
@@ -335,38 +349,37 @@ const NewBlog = ({
               ))}
             </Stepper>
           </div>
+          <Button variant="contained" id="new-blog-preview-button" onClick={() => setActiveStep(4)}>Preview Blog</Button>
           <div className="new-blog-bottom-navigation">
             <div>
-              <Button onClick={handleBack}>Back</Button>
-            </div>
-            <div>
-              <form onSubmit={handleBlogSubmit}>
-                <Button id="blog-submit-button" className="new-blog-nav-button-right" type="submit">
-                  Submit
-                </Button>
-              </form>
+              <Button variant="contained" onClick={handleBack} id="new-blog-back-button">Back</Button>
             </div>
           </div>
         </div>
       );
     case 4:
       return (
+        <NewBlogPreview
+          title={title}
+          description={description}
+          headerImage={headerImagePreview}
+          content={content}
+          locations={locations}
+          user={user}
+          setActiveStep={setActiveStep}
+          handleBlogSubmit={handleBlogSubmit}
+        />
+      );
+    case 5:
+      return (
         <div className="new-blog-main-container">
-          <div className="new-blog-stepper-container">
-            <Stepper alternativeLabel activeStep={activeStep}>
-              {steps.map((step, index) => (
-                <Step>
-                  <StepLabel
-                    onClick={() => setActiveStep(index)}
-                    StepIconComponent={stepperIcons}
-                  >
-                    {step}
-                  </StepLabel>
-                </Step>
-              ))}
-            </Stepper>
+          <div className="new-blog-submitted-content">
+            <h1>Blog Submitted!</h1>
+            <Link to={`/blogs/${uploadedBlogID}`}>
+              <Button variant="contained" id="new-blog-view-blog-button">View Blog</Button>
+            </Link>
+            <Button onClick={() => setActiveStep(0)} id="new-blog-another-blog-button">Create Another Blog</Button>
           </div>
-          Blog submitted!
         </div>
       );
     default:
@@ -383,6 +396,110 @@ NewBlog.propTypes = {
   allPictures: PropTypes.instanceOf(Array).isRequired,
   setAllPictures: PropTypes.func.isRequired,
   handleMessage: PropTypes.func.isRequired,
+};
+
+const NewBlogPreview = ({
+  title, description, headerImage, content, user, locations, setActiveStep, handleBlogSubmit,
+}) => {
+  const [showLocations, setShowLocations] = useState(false);
+  const blogDate = DateTime.fromJSDate(new Date());
+
+  return (
+    <div className="main-blog-page-container">
+      <div className="new-blog-preview-buttons">
+        <Button variant="contained" id="new-blog-preview-cancel-button" onClick={() => setActiveStep(3)}>Go Back</Button>
+        <Button variant="contained" id="new-blog-preview-submit-button" onClick={handleBlogSubmit}>Submit Blog</Button>
+      </div>
+      <Explore id="blog-location-toggle" onClick={() => setShowLocations(!showLocations)} />
+      {showLocations
+     && (
+     <div className="blog-locations-container">
+       <h3>Locations</h3>
+       {locations.length > 0
+         ? (
+           <table>
+             <tbody>
+               {locations.map((loc) => (
+                 <tr>
+                   <td>
+                     {loc.city}
+                   </td>
+                   <td>{loc.country}</td>
+                 </tr>
+               ))}
+             </tbody>
+           </table>
+         )
+         : <p>No locations</p>}
+       <button id="blog-locations-close-button" type="button" onClick={() => setShowLocations(false)}>X</button>
+     </div>
+     )}
+      <Container maxWidth="md">
+        <div>
+          <div style={{ textAlign: 'center' }}>
+            <h1 id="blog-title">{title}</h1>
+            <div>
+              {description}
+            </div>
+          </div>
+          <div style={{ display: 'flex' }}>
+            <div className="author-container">
+              <div className="author-picture">
+                <Avatar alt="author profile" src={user.avatar} />
+              </div>
+            </div>
+            <div className="blog-info-container">
+              <div className="author-username">
+                <h3>{user.username}</h3>
+              </div>
+              <div className="blog-info-date">
+                {blogDate.monthLong}
+                {' '}
+                {blogDate.day}
+                {' '}
+                {blogDate.year}
+              </div>
+            </div>
+          </div>
+          {headerImage
+        && <img src={headerImage} alt="cover" width="1000px" />}
+
+          {ReactHtmlParser(content)}
+        </div>
+        <div className="vote-container">
+          <div>
+            <StarBorder
+              id="unvoted-star"
+              fontSize="large"
+            />
+          </div>
+          <div id="vote-count">
+            0
+            {' '}
+          </div>
+          <div id="comment-count">
+            <ChatBubbleOutline id="blog-comments-icon" />
+            0
+          </div>
+        </div>
+      </Container>
+    </div>
+  );
+};
+
+NewBlogPreview.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  headerImage: PropTypes.string,
+  content: PropTypes.string.isRequired,
+  user: PropTypes.instanceOf(Object).isRequired,
+  locations: PropTypes.instanceOf(Array).isRequired,
+  setActiveStep: PropTypes.func.isRequired,
+  handleBlogSubmit: PropTypes.func.isRequired,
+};
+
+NewBlogPreview.defaultProps = {
+  headerImage: null,
 };
 
 export default NewBlog;
