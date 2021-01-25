@@ -287,6 +287,7 @@ const WorldMap = ({
     : [];
 
   useEffect(() => {
+    document.title = 'Explore | TravelBlogs';
     setFilteredPictures({ pictures: null, filter: null });
   }, []);
 

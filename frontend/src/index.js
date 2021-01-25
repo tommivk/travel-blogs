@@ -58,6 +58,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    document.title = 'TravelBlogs';
     const loggedUser = localStorage.getItem('loggedTravelBlogUser');
     if (loggedUser) {
       setUser(JSON.parse(loggedUser));

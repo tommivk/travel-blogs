@@ -23,6 +23,10 @@ const Blogs = ({ allBlogs }) => {
   const param = queryString.parse(useLocation().search);
 
   useEffect(() => {
+    document.title = 'Blogs | TravelBlogs';
+  }, []);
+
+  useEffect(() => {
     setBlogs(allBlogs);
   }, [allBlogs]);
 

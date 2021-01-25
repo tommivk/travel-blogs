@@ -56,9 +56,11 @@ const UserPage = ({
       if (userMatch.id === user.id) {
         setIsUser(true);
         setUserData(user);
+        document.title = 'My Page | Travelblogs';
       } else {
         setIsUser(false);
         setUserData(userMatch);
+        document.title = `${userMatch.username} | Travelblogs`;
       }
     }
   }, [userMatch]);

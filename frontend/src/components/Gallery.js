@@ -22,6 +22,9 @@ const Gallery = ({
   const [sortBy, setSortBy] = useState('Newest');
 
   const param = queryString.parse(useLocation().search);
+  useEffect(() => {
+    document.title = 'Gallery | TravelBlogs';
+  }, []);
 
   useEffect(() => {
     if (allPictures) {

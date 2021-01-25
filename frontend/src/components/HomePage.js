@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
@@ -10,6 +10,10 @@ SwiperCore.use([Autoplay]);
 
 const HomePage = ({ allBlogs, allPictures }) => {
   if (allBlogs.length === 0) return null;
+
+  useEffect(() => {
+    document.title = 'TravelBlogs';
+  }, []);
 
   const newestBlogs = allBlogs
     .sort((a, b) => {

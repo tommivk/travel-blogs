@@ -93,6 +93,7 @@ const SingleBlogPage = ({
 
   useEffect(() => {
     console.log(blog);
+    document.title = `${blog.title} | Travelblogs`;
   }, [blog]);
 
   if (!blog) return null;

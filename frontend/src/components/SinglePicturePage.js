@@ -103,6 +103,8 @@ const SinglePicturePage = ({
   }, [allPictures]);
 
   useEffect(async () => {
+    document.title = `${picture.title} | Travelblogs`;
+
     setShowMap(false);
 
     if (picture && picture.location.lat && picture.location.lng) {

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -40,6 +40,10 @@ const NewBlog = ({
   const [locations, setLocations] = useState([]);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const steps = getSteps();
+
+  useEffect(() => {
+    document.title = 'Create New Blog | TravelBlogs';
+  }, []);
 
   const handleNext = () => {
     setActiveStep((prevState) => prevState + 1);
