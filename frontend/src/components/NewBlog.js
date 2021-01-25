@@ -190,11 +190,33 @@ const NewBlog = ({
               setAllPictures={setAllPictures}
               handleMessage={handleMessage}
             />
+            <div className="new-blog-image-preview">
+              {!headerImagePreview && (
+                <div>
+                  <label htmlFor="new-blog-file-input">
+                    <input hidden id="new-blog-file-input" type="file" onChange={handleImageChange} />
+                    <span id="new-blog-input-label-text">Choose Header Image</span>
+                  </label>
+                </div>
+              )}
+              {headerImagePreview && (
+              <div className="new-blog-preview-image">
+                <img src={headerImagePreview} alt="preview" />
+                <button
+                  type="button"
+                  id="preview-image-close-button"
+                  onClick={() => setHeaderImagePreview(null)}
+                >
+                  X
+                </button>
+              </div>
+              )}
+            </div>
             <div>
               <div className="new-blog-textfield">
                 <TextField
                   id="new-blog-title-textfield"
-                  label="Title"
+                  label="Blog Title"
                   variant="outlined"
                   value={title}
                   onChange={({ target }) => setTitle(target.value)}
@@ -204,29 +226,12 @@ const NewBlog = ({
                 <TextField
                   id="new-blog-description-textfield"
                   label="Blog Description"
+                  multiline
+                  rows={3}
                   value={description}
                   onChange={({ target }) => setDescription(target.value)}
                   variant="outlined"
                 />
-              </div>
-            </div>
-            <div>
-              <div className="new-blog-image-preview">
-                {!headerImagePreview && (
-                  <input type="file" onChange={handleImageChange} />
-                )}
-                {headerImagePreview && (
-                  <div className="new-blog-preview-image">
-                    <img src={headerImagePreview} alt="preview" />
-                    <button
-                      type="button"
-                      id="preview-image-close-button"
-                      onClick={() => setHeaderImagePreview(null)}
-                    >
-                      X
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
           </div>
