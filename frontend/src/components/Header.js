@@ -101,6 +101,7 @@ const Header = ({
       .catch((error) => console.log('error happened', error));
 
     setMenuAnchorEl(null);
+    history.push('/');
   };
 
   const formatDate = (date) => {
