@@ -93,7 +93,9 @@ const SingleBlogPage = ({
 
   useEffect(() => {
     console.log(blog);
-    document.title = `${blog.title} | Travelblogs`;
+    if (blog && blog.title) {
+      document.title = `${blog.title} | Travelblogs`;
+    }
   }, [blog]);
 
   if (!blog) return null;
