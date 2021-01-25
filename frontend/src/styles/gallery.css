@@ -82,6 +82,10 @@
   z-index: 2;
 }
 
+#gallery-card-comment-icon {
+  margin-right: 3px;
+}
+
 @media (max-width: 1700px) {
   .gallery-card, .pic-pseudo-element {
     width: 12vw;

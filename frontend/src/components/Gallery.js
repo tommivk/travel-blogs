@@ -228,7 +228,7 @@ const Gallery = ({
                         >
                           <span className="tooltip-message">Comments</span>
                           <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <Sms />
+                            <Sms id="gallery-card-comment-icon" />
                             {pic.comments.length}
                           </div>
                         </div>
