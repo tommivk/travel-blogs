@@ -1,0 +1,26 @@
+#confirm-dialog-cancel-button {
+background-color: rgb(150, 20, 20);
+color: white;
+width: 100%;
+}
+
+#confirm-dialog-cancel-button:hover {
+background-color: rgb(201, 50, 50);
+}
+
+#confirm-dialog-ok-button {
+    background-color: rgb(27, 177, 77);
+    color: white;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#confirm-dialog-ok-button:hover {
+    background-color: rgb(57, 202, 105);
+}
+
+.confirm-dialog-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}

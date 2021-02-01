@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import '../styles/confirmDialog.css';
 
 const ConfirmDialog = ({
   dialogTitle, dialogText, dialogOpen, handleDialogConfirm, handleDialogClose,
@@ -19,8 +20,10 @@ const ConfirmDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button id="confirm-dialog-cancel-button" onClick={handleDialogClose}>Cancel</Button>
-        <Button id="confirm-dialog-ok-button" onClick={handleDialogConfirm}>OK</Button>
+        <div className="confirm-dialog-buttons">
+          <Button id="confirm-dialog-ok-button" onClick={handleDialogConfirm}>OK</Button>
+          <Button id="confirm-dialog-cancel-button" onClick={handleDialogClose}>Cancel</Button>
+        </div>
       </DialogActions>
     </Dialog>
   </div>
