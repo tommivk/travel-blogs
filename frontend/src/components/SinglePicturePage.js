@@ -291,18 +291,7 @@ const SinglePicturePage = ({
             </div>
           </div>
 
-          <div
-            style={{
-              backgroundColor: '#231A03',
-              paddingTop: '10px',
-              paddingRight: '10px',
-              paddingLeft: '10px',
-              color: 'white',
-              marginTop: '30px',
-              height: 'fit-content',
-              width: '40vw',
-            }}
-          >
+          <div className="picture-container">
             <div
               style={{
                 width: '100%',

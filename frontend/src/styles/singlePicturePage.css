@@ -143,11 +143,12 @@
   }
 
   .picture-info-container {
-    height: 400px;
-    width: 300px;
+    height: fit-content;
+    width: fit-content;
     background-color: #231A03;
     color: white;
     text-align: center;
+    padding: 20px 40px 20px 40px;
     border-radius: 4%;
     position: relative;
     top: 10vh;
@@ -184,4 +185,28 @@
     position: absolute;
     right: 0px;
     bottom: 5%;
+  }
+
+  .picture-container {
+    background-color: #231A03;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    color: white;
+    margin-top: 30px;
+    height: fit-content;
+    width: 40vw;
+  }
+
+  @media (max-width: 1200px) {
+    .picture-list-container, .picture-info-container{
+      display: none;
+    }
+    .picture-comment-container {
+      width: 80vw;
+      align-items: center;
+    }
+    .picture-container {
+      width: 60vw;
+    }
   }
