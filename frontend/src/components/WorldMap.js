@@ -26,46 +26,48 @@ const PopUp = ({
 
   if (type === 'blog') {
     return (
-      <div className="map-blog-card-wrapper">
-        <div className="blog-card map-blog-card">
-          <div className="blog-image">
-            {selected.headerImageURL && (
-              <img src={selected.headerImageURL} alt="blog-header" width="300px" />
-            )}
-          </div>
-          <div className="blog-card-right">
-            <div className="blog-header">
-              <div className="blog-author-info">
-                <div>
-                  <img src={selected.author.avatar} alt="avatar" />
+      <Link to={`/blogs/${selected.id}`} style={{ textDecoration: 'none' }}>
+        <div className="map-blog-card-wrapper">
+          <div className="blog-card map-blog-card">
+            <div className="blog-image">
+              {selected.headerImageURL && (
+                <img src={selected.headerImageURL} alt="blog-header" width="300px" />
+              )}
+            </div>
+            <div className="blog-card-right">
+              <div className="blog-header">
+                <div className="blog-author-info">
+                  <div>
+                    <img src={selected.author.avatar} alt="avatar" />
+                  </div>
+                  <div>
+                    By
+                    {' '}
+                    {selected.author.username}
+                  </div>
                 </div>
-                <div>
-                  By
-                  {' '}
-                  {selected.author.username}
+                <div
+                  className={`blog-title ${
+                    selected.title.length > 22 && 'long-blog-title'
+                  }`}
+                >
+                  <h1>{selected.title.toUpperCase()}</h1>
                 </div>
-              </div>
-              <div
-                className={`blog-title ${
-                  selected.title.length > 22 && 'long-blog-title'
-                }`}
-              >
-                <h1>{selected.title.toUpperCase()}</h1>
-              </div>
-              <div className="blog-description">
-                <p>{selected.description}</p>
+                <div className="blog-description">
+                  <p>{selected.description}</p>
+                </div>
               </div>
             </div>
           </div>
+          <button
+            type="button"
+            className="map-popup-close-button"
+            onClick={() => setActivePopUp(null)}
+          >
+            X
+          </button>
         </div>
-        <button
-          type="button"
-          className="map-popup-close-button"
-          onClick={() => setActivePopUp(null)}
-        >
-          X
-        </button>
-      </div>
+      </Link>
     );
   }
   return (
@@ -208,37 +210,39 @@ const ClusterPopUp = ({
               }}
             >
               {blogs.map((blog) => (
-                <div className="blog-card map-cluster-blog-card">
-                  <div className="blog-image">
-                    {blog.data.headerImageURL && (
-                      <img src={blog.data.headerImageURL} alt="blog-header" width="300px" />
-                    )}
-                  </div>
-                  <div className="blog-card-right">
-                    <div className="blog-header">
-                      <div className="blog-author-info">
-                        <div>
-                          <img src={blog.data.author.avatar} alt="avatar" />
+                <Link to={`/blogs/${blog.data.id}`}>
+                  <div className="blog-card map-cluster-blog-card">
+                    <div className="blog-image">
+                      {blog.data.headerImageURL && (
+                        <img src={blog.data.headerImageURL} alt="blog-header" width="300px" />
+                      )}
+                    </div>
+                    <div className="blog-card-right">
+                      <div className="blog-header">
+                        <div className="blog-author-info">
+                          <div>
+                            <img src={blog.data.author.avatar} alt="avatar" />
+                          </div>
+                          <div>
+                            By
+                            {' '}
+                            {blog.data.author.username}
+                          </div>
                         </div>
-                        <div>
-                          By
-                          {' '}
-                          {blog.data.author.username}
+                        <div
+                          className={`blog-title ${
+                            blog.data.title.length > 22 && 'long-blog-title'
+                          }`}
+                        >
+                          <h1>{blog.data.title.toUpperCase()}</h1>
                         </div>
-                      </div>
-                      <div
-                        className={`blog-title ${
-                          blog.data.title.length > 22 && 'long-blog-title'
-                        }`}
-                      >
-                        <h1>{blog.data.title.toUpperCase()}</h1>
-                      </div>
-                      <div className="blog-description">
-                        <p>{blog.data.description}</p>
+                        <div className="blog-description">
+                          <p>{blog.data.description}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

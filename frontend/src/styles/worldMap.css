@@ -181,6 +181,10 @@
     overflow-x: hidden;
 }
 
+.cluster-content-container a{
+    text-decoration: none;
+    color: white;
+}
 .cluster-popup-wrapper {
     box-sizing: border-box;
     height: 80vh;
