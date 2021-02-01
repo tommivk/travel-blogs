@@ -74,7 +74,9 @@
 .map-picture-card {
     position: relative;
     width: 10vw;
+    min-width: 200px;
     height: 15vw;
+    min-height: 250px;
     border: 2px solid black;
     background-color: #191e36;
     color: white;
@@ -100,8 +102,8 @@
 
 .map-picture-card-title {
     box-sizing: border-box;
-    padding: 5px;
-    height: 3vw;
+    padding: 10px;
+    height: fit-content;
     display: flex;
     align-items: center;
 }
@@ -113,7 +115,7 @@
 
 .map-picture-card img {
   width: 100%;
-  height: 9vw;
+  height: 85%;
   object-fit: fill;
 }
 
@@ -144,6 +146,8 @@
 .blog-card.map-blog-card {
     height: 13vw;
     width: 17vw;
+    min-height: 180px;
+    min-width: 250px;
     pointer-events: none;
     color: white;
     position: relative;
@@ -153,10 +157,13 @@
 .blog-card.map-cluster-blog-card {
     height: 13vw;
     width: 17vw;
+    min-height: 180px;
+    min-width: 250px;
     overflow: hidden;
     margin: 10px;
     pointer-events: none;
     background-color: #191e36;
+    font-size: 0.8rem;
 }
 
 .map-blog-card-wrapper {
