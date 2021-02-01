@@ -1,5 +1,6 @@
 .gallery-main-container {
   width: 100vw;
+  max-width: 100vw;
   height: 94vh;
   overflow-y: auto;
   position: relative;
@@ -40,13 +41,11 @@
 }
 
 .gallery-cards-wrapper {
-  width: 70vw;
+  width: 80%;
 }
 
 .gallery-cards {
   margin-top: 20px;
-  width: 100%;
-  max-width: 85vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
