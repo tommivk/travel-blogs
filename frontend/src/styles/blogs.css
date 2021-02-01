@@ -249,10 +249,14 @@
   top: 50%;
   transform: translate(0, -50%);
   text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  border-radius: 10px;
 }
 
 .swiper-blog-title {
   font-size: 5em;
+  word-wrap: break-word;
   margin-bottom: 30px;
   font-weight: 600;
 }
