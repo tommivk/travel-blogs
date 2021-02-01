@@ -197,9 +197,8 @@
 #userpage-blog-delete-button {
   position: absolute;
   z-index: 5;
-  right: 0px;
-  top: 0px;
-  transform: translate(-25%, 100%);
+  right: 20px;
+  top: 20px;
   cursor: pointer;
   color: white;
   background-color: rgb(128, 9, 9);
@@ -222,4 +221,7 @@
 
 .userpage-content-title {
   text-align: center;
+}
+
+.userpage-blog-card-wrapper:hover #userpage-blog-delete-button {
 }
