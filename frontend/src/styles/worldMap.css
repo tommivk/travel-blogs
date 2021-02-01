@@ -152,6 +152,7 @@
     color: white;
     position: relative;
     margin: 0px;
+    font-size: 1rem;
 }
 
 .blog-card.map-cluster-blog-card {
@@ -163,7 +164,7 @@
     margin: 10px;
     pointer-events: none;
     background-color: #191e36;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 .map-blog-card-wrapper {
