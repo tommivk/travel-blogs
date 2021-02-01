@@ -86,9 +86,10 @@ const UserPage = ({
       const storageRef = storage.ref();
       const fbuser = firebase.auth().currentUser;
       const userID = fbuser.uid;
-      await storageRef.child(`/images/${userID}/${picture.firebaseID}`).delete();
 
       await axios.delete(`http://localhost:8008/api/pictures/${picture.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
+
+      await storageRef.child(`/images/${userID}/${picture.firebaseID}`).delete();
 
       const newUser = { ...user, pictures: user.pictures.filter((pic) => pic.id !== picture.id) };
       setUser(newUser);
@@ -103,8 +104,7 @@ const UserPage = ({
       );
       handleMessage('success', 'Picture deleted');
     } catch (error) {
-      handleMessage('error', error.response.data.message);
-      console.log(error);
+      handleMessage('error', error.message);
     }
   };
 
@@ -114,11 +114,11 @@ const UserPage = ({
       const fbuser = firebase.auth().currentUser;
       const userID = fbuser.uid;
 
+      await axios.delete(`http://localhost:8008/api/blogs/${blog.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
+
       if (blog.headerImageURL) {
         await storageRef.child(`/blogcovers/${userID}/${blog.headerImageID}`).delete();
       }
-
-      await axios.delete(`http://localhost:8008/api/blogs/${blog.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
 
       const newUser = { ...user, blogs: user.blogs.filter((b) => b.id !== blog.id) };
       setUser(newUser);
@@ -135,8 +135,7 @@ const UserPage = ({
       setAllBlogs(newBlogs);
       handleMessage('success', 'Blog deleted');
     } catch (error) {
-      handleMessage('error', error.response.data.message);
-      console.log(error);
+      handleMessage('error', error.message);
     }
   };
 
