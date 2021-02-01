@@ -121,19 +121,7 @@ const ClusterPopUp = ({
 
   return (
     <div
-      style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '58vw',
-        height: '80vh',
-        backgroundColor: 'rgba(0,0,0,0.7)',
-        borderRadius: '8px',
-        padding: '10px',
-        color: 'white',
-        transform: 'translate(-50%, -50%)',
-        zIndex: 999999,
-      }}
+      className="cluster-popup-main-container"
     >
       <div className="cluster-popup-wrapper">
         {blogs.length > 0 && pictures.length > 0

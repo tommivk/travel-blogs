@@ -37,6 +37,22 @@
     cursor: pointer;
 }
 
+.cluster-popup-main-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 40vw;
+    width: fit-content;
+    max-width: 58vw;
+    height: 80vh;
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 8px;
+    padding: 10px;
+    color: white;
+    transform: translate(-50%, -50%);
+    z-index: 999999;
+}
+
 #cluster-close-button {
     position: absolute;
     border-radius: 50%;
@@ -148,7 +164,6 @@
     width: fit-content;
     height: fit-content;
     transform: translate(10%, -110%);
-
 }
 
 .map-popup-close-button {
@@ -185,6 +200,7 @@
     text-decoration: none;
     color: white;
 }
+
 .cluster-popup-wrapper {
     box-sizing: border-box;
     height: 80vh;
