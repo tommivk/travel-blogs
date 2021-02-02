@@ -37,7 +37,7 @@
     width: 18vw;
     background-color: #231A03;
     border-radius: 10px;
-    position: relative;
+    position: sticky;
     top: 10vh;
     color: white;
     text-align: center;
@@ -48,7 +48,6 @@
     padding: 10px;
     text-align: center;
     height: fit-content;
-    /* background-color: red; */
     width: 100%;
     position: sticky;
   }
@@ -150,7 +149,7 @@
     text-align: center;
     padding: 20px 40px 20px 40px;
     border-radius: 4%;
-    position: relative;
+    position: sticky;
     top: 10vh;
   }
 
