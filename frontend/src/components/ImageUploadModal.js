@@ -176,7 +176,8 @@ const ImageUploadModal = ({
         }
       },
       (error) => {
-        console.log('error happened', error);
+        console.log({ error });
+        handleMessage('error', error.message);
       },
       () => {
         uploadTask.snapshot.ref
