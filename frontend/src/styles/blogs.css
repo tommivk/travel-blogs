@@ -114,6 +114,8 @@
   padding-right: 5%;
   padding-left: 8%;
   padding-bottom: 4%;
+  max-height: 80%;
+  overflow: hidden;
 }
 
 .author-avatar {
