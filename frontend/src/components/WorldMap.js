@@ -26,8 +26,8 @@ const PopUp = ({
 
   if (type === 'blog') {
     return (
-      <Link to={`/blogs/${selected.id}`} style={{ textDecoration: 'none' }}>
-        <div className="map-blog-card-wrapper">
+      <div className="map-blog-card-wrapper">
+        <Link to={`/blogs/${selected.id}`} style={{ textDecoration: 'none' }}>
           <div className="blog-card map-blog-card">
             <div className="blog-image">
               {selected.headerImageURL && (
@@ -59,15 +59,15 @@ const PopUp = ({
               </div>
             </div>
           </div>
-          <button
-            type="button"
-            className="map-popup-close-button"
-            onClick={() => setActivePopUp(null)}
-          >
-            X
-          </button>
-        </div>
-      </Link>
+        </Link>
+        <button
+          type="button"
+          className="map-popup-close-button"
+          onClick={() => setActivePopUp(null)}
+        >
+          X
+        </button>
+      </div>
     );
   }
   return (
