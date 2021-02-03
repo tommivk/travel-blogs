@@ -11,10 +11,13 @@ const getTokenFrom = (request) => {
   return null;
 };
 
-notificationsRouter.get('/', async (req, res) => {
-  const notifications = await Notification.find({});
-
-  res.json(notifications.map((n) => n.toJSON()));
+notificationsRouter.get('/', async (req, res, next) => {
+  try {
+    const notifications = await Notification.find({});
+    return res.json(notifications.map((n) => n.toJSON()));
+  } catch (error) {
+    return next(error);
+  }
 });
 
 notificationsRouter.get('/user/:id', async (req, res, next) => {

@@ -12,25 +12,29 @@ const getTokenFrom = (request) => {
   return null;
 };
 
-usersRouter.get('/', async (req, res) => {
-  const users = await User.find({}).populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } }).populate('pictures');
-  res.json(users.map((user) => user.toJSON()));
+usersRouter.get('/', async (req, res, next) => {
+  try {
+    const users = await User.find({}).populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } }).populate('pictures');
+    return res.json(users.map((user) => user.toJSON()));
+  } catch (error) {
+    return next(error);
+  }
 });
 
-usersRouter.post('/', async (req, res) => {
-  const { body } = req;
-
-  if (!body.username || !body.password) {
-    return res.send(400).end();
-  }
-
-  if (body.password.length < 5) {
-    return res
-      .status(400)
-      .send({ message: 'password must be at least 5 characters long' });
-  }
-
+usersRouter.post('/', async (req, res, next) => {
   try {
+    const { body } = req;
+
+    if (!body.username || !body.password) {
+      return res.send(400).end();
+    }
+
+    if (body.password.length < 5) {
+      return res
+        .status(400)
+        .send({ message: 'password must be at least 5 characters long' });
+    }
+
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(body.password, saltRounds);
 
@@ -56,7 +60,7 @@ usersRouter.post('/', async (req, res) => {
 
     return res.json(savedUser.toJSON());
   } catch (error) {
-    return res.status(400).send(error);
+    return next(error);
   }
 });
 
