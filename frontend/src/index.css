@@ -38,6 +38,7 @@ body {
   align-items: center;
   margin: auto;
   justify-content: center;
+  margin-bottom: 6vh;
 }
 
 .comment-input-field {
