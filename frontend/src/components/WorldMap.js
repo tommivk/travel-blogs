@@ -20,8 +20,12 @@ import blogIcon from '../images/message.svg';
 import '../styles/worldMap.css';
 
 const PopUp = ({
-  selected, handle, type, setActivePopUp,
+  selected, handle, type, setActivePopUp, setFullScreenImage,
 }) => {
+  const handleFullScreen = (img) => {
+    setFullScreenImage(img);
+    handle.enter();
+  };
   if (type !== 'blog' && type !== 'image') return null;
 
   if (type === 'blog') {
@@ -79,7 +83,7 @@ const PopUp = ({
         <img src={selected.imgURL} alt="" />
         <div
           id="map-fullscreen-button"
-          onClick={handle.enter}
+          onClick={() => handleFullScreen(selected.imgURL)}
         >
           <Fullscreen />
         </div>
@@ -102,13 +106,14 @@ const PopUp = ({
 
 PopUp.propTypes = {
   selected: PropTypes.instanceOf(Object).isRequired,
-  handle: PropTypes.func.isRequired,
+  handle: PropTypes.instanceOf(Object).isRequired,
   type: PropTypes.string.isRequired,
   setActivePopUp: PropTypes.func.isRequired,
+  setFullScreenImage: PropTypes.func.isRequired,
 };
 
 const ClusterPopUp = ({
-  content, setClusterContent, handle, setActivePopUp,
+  content, setClusterContent, handle, setActivePopUp, setFullScreenImage,
 }) => {
   const [viewBlogs, setViewBlogs] = useState(true);
   const [viewPictures, setViewPictures] = useState(true);
@@ -118,6 +123,11 @@ const ClusterPopUp = ({
   useEffect(() => {
     setActivePopUp(false);
   }, []);
+
+  const handleFullScreen = (img) => {
+    setFullScreenImage(img);
+    handle.enter();
+  };
 
   return (
     <div
@@ -168,7 +178,7 @@ const ClusterPopUp = ({
                     <img src={pic.data.imgURL} alt="" />
                     <div
                       id="map-fullscreen-button"
-                      onClick={handle.enter}
+                      onClick={() => handleFullScreen(pic.data.imgURL)}
                     >
                       <Fullscreen />
                     </div>
@@ -246,6 +256,7 @@ ClusterPopUp.propTypes = {
   setClusterContent: PropTypes.func.isRequired,
   handle: PropTypes.instanceOf(Object).isRequired,
   setActivePopUp: PropTypes.func.isRequired,
+  setFullScreenImage: PropTypes.func.isRequired,
 };
 
 const WorldMap = ({
@@ -262,6 +273,7 @@ const WorldMap = ({
   const [markerData, setMarkerData] = useState(new Map());
   const [mapZoom, setMapZoom] = useState(2);
   const [clusterContent, setClusterContent] = useState(null);
+  const [fullScreenImage, setFullScreenImage] = useState(null);
   const [activePopUp, setActivePopUp] = useState({
     data: null,
     type: null,
@@ -528,6 +540,7 @@ const WorldMap = ({
           setClusterContent={setClusterContent}
           handle={handle}
           setActivePopUp={setActivePopUp}
+          setFullScreenImage={setFullScreenImage}
         />
       )}
       <GoogleMapReact
@@ -549,6 +562,7 @@ const WorldMap = ({
             lng={activePopUp.data.location.lng}
             type={activePopUp.type}
             setActivePopUp={setActivePopUp}
+            setFullScreenImage={setFullScreenImage}
           />
         )}
 
@@ -560,12 +574,13 @@ const WorldMap = ({
             lng={activePopUp.blogLocation.lng}
             type={activePopUp.type}
             setActivePopUp={setActivePopUp}
+            setFullScreenImage={setFullScreenImage}
           />
         )}
       </GoogleMapReact>
 
       <FullScreen handle={handle}>
-        {activePopUp && activePopUp.type === 'image' && (
+        {fullScreenImage && (
           <div
             style={{
               height: '100vh',
@@ -574,7 +589,7 @@ const WorldMap = ({
               justifyContent: 'center',
             }}
           >
-            <img src={activePopUp.data.imgURL} alt="" />
+            <img src={fullScreenImage} alt="" />
           </div>
         )}
       </FullScreen>
