@@ -69,36 +69,8 @@
     margin-bottom: 30px;
   }
 
-  .blog-comment-form {
-    text-align: center;
-  }
 
-  .comment-form-wrapper {
-    position: relative;
-    background-color: aliceblue;
-    width: 100%;    
-  }
-
-  .comment-form-main-container {
-    display: inline-block;
-    width: 80%;
-  }
-  
-  #comment-form-input {
-    height: 30px;
-    width: 100%;
-    padding:2px;
-    
-  }
-
-  #comment-form-button {
-    position: absolute;
-    right: -3px;
-    top: 50%;
-    transform: translate(0, -50%);
-    background-color: rgb(150, 16, 16);
-    color: white
-  }
+ 
   .blog-comment-section-container {
     margin-bottom: 50px;
   }

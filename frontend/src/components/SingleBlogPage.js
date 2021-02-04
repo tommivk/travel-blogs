@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Button } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Star from '@material-ui/icons/Star';
 import StarBorder from '@material-ui/icons/StarBorder';
@@ -49,27 +48,26 @@ const CommentForm = ({
   };
 
   return (
-    <div className="comment-form-main-container">
-      <form onSubmit={handleCommentSubmit}>
-        <div className="comment-form-wrapper">
-          <input
-            id="comment-form-input"
-            type="text"
-            value={comment}
-            autoComplete="off"
-            onChange={({ target }) => setComment(target.value)}
-          />
-          <Button
-            id="comment-form-button"
-            variant="contained"
-            size="small"
-            type="submit"
-          >
-            send
-          </Button>
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleCommentSubmit}>
+      <div className="comment-input-container">
+        <input
+          className="comment-input-field"
+          type="text"
+          value={comment}
+          placeholder="Add new comment..."
+          autoComplete="off"
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <button
+          className="comment-submit-button"
+          variant="contained"
+          size="small"
+          type="submit"
+        >
+          send
+        </button>
+      </div>
+    </form>
   );
 };
 

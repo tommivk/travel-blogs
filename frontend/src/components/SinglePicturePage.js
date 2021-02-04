@@ -56,12 +56,16 @@ const CommentForm = ({
   return (
     <div>
       <form onSubmit={handleCommentSubmit}>
-        <input
-          type="text"
-          value={comment}
-          onChange={({ target }) => setComment(target.value)}
-        />
-        <button type="submit">Send</button>
+        <div className="comment-input-container">
+          <input
+            className="comment-input-field"
+            type="text"
+            value={comment}
+            placeholder="Add new comment..."
+            onChange={({ target }) => setComment(target.value)}
+          />
+          <button className="comment-submit-button" type="submit">Send</button>
+        </div>
       </form>
     </div>
   );

@@ -32,3 +32,38 @@ body {
   left: 100%;
   font-size: 15px;
 }
+
+.comment-input-container {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+}
+
+.comment-input-field {
+  box-sizing: border-box;
+  height: 40px;
+  width: 450px;
+  border-radius: 10px 0px 0px 10px;
+  outline: none;
+  padding: 10px;
+  border: 2px solid black;
+}
+
+.comment-submit-button {
+  box-sizing: border-box;
+  cursor: pointer;
+  margin-left: 5px;
+  height: 40px;
+  width: 60px;
+  padding: 10px;
+  background-color: rgb(33, 29, 150);
+  border-radius: 0px 10px 10px 0px;
+  border: none;
+  color: white;
+  outline: none;
+}
+
+.comment-submit-button:hover {
+  background-color: rgb(56, 51, 199);
+}
