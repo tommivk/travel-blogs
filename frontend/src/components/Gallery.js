@@ -108,8 +108,7 @@ const Gallery = ({
       <div className="blog-top-right-container">
         <div className="blog-top-right-wrapper">
           <div className="gallery-filter-selection">
-            Sort By
-            {' '}
+            <span className="gallery-select-title">Sort By</span>
             <Select
               style={{ color: 'white' }}
               onChange={({ target }) => setSortBy(target.value)}

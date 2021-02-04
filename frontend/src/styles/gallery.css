@@ -67,6 +67,9 @@
   align-self: center;
 }
 
+.gallery-select-title {
+  margin-right: 15px;
+}
 .gallery-top-content {
   min-height: 50px;
 }
