@@ -98,9 +98,11 @@ const ImageUploadModal = ({
 
   const handleNextStep = () => {
     setStep(step + 1);
+    setSearchFilter('');
   };
   const handlePreviousStep = () => {
     setStep(step - 1);
+    setSearchFilter('');
   };
 
   const uploadPicture = async (uploadedPictureURL, firebaseID) => {
@@ -301,74 +303,83 @@ const ImageUploadModal = ({
               Upload Images
             </span>
           </h2>
-          <div className="upload-modal-middle-container">
-            <div className="upload-modal-midddle-content">
-              {imagePreview && step === 0 && (
-                <img alt="" src={imagePreview} height="300" width="300" />
-              )}
-              {step === 1 && (
-                <div>
-                  <h3>Choose title</h3>
-                  <div>
-                    <TextField
-                      id="image-upload-title-input"
-                      placeholder="title"
-                      value={title}
-                      onChange={({ target }) => setTitle(target.value)}
-                      variant="outlined"
-                      autoFocus
-                    />
-                  </div>
-                </div>
-              )}
-              {step === 2 && (
-                <div>
-                  <h3>Choose location</h3>
-                  search for city
-                  <form onSubmit={handleCitySearch}>
-                    <input ref={inputRef} />
-                    <button type="submit">Search</button>
-                  </form>
-                  <AddLocations
-                    filter={searchFilter}
-                    selectFunction={setLocation}
-                  />
-                  <div>
-                    Or select from map:
-                    {' '}
-                    <Explore
-                      fontSize="large"
-                      onClick={() => setMapOpen(true)}
-                    />
-                  </div>
-                </div>
-              )}
-              {step === 3 && (
-                <div>
-                  <h3>Publish This Image To Gallery?</h3>
-                  <div className="upload-modal-publicicity-select-buttons">
-                    <Button id="upload-modal-yes-button" variant="contained" onClick={() => handleSetPublicity(true)}>Yes</Button>
-                    <Button id="upload-modal-red-button" variant="contained" onClick={() => handleSetPublicity(false)}>No</Button>
-                  </div>
-                </div>
-              )}
-            </div>
+          {step < 4
+           && (
+           <div className="upload-modal-middle-container">
+             <div className="upload-modal-midddle-content">
+               {imagePreview && step === 0 && (
+               <img alt="" src={imagePreview} height="300" width="300" />
+               )}
+               {step === 1 && (
+               <div>
+                 <h3>Choose title</h3>
+                 <div>
+                   <TextField
+                     id="image-upload-title-input"
+                     placeholder="title"
+                     value={title}
+                     onChange={({ target }) => setTitle(target.value)}
+                     variant="outlined"
+                     autoFocus
+                   />
+                 </div>
+               </div>
+               )}
+               {step === 2 && (
+               <div>
+                 <h3>(Optional) Choose location</h3>
+                 <form onSubmit={handleCitySearch}>
+                   <input id="upload-modal-search-input" ref={inputRef} placeholder="Search for cities..." />
+                   <button id="upload-modal-search-button" type="submit">Search</button>
+                 </form>
+                 <div className="image-modal-search-result">
+                   <AddLocations
+                     filter={searchFilter}
+                     selectFunction={setLocation}
+                   />
+                 </div>
+                 <div>
+                   {searchFilter === ''
+                    && (
+                    <div className="upload-modal-map-select">
+                      Or select from map:
+                      {' '}
+                      <Explore
+                        id="upload-modal-map-button"
+                        onClick={() => setMapOpen(true)}
+                      />
+                    </div>
+                    )}
+                 </div>
+               </div>
+               )}
+               {step === 3 && (
+               <div>
+                 <h3>Publish This Image To Gallery?</h3>
+                 <div className="upload-modal-publicicity-select-buttons">
+                   <Button id="upload-modal-yes-button" variant="contained" onClick={() => handleSetPublicity(true)}>Yes</Button>
+                   <Button id="upload-modal-no-button" variant="contained" onClick={() => handleSetPublicity(false)}>No</Button>
+                 </div>
+               </div>
+               )}
+             </div>
 
-            <div>
-              {image && step < 4 ? (
-                <div>
-                  {step > 0 && (
-                    <Button id="upload-modal-back-button" variant="contained" onClick={handlePreviousStep}>{'<-'}</Button>
-                  )}
-                  {step < 3 && (
-                    <Button id="upload-modal-next-button" variant="contained" onClick={handleNextStep}>
-                      {step === 2 ? 'skip' : 'next'}
-                    </Button>
-                  )}
-                </div>
-              ) : null}
-            </div>
-          </div>
+             <div>
+               {image && step < 4 ? (
+                 <div>
+                   {step > 0 && (
+                   <Button id="upload-modal-back-button" variant="contained" onClick={handlePreviousStep}>{'<-'}</Button>
+                   )}
+                   {step < 3 && (
+                   <Button id="upload-modal-next-button" variant="contained" onClick={handleNextStep}>
+                     {step === 2 ? 'skip' : 'next'}
+                   </Button>
+                   )}
+                 </div>
+               ) : null}
+             </div>
+           </div>
+           )}
 
           {!image && (
           <div className="upload-modal-image-form">
@@ -391,7 +402,7 @@ const ImageUploadModal = ({
                 onClick={cancelImage}
                 id="image-modal-preview-cancel-button"
               >
-                Cancel
+                Cancel Image
               </Button>
               )}
               {step > 0 && (
@@ -402,7 +413,8 @@ const ImageUploadModal = ({
                   {step > 1 && <h3>Image Info</h3>}
                   <table className="image-upload-preview-table">
                     <tbody>
-                      {step > 1
+                      <>
+                        {step > 1
                       && (
                       <tr>
                         <td>Title:</td>
@@ -410,13 +422,14 @@ const ImageUploadModal = ({
                       </tr>
                       )}
 
-                      {step > 3
+                        {step > 3
                       && (
                       <tr>
                         <td>Public:</td>
                         <td>{publishToGallery ? 'yes' : 'no'}</td>
                       </tr>
                       )}
+                      </>
                     </tbody>
                   </table>
                     {location && <h3>Location</h3> }
@@ -433,7 +446,7 @@ const ImageUploadModal = ({
                         </tr>
                         <tr>
                           <td>City:</td>
-                          <td>{location.city}</td>
+                          <td>{location.city ? location.city : 'Unknown'}</td>
                         </tr>
                       </>
                       ) }

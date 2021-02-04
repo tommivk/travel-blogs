@@ -15,14 +15,18 @@
 
 .upload-modal-middle-container {
   position: absolute;
-  top: 20%;
-  left: 42%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.603);
+  border-radius: 20px;
 }
 
 .upload-modal-midddle-content {
   width: 300px;
-  height: 300px;
+  height: 350px;
   text-align: center;
 }
 
@@ -74,11 +78,14 @@
 
 .image-upload-preview-table {
   text-align: left;
-  width: fit-content;
-  /* margin-left: 5%; */
+  width: 100%;
   padding-left: 10px;
   padding-right: 10px;
   width: 100%;
+}
+
+.image-upload-preview-table td {
+  width: 150px;
 }
 
 .image-upload-preview-table tr h3{
@@ -117,10 +124,12 @@
   bottom: 10px;
   transform: translate(-50%, 0px);
   cursor: pointer;
+  background-color: rgb(151, 20, 20);
+  color: white;
 }
 
 #image-modal-preview-cancel-button:hover {
-  background-color: rgb(110, 101, 101);
+  background-color: rgb(179, 55, 55);
 }
 
 #image-modal-final-cancel-button {
@@ -138,12 +147,16 @@
 }
 
 .upload-modal-publicicity-select-buttons {
-  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
 }
 
 #upload-modal-yes-button {
   background-color: rgb(27, 90, 27);
   margin-right: 5px;
+  width: 80px;
+  height: 50px;
   color: white;
 }
 
@@ -151,13 +164,15 @@
   background-color: rgb(31, 133, 31);
 }
 
-#upload-modal-red-button {
+#upload-modal-no-button {
   background-color: rgb(141, 19, 19);
   margin-left: 5px;
+  width: 80px;
+  height: 50px;
   color: white;
 }
 
-#upload-modal-red-button:hover {
+#upload-modal-no-button:hover {
   background-color: rgb(177, 29, 29);
 }
 
@@ -191,6 +206,80 @@
   color:rgb(129, 129, 129)
 }
 
+.upload-modal-map-select {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#upload-modal-map-button {
+  cursor: pointer;
+  font-size: 3rem;
+}
+
+#upload-modal-search-input {
+  padding: 10px;
+  border: none;
+}
+
+#upload-modal-search-input:focus {
+  outline: 3px solid rgb(41, 41, 126);
+}
+
+#upload-modal-search-button{
+  padding: 5px;
+  cursor: pointer;
+  margin-left: 5px;
+  background-color: rgb(58, 53, 53);
+  color: white;
+  border-radius: 5px;
+}
+
+#upload-modal-search-button:hover {
+  background-color: rgb(90, 79, 79);
+}
+
+.image-modal-search-result {
+  margin-top: 20px;
+}
+
+.image-modal-search-result table{
+ width: 100%;
+ text-align: left;
+}
+
+.image-modal-search-result .location-result-select-button {
+  background-color: rgb(30, 34, 32);
+  height: 30px;
+  width: 50px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.image-modal-search-result .location-result-select-button:hover {
+  background-color: rgb(43, 49, 46);
+}
+
+.image-modal-search-result .location-result-prev-button {
+  background-color: rgb(41, 41, 126);
+  margin-right: 20px;
+  margin-top: 10px;
+  width: 50px;
+  height: 30px;
+  color: white;
+}
+
+.image-modal-search-result .location-result-next-button {
+  background-color: rgb(41, 41, 126);
+  margin-left: 20px;
+  margin-top: 10px;
+  width: 50px;
+  height: 30px;
+  color: white;
+}
+
 @media (max-width: 1700px) {
   .image-upload-modal-main-container {
     width: 85%;
@@ -207,7 +296,6 @@
   }
   .upload-modal-middle-container {
     left: 27%;
-    background-color: rgba(0, 0, 0, 0.5);
   }
   .upload-modal-preview-container.final-step {
     width: 30%;

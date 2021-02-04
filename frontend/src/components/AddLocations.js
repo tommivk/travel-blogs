@@ -34,6 +34,8 @@ const AddLocations = ({ filter, selectFunction }) => {
     return null;
   };
 
+  if (filter === '') return null;
+
   return (
     <div>
       {searchResult.data && searchResult.data.length > 0
@@ -43,10 +45,10 @@ const AddLocations = ({ filter, selectFunction }) => {
                       <tbody>
 
                         {searchResult.data.map((city) => (
-                          <tr key={city}>
+                          <tr key={city.city}>
                             <td>{city.city}</td>
                             <td>{city.country}</td>
-                            <td><button type="button" onClick={() => selectFunction(city)}>Select</button></td>
+                            <td><button className="location-result-select-button" type="button" onClick={() => selectFunction(city)}>Select</button></td>
                           </tr>
                         ))}
 
