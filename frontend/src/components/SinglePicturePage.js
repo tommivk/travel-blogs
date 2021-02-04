@@ -271,6 +271,10 @@ const SinglePicturePage = ({
                   onClick={() => handleVoteDelete()}
                 />
               ) : null}
+
+              {(userVote && userVote.dir === -1)
+               && <div className="vote-arrow-placeholder" />}
+
               {!userVote && (
               <ArrowUpward
                 className="picture-vote-arrow"
@@ -286,6 +290,10 @@ const SinglePicturePage = ({
                   onClick={() => handleVoteDelete()}
                 />
               ) : null}
+
+              {(userVote && userVote.dir === 1)
+               && <div className="vote-arrow-placeholder" />}
+
               {!userVote && (
               <ArrowDownward
                 className="picture-vote-arrow"
