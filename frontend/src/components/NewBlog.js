@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import firebase from 'firebase/app';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -48,7 +48,10 @@ const NewBlog = ({
   const [locations, setLocations] = useState([]);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [uploadedBlogID, setUploadedBlogID] = useState(null);
+  const [searchFilter, setSearchFilter] = useState('');
   const steps = getSteps();
+
+  const searchRef = useRef(null);
 
   useEffect(() => {
     document.title = 'Create New Blog | TravelBlogs';
@@ -67,6 +70,18 @@ const NewBlog = ({
   };
   const closeUploadModal = () => {
     setUploadModalOpen(false);
+  };
+
+  const handleAddLocation = (city) => {
+    const newLocation = [
+      {
+        lat: city.latitude,
+        lng: city.longitude,
+        city: city.city,
+        country: city.country,
+      },
+    ];
+    setLocations(locations.concat(newLocation));
   };
 
   const handleLocationRemove = (location) => {
@@ -163,6 +178,12 @@ const NewBlog = ({
     if (!e.target.files[0]) return;
     setHeaderImage(e.target.files[0]);
     setHeaderImagePreview(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const handleCitySearch = (e) => {
+    e.preventDefault();
+    console.log(searchRef.current.value);
+    setSearchFilter(searchRef.current.value);
   };
 
   const stepperIcons = (p) => {
@@ -320,10 +341,16 @@ const NewBlog = ({
               ))}
             </div>
             <div className="location-select-form">
-              <AddLocations
-                locations={locations}
-                setLocations={setLocations}
-              />
+              <form onSubmit={handleCitySearch}>
+                <input type="text" ref={searchRef} />
+                <button type="submit">search</button>
+              </form>
+              <div>
+                <AddLocations
+                  filter={searchFilter}
+                  selectFunction={handleAddLocation}
+                />
+              </div>
             </div>
           </div>
           <div className="new-blog-bottom-navigation">

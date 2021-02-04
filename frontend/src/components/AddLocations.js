@@ -1,66 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Button, TextField } from '@material-ui/core';
 
-const AddLocations = ({ locations, setLocations }) => {
-  const [filter, SetFilter] = useState('');
+const AddLocations = ({ filter, selectFunction }) => {
   const [searchResult, setSearchResult] = useState([]);
-  const URL = 'http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=';
+  const [href, setHref] = useState('/v1/geo/cities?limit=5&offset=0&namePrefix=');
+
+  const URL = 'http://geodb-free-service.wirefreethought.com';
 
   useEffect(() => {
+    setHref('/v1/geo/cities?limit=5&offset=0&namePrefix=');
     if (filter !== '') {
-      axios.get(`${URL}${filter}`).then((res) => setSearchResult(res.data));
+      axios.get(`${URL}${href}${filter}`).then((res) => setSearchResult(res.data));
     }
   }, [filter]);
 
-  const handleAddLocation = (city) => {
-    const newLocation = [
-      {
-        lat: city.latitude,
-        lng: city.longitude,
-        city: city.city,
-        country: city.country,
-      },
-    ];
-    setLocations(locations.concat(newLocation));
+  useEffect(() => {
+    axios.get(`${URL}${href}`).then((res) => setSearchResult(res.data));
+  }, [href]);
+
+  const getButtons = (res) => {
+    if (res && res.links) {
+      const next = res.links.find((x) => x.rel === 'next');
+      const prev = res.links.find((x) => x.rel === 'prev');
+
+      return (
+        <div>
+          {prev && <button className="location-result-prev-button" type="button" onClick={() => setHref(prev.href)}>Prev</button>}
+          {next && <button className="location-result-next-button" type="button" onClick={() => setHref(next.href)}>Next</button>}
+        </div>
+      );
+    }
+    return null;
   };
+
   return (
     <div>
-      <TextField
-        id="location-search-textfield"
-        variant="outlined"
-        placeholder="search by city"
-        onChange={({ target }) => SetFilter(target.value)}
-      />
-      <ul id="location-list">
-        {searchResult
-        && searchResult.data
-        && searchResult.data.map((city) => (
-          <div style={{ display: 'flex' }} key={city.city}>
-            <li id="location-list-element">
-              {city.city}
-              {', '}
-              {city.country}
-            </li>
-            <Button
-              id="location-select-button"
-              onClick={() => handleAddLocation(city)}
-              variant="outlined"
-              color="secondary"
-            >
-              Choose
-            </Button>
-          </div>
-        ))}
-      </ul>
+      {searchResult.data && searchResult.data.length > 0
+                && (
+                  <div>
+                    <table>
+                      <tbody>
+
+                        {searchResult.data.map((city) => (
+                          <tr key={city}>
+                            <td>{city.city}</td>
+                            <td>{city.country}</td>
+                            <td><button type="button" onClick={() => selectFunction(city)}>Select</button></td>
+                          </tr>
+                        ))}
+
+                      </tbody>
+                    </table>
+                    {getButtons(searchResult)}
+                  </div>
+                )}
+      {searchResult.data && searchResult.data.length === 0 && 'No cities found'}
     </div>
   );
 };
 
 AddLocations.propTypes = {
-  locations: PropTypes.instanceOf(Array).isRequired,
-  setLocations: PropTypes.func.isRequired,
+  filter: PropTypes.string.isRequired,
+  selectFunction: PropTypes.func.isRequired,
 };
 
 export default AddLocations;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase/app';
 import axios from 'axios';
@@ -30,7 +30,7 @@ const ImageUploadModal = ({
 }) => {
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
-  const [locations, setLocations] = useState([]);
+  const [location, setLocation] = useState(null);
   const [publishToGallery, setPublishToGallery] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -39,12 +39,20 @@ const ImageUploadModal = ({
   const [uploadBarVisible, setUploadBarVisible] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [markerPosition, setMarkerPosition] = useState(null);
+  const [searchFilter, setSearchFilter] = useState('');
+
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    if (step === 2 && locations.length > 0) {
+    if (step === 2 && location) {
       setStep(3);
     }
-  }, [locations]);
+  }, [location]);
+
+  const handleCitySearch = (e) => {
+    e.preventDefault();
+    setSearchFilter(inputRef.current.value);
+  };
 
   const handleLocationSelect = () => {
     const { lat, lng } = { lat: markerPosition.lat, lng: markerPosition.lng };
@@ -53,14 +61,14 @@ const ImageUploadModal = ({
         .get(
           `https://eu1.locationiq.com/v1/reverse.php?key=${GEO_API_KEY}&lat=${lat}&lon=${lng}&accept-language=en&format=json`,
         )
-        .then((res) => setLocations([
+        .then((res) => setLocation(
           {
-            lat,
-            lng,
+            latitude: lat,
+            longitude: lng,
             city: res.data.address.city,
             country: res.data.address.country,
           },
-        ]));
+        ));
     } catch (error) {
       console.log(error);
     }
@@ -84,7 +92,7 @@ const ImageUploadModal = ({
     setImage(null);
     setImagePreview(null);
     setTitle('');
-    setLocations([]);
+    setLocation(null);
     setStep(0);
   };
 
@@ -100,8 +108,12 @@ const ImageUploadModal = ({
       lat: null, lng: null, city: null, country: null,
     };
 
-    if (locations.length > 0) {
-      locationData = locations[locations.length - 1];
+    if (location) {
+      locationData = {
+        ...location,
+        lat: location.latitude,
+        lng: location.longitude,
+      };
     }
 
     const newPicture = {
@@ -130,7 +142,7 @@ const ImageUploadModal = ({
       setImagePreview(null);
       setImage(null);
       setTitle('');
-      setLocations([]);
+      setLocation(null);
       setStep(0);
       setUploadProgress(0);
       setPublishToGallery(false);
@@ -313,9 +325,13 @@ const ImageUploadModal = ({
                 <div>
                   <h3>Choose location</h3>
                   search for city
+                  <form onSubmit={handleCitySearch}>
+                    <input ref={inputRef} />
+                    <button type="submit">Search</button>
+                  </form>
                   <AddLocations
-                    locations={locations}
-                    setLocations={setLocations}
+                    filter={searchFilter}
+                    selectFunction={setLocation}
                   />
                   <div>
                     Or select from map:
@@ -403,21 +419,21 @@ const ImageUploadModal = ({
                       )}
                     </tbody>
                   </table>
-                    {locations.length > 0 && <h3>Location</h3> }
+                    {location && <h3>Location</h3> }
                   <table className="image-upload-preview-table">
                     <tbody>
-                      {locations.length > 0
+                      {location
                       && (
                       <>
                         <tr>
                           <td>Country:</td>
                           <td>
-                            {locations[locations.length - 1].country}
+                            {location.country}
                           </td>
                         </tr>
                         <tr>
                           <td>City:</td>
-                          <td>{locations[locations.length - 1].city}</td>
+                          <td>{location.city}</td>
                         </tr>
                       </>
                       ) }
