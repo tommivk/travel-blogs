@@ -43,7 +43,7 @@ const CommentForm = ({
       console.log(response.data);
       setComment('');
       if (inputRef.current) {
-        inputRef.current.scrollIntoView();
+        inputRef.current.scrollIntoView({ behavior: 'smooth' });
       }
     } catch (error) {
       console.log(error);
