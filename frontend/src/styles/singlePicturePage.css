@@ -165,11 +165,25 @@
     top: 10vh;
   }
 
+  .picture-info-container h2 {
+    margin: 0px;
+  }
+
   .picture-info-container img {
-    margin: 10px;
+    margin: 20px;
     width: 120px;
     height: 120px;
     border-radius: 50%;
+  }
+
+  .picture-info-username a{
+    text-decoration: none;
+  }
+  
+  .picture-info-username h2{
+    color: white;
+    margin-bottom: 20px;
+    text-decoration: none;
   }
 
   .picture-list-pseudo-element {

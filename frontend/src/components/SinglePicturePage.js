@@ -6,6 +6,7 @@ import { Button } from '@material-ui/core';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Fullscreen from '@material-ui/icons/Fullscreen';
+import { DateTime } from 'luxon';
 import Explore from '@material-ui/icons/Explore';
 import ExploreOff from '@material-ui/icons/ExploreOff';
 import Image from '@material-ui/icons/Image';
@@ -247,7 +248,7 @@ const SinglePicturePage = ({
       <div className="picture-info-container">
         <h2>Uploaded by</h2>
         <img src={picture.user.avatar} alt="avatar" />
-        <div>
+        <div className="picture-info-username">
           <Link to={`/users/${picture.user.id}`}>
             <div className="tooltip">
               <span className="tooltip-message">View Profile</span>
@@ -256,8 +257,11 @@ const SinglePicturePage = ({
           </Link>
         </div>
         <div>
-          votes:
-          {picture.votes.length}
+          {DateTime.fromISO(picture.date).monthShort}
+          {' '}
+          {DateTime.fromISO(picture.date).day}
+          {' '}
+          {DateTime.fromISO(picture.date).year}
         </div>
       </div>
       <div className="picture-comment-container">
