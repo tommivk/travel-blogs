@@ -1,11 +1,22 @@
+.confirm-dialog .MuiPaper-root {
+    background-color: transparent;
+}
+
+.confirm-dialog-main-content {
+    background-color: rgb(31, 28, 28);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
 #confirm-dialog-cancel-button {
-background-color: rgb(150, 20, 20);
-color: white;
-width: 100%;
+    background-color: rgb(150, 20, 20);
+    color: white;
+    width: 100%;
 }
 
 #confirm-dialog-cancel-button:hover {
-background-color: rgb(201, 50, 50);
+    background-color: rgb(201, 50, 50);
 }
 
 #confirm-dialog-ok-button {

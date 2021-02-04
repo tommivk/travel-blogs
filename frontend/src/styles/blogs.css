@@ -241,6 +241,7 @@
 .display-mode-buttons {
   display: flex;
   align-items: center;
+  margin-left: 15px;
 }
 
 .swiper-blog-info {
@@ -277,8 +278,8 @@
   align-items: center;
 }
 
-#blog-filter-select {
-  margin-left: 15px;
+.blog-select-title {
+  margin-right: 15px;
 }
 
 .blogs-top-title {

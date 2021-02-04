@@ -11,8 +11,8 @@ import '../styles/confirmDialog.css';
 const ConfirmDialog = ({
   dialogTitle, dialogText, dialogOpen, handleDialogConfirm, handleDialogClose,
 }) => (
-  <div>
-    <Dialog open={dialogOpen} onClose={handleDialogClose}>
+  <Dialog className="confirm-dialog" open={dialogOpen} onClose={handleDialogClose}>
+    <div className="confirm-dialog-main-content">
       <DialogTitle>{dialogTitle}</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -25,8 +25,8 @@ const ConfirmDialog = ({
           <Button id="confirm-dialog-cancel-button" onClick={handleDialogClose}>Cancel</Button>
         </div>
       </DialogActions>
-    </Dialog>
-  </div>
+    </div>
+  </Dialog>
 );
 
 ConfirmDialog.propTypes = {

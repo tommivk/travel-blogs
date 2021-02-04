@@ -131,7 +131,7 @@ const Blogs = ({ allBlogs }) => {
       <div className="blogs-navigation">
         <div className="blog-filter-selection">
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div>Sort By</div>
+            <div className="blog-select-title">Sort By</div>
             <Select
               id="blog-filter-select"
               style={{ color: 'white' }}
