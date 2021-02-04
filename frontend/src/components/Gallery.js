@@ -114,6 +114,13 @@ const Gallery = ({
               style={{ color: 'white' }}
               onChange={({ target }) => setSortBy(target.value)}
               value={sortBy}
+              MenuProps={{
+                getContentAnchorEl: null,
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                },
+              }}
             >
               <MenuItem value="Best">Best</MenuItem>
               <MenuItem value="Newest">Newest</MenuItem>
