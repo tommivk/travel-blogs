@@ -177,7 +177,9 @@ const UserPage = ({
 
       const newUsers = allUsers.map((u) => (u.id === user.id ? response.data : u));
       setAllUsers(newUsers);
+      handleMessage('success', 'Profile updated');
     } catch (error) {
+      handleMessage('error', error.message);
       console.log(error);
     }
   };
