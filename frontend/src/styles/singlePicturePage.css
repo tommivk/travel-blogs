@@ -159,7 +159,7 @@
     background-color: #231A03;
     color: white;
     text-align: center;
-    padding: 20px 40px 20px 40px;
+    padding: 30px 40px 30px 40px;
     border-radius: 4%;
     position: sticky;
     top: 10vh;
@@ -171,8 +171,8 @@
 
   .picture-info-container img {
     margin: 20px;
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
   }
 
@@ -183,6 +183,7 @@
   .picture-info-username h2{
     color: white;
     margin-bottom: 20px;
+    font-size: 1.4rem;
     text-decoration: none;
   }
 
