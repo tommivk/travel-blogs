@@ -217,6 +217,23 @@
     width: 40vw;
   }
 
+  .picture-location-info {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    min-height: fit-content;
+    margin: auto;
+  }
+
+  #picture-location-info-map-icon {
+    font-size: 2rem;
+    margin-left: 10px;
+    color: rgb(89, 120, 185)
+  }
+
   @media (max-width: 1200px) {
     .picture-list-container, .picture-info-container{
       display: none;

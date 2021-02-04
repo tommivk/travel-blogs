@@ -361,18 +361,21 @@ const SinglePicturePage = ({
             {showMap ? (
               <div>
                 <img src={mapImage} width="100%" height="auto" alt="map" />
-                {picture.location.city && <p>{picture.location.city}</p>}
-                {picture.location.country && <p>{picture.location.country}</p>}
-                <Link
-                  to={`/explore/?lat=${picture.location.lat}&lng=${picture.location.lng}`}
-                >
-                  <div style={{ width: 'fit-content' }}>
-                    <div className="tooltip">
-                      <span className="tooltip-message">Show On Map</span>
-                      <Language />
+                <div className="picture-location-info">
+                  {picture.location.city && picture.location.city }
+                  {' '}
+                  {picture.location.country && picture.location.country}
+                  <Link
+                    to={`/explore/?lat=${picture.location.lat}&lng=${picture.location.lng}`}
+                  >
+                    <div style={{ width: 'fit-content' }}>
+                      <div className="tooltip">
+                        <span className="tooltip-message">Show On Map</span>
+                        <Language id="picture-location-info-map-icon" />
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column' }}>
