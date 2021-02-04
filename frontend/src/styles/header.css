@@ -189,8 +189,16 @@
         text-decoration: none;
     }
 
-    .header-top-right-icons {
+    #header-user-avatar, #notifications-bell {
         display: none;
+    }
+
+    .header-top-right-icons {
+        margin-left: auto;
+    }
+
+    .search-modal-container {
+        height: 80vh;
     }
 
     .header-link {
