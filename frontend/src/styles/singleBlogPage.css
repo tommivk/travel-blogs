@@ -54,7 +54,8 @@
   .blog-comment-date {
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: 10px;
+    margin-left: auto;
+    font-size: 0.8rem;
   }
   
   #blog-author-link {
@@ -78,11 +79,21 @@
     list-style: none;
   }
 
+  .blog-comments {
+    width: 85%;
+    margin: auto;
+  }
+
+  .blog-comments ul {
+    padding: 0;
+  }
+
   .blog-comment {
     height: fit-content;
     padding: 5px;
     border-bottom: 2px solid black;
     margin-top: 15px;
+    position: relative;
   }
 
   .blog-comment img {

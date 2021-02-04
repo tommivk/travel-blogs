@@ -422,7 +422,7 @@ const SinglePicturePage = ({
                   <div className="picture-comment-content">
                     <p>{comment.content}</p>
                   </div>
-                  {comment.user.id === user.id && <div><button type="button" id="picture-comment-delete-button" onClick={() => handleDialogOpen('Delete Comment?', '', () => handleCommentDelete(picture.id, comment.id))}>Delete comment</button></div>}
+                  {comment.user.id === user.id && <div><button type="button" id="comment-delete-button" onClick={() => handleDialogOpen('Delete Comment?', '', () => handleCommentDelete(picture.id, comment.id))}>Delete comment</button></div>}
                 </div>
               </li>
             ))}

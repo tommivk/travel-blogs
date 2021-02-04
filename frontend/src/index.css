@@ -68,3 +68,21 @@ body {
 .comment-submit-button:hover {
   background-color: rgb(56, 51, 199);
 }
+
+#comment-delete-button {
+  background-color: rgb(175, 22, 22);
+  color: white;
+  display: inline-block;
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+#comment-delete-button:hover {
+  background-color: rgb(219, 56, 56);
+}

@@ -180,12 +180,6 @@
     cursor: pointer;
   }
 
-  #picture-comment-delete-button {
-    position: absolute;
-    right: 0px;
-    bottom: 5%;
-  }
-
   .picture-container {
     background-color: #231A03;
     padding-top: 10px;

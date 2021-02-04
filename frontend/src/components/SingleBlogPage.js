@@ -270,28 +270,30 @@ const SingleBlogPage = ({
                     setAllBlogs={setAllBlogs}
                   />
                 </div>
-                <ul>
-                  {blog.comments.map((comment) => (
-                    <li key={comment.id}>
-                      <div className="blog-comment">
-                        <div className="blog-comment-top-section">
-                          <img src={comment.user.avatar} alt="avatar" />
-                          <div className="blog-comment-username">
-                            <Link to={`/users/${comment.user.id}`}>
-                              {comment.user.username}
-                            </Link>
+                <div className="blog-comments">
+                  <ul>
+                    {blog.comments.map((comment) => (
+                      <li key={comment.id}>
+                        <div className="blog-comment">
+                          <div className="blog-comment-top-section">
+                            <img src={comment.user.avatar} alt="avatar" />
+                            <div className="blog-comment-username">
+                              <Link to={`/users/${comment.user.id}`}>
+                                {comment.user.username}
+                              </Link>
+                            </div>
+                            <div className="blog-comment-date">
+                              {calculateDateDiff(comment.date)}
+                            </div>
                           </div>
-                          <div className="blog-comment-date">
-                            {calculateDateDiff(comment.date)}
-                          </div>
+                          <div className="blog-comment-content">{comment.content}</div>
+                          {comment.user.id === user.id
+                           && <button id="comment-delete-button" type="button" onClick={() => handleDialogOpen('Delete Comment?', '', () => handleCommentDelete(blog.id, comment.id))}>Delete Comment</button> }
                         </div>
-                        <div className="blog-comment-content">{comment.content}</div>
-                        {comment.user.id === user.id
-                         && <div><button type="button" onClick={() => handleDialogOpen('Delete Comment?', '', () => handleCommentDelete(blog.id, comment.id))}>Delete</button></div> }
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             )}
         </div>
