@@ -448,7 +448,7 @@ const WorldMap = ({
     const clusterer = new MarkerClusterer(map, markers, {
       imagePath:
         'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-      gridSize: 10,
+      gridSize: 20,
       minimumClusterSize: 2,
       zoomOnClick: false,
       maxZoom: 15,
