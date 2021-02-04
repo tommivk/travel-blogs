@@ -38,8 +38,8 @@ const UserPage = ({
   const [userData, setUserData] = useState(userMatch);
   const [content, setContent] = useState('blogs');
   const [modalOpen, setModalOpen] = useState(false);
-  const [subscribeBlogs, setsubscribeBlogs] = useState(false);
-  const [subscribePictures, setSubscribePictures] = useState(false);
+  const [subscribeBlogs, setsubscribeBlogs] = useState(true);
+  const [subscribePictures, setSubscribePictures] = useState(true);
   const [isUser, setIsUser] = useState(false);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -225,22 +225,6 @@ const UserPage = ({
     );
   };
 
-  useEffect(() => {
-    if (userData && user && userData.id !== user.id) {
-      console.log(userData, user);
-      setsubscribeBlogs(userData.blogSubscribers.includes(user.id));
-      setSubscribePictures(userData.pictureSubscribers.includes(user.id));
-    }
-  }, [userData, modalOpen]);
-
-  if (!userData) return null;
-
-  const joinDate = DateTime.fromISO(userData.joinDate);
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
-
   const isSubscribed = () => {
     if (
       userData.id !== user.id
@@ -250,6 +234,23 @@ const UserPage = ({
       return true;
     }
     return false;
+  };
+
+  useEffect(() => {
+    if (userData && user && userData.id !== user.id) {
+      if (isSubscribed() === true) {
+        setsubscribeBlogs(userData.blogSubscribers.includes(user.id));
+        setSubscribePictures(userData.pictureSubscribers.includes(user.id));
+      }
+    }
+  }, [userData, modalOpen]);
+
+  if (!userData) return null;
+
+  const joinDate = DateTime.fromISO(userData.joinDate);
+
+  const handleModalClose = () => {
+    setModalOpen(false);
   };
 
   const handleSubscription = async () => {
@@ -320,40 +321,44 @@ const UserPage = ({
       />
       <Modal open={modalOpen} onClose={handleModalClose}>
         <div className="subscribe-modal">
-          <h2>
-            Subscribe to
-            {' '}
-            {userData.username}
-          </h2>
-          <table>
-            <tbody>
-              <tr>
-                <td>
-                  Blogs
-                </td>
-                <td>
-                  <Checkbox
-                    checked={subscribeBlogs}
-                    onChange={() => setsubscribeBlogs(!subscribeBlogs)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Pictures
-                </td>
-                <td>
-                  <Checkbox
-                    checked={subscribePictures}
-                    onChange={() => setSubscribePictures(!subscribePictures)}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div className="subscription-modal-buttons">
-            <Button variant="contained" id="subscription-submit-button" type="button" onClick={handleSubscription}>OK</Button>
-            <Button onClick={handleModalClose} id="subscription-cancel-button">Cancel</Button>
+          <div className="subscribe-modal-wrapper">
+            <h2>
+              {isSubscribed() === true ? 'Modify Your Subscription To' : 'Subscribe To'}
+              {' '}
+              {userData.username}
+            </h2>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <Checkbox
+                      className="subscribe-modal-checkbox"
+                      checked={subscribeBlogs}
+                      onChange={() => setsubscribeBlogs(!subscribeBlogs)}
+                    />
+                  </td>
+                  <td>
+                    Blogs
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <Checkbox
+                      className="subscribe-modal-checkbox"
+                      checked={subscribePictures}
+                      onChange={() => setSubscribePictures(!subscribePictures)}
+                    />
+                  </td>
+                  <td>
+                    Pictures
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="subscription-modal-buttons">
+              <Button variant="contained" id="subscription-submit-button" type="button" onClick={handleSubscription}>OK</Button>
+            </div>
+            <button type="button" onClick={handleModalClose} id="subscription-cancel-button">X</button>
           </div>
         </div>
       </Modal>

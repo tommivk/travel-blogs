@@ -26,18 +26,27 @@
 
 .subscribe-modal {
   box-sizing: border-box;
-  padding: 20px;
   position: absolute;
   left: 50%;
   top: 30%;
   transform: translate(-50%, -50%);
   width: fit-content;
+  max-width: 300px;
   height: fit-content;
   background-color: rgb(22, 27, 56);
   color: white;
   text-align: center;
   display: flex;
   flex-direction: column;
+}
+
+.subscribe-modal-wrapper {
+  position: relative;
+  padding: 20px;
+}
+
+.subscribe-modal-checkbox > * {
+  color: rgb(22, 167, 94);
 }
 
 .subscribe-modal table {
@@ -64,9 +73,22 @@
 #subscription-cancel-button {
   color: white;
   position: absolute;
-  left: -15px;
-  bottom: -15px;
-  font-size: 0.8em;
+  top: 0px;
+  right: 0px;
+  display: inline-block;
+  font-weight: bold;
+  width: 30px;
+  text-align: center;
+  height: 30px;
+  background-color: rgb(51, 41, 41);
+  border-radius: 50%;  
+  cursor: pointer;
+  border: none;
+}
+
+
+#subscription-cancel-button:hover {
+  background-color: rgb(95, 78, 78);
 }
 
 .userpage-update-buttons {
