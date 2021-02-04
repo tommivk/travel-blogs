@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -20,7 +20,7 @@ const CommentForm = ({
   user, blog, setBlog, allBlogs, setAllBlogs,
 }) => {
   const [comment, setComment] = useState('');
-
+  const inputRef = useRef(null);
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     const newComment = {
@@ -42,6 +42,9 @@ const CommentForm = ({
       setAllBlogs(filteredBlogs);
       console.log(response.data);
       setComment('');
+      if (inputRef.current) {
+        inputRef.current.scrollIntoView();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -52,6 +55,7 @@ const CommentForm = ({
       <div className="comment-input-container">
         <input
           className="comment-input-field"
+          ref={inputRef}
           type="text"
           value={comment}
           placeholder="Add new comment..."

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,8 @@ const CommentForm = ({
 }) => {
   const [comment, setComment] = useState('');
 
+  const inputRef = useRef(null);
+
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     const newComment = {
@@ -50,6 +52,10 @@ const CommentForm = ({
         .map((pic) => (pic.id === picture.id ? response.data : pic));
 
       setAllPictures(filteredPictures);
+
+      if (inputRef.current) {
+        inputRef.current.scrollIntoView();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -61,6 +67,7 @@ const CommentForm = ({
           <input
             className="comment-input-field"
             type="text"
+            ref={inputRef}
             value={comment}
             placeholder="Add new comment..."
             onChange={({ target }) => setComment(target.value)}
