@@ -24,11 +24,25 @@
   border-radius: 20px;
 }
 
+.upload-modal-middle-container.first-step {
+  background: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 .upload-modal-midddle-content {
   width: 300px;
   height: 350px;
   text-align: center;
 }
+
+.upload-modal-midddle-content.first-step {
+  height: fit-content;
+}
+
 
 #upload-modal-choose-image-button  {
   background-color: red;
@@ -43,14 +57,14 @@
 
 #upload-modal-file-label {
   display: inline-block;
-  background-color: rgb(50, 22, 117);
+  background-color: rgb(41, 56, 107);
   cursor: pointer;
   padding: 20px;
   border-radius: 10px;
 }
 
 #upload-modal-file-label:hover {
-  background-color: rgb(65, 30, 145);
+  background-color: rgb(52, 69, 126);
 }
 
 .upload-modal-preview-container {
@@ -183,12 +197,18 @@
 
 #upload-modal-next-button {
   background-color: rgb(41, 41, 126);
-  margin-left: 5px;
   margin-top: 10px;
+  color: white;
+  float: right;
+}
+
+#upload-modal-next-button-first {
+  background-color: rgb(41, 41, 126);
+  margin: 5px 5px 0px 0px;
   color: white;
 }
 
-#upload-modal-next-button:hover {
+#upload-modal-next-button:hover, #upload-modal-next-button-first:hover {
   background-color: rgb(56, 56, 179);
 }
 
@@ -196,6 +216,7 @@
   margin-top: 10px;
   background-color: rgb(30, 34, 32);
   color: white;
+  float: left;
 }
 
 #upload-modal-back-button:hover {
@@ -280,6 +301,13 @@
   color: white;
 }
 
+#image-upload-modal-title {
+  width: fit-content;
+  background-color: rgb(0,0,0);
+  padding: 8px;
+  border-radius: 5px;
+}
+
 #image-modal-progress-circle {
   color: white;
 }
@@ -298,9 +326,7 @@
   .upload-modal-preview-container {
     width: 30%;
   }
-  .upload-modal-middle-container {
-    left: 27%;
-  }
+
   .upload-modal-preview-container.final-step {
     width: 30%;
   }
@@ -311,6 +337,9 @@
   }
   .upload-modal-preview-container.final-step {
     width: 40%;
+  }
+  .upload-modal-middle-container {
+    left: 27%;
   }
   .upload-modal-preview-container {
     width: 35%;
@@ -324,9 +353,6 @@
   .upload-modal-preview-container {
     width: 40%;
   }
-  .upload-modal-middle-container {
-    left: 10%;
-  }
   #image-upload-modal-title {
     display: none;
   }
@@ -334,20 +360,27 @@
 
 @media (max-width: 760px) {
   .upload-modal-middle-container {
-    left: 2%;
     font-size: 0.8em;
   }
-}
 
-@media (max-width: 700px) {
-  .upload-modal-preview-container.final-step {
-    width: 70%;
-  }
   .upload-modal-preview-container {
     width: 45%;
   }
   .upload-modal-midddle-content {
     width: 200px;
     height: 300px;
+  }
+}
+
+@media (max-width: 700px) {
+  .upload-modal-preview-container {
+    display: none;
+  }
+  .upload-modal-preview-container.final-step {
+    display: block;
+    width: 70%;
+  }
+  .upload-modal-middle-container {
+    left: 50%;
   }
 }

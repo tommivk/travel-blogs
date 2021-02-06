@@ -244,22 +244,19 @@ const ImageUploadModal = ({
               textAlign: 'center',
             }}
           >
+            {step < 4
+            && (
             <span
               id="image-upload-modal-title"
-              style={{
-                width: 'fit-content',
-                backgroundColor: 'rgb(0,0,0)',
-                padding: '8px',
-                borderRadius: '5px',
-              }}
             >
               Upload Images
             </span>
+            )}
           </h2>
           {step < 4
            && (
-           <div className="upload-modal-middle-container">
-             <div className="upload-modal-midddle-content">
+           <div className={`upload-modal-middle-container ${step === 0 && 'first-step'}`}>
+             <div className={`upload-modal-midddle-content ${step === 0 && 'first-step'}`}>
                {imagePreview && step === 0 && (
                <img alt="" src={imagePreview} height="300" width="300" />
                )}
@@ -320,10 +317,13 @@ const ImageUploadModal = ({
              <div>
                {image && step < 4 ? (
                  <div>
-                   {step > 0 && (
+                   {step > 1 && (
                    <Button id="upload-modal-back-button" variant="contained" onClick={handlePreviousStep}>{'<-'}</Button>
                    )}
-                   {step < 3 && (
+                   {step === 0 && (
+                   <Button id="upload-modal-next-button-first" variant="contained" onClick={handleNextStep}>next</Button>
+                   )}
+                   {step > 0 && step < 3 && (
                    <Button id="upload-modal-next-button" variant="contained" onClick={handleNextStep}>
                      {step === 2 ? 'skip' : 'next'}
                    </Button>
@@ -379,7 +379,7 @@ const ImageUploadModal = ({
                       && (
                       <tr>
                         <td>Public:</td>
-                        <td>{publishToGallery ? 'yes' : 'no'}</td>
+                        <td>{publishToGallery ? 'Yes' : 'No'}</td>
                       </tr>
                       )}
                       </>
