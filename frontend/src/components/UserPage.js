@@ -150,7 +150,6 @@ const UserPage = ({
       );
 
       const updatedUser = response.data;
-      updatedUser.fbtoken = user.fbtoken;
       setUser(updatedUser);
       setUserData(response.data);
       window.localStorage.setItem(

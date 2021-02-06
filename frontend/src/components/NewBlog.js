@@ -32,7 +32,6 @@ const NewBlog = ({
   setUser,
   allBlogs,
   setAllBlogs,
-  storage,
   allPictures,
   setAllPictures,
   handleMessage,
@@ -173,7 +172,6 @@ const NewBlog = ({
               closeModal={closeUploadModal}
               user={user}
               setUser={setUser}
-              storage={storage}
               allPictures={allPictures}
               setAllPictures={setAllPictures}
               handleMessage={handleMessage}
@@ -372,7 +370,6 @@ NewBlog.propTypes = {
   setUser: PropTypes.func.isRequired,
   allBlogs: PropTypes.instanceOf(Array).isRequired,
   setAllBlogs: PropTypes.func.isRequired,
-  storage: PropTypes.instanceOf(Object).isRequired,
   allPictures: PropTypes.instanceOf(Array).isRequired,
   setAllPictures: PropTypes.func.isRequired,
   handleMessage: PropTypes.func.isRequired,

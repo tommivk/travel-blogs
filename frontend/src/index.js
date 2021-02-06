@@ -8,7 +8,6 @@ import {
   useRouteMatch,
 } from 'react-router-dom';
 import Alert from '@material-ui/lab/Alert';
-import firebase from 'firebase/app';
 import WorldMap from './components/WorldMap';
 import IndexPage from './components/IndexPage';
 import NewBlog from './components/NewBlog';
@@ -21,22 +20,6 @@ import UserPage from './components/UserPage';
 
 import Header from './components/Header';
 import './index.css';
-
-require('firebase/storage');
-require('firebase/auth');
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FB_API_KEY,
-  authDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_FB_DATABASE_URL,
-  projectId: process.env.REACT_APP_FB_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FB_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FB_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FB_APP_ID,
-};
-
-firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -77,13 +60,7 @@ const App = () => {
   }, []);
 
   useEffect(async () => {
-    if (user && user.fbtoken) {
-      await firebase
-        .auth()
-        .signInWithCustomToken(user.fbtoken)
-        .then((res) => console.log('signed in to firebase with token', res))
-        .catch((e) => console.log(e));
-
+    if (user) {
       await axios
         .get(`http://localhost:8008/api/notifications/user/${user.id}`)
         .then((res) => setUserNotifications(res.data));
@@ -158,7 +135,6 @@ const App = () => {
             setUser={setUser}
             setAllBlogs={setAllBlogs}
             allBlogs={allBlogs}
-            storage={storage}
             allPictures={allPictures}
             setAllPictures={setAllPictures}
             handleMessage={handleMessage}
@@ -221,7 +197,6 @@ const App = () => {
             setFilteredPictures={setFilteredPictures}
             user={user}
             setUser={setUser}
-            storage={storage}
             handleMessage={handleMessage}
           />
         </Route>
@@ -239,7 +214,6 @@ const App = () => {
             userMatch={selectedUser}
             user={user}
             setUser={setUser}
-            storage={storage}
             allUsers={allUsers}
             setAllUsers={setAllUsers}
             allBlogs={allBlogs}

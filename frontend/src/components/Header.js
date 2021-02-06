@@ -4,7 +4,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import firebase from 'firebase/app';
 import { Link, useHistory } from 'react-router-dom';
 import { Search, Language, Notifications } from '@material-ui/icons';
 import Menu from '@material-ui/core/Menu';
@@ -93,12 +92,6 @@ const Header = ({
   const handleLogout = () => {
     window.localStorage.removeItem('loggedTravelBlogUser');
     setUser(null);
-
-    firebase
-      .auth()
-      .signOut()
-      .then(() => console.log('signout successful'))
-      .catch((error) => console.log('error happened', error));
 
     setMenuAnchorEl(null);
     history.push('/');

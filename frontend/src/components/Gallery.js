@@ -14,7 +14,6 @@ const Gallery = ({
   setFilteredPictures,
   user,
   setUser,
-  storage,
   handleMessage,
 }) => {
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
@@ -143,7 +142,6 @@ const Gallery = ({
           closeModal={closeUploadModal}
           user={user}
           setUser={setUser}
-          storage={storage}
           allPictures={allPictures}
           setAllPictures={setAllPictures}
           handleMessage={handleMessage}
@@ -263,7 +261,6 @@ Gallery.propTypes = {
   setFilteredPictures: PropTypes.func.isRequired,
   user: PropTypes.instanceOf(Object).isRequired,
   setUser: PropTypes.func.isRequired,
-  storage: PropTypes.instanceOf(Object).isRequired,
   handleMessage: PropTypes.func.isRequired,
 };
 

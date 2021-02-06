@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import firebase from 'firebase/app';
 import axios from 'axios';
 import { Button, TextField } from '@material-ui/core';
 import '../styles/login.css';
@@ -22,8 +21,6 @@ const Login = ({ setUser, handleMessage }) => {
         'loggedTravelBlogUser',
         JSON.stringify(user.data),
       );
-
-      await firebase.auth().signInWithCustomToken(user.data.fbtoken);
       handleMessage('success', `logged in as ${user.data.username}`);
     } catch (error) {
       handleMessage('error', 'Wrong credentials');

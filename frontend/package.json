@@ -12,7 +12,6 @@
     "@testing-library/user-event": "^12.1.10",
     "@tinymce/tinymce-react": "^3.8.1",
     "axios": "^0.21.0",
-    "firebase": "^8.0.0",
     "google-map-react": "^2.1.9",
     "luxon": "^1.25.0",
     "node-sass": "^4.14.1",
