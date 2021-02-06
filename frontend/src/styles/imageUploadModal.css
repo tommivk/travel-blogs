@@ -280,6 +280,10 @@
   color: white;
 }
 
+#image-modal-progress-circle {
+  color: white;
+}
+
 @media (max-width: 1700px) {
   .image-upload-modal-main-container {
     width: 85%;

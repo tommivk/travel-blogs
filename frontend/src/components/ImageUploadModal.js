@@ -4,7 +4,7 @@ import axios from 'axios';
 import {
   Button,
   Modal,
-  LinearProgress,
+  CircularProgress,
   TextField,
 } from '@material-ui/core';
 import Explore from '@material-ui/icons/Explore';
@@ -29,9 +29,8 @@ const ImageUploadModal = ({
   const [location, setLocation] = useState(null);
   const [publishToGallery, setPublishToGallery] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [step, setStep] = useState(0);
-  const [uploadBarVisible, setUploadBarVisible] = useState(false);
+  const [uploadInProgress, setUploadInProgress] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [markerPosition, setMarkerPosition] = useState(null);
   const [searchFilter, setSearchFilter] = useState('');
@@ -121,19 +120,20 @@ const ImageUploadModal = ({
     formData.append('public', publishToGallery);
     formData.append('title', title);
 
-    // setUploadBarVisible(true);
-
     try {
       const response = await axios.post(
         'http://localhost:8008/api/pictures',
         formData,
         {
+          onUploadProgress: () => setUploadInProgress(true),
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
 
         },
       );
+
+      setUploadInProgress(false);
 
       const newUser = user;
       newUser.pictures = [response.data].concat(user.pictures);
@@ -145,9 +145,8 @@ const ImageUploadModal = ({
       setTitle('');
       setLocation(null);
       setStep(0);
-      setUploadProgress(0);
+      // setUploadProgress(0);
       setPublishToGallery(false);
-      setUploadBarVisible(false);
       handleMessage('success', 'Image uploaded!');
     } catch (error) {
       handleMessage('error', error.message);
@@ -408,14 +407,20 @@ const ImageUploadModal = ({
                   </table>
                   {step === 4 && (
                     <div className="image-modal-preview-bottom">
-                      {uploadBarVisible
-                      && <LinearProgress id="upload-progress-bar" variant="determinate" value={uploadProgress} /> }
                       <div className="image-modal-upload-form">
                         <form onSubmit={handleImageUpload}>
                           <Button variant="contained" id="image-modal-final-cancel-button" onClick={() => setStep(3)}>{'<-'}</Button>
-                          <Button id="image-modal-upload-button" variant="contained" type="submit">
-                            Upload
-                          </Button>
+                          {uploadInProgress
+                            ? (
+                              <Button id="image-modal-upload-button" variant="contained" type="button" disabled>
+                                <CircularProgress id="image-modal-progress-circle" />
+                              </Button>
+                            )
+                            : (
+                              <Button id="image-modal-upload-button" variant="contained" type="submit">
+                                Upload
+                              </Button>
+                            )}
                         </form>
                       </div>
                     </div>
