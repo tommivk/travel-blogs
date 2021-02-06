@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import Star from '@material-ui/icons/Star';
 import Sms from '@material-ui/icons/Sms';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import { CircularProgress } from '@material-ui/core';
 import ConfirmDialog from './ConfirmDialog';
 import '../styles/userPage.css';
 
@@ -48,6 +49,7 @@ const UserPage = ({
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogText, setDialogText] = useState('');
   const [dialogFunction, setDialogFunction] = useState(null);
+  const [uploadInProgress, setUploadInProgress] = useState(false);
 
   useEffect(() => {
     if (userMatch) {
@@ -143,12 +145,14 @@ const UserPage = ({
         `http://localhost:8008/api/users/${user.id}`,
         formData,
         {
+          onUploadProgress: () => setUploadInProgress(true),
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         },
       );
 
+      setUploadInProgress(false);
       const updatedUser = response.data;
       setUser(updatedUser);
       setUserData(response.data);
@@ -333,13 +337,16 @@ const UserPage = ({
                   </div>
                 )}
               </label>
-              { editProfile ? (
+              { editProfile && (
                 <div className="userpage-update-buttons">
-                  <Button id="profile-update-cancel-button" type="button" onClick={() => handleCancelUpdate()}>Cancel</Button>
+                  {!uploadInProgress
+                  && <Button id="profile-update-cancel-button" type="button" onClick={() => handleCancelUpdate()}>Cancel</Button>}
                   {(imagePreview || newUsername !== user.username)
-                  && <Button id="profile-update-submit-button" variant="contained" type="submit">Update</Button> }
+                  && uploadInProgress
+                    ? <Button id="profile-update-submit-button" variant="contained" type="button"><CircularProgress id="profile-update-progress-circle" /></Button>
+                    : <Button id="profile-update-submit-button" variant="contained" type="submit">Update</Button>}
                 </div>
-              ) : null }
+              ) }
             </form>
           </div>
         )}

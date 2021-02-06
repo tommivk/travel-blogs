@@ -245,5 +245,6 @@
   text-align: center;
 }
 
-.userpage-blog-card-wrapper:hover #userpage-blog-delete-button {
+#profile-update-progress-circle {
+  color: white;
 }
