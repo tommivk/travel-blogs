@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 const Notification = require('../models/notification');
+const uploadImage = require('../utils/uploadImage');
+const multer = require('../utils/multer');
 
 const getTokenFrom = (request) => {
   const authorization = request.get('authorization');
@@ -64,10 +66,10 @@ usersRouter.post('/', async (req, res, next) => {
   }
 });
 
-usersRouter.put('/:userId', async (req, res, next) => {
+usersRouter.put('/:userID', multer.single('image'), async (req, res, next) => {
   try {
     const { body } = req;
-    const { userId } = req.params;
+    const { userID } = req.params;
     const token = getTokenFrom(req);
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
@@ -75,11 +77,20 @@ usersRouter.put('/:userId', async (req, res, next) => {
       return res.status(401).json({ error: 'token missing or invalid' });
     }
 
-    if (userId.toString() !== decodedToken.id.toString()) {
+    if (userID.toString() !== decodedToken.id.toString()) {
       return res.status(401).send();
     }
 
-    const user = await User.findByIdAndUpdate(decodedToken.id, body, {
+    let newUserData;
+
+    if (req.file) {
+      const { imgURL } = await uploadImage(req.file, userID, 'avatars/', 'avatar');
+      newUserData = { ...body, avatar: imgURL };
+    } else {
+      newUserData = body;
+    }
+
+    const user = await User.findByIdAndUpdate(decodedToken.id, newUserData, {
       new: true,
     }).populate('pictures').populate('blogs');
 

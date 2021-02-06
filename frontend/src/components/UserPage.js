@@ -139,24 +139,25 @@ const UserPage = ({
     }
   };
 
-  const updateUser = async (uploadedPictureURL) => {
-    const newUserData = {};
+  const handleUserUpdate = async (e) => {
+    e.preventDefault();
 
-    if (!uploadedPictureURL && newUsername === user.username) {
+    if (!image && newUsername === user.username) {
       handleCancelUpdate();
       return;
     }
-    if (uploadedPictureURL) {
-      newUserData.avatar = uploadedPictureURL;
-    }
+
+    const formData = new FormData();
+    formData.append('image', image);
+
     if (newUsername !== user.username) {
-      newUserData.username = newUsername;
+      formData.append('username', newUsername);
     }
 
     try {
       const response = await axios.put(
         `http://localhost:8008/api/users/${user.id}`,
-        newUserData,
+        formData,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -182,47 +183,6 @@ const UserPage = ({
       handleMessage('error', error.message);
       console.log(error);
     }
-  };
-
-  const handleUserUpdate = async (e) => {
-    e.preventDefault();
-    if (!image) {
-      updateUser();
-      return;
-    }
-    const fbuser = firebase.auth().currentUser;
-    const userID = fbuser.uid;
-    const uploadTask = storage
-      .ref()
-      .child(`/avatars/${userID}/${image.name}`)
-      .put(image);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is  ${progress} % done`);
-
-        switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED:
-            console.log('Upload is paused');
-            break;
-          case firebase.storage.TaskState.RUNNING:
-            console.log('Upload is running');
-            break;
-          default:
-            break;
-        }
-      },
-      (error) => {
-        console.log('error happened', error);
-      },
-      () => {
-        uploadTask.snapshot.ref
-          .getDownloadURL()
-          .then((downloadURL) => updateUser(downloadURL));
-      },
-    );
   };
 
   const isSubscribed = () => {
