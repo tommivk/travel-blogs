@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const loginRouter = require('express').Router();
-const admin = require('firebase-admin');
 const User = require('../models/user');
 
 loginRouter.post('/', async (req, res, next) => {
@@ -29,13 +28,9 @@ loginRouter.post('/', async (req, res, next) => {
 
     const token = jwt.sign(userForToken, process.env.SECRET);
     console.log(token);
-    const fbtoken = await admin
-      .auth()
-      .createCustomToken(userForToken.id.toString() + process.env.FBSECRET);
 
     return res.status(200).send({
       token,
-      fbtoken,
       avatar: user.avatar,
       username: user.username,
       pictures: user.pictures,

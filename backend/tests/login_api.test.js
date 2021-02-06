@@ -70,7 +70,6 @@ test('login returns correct fields', async () => {
   expect(response.body.passwordHash).not.toBeDefined()
   expect(response.body.username).toBeDefined()
   expect(response.body.token).toBeDefined()
-  expect(response.body.fbtoken).toBeDefined()
   expect(response.body.avatar).toBeDefined()
   expect(response.body.id).toBeDefined()
   expect(response.body.pictures).toBeDefined()
