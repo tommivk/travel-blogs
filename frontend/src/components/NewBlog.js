@@ -2,11 +2,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState, useRef } from 'react';
-import firebase from 'firebase/app';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -90,25 +88,25 @@ const NewBlog = ({
     setLocations(locationCopy);
   };
 
-  const handleMongoUpload = async (headerImageURL, headerImageID) => {
+  const handleBlogSubmit = async () => {
     try {
+      const formData = new FormData();
+      formData.append('image', headerImage);
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('content', content);
+      formData.append('locations', JSON.stringify(locations));
+
       const response = await axios.post(
         'http://localhost:8008/api/blogs',
-        {
-          username: user.username,
-          content,
-          title,
-          description,
-          headerImageURL,
-          headerImageID,
-          locations,
-        },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         },
       );
+
       setContent('');
       setTitle('');
       setDescription('');
@@ -127,51 +125,6 @@ const NewBlog = ({
       console.log(error.message);
     }
     setActiveStep(5);
-  };
-
-  const handleBlogSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (!headerImage) {
-        return handleMongoUpload();
-      }
-
-      const fbuser = firebase.auth().currentUser;
-      const userID = fbuser.uid;
-      const imageID = uuidv4();
-      const uploadTask = storage
-        .ref()
-        .child(`/blogcovers/${userID}/${imageID}`)
-        .put(headerImage);
-
-      return uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress} % done`);
-          switch (snapshot.state) {
-            case firebase.storage.TaskState.PAUSED:
-              console.log('Upload is paused');
-              break;
-            case firebase.storage.TaskState.RUNNING:
-              console.log('Upload is running');
-              break;
-            default:
-              break;
-          }
-        },
-        (error) => {
-          console.log('error happened', error);
-        },
-        () => {
-          uploadTask.snapshot.ref
-            .getDownloadURL()
-            .then((headerPictureURL) => handleMongoUpload(headerPictureURL, imageID));
-        },
-      );
-    } catch (error) {
-      return console.log(error);
-    }
   };
 
   const handleImageChange = (e) => {

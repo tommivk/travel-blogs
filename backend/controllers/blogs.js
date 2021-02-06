@@ -4,6 +4,8 @@ const Blog = require('../models/blog');
 const User = require('../models/user');
 const Comment = require('../models/comment');
 const Notification = require('../models/notification');
+const uploadImage = require('../utils/uploadImage');
+const multer = require('../utils/multer');
 
 const getTokenFrom = (request) => {
   const authorization = request.get('authorization');
@@ -29,7 +31,7 @@ blogsRouter.get('/', async (req, res, next) => {
   }
 });
 
-blogsRouter.post('/', async (req, res, next) => {
+blogsRouter.post('/', multer.single('image'), async (req, res, next) => {
   try {
     const { body } = req;
 
@@ -43,18 +45,20 @@ blogsRouter.post('/', async (req, res, next) => {
 
     const user = await User.findById(decodedToken.id);
 
-    const userID = user._id;
+    const { imgURL, firebaseID } = await uploadImage(req.file, user._id, 'blogcovers/');
+
+    const locations = JSON.parse(body.locations);
 
     const newBlog = new Blog({
       title: body.title,
       description: body.description,
-      author: userID,
+      author: user._id,
       date: Date.now(),
       content: body.content,
       stars: [],
-      headerImageURL: body.headerImageURL,
-      headerImageID: body.headerImageID,
-      locations: body.locations,
+      headerImageURL: imgURL,
+      headerImageID: firebaseID,
+      locations,
       comments: [],
     });
 
