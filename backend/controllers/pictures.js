@@ -1,4 +1,5 @@
 const picturesRouter = require('express').Router();
+const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const Comment = require('../models/comment');
 const Picture = require('../models/picture');
@@ -57,7 +58,9 @@ picturesRouter.delete('/:pictureId', async (req, res, next) => {
 
     await Picture.findByIdAndDelete(pictureId);
 
-    return res.status(204).send();
+    await admin.storage().bucket(process.env.BUCKET_NAME).file(`images/${user.id}/${picture.firebaseID}`).delete();
+
+    return res.status(204).end();
   } catch (error) {
     return next(error);
   }

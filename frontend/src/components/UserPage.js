@@ -4,7 +4,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import firebase from 'firebase/app';
 import axios from 'axios';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -32,7 +31,6 @@ const UserPage = ({
   allPictures,
   setAllPictures,
   setUser,
-  storage,
   handleMessage,
 }) => {
   const [userData, setUserData] = useState(userMatch);
@@ -83,13 +81,7 @@ const UserPage = ({
 
   const handlePictureDelete = async (picture) => {
     try {
-      const storageRef = storage.ref();
-      const fbuser = firebase.auth().currentUser;
-      const userID = fbuser.uid;
-
       await axios.delete(`http://localhost:8008/api/pictures/${picture.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
-
-      await storageRef.child(`/images/${userID}/${picture.firebaseID}`).delete();
 
       const newUser = { ...user, pictures: user.pictures.filter((pic) => pic.id !== picture.id) };
       setUser(newUser);
@@ -110,15 +102,7 @@ const UserPage = ({
 
   const handleBlogDelete = async (blog) => {
     try {
-      const storageRef = storage.ref();
-      const fbuser = firebase.auth().currentUser;
-      const userID = fbuser.uid;
-
       await axios.delete(`http://localhost:8008/api/blogs/${blog.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
-
-      if (blog.headerImageURL) {
-        await storageRef.child(`/blogcovers/${userID}/${blog.headerImageID}`).delete();
-      }
 
       const newUser = { ...user, blogs: user.blogs.filter((b) => b.id !== blog.id) };
       setUser(newUser);
@@ -614,7 +598,6 @@ UserPage.propTypes = {
   allUsers: PropTypes.instanceOf(Array).isRequired,
   setAllUsers: PropTypes.func.isRequired,
   setUser: PropTypes.func.isRequired,
-  storage: PropTypes.instanceOf(Object).isRequired,
   allBlogs: PropTypes.instanceOf(Array).isRequired,
   setAllBlogs: PropTypes.func.isRequired,
   allPictures: PropTypes.instanceOf(Array).isRequired,

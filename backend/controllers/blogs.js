@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const admin = require('firebase-admin');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
@@ -102,12 +103,21 @@ blogsRouter.delete('/:blogId', async (req, res, next) => {
     const user = await User.findById(decodedToken.id);
     const blog = await Blog.findById(blogId);
 
+    if (!blog || !user) {
+      return res.status(500).send();
+    }
+
     if (blog.author._id.toString() !== user._id.toString()) {
       return res.status(401).send();
     }
     user.blogs = user.blogs.filter((b) => b._id.toString() !== blogId);
     await user.save();
     await Blog.findByIdAndDelete(blogId);
+
+    if (blog.headerImageID) {
+      await admin.storage().bucket(process.env.BUCKET_NAME).file(`blogcovers/${user.id}/${blog.headerImageID}`).delete();
+    }
+
     return res.status(204).send();
   } catch (error) {
     return next(error);
