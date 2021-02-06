@@ -4,6 +4,8 @@ const Comment = require('../models/comment');
 const Picture = require('../models/picture');
 const Notification = require('../models/notification');
 const User = require('../models/user');
+const uploadImage = require('../utils/uploadImage');
+const multer = require('../utils/multer');
 
 const getTokenFrom = (request) => {
   const authorization = request.get('authorization');
@@ -137,18 +139,16 @@ picturesRouter.put('/:id/vote', async (req, res, next) => {
     const user = await User.findById(decodedToken.id);
 
     const usersVote = await picture.votes.find(
-      (vote) => vote.user.toString() === user._id.toString()
+      (vote) => vote.user.toString() === user._id.toString(),
     );
 
     if (usersVote && usersVote.dir === body.dir) {
       return res.status(400).send().end();
     }
     if (usersVote) {
-      picture.votes = picture.votes.map((vote) =>
-        (vote.user.toString() === user._id.toString()
-          ? (vote.dir = body.dir)
-          : vote)
-      );
+      picture.votes = picture.votes.map((vote) => (vote.user.toString() === user._id.toString()
+        ? (vote.dir = body.dir)
+        : vote));
     } else {
       picture.votes = picture.votes.concat({
         user: user._id,
@@ -180,9 +180,10 @@ picturesRouter.put('/:id/vote', async (req, res, next) => {
   }
 });
 
-picturesRouter.post('/', async (req, res, next) => {
+picturesRouter.post('/', multer.single('image'), async (req, res, next) => {
   try {
     const { body } = req;
+
     const token = getTokenFrom(req);
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
@@ -192,13 +193,17 @@ picturesRouter.post('/', async (req, res, next) => {
 
     const user = await User.findById(decodedToken.id);
 
+    const { imgURL, firebaseID } = await uploadImage(req.file, user._id, 'images/');
+
+    const location = JSON.parse(body.location);
+
     const newPicture = new Picture({
-      imgURL: body.imgURL,
-      firebaseID: body.firebaseID,
+      imgURL,
+      firebaseID,
       date: Date.now(),
       user: user._id,
       public: body.public,
-      location: body.location,
+      location,
       title: body.title,
       voteResult: 0,
       votes: [],

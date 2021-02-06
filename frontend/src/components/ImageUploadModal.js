@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import firebase from 'firebase/app';
 import axios from 'axios';
 import {
   Button,
@@ -11,8 +10,6 @@ import {
 import Explore from '@material-ui/icons/Explore';
 import Room from '@material-ui/icons/Room';
 import GoogleMapReact from 'google-map-react';
-import { v4 as uuidv4 } from 'uuid';
-// import imageModalBG from '../images/imagemodalbg.jpg';
 import AddLocations from './AddLocations';
 import '../styles/imageUploadModal.css';
 
@@ -21,7 +18,6 @@ const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY;
 const ImageUploadModal = ({
   user,
   setUser,
-  storage,
   uploadModalOpen,
   closeModal,
   allPictures,
@@ -33,7 +29,6 @@ const ImageUploadModal = ({
   const [location, setLocation] = useState(null);
   const [publishToGallery, setPublishToGallery] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
-  const [uploadedImages, setUploadedImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [step, setStep] = useState(0);
   const [uploadBarVisible, setUploadBarVisible] = useState(false);
@@ -105,7 +100,9 @@ const ImageUploadModal = ({
     setSearchFilter('');
   };
 
-  const uploadPicture = async (uploadedPictureURL, firebaseID) => {
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
+
     let locationData = {
       lat: null, lng: null, city: null, country: null,
     };
@@ -118,28 +115,30 @@ const ImageUploadModal = ({
       };
     }
 
-    const newPicture = {
-      imgURL: uploadedPictureURL,
-      firebaseID,
-      public: publishToGallery,
-      location: locationData,
-      title,
-    };
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('location', JSON.stringify(locationData));
+    formData.append('public', publishToGallery);
+    formData.append('title', title);
+
+    // setUploadBarVisible(true);
+
     try {
       const response = await axios.post(
         'http://localhost:8008/api/pictures',
-        newPicture,
+        formData,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
+
         },
       );
+
       const newUser = user;
       newUser.pictures = [response.data].concat(user.pictures);
       setUser(newUser);
       setAllPictures(allPictures.concat(response.data));
-      setUploadedImages([uploadedPictureURL].concat(uploadedImages));
       window.localStorage.setItem('loggedTravelBlogUser', JSON.stringify(user));
       setImagePreview(null);
       setImage(null);
@@ -154,51 +153,6 @@ const ImageUploadModal = ({
       handleMessage('error', error.message);
       console.log(error);
     }
-  };
-
-  const handleImageUpload = async (e) => {
-    e.preventDefault();
-    if (title.length < 5) {
-      handleMessage('error', 'Title must be at least 5 characters long');
-      setStep(1);
-      return;
-    }
-    setUploadBarVisible(true);
-    const fbuser = firebase.auth().currentUser;
-    const userID = fbuser.uid;
-    const imageID = uuidv4();
-    const uploadTask = storage
-      .ref()
-      .child(`/images/${userID}/${imageID}`)
-      .put(image);
-
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress} % done`);
-        setUploadProgress(progress);
-        switch (snapshot.state) {
-          case firebase.storage.TaskState.PAUSED:
-            console.log('Upload is paused');
-            break;
-          case firebase.storage.TaskState.RUNNING:
-            console.log('Upload is running');
-            break;
-          default:
-            break;
-        }
-      },
-      (error) => {
-        console.log({ error });
-        handleMessage('error', error.message);
-      },
-      () => {
-        uploadTask.snapshot.ref
-          .getDownloadURL()
-          .then((downloadURL) => uploadPicture(downloadURL, imageID));
-      },
-    );
   };
 
   const handleMapDrag = (e) => {
@@ -479,7 +433,6 @@ const ImageUploadModal = ({
 ImageUploadModal.propTypes = {
   user: PropTypes.instanceOf(Object).isRequired,
   setUser: PropTypes.func.isRequired,
-  storage: PropTypes.instanceOf(Object).isRequired,
   uploadModalOpen: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   allPictures: PropTypes.instanceOf(Array).isRequired,
