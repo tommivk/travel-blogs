@@ -186,12 +186,8 @@ const Gallery = ({
                   <div className="gallery-card">
                     <img src={pic.imgURL} alt="" />
                     <h4
-                      style={{
-                        marginTop: '2px',
-                        marginBottom: '5px',
-                        textAlign: 'center',
-                        color: '#FFFFFF',
-                      }}
+                      className="gallery-card-title"
+
                     >
                       {pic.title}
                     </h4>
