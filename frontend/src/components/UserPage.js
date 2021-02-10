@@ -129,7 +129,7 @@ const UserPage = ({
 
   const handleUserDelete = async () => {
     try {
-      axios.delete(`http://localhost:8008/api/users/${user.id}`,
+      await axios.delete(`http://localhost:8008/api/users/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
