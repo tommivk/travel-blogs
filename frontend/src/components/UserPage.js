@@ -331,7 +331,12 @@ const UserPage = ({
       <div className="user-page-user-info">
         {isUser && editProfile && (
           <div>
-            <DeleteForever onClick={() => handleDialogOpen('Delete user?', 'All your posted Blogs, Pictures and Comments will be deleted forever', () => handleUserDelete())} id="user-delete-icon" />
+            <div className="user-delete-icon-wrapper">
+              <div className="tooltip tooltip-right">
+                <span className="tooltip-message">Delete User</span>
+                <DeleteForever onClick={() => handleDialogOpen('Delete user?', 'All your posted Blogs, Pictures and Comments will be deleted forever', () => handleUserDelete())} id="user-delete-icon" />
+              </div>
+            </div>
             <form onSubmit={handleUserUpdate}>
               <input
                 type="file"
