@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
+const admin = require('firebase-admin');
 const bcrypt = require('bcrypt');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
+const Blog = require('../models/blog');
+const Comment = require('../models/comment');
+const Picture = require('../models/picture');
 const Notification = require('../models/notification');
 const uploadImage = require('../utils/uploadImage');
 const multer = require('../utils/multer');
@@ -61,6 +65,34 @@ usersRouter.post('/', async (req, res, next) => {
     await notification.save();
 
     return res.json(savedUser.toJSON());
+  } catch (error) {
+    return next(error);
+  }
+});
+
+usersRouter.delete('/:userID', async (req, res, next) => {
+  try {
+    const { userID } = req.params;
+    const token = getTokenFrom(req);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    if (userID.toString() !== decodedToken.id.toString()) {
+      return res.status(401).end();
+    }
+
+    await Blog.deleteMany({ author: userID });
+    await Picture.deleteMany({ user: userID });
+    await Comment.deleteMany({ user: userID });
+    await User.findByIdAndDelete(userID);
+    await admin.storage().bucket(process.env.BUCKET_NAME).deleteFiles({ prefix: `blogcovers/${userID}` });
+    await admin.storage().bucket(process.env.BUCKET_NAME).deleteFiles({ prefix: `images/${userID}` });
+    await admin.storage().bucket(process.env.BUCKET_NAME).deleteFiles({ prefix: `avatars/${userID}` });
+
+    return res.status(204).end();
   } catch (error) {
     return next(error);
   }

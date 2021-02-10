@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import Warning from '@material-ui/icons/Warning';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
@@ -16,7 +17,11 @@ const ConfirmDialog = ({
       <DialogTitle>{dialogTitle}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {dialogText}
+          <div className="confirm-dialog-text">
+            {dialogText !== ''
+            && <Warning id="confirm-dialog-warning-icon" />}
+            {dialogText}
+          </div>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

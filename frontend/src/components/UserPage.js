@@ -9,7 +9,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import Modal from '@material-ui/core/Modal';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import Star from '@material-ui/icons/Star';
 import Sms from '@material-ui/icons/Sms';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import DeleteForever from '@material-ui/icons/DeleteForever';
 import { CircularProgress } from '@material-ui/core';
 import ConfirmDialog from './ConfirmDialog';
 import '../styles/userPage.css';
@@ -51,6 +52,7 @@ const UserPage = ({
   const [dialogFunction, setDialogFunction] = useState(null);
   const [uploadInProgress, setUploadInProgress] = useState(false);
 
+  const history = useHistory();
   useEffect(() => {
     if (userMatch) {
       if (userMatch.id === user.id) {
@@ -120,6 +122,23 @@ const UserPage = ({
       const newBlogs = allBlogs.filter((b) => b.id !== blog.id);
       setAllBlogs(newBlogs);
       handleMessage('success', 'Blog deleted');
+    } catch (error) {
+      handleMessage('error', error.message);
+    }
+  };
+
+  const handleUserDelete = async () => {
+    try {
+      axios.delete(`http://localhost:8008/api/users/${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+      handleMessage('success', 'User deleted');
+      setUser(null);
+      history.push('/');
+      localStorage.removeItem('loggedTravelBlogUser');
     } catch (error) {
       handleMessage('error', error.message);
     }
@@ -312,6 +331,7 @@ const UserPage = ({
       <div className="user-page-user-info">
         {isUser && editProfile && (
           <div>
+            <DeleteForever onClick={() => handleDialogOpen('Delete user?', 'All your posted Blogs, Pictures and Comments will be deleted forever', () => handleUserDelete())} id="user-delete-icon" />
             <form onSubmit={handleUserUpdate}>
               <input
                 type="file"

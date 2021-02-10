@@ -35,3 +35,15 @@
     flex-direction: column;
     width: 100%;
 }
+
+.confirm-dialog-text {
+    color: white;
+    max-width: 250px;
+    display: flex;
+}
+
+#confirm-dialog-warning-icon {
+    color: rgb(206, 203, 25);
+    margin-right: 10px;
+    font-size: 2rem;
+}
