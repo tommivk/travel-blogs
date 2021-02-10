@@ -96,7 +96,7 @@ const SingleBlogPage = ({
   useEffect(() => {
     console.log(blog);
     if (blog && blog.title) {
-      document.title = `${blog.title} | Travelblogs`;
+      document.title = `${blog.title} | TravelBlogs`;
     }
   }, [blog]);
 

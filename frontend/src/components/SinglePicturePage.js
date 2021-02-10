@@ -116,7 +116,7 @@ const SinglePicturePage = ({
 
   useEffect(async () => {
     if (picture && picture.title) {
-      document.title = `${picture.title} | Travelblogs`;
+      document.title = `${picture.title} | TravelBlogs`;
     }
 
     setShowMap(false);
