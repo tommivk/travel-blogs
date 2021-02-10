@@ -47,3 +47,8 @@
     margin-right: 10px;
     font-size: 2rem;
 }
+
+#confirm-dialog-spinner {
+    color: rgb(18, 74, 126);
+    margin: auto;
+}
