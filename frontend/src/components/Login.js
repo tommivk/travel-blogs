@@ -34,6 +34,7 @@ const Login = ({ setUser, handleMessage }) => {
         <div className="login-input-container">
           <div className="login-username-wrapper">
             <TextField
+              autoFocus
               id="login-username-textfield"
               variant="outlined"
               type="text"

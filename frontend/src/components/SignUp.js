@@ -36,6 +36,7 @@ const SignUp = ({
         <div className="signup-input-container">
           <div className="signup-username-wrapper">
             <TextField
+              autoFocus
               id="signup-username-textfield"
               variant="outlined"
               type="text"
