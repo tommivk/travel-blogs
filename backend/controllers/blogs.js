@@ -46,7 +46,14 @@ blogsRouter.post('/', multer.single('image'), async (req, res, next) => {
 
     const user = await User.findById(decodedToken.id);
 
-    const { imgURL, firebaseID } = await uploadImage(req.file, user._id, 'blogcovers/');
+    let imgURL = null;
+    let firebaseID = null;
+
+    if (req.file) {
+      const response = await uploadImage(req.file, user._id, 'blogcovers/');
+      imgURL = response.imgURL;
+      firebaseID = response.firebaseID;
+    }
 
     const locations = JSON.parse(body.locations);
 
