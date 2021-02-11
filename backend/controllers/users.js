@@ -87,6 +87,7 @@ usersRouter.delete('/:userID', async (req, res, next) => {
     await Blog.deleteMany({ author: userID });
     await Picture.deleteMany({ user: userID });
     await Comment.deleteMany({ user: userID });
+    await Notification.deleteMany({ sender: userID });
     await User.findByIdAndDelete(userID);
     await admin.storage().bucket(process.env.BUCKET_NAME).deleteFiles({ prefix: `blogcovers/${userID}` });
     await admin.storage().bucket(process.env.BUCKET_NAME).deleteFiles({ prefix: `images/${userID}` });
