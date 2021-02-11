@@ -39,8 +39,6 @@
   background-color: rgb(52, 72, 161);
 }
 
-
-
 .new-blog-textfield {
   margin: 30px;
 }
@@ -87,6 +85,76 @@
 
 .location-select-form {
   width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+.location-select-form form {
+  align-self: center;
+  margin-bottom: 20px;
+}
+
+.location-select-form input {
+  padding: 5px;
+}
+
+.location-select-form .location-result-select-button {
+  display: inline-block;
+ padding:0.35em 1.2em;
+ border:0.1em solid #000000;
+ margin:0 0.3em 0.3em 0;
+ border-radius:0.12em;
+ background-color: rgb(26, 27, 116);
+ box-sizing: border-box;
+ font-weight:300;
+ color:#ffffff;
+ text-align:center;
+ cursor: pointer;
+}
+
+.location-select-form .location-result-select-button:hover {
+  background-color: rgb(79, 86, 90);
+}
+
+.location-select-form table {
+ display: flex;
+ justify-content: end;
+}
+
+
+.location-select-form tr:nth-child(even) td:first-child, .location-select-form tr:nth-child(even) td:nth-child(2) {
+  background-color: rgb(148, 143, 143);
+} 
+
+.location-select-form .location-result-bottom-buttons {
+  float: right;
+  margin-right: 20px;
+  margin-top: 10px;
+}
+
+.location-result-prev-button, .location-result-next-button {
+ display: inline-block;
+ padding:0.35em 1.2em;
+ border:0.1em solid #000000;
+ margin-left: 0.3em;
+ border-radius:0.12em;
+ box-sizing: border-box;
+ background-color: rgb(255, 255, 255)(219, 204, 204);
+ font-weight:300;
+ color:#000000;
+ text-align:center;
+ cursor: pointer;
+}
+
+.location-result-prev-button:hover, .location-result-next-button:hover {
+ background-color: rgb(64, 71, 75);
+ color: white;
+}
+
+#new-blog-search-button {
+  margin-left: 5px;
+  background-color: rgb(64, 71, 75);
+  color: white;
+  font-size: 0.8rem;
 }
 
 .new-blog-bottom-navigation {
@@ -175,12 +243,14 @@
   bottom: 5%;
   right: 5%;
   display: flex;
+  flex-direction: column;
 }
 
 #new-blog-preview-submit-button {
   background-color: rgb(26, 145, 85);
-  margin-left: 10px;
   font-size: 1.2em;
+  min-width: 160px;
+  margin-bottom: 5px;
   color: white;
 }
 #new-blog-preview-submit-button:hover {
@@ -190,6 +260,8 @@
 #new-blog-preview-cancel-button {
   background-color: rgb(146, 28, 28);
   color: white;
+  font-size: 1.2em;
+  min-width: 160px;
   align-self: flex-end;
 }
 
@@ -217,4 +289,12 @@
 
 #new-blog-another-blog-button {
   margin-top: 20px;
+}
+
+.new-blog-stepper-container .MuiStepLabel-root.MuiStepLabel-horizontal.MuiStepLabel-alternativeLabel {
+  cursor: pointer;
+}
+
+#new-blog-editor {
+  height: 67vh;
 }

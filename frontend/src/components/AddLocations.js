@@ -25,7 +25,7 @@ const AddLocations = ({ filter, selectFunction }) => {
       const prev = res.links.find((x) => x.rel === 'prev');
 
       return (
-        <div>
+        <div className="location-result-bottom-buttons">
           {prev && <button className="location-result-prev-button" type="button" onClick={() => setHref(prev.href)}>Prev</button>}
           {next && <button className="location-result-next-button" type="button" onClick={() => setHref(next.href)}>Next</button>}
         </div>

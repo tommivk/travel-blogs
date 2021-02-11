@@ -119,11 +119,11 @@ const NewBlog = ({
       setUser(userCopy);
       setUploadedBlogID(response.data.id);
       handleMessage('success', 'Blog Submitted!');
+      setActiveStep(5);
     } catch (error) {
       handleMessage('error', error.message);
       console.log(error.message);
     }
-    setActiveStep(5);
   };
 
   const handleImageChange = (e) => {
@@ -245,9 +245,9 @@ const NewBlog = ({
               </Stepper>
             </div>
             <Editor
+              id="new-blog-editor"
               value={content}
               init={{
-                height: 650,
                 menubar: true,
                 paste_data_images: true,
                 plugins: ['paste'],
@@ -281,20 +281,28 @@ const NewBlog = ({
           <div className="location-select-wrapper">
             <div className="new-blog-selected-locations">
               <h3>Locations selected</h3>
-              {locations.map((loc) => (
-                <div>
-                  {loc.city}
-                  ,
-                  {' '}
-                  {loc.country}
-                  <span onClick={() => handleLocationRemove(loc)}>(x)</span>
-                </div>
-              ))}
+              <table>
+                <tbody>
+                  {locations.map((loc) => (
+                    <tr>
+                      <td>
+                        {loc.city}
+                        ,
+                        {' '}
+                        {loc.country}
+                      </td>
+                      <td>
+                        <Button variant="contained" onClick={() => handleLocationRemove(loc)}>remove</Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
             <div className="location-select-form">
               <form onSubmit={handleCitySearch}>
-                <input type="text" ref={searchRef} />
-                <button type="submit">search</button>
+                <input placeholder="Search for city..." type="text" ref={searchRef} />
+                <Button variant="contained" id="new-blog-search-button" type="submit">search</Button>
               </form>
               <div>
                 <AddLocations
@@ -384,14 +392,14 @@ const NewBlogPreview = ({
   return (
     <div className="main-blog-page-container">
       <div className="new-blog-preview-buttons">
-        <Button variant="contained" id="new-blog-preview-cancel-button" onClick={() => setActiveStep(3)}>Go Back</Button>
         <Button variant="contained" id="new-blog-preview-submit-button" onClick={handleBlogSubmit}>Submit Blog</Button>
+        <Button variant="contained" id="new-blog-preview-cancel-button" onClick={() => setActiveStep(3)}>Go Back</Button>
       </div>
       <Explore id="blog-location-toggle" onClick={() => setShowLocations(!showLocations)} />
       {showLocations
      && (
      <div className="blog-locations-container">
-       <h3>Locations</h3>
+       <h3>Blog Locations</h3>
        {locations.length > 0
          ? (
            <table>

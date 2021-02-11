@@ -8,6 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { Search, Language, Notifications } from '@material-ui/icons';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
+import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline';
 import MenuItem from '@material-ui/core/MenuItem';
 import { DateTime } from 'luxon';
 import SearchModal from './SearchModal';
@@ -88,6 +89,8 @@ const Header = ({
       console.log(error);
     }
   };
+
+  console.log(userNotifications);
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedTravelBlogUser');
@@ -188,15 +191,22 @@ const Header = ({
             {unreadNotifications.length === 0 && (
               <div className="no-notifications-message">You don't have any new notifications</div>
             )}
-            {unreadNotifications.map((n) => (
-              <div
-                className="unread-notification notification-message"
-                onClick={() => handleNotificationMessageClick(n)}
-              >
-                {n.content.message}
-                {n.createdAt && <div>{formatDate(n.createdAt)}</div>}
-              </div>
-            ))}
+            <ul>
+              {unreadNotifications.map((n) => (
+                <li>
+                  <div
+                    className="unread-notification notification-message"
+                    onClick={() => handleNotificationMessageClick(n)}
+                  >
+                    <div className="notification-message-content">
+                      {n.content.message}
+                      {n.createdAt && <div>{formatDate(n.createdAt)}</div>}
+                    </div>
+                    <CheckCircleOutline onclick={() => handleNotificationMessageClick} id="notification-check-icon" />
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </Menu>
         <div

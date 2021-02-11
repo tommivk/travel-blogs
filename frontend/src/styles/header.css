@@ -118,14 +118,20 @@
 .notification-message {
     cursor: pointer;
     margin: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .no-notifications-message {
     margin: 20px;
 }
 
-.notification-message:hover {
+/* .notification-message:hover {
     font-weight: bold;
+} */
+.notification-message-content {
+    display: flex;
+    flex-direction: column;
 }
 
 .notification-menu-content {
@@ -133,6 +139,17 @@
     width: fit-content;
     overflow-y: auto;
     outline: none;
+}
+
+
+.notification-menu-content ul {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+#notification-check-icon {
+    margin-left: 10px;
 }
 
 .header-link.map-page  {

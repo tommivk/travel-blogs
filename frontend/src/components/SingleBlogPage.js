@@ -178,7 +178,7 @@ const SingleBlogPage = ({
       {showLocations
        && (
        <div className="blog-locations-container">
-         <h3>Locations</h3>
+         <h3>Blog Locations</h3>
          {blog.locations.length > 0
            ? (
              <table>
