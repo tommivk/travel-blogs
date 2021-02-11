@@ -37,7 +37,7 @@ const AddLocations = ({ filter, selectFunction }) => {
   if (filter === '') return null;
 
   return (
-    <div>
+    <>
       {searchResult.data && searchResult.data.length > 0
                 && (
                   <div>
@@ -57,8 +57,8 @@ const AddLocations = ({ filter, selectFunction }) => {
                     {getButtons(searchResult)}
                   </div>
                 )}
-      {searchResult.data && searchResult.data.length === 0 && 'No cities found'}
-    </div>
+      {searchResult.data && searchResult.data.length === 0 && <p>No cities found</p>}
+    </>
   );
 };
 

@@ -304,7 +304,8 @@ const NewBlog = ({
                 <input placeholder="Search for city..." type="text" ref={searchRef} />
                 <Button variant="contained" id="new-blog-search-button" type="submit">search</Button>
               </form>
-              <div>
+              <div className="new-blog-search-table-wrapper">
+
                 <AddLocations
                   filter={searchFilter}
                   selectFunction={handleAddLocation}
