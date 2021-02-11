@@ -59,9 +59,9 @@ const Header = ({
     setNotificationMenuEl(null);
   };
 
-  const handleNotificationMessageClick = async (n) => {
+  const handleNotificationIconClick = async (n) => {
     try {
-      const res = await axios.put(
+      await axios.put(
         `http://localhost:8008/api/notifications/${n.id}`,
         {},
         {
@@ -70,7 +70,6 @@ const Header = ({
           },
         },
       );
-      console.log(res.data);
       const unreadnotifications = unreadNotifications.filter(
         (x) => x.id !== n.id,
       );
@@ -78,19 +77,10 @@ const Header = ({
       setUnreadNotifications([...unreadnotifications]);
 
       setNotificationMenuEl(null);
-
-      if (n.content.contentType === 'blog') {
-        history.push(`/blogs/${n.content.contentID}`);
-      }
-      if (n.content.contentType === 'picture') {
-        history.push(`/gallery/${n.content.contentID}`);
-      }
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(userNotifications);
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedTravelBlogUser');
@@ -103,6 +93,39 @@ const Header = ({
   const formatDate = (date) => {
     const d = DateTime.fromISO(date);
     return `${d.monthShort} ${d.day} ${d.weekYear} ${d.hour}:${d.minute}`;
+  };
+
+  const getNotificationContent = (n) => {
+    switch (n.content.contentType) {
+      case 'welcome':
+        return `Welcome to TravelBlogs ${user.username}`;
+      case 'picture':
+        return (
+          <div>
+            New
+            {' '}
+            <Link className="notification-link" to={`/gallery/${n.content.contentID}`}>picture</Link>
+            {' '}
+            posted by
+            {' '}
+            <Link className="notification-link" to={`/users/${n.sender.id}`}>{n.sender.username}</Link>
+          </div>
+        );
+      case 'blog':
+        return (
+          <div>
+            New
+            {' '}
+            <Link className="notification-link" to={`/blogs/${n.content.contentID}`}>blog</Link>
+            {' '}
+            posted by
+            {' '}
+            <Link className="notification-link" to={`/users/${n.sender.id}`}>{n.sender.username}</Link>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -196,13 +219,12 @@ const Header = ({
                 <li>
                   <div
                     className="unread-notification notification-message"
-                    onClick={() => handleNotificationMessageClick(n)}
                   >
                     <div className="notification-message-content">
-                      {n.content.message}
+                      {getNotificationContent(n)}
                       {n.createdAt && <div>{formatDate(n.createdAt)}</div>}
                     </div>
-                    <CheckCircleOutline onclick={() => handleNotificationMessageClick} id="notification-check-icon" />
+                    <CheckCircleOutline onClick={() => handleNotificationIconClick(n)} id="notification-check-icon" />
                   </div>
                 </li>
               ))}

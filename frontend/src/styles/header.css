@@ -116,8 +116,7 @@
 }
 
 .notification-message {
-    cursor: pointer;
-    margin: 20px;
+    margin: 20px 5px 20px 20px;
     display: flex;
     align-items: center;
 }
@@ -126,12 +125,10 @@
     margin: 20px;
 }
 
-/* .notification-message:hover {
-    font-weight: bold;
-} */
 .notification-message-content {
     display: flex;
     flex-direction: column;
+    margin-right: 5px;
 }
 
 .notification-menu-content {
@@ -148,8 +145,14 @@
     padding: 0px;
 }
 
+.notification-link, .notification-link:visited {
+    color: rgb(45, 33, 155);
+}
+
 #notification-check-icon {
     margin-left: 10px;
+    cursor: pointer;
+    margin-left: auto;
 }
 
 .header-link.map-page  {
