@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'test') {
 
 const errorHandler = (error, req, res, next) => {
   console.log('error: ', error.message, error.name);
-
+  console.log(error, 'asdasd');
   if (error.name === 'JsonWebTokenError') {
     return res.status(401).send({ error: 'token missing or invalid' });
   }
@@ -59,6 +59,10 @@ const errorHandler = (error, req, res, next) => {
 
   if (error.name === 'ValidationError') {
     return res.status(400).json({ error: error.message });
+  }
+
+  if (error.name === 'ImageUploadValidationError') {
+    return res.status(401).send({ error: error.message });
   }
 
   return next(error);

@@ -10,6 +10,10 @@ const uploadImage = async (file, userID, path, type) => new Promise((resolve, re
     reject('no file');
   }
 
+  if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg') {
+    reject({ name: 'ImageUploadValidationError', message: 'Only JPG, JPEG and PNG file types allowed' });
+  }
+
   const newFileName = (type && type === 'avatar') ? 'avatar' : uuidv4();
   const bucket = storage.bucket(process.env.BUCKET_NAME);
   const fileUpload = bucket.file(`${path}${userID}/${newFileName}`);

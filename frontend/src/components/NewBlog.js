@@ -128,6 +128,16 @@ const NewBlog = ({
 
   const handleImageChange = (e) => {
     if (!e.target.files[0]) return;
+    console.log(e.target.files[0]);
+    if (e.target.files[0] && e.target.files[0].type && e.target.files[0].type) {
+      if (e.target.files[0].type !== 'image/png'
+         && e.target.files[0].type !== 'image/jpg'
+         && e.target.files[0].type !== 'image/jpeg') {
+        handleMessage('error', 'Only JPG, JPEG and PNG file types allowed');
+        return;
+      }
+    }
+
     setHeaderImage(e.target.files[0]);
     setHeaderImagePreview(URL.createObjectURL(e.target.files[0]));
   };
