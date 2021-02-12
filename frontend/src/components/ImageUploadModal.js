@@ -81,6 +81,10 @@ const ImageUploadModal = ({
         handleMessage('error', 'Only JPG, JPEG and PNG file types allowed');
         return;
       }
+      if (e.target.files[0].size / 1024 / 1024 > 2) {
+        handleMessage('error', 'Maximum allowed file size is 2MB');
+        return;
+      }
     }
 
     setImage(e.target.files[0]);

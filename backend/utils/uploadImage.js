@@ -5,9 +5,15 @@ const storage = new Storage({ keyFilename: process.env.FB_CREDENTIALS });
 const bucketName = process.env.BUCKET_NAME;
 
 const uploadImage = async (file, userID, path, type) => new Promise((resolve, reject) => {
+  const maxSize = 2 * 1024 * 1024;
   const accessToken = uuidv4();
+
   if (!file) {
     reject('no file');
+  }
+
+  if (file.buffer.byteLength >= maxSize) {
+    reject({ name: 'ImageUploadValidationError', message: 'Maximum allowed file size is 2MB' });
   }
 
   if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg') {
