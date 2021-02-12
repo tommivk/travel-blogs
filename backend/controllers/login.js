@@ -7,7 +7,7 @@ loginRouter.post('/', async (req, res, next) => {
   try {
     const { body } = req;
     if (!body.username || !body.password) {
-      return res.send(401).end();
+      return res.status(401).send({ error: 'Username and password fields cannot be empty' });
     }
 
     const user = await User.findOne({ username: body.username }).populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } }).populate('pictures');
@@ -17,7 +17,7 @@ loginRouter.post('/', async (req, res, next) => {
 
     if (!(user && passwordCorrect)) {
       return res.status(401).json({
-        error: 'invalid username or password',
+        error: 'Wrong credentials',
       });
     }
 

@@ -102,6 +102,12 @@ const ImageUploadModal = ({
   const handleImageUpload = async (e) => {
     e.preventDefault();
 
+    if (title.length < 3) {
+      handleMessage('error', 'Title must be at least 3 characters long');
+      setStep(1);
+      return;
+    }
+
     let locationData = {
       lat: null, lng: null, city: null, country: null,
     };
@@ -149,7 +155,7 @@ const ImageUploadModal = ({
       setPublishToGallery(false);
       handleMessage('success', 'Image uploaded!');
     } catch (error) {
-      handleMessage('error', error.message);
+      handleMessage('error', error.response.data.error);
       console.log(error);
     }
   };

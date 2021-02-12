@@ -47,14 +47,18 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 const errorHandler = (error, req, res, next) => {
-  console.log('error: ', error.message);
+  console.log('error: ', error.message, error.name);
 
   if (error.name === 'JsonWebTokenError') {
-    res.send(401).send({ error: 'token missing or invalid' });
+    return res.status(401).send({ error: 'token missing or invalid' });
   }
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return res.status(400).send({ error: 'malformatted id' });
+  }
+
+  if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message });
   }
 
   return next(error);

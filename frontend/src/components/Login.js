@@ -21,10 +21,9 @@ const Login = ({ setUser, handleMessage }) => {
         'loggedTravelBlogUser',
         JSON.stringify(user.data),
       );
-      handleMessage('success', `logged in as ${user.data.username}`);
+      handleMessage('success', `Logged in as ${user.data.username}`);
     } catch (error) {
-      handleMessage('error', 'Wrong credentials');
-      console.log(error.message);
+      handleMessage('error', error.response.data.error);
     }
   };
   return (

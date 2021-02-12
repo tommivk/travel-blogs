@@ -32,13 +32,15 @@ usersRouter.post('/', async (req, res, next) => {
     const { body } = req;
 
     if (!body.username || !body.password) {
-      return res.send(400).end();
+      return res.status(400).send({ error: 'Username and password fields cannot be empty' });
+    }
+
+    if (body.username.length < 3) {
+      return res.status(400).send({ error: 'Username must be at least 3 characters long' });
     }
 
     if (body.password.length < 5) {
-      return res
-        .status(400)
-        .send({ message: 'password must be at least 5 characters long' });
+      return res.status(400).send({ error: 'Password must be at least 5 characters long' });
     }
 
     const saltRounds = 10;

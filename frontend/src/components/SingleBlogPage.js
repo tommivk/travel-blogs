@@ -160,7 +160,7 @@ const SingleBlogPage = ({
       setAllBlogs((allBlogs.map((b) => (b.id === blog.id ? response.data : b))));
       handleMessage('success', 'Comment Deleted');
     } catch (error) {
-      handleMessage('error', error.response.data.message);
+      handleMessage('error', error.response.data.error);
       console.log(error);
     }
   };

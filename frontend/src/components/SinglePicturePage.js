@@ -184,7 +184,7 @@ const SinglePicturePage = ({
 
       setAllPictures(filteredPics);
     } catch (error) {
-      console.log(error.message);
+      console.log(error.response.data.message);
     }
   };
 
@@ -205,7 +205,7 @@ const SinglePicturePage = ({
 
       setAllPictures(filteredPics);
     } catch (error) {
-      console.log(error.message);
+      handleMessage('error', error.response.data.error);
     }
   };
 
@@ -220,7 +220,7 @@ const SinglePicturePage = ({
       setAllPictures(allPictures.map((p) => (p.id === pictureId ? response.data : p)));
       handleMessage('success', 'Comment Deleted');
     } catch (error) {
-      handleMessage('error', error.response.data.message);
+      handleMessage('error', error.response.data.error);
       console.log(error);
     }
   };

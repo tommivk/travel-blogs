@@ -100,7 +100,7 @@ const UserPage = ({
       );
       handleMessage('success', 'Picture deleted');
     } catch (error) {
-      handleMessage('error', error.message);
+      handleMessage('error', error.response.data.error);
     }
   };
 
@@ -123,7 +123,7 @@ const UserPage = ({
       setAllBlogs(newBlogs);
       handleMessage('success', 'Blog deleted');
     } catch (error) {
-      handleMessage('error', error.message);
+      handleMessage('error', error.response.data.error);
     }
   };
 
@@ -140,7 +140,7 @@ const UserPage = ({
       history.push('/');
       localStorage.removeItem('loggedTravelBlogUser');
     } catch (error) {
-      handleMessage('error', error.message);
+      handleMessage('error', error.response.data.error);
     }
   };
 
@@ -186,7 +186,7 @@ const UserPage = ({
       setAllUsers(newUsers);
       handleMessage('success', 'Profile updated');
     } catch (error) {
-      handleMessage('error', error.message);
+      handleMessage('error', error.response.data.error);
       console.log(error);
     }
   };
@@ -240,7 +240,7 @@ const UserPage = ({
       const subMessage = isSubscribed() ? 'Subsciption modified' : 'Subscription added';
       handleMessage('success', subMessage);
     } catch (error) {
-      handleMessage('error', error.response.data.message);
+      handleMessage('error', error.response.data.error);
       console.log(error);
     }
   };

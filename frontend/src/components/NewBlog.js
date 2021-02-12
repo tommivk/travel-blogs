@@ -121,8 +121,8 @@ const NewBlog = ({
       handleMessage('success', 'Blog Submitted!');
       setActiveStep(5);
     } catch (error) {
-      handleMessage('error', error.message);
-      console.log(error.message);
+      console.log({ error });
+      handleMessage('error', error.response.data.error);
     }
   };
 

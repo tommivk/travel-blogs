@@ -187,6 +187,10 @@ picturesRouter.post('/', multer.single('image'), async (req, res, next) => {
   try {
     const { body } = req;
 
+    if (!req.file) {
+      return res.status(401).end();
+    }
+
     const token = getTokenFrom(req);
     const decodedToken = jwt.verify(token, process.env.SECRET);
 

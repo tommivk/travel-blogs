@@ -24,8 +24,8 @@ const SignUp = ({
       handleMessage('success', 'Signed Up Successfully');
       closeModal();
     } catch (error) {
-      handleMessage('error', error.response.data.message);
-      console.log(error.response.data);
+      handleMessage('error', error.response.data.error);
+      console.log({ error });
     }
   };
 

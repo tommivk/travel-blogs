@@ -57,6 +57,10 @@ blogsRouter.post('/', multer.single('image'), async (req, res, next) => {
 
     const locations = JSON.parse(body.locations);
 
+    if (locations.length > 10) {
+      return res.status(400).send({ error: 'Maximum number of locations is 10' });
+    }
+
     const newBlog = new Blog({
       title: body.title,
       description: body.description,
