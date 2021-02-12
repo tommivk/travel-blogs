@@ -151,12 +151,11 @@ const ImageUploadModal = ({
       setTitle('');
       setLocation(null);
       setStep(0);
-      // setUploadProgress(0);
       setPublishToGallery(false);
       handleMessage('success', 'Image uploaded!');
     } catch (error) {
       handleMessage('error', error.response.data.error);
-      console.log(error);
+      setUploadInProgress(false);
     }
   };
 
