@@ -39,7 +39,7 @@ const ConfirmDialog = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <div className="confirm-dialog-buttons">
+          <div className={`confirm-dialog-buttons ${!dialogOpen && 'hidden'}`}>
             {showLoadingCircle
               ? <CircularProgress id="confirm-dialog-spinner" />
               : (
