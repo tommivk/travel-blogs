@@ -131,7 +131,8 @@ usersRouter.put('/:userID', multer.single('image'), async (req, res, next) => {
 
     const user = await User.findByIdAndUpdate(decodedToken.id, newUserData, {
       new: true,
-    }).populate('pictures').populate('blogs');
+    }).populate({ path: 'pictures', model: 'Picture', populate: { path: 'user', model: 'User' } })
+      .populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } });
 
     const newUser = user.toJSON();
     newUser.token = token;
