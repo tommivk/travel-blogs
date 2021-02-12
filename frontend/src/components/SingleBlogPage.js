@@ -94,7 +94,6 @@ const SingleBlogPage = ({
   const [dialogFunction, setDialogFunction] = useState(null);
 
   useEffect(() => {
-    console.log(blog);
     if (blog && blog.title) {
       document.title = `${blog.title} | TravelBlogs`;
     }
@@ -131,7 +130,6 @@ const SingleBlogPage = ({
   };
 
   const handleStarChange = async (action) => {
-    console.log(user, blog);
     const response = await axios.put(
       `http://localhost:8008/api/blogs/${blog.id}/star`,
       { action },
@@ -227,9 +225,10 @@ const SingleBlogPage = ({
               </div>
             </div>
           </div>
-          {blog.headerImageURL
-          && <img src={blog.headerImageURL} alt="cover" width="1000px" />}
-
+          <div className="blog-cover-image">
+            {blog.headerImageURL
+            && <img src={blog.headerImageURL} alt="cover" width="1000px" />}
+          </div>
           {ReactHtmlParser(blog.content)}
         </div>
         <div className="vote-container">

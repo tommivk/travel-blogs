@@ -4,6 +4,11 @@
     overflow-y: auto;
   }
 
+  .blog-cover-image img {
+    width: 100%;
+    height: auto;
+  }
+
   .vote-container {
     display: flex;
     margin-top: 40px;
