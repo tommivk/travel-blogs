@@ -69,6 +69,19 @@ const UserPage = ({
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
+      if (e.target.files[0] && e.target.files[0].type && e.target.files[0].type) {
+        if (e.target.files[0].type !== 'image/png'
+           && e.target.files[0].type !== 'image/jpg'
+           && e.target.files[0].type !== 'image/jpeg') {
+          handleMessage('error', 'Only JPG, JPEG and PNG file types allowed');
+          return;
+        }
+        if (e.target.files[0].size / 1024 / 1024 > 2) {
+          handleMessage('error', 'Maximum allowed file size is 2MB');
+          return;
+        }
+      }
+
       setImage(e.target.files[0]);
       setImagePreview(URL.createObjectURL(e.target.files[0]));
       URL.revokeObjectURL(e.target.files[0]);
