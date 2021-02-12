@@ -116,6 +116,10 @@ usersRouter.put('/:userID', multer.single('image'), async (req, res, next) => {
       return res.status(401).send();
     }
 
+    if (body.username && body.username.length < 3) {
+      return res.status(400).send({ error: 'Username must be atleast 3 characters long' });
+    }
+
     let newUserData;
 
     if (req.file) {

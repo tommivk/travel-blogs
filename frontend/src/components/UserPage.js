@@ -187,7 +187,7 @@ const UserPage = ({
       handleMessage('success', 'Profile updated');
     } catch (error) {
       handleMessage('error', error.response.data.error);
-      console.log(error);
+      setUploadInProgress(false);
     }
   };
 
