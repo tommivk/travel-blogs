@@ -196,6 +196,25 @@ const UserPage = ({
       setNewUsername(response.data.username);
 
       const newUsers = allUsers.map((u) => (u.id === user.id ? response.data : u));
+
+      const newPictures = allPictures.map((pic) => {
+        if (pic.user.username === user.username) {
+          return { ...pic, user: response.data };
+        }
+        return pic;
+      });
+
+      setAllPictures(newPictures);
+
+      const newBlogs = allBlogs.map((blog) => {
+        if (blog.author.username === user.username) {
+          return { ...blog, author: response.data };
+        }
+        return blog;
+      });
+
+      setAllBlogs(newBlogs);
+
       setAllUsers(newUsers);
       handleMessage('success', 'Profile updated');
     } catch (error) {
