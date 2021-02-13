@@ -246,4 +246,19 @@
     .picture-container {
       width: 60vw;
     }
+    .comment-container {
+      width: 50vw;
+    }
+  }
+
+  @media (max-width: 940px) {
+    .comment-container {
+      width: 70vw;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .comment-container {
+      width: 90vw;
+    }
   }
