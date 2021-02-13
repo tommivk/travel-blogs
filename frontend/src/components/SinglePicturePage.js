@@ -433,18 +433,20 @@ const SinglePicturePage = ({
           <ul>
             {picture.comments.map((comment) => (
               <li key={comment.id}>
-                <div className="picture-comment">
-                  <div className="picture-comment-author">
+                <div className="comment">
+                  <div className="comment-author">
                     <img src={comment.user.avatar} alt="avatar" />
-                    {comment.user.username}
-                    <div className="picture-comment-date">
+                    <Link to={`/users/${comment.user.id}`}>
+                      {comment.user.username}
+                    </Link>
+                    <div className="comment-date">
                       {calculateDateDiff(comment.date)}
                     </div>
                   </div>
-                  <div className="picture-comment-content">
+                  <div className="comment-content">
                     <p>{comment.content}</p>
+                    {comment.user.id === user.id && <button type="button" className="comment-delete-button" onClick={() => handleDialogOpen('Delete Comment?', '', () => handleCommentDelete(picture.id, comment.id))}>Delete comment</button>}
                   </div>
-                  {comment.user.id === user.id && <div><button type="button" id="comment-delete-button" onClick={() => handleDialogOpen('Delete Comment?', '', () => handleCommentDelete(picture.id, comment.id))}>Delete comment</button></div>}
                 </div>
               </li>
             ))}

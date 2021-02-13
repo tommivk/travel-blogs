@@ -69,13 +69,10 @@ body {
   background-color: rgb(56, 51, 199);
 }
 
-#comment-delete-button {
+.comment-delete-button {
   background-color: rgb(175, 22, 22);
   color: white;
-  display: inline-block;
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
+  float: right;
   padding: 5px;
   border-radius: 10px;
   font-weight: bold;
@@ -83,6 +80,50 @@ body {
   border: none;
 }
 
-#comment-delete-button:hover {
+.comment-delete-button:hover {
   background-color: rgb(219, 56, 56);
+}
+
+.comment {
+  border-bottom: 2px solid black;
+  text-align: left;
+  position: relative;
+}
+
+.comment-content {
+  font-size: 1em;
+  width: 100%;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.comment-content p {
+  padding: 5px 10px 5px 10px;
+}
+
+.comment-date {
+  position: absolute;
+  right: 0px;
+  font-size: 0.8em;
+}
+
+.comment-author {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  margin-left: 10px;
+  position: relative;
+}
+
+.comment-author img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.comment-author a {
+  text-decoration: none;
+  color: inherit;
 }

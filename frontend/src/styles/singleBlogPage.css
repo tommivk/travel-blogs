@@ -93,45 +93,6 @@
     padding: 0;
   }
 
-  .blog-comment {
-    height: fit-content;
-    padding: 5px;
-    border-bottom: 2px solid black;
-    margin-top: 15px;
-    position: relative;
-  }
-
-  .blog-comment img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-  }
-
-  .blog-comment-top-section {
-    position: relative;
-    display: flex;
-    margin-bottom: 15px;
-  }
-
-  .blog-comment-username {
-    position: relative;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: 10px;
-    color: black;
-    width: 100px;
-    
-  }
- 
-  .blog-comment-username a {
-    text-decoration: none;
-    color: rgb(33, 13, 122);
-  }
-
-  .blog-comment-content {
-    font-size: 1.2em;
-  }
-
   .show-comments-button {
     text-align: center;
   }
