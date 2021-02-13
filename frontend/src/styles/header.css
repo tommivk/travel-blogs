@@ -209,7 +209,7 @@
         text-decoration: none;
     }
 
-    #header-user-avatar, #notifications-bell {
+    #header-user-avatar, .notification-container {
         display: none;
     }
 
