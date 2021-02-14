@@ -480,7 +480,7 @@ const UserPage = ({
       <FormControl>
         <RadioGroup row aria-label="position" defaultValue={content} onChange={handleRadioChange}>
           <FormControlLabel value="blogs" control={<Radio />} label="Blogs" />
-          <FormControlLabel value="pictures" control={<Radio />} label="Pictures" />
+          <FormControlLabel id="userpage-pictures-radio" value="pictures" control={<Radio />} label="Pictures" />
         </RadioGroup>
       </FormControl>
       {content === 'pictures' && (
