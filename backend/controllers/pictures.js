@@ -334,4 +334,23 @@ picturesRouter.delete('/:pictureId/comments/:commentId', async (req, res, next) 
   }
 });
 
+picturesRouter.get('/picture-of-the-week', async (req, res, next) => {
+  try {
+    const pictures = await Picture.find({
+      date: {
+        $gte: new Date(new Date() - 7 * 60 * 60 * 24 * 1000),
+        $lt: new Date(),
+      },
+    }).sort({ voteResult: -1 });
+
+    if (pictures[0]) {
+      return res.status(200).send(pictures[0]);
+    }
+
+    return res.status(404).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = picturesRouter;

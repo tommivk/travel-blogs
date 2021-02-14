@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
-import SwiperCore, { Autoplay } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import '../styles/homePage.css';
 
-SwiperCore.use([Autoplay]);
-
-const HomePage = ({ allBlogs, allPictures }) => {
-  if (allBlogs.length === 0) return null;
+const HomePage = ({ allBlogs }) => {
+  const [picture, setPicture] = useState(null);
 
   useEffect(() => {
     document.title = 'TravelBlogs';
+    axios.get('http://localhost:8008/api/pictures/picture-of-the-week').then((response) => setPicture(response.data));
   }, []);
+
+  if (allBlogs.length === 0) return null;
 
   const newestBlogs = allBlogs
     .sort((a, b) => {
@@ -81,25 +81,9 @@ const HomePage = ({ allBlogs, allPictures }) => {
             </div>
           </div>
         </div>
-        <Swiper
-          slidesPerView={1}
-          id="homepage-swiper"
-          autoplay={{ delay: 4000 }}
-          allowTouchMove={false}
-          speed={3000}
-          loop
-        >
-          {allPictures.map((pic) => (
-            <SwiperSlide key={pic.id}>
-              <Link id="homepage-picture-link" to={`/gallery/${pic.id}`}>
-                <img src={pic.imgURL} alt="" />
-                <div className="homepage-swiper-title">
-                  <h3>{pic.title}</h3>
-                </div>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div className="homepage-top-picture-container">
+          {picture && <img src={picture.imgURL} alt="best of the week" /> }
+        </div>
       </div>
     </div>
   );
@@ -107,7 +91,6 @@ const HomePage = ({ allBlogs, allPictures }) => {
 
 HomePage.propTypes = {
   allBlogs: PropTypes.instanceOf(Array).isRequired,
-  allPictures: PropTypes.instanceOf(Array).isRequired,
 };
 
 export default HomePage;
