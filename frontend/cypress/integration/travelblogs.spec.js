@@ -198,3 +198,100 @@ describe('Gallery uploading', function () {
     cy.contains('No pictures uploaded yet');
   });
 });
+
+describe('Updating user', function () {
+  it('User can change username', function () {
+    cy.get('#header-user-avatar').click();
+    cy.get('#my-page-menulink').click();
+    cy.get('#edit-profile-button').click();
+    cy.get('.username-edit-container').click();
+    cy.get('.username-change-input > input').clear();
+    cy.get('.username-change-input > input').type('new username');
+    cy.get('#profile-update-submit-button').click();
+    cy.get('.MuiAlert-message').contains('Profile updated');
+    cy.contains('new username');
+    cy.reload();
+    cy.contains('new username');
+    cy.contains('Member Since:');
+    cy.contains('Created Blogs:');
+    cy.contains('Uploaded Pictures:');
+  });
+
+  it('Avatar can be changed', function () {
+    cy.get('#edit-profile-button').click();
+
+    cy.fixture('../images/testpicture.jpg').as('picture');
+
+    cy.get('input[type=file]').then(function (el) {
+      const blob = Cypress.Blob.base64StringToBlob(this.picture, 'image/jpg');
+
+      const file = new File([blob], 'images/picture.jpg', { type: 'image/jpg' });
+      const list = new DataTransfer();
+
+      list.items.add(file);
+      const myFileList = list.files;
+
+      el[0].files = myFileList;
+      el[0].dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    cy.get('#profile-update-submit-button').click();
+    cy.get('.MuiAlert-message').contains('Profile updated');
+    cy.get('.userpage-avatar-image').should('be.visible');
+    cy.contains('new username');
+    cy.contains('Member Since:');
+    cy.contains('Created Blogs:');
+    cy.contains('Uploaded Pictures:');
+  });
+
+  it('Username and avatar can be changed at the same time', function () {
+    cy.get('#header-user-avatar').click();
+    cy.get('#my-page-menulink').click();
+    cy.get('#edit-profile-button').click();
+    cy.get('.username-edit-container').click();
+    cy.get('.username-change-input > input').clear();
+    cy.get('.username-change-input > input').type('testuser');
+
+    cy.fixture('../images/testpicture.jpg').as('picture');
+
+    cy.get('input[type=file]').then(function (el) {
+      const blob = Cypress.Blob.base64StringToBlob(this.picture, 'image/jpg');
+
+      const file = new File([blob], 'images/picture.jpg', { type: 'image/jpg' });
+      const list = new DataTransfer();
+
+      list.items.add(file);
+      const myFileList = list.files;
+
+      el[0].files = myFileList;
+      el[0].dispatchEvent(new Event('change', { bubbles: true }));
+    });
+
+    cy.get('#profile-update-submit-button').click();
+    cy.get('.MuiAlert-message').contains('Profile updated');
+    cy.contains('testuser');
+    cy.contains('Member Since:');
+    cy.contains('Created Blogs:');
+    cy.contains('Uploaded Pictures:');
+    cy.get('.userpage-avatar-image').should('be.visible');
+    cy.reload();
+    cy.contains('testuser');
+    cy.contains('Member Since:');
+    cy.contains('Created Blogs:');
+    cy.contains('Uploaded Pictures:');
+    cy.get('.userpage-avatar-image').should('be.visible');
+  });
+});
+
+describe('Deleting user', function () {
+  it('User can be deleted', function () {
+    cy.get('#header-user-avatar').click();
+    cy.get('#my-page-menulink').click();
+    cy.get('#edit-profile-button').click();
+    cy.get('#user-delete-icon').click();
+    cy.get('#confirm-dialog-ok-button').click();
+    cy.get('.MuiAlert-message').contains('User deleted');
+    cy.contains('TravelBlogs');
+    cy.contains('Login');
+    cy.get('#indexpage-signup-button').should('be.visible');
+  });
+});
