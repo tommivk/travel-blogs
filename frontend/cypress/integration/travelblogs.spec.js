@@ -41,7 +41,7 @@ describe('User can create new blog', function () {
     cy.contains('Preview And Submit');
     cy.get('#new-blog-title-textfield').type('Test blog');
     cy.get('#new-blog-description-textfield').type('Description for test blog');
-    cy.get('.new-blog-nav-button-right').click();
+    cy.get('#new-blog-next-button').click();
     cy.contains('Set Title');
     cy.contains('Write Content');
     cy.contains('Add Locations');
@@ -52,7 +52,7 @@ describe('User can create new blog', function () {
     cy.contains('Format');
     cy.get('.tox-notification__dismiss').click();
     cy.frameLoaded();
-    cy.iframe().type('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ');
+    cy.iframe().type('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.');
     cy.get('#new-blog-next-button').click();
     cy.contains('Set Title');
     cy.contains('Write Content');
@@ -60,15 +60,18 @@ describe('User can create new blog', function () {
     cy.contains('Preview And Submit');
     cy.contains('Locations selected');
     cy.get('#location-search-textfield').type('Tokyo');
-    cy.wait(5000);
-    cy.contains('Tokyo, Japan');
-    cy.get('#location-select-button').click();
+    cy.get('#new-blog-search-button').click();
+    cy.contains('Japan');
+    cy.contains('Japan');
+    cy.get('.location-result-select-button').click();
     cy.get('#new-blog-next-button').click();
     cy.contains('Set Title');
     cy.contains('Write Content');
     cy.contains('Add Locations');
     cy.contains('Preview And Submit');
-    cy.get('#blog-submit-button').click();
+    cy.get('#new-blog-preview-button').click();
+    cy.contains('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.');
+    cy.get('#new-blog-preview-submit-button').click();
     cy.get('#header-blogs-link').click();
     cy.contains('By testuser');
     cy.contains('TEST BLOG');
@@ -79,11 +82,7 @@ describe('User can create new blog', function () {
       cy.get('#main-blog-link').click();
       cy.contains('Test blog');
       cy.contains('Description for test blog');
-      cy.contains('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ');
-      cy.get('#blog-location-toggle').click();
-      cy.contains('Locations');
-      cy.contains('Tokyo');
-      cy.contains('Japan');
+      cy.contains('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.');
     });
     describe('Blogs on user page', function () {
       it('Blog content is displayed on user page', function () {

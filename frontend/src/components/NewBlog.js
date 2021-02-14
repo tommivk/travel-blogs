@@ -315,7 +315,7 @@ const NewBlog = ({
             </div>
             <div className="location-select-form">
               <form onSubmit={handleCitySearch}>
-                <input placeholder="Search for city..." type="text" ref={searchRef} />
+                <input id="location-search-textfield" placeholder="Search for city..." type="text" ref={searchRef} />
                 <Button variant="contained" id="new-blog-search-button" type="submit">search</Button>
               </form>
               <div className="new-blog-search-table-wrapper">
