@@ -302,9 +302,14 @@
 }
 
 #new-blog-view-blog-button {
-  background-color: blue;
+  background-color: rgb(36, 36, 146);
   font-size: 1.3em;
   margin-top: 20px;
+  color: white;
+}
+
+#new-blog-view-blog-button:hover {
+  background-color: rgb(49, 49, 177);
 }
 
 #new-blog-another-blog-button {
