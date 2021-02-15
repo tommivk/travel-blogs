@@ -507,29 +507,15 @@ const UserPage = ({
                       <div className="gallery-card">
                         <img src={pic.imgURL} alt="" />
                         <h4
-                          style={{
-                            marginTop: '2px',
-                            marginBottom: '5px',
-                            textAlign: 'center',
-                            color: '#FFFFFF',
-                          }}
+                          className="gallery-card-title"
                         >
                           {pic.title}
                         </h4>
                         <div
-                          style={{
-                            position: 'absolute',
-                            bottom: '0px',
-                            width: '100%',
-                          }}
+                          className="gallery-card-bottom-section"
                         >
                           <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              width: '100%',
-                              marginBottom: '3px',
-                            }}
+                            className="gallery-card-bottom-section-wrapper"
                           >
                             <div
                               className="tooltip"
@@ -542,7 +528,7 @@ const UserPage = ({
                               <span className="tooltip-message">Points</span>
                               <ArrowUpward />
                               <div
-                                style={{ alignSelf: 'center', marginLeft: '3px' }}
+                                className="gallery-card-vote-result"
                               >
                                 {pic.voteResult}
                               </div>
@@ -552,8 +538,8 @@ const UserPage = ({
                               style={{ color: '#6c717a', marginRight: '4px' }}
                             >
                               <span className="tooltip-message">Comments</span>
-                              <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <Sms />
+                              <div className="gallery-card-comment-section">
+                                <Sms id="gallery-card-comment-icon" />
                                 {pic.comments.length}
                               </div>
                             </div>

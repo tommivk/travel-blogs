@@ -192,19 +192,10 @@ const Gallery = ({
                       {pic.title}
                     </h4>
                     <div
-                      style={{
-                        position: 'absolute',
-                        bottom: '0px',
-                        width: '100%',
-                      }}
+                      className="gallery-card-bottom-section"
                     >
                       <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          width: '100%',
-                          marginBottom: '3px',
-                        }}
+                        className="gallery-card-bottom-section-wrapper"
                       >
                         <div
                           className="tooltip"
@@ -217,7 +208,7 @@ const Gallery = ({
                           <span className="tooltip-message">Points</span>
                           <ArrowUpward />
                           <div
-                            style={{ alignSelf: 'center', marginLeft: '3px' }}
+                            className="gallery-card-vote-result"
                           >
                             {pic.voteResult}
                           </div>
@@ -227,7 +218,7 @@ const Gallery = ({
                           style={{ color: '#6c717a', marginRight: '4px' }}
                         >
                           <span className="tooltip-message">Comments</span>
-                          <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <div className="gallery-card-comment-section">
                             <Sms id="gallery-card-comment-icon" />
                             {pic.comments.length}
                           </div>
