@@ -434,7 +434,7 @@ const NewBlogPreview = ({
        <button id="blog-locations-close-button" type="button" onClick={() => setShowLocations(false)}>X</button>
      </div>
      )}
-      <Container maxWidth="md">
+      <Container maxWidth="md" className="blog-container">
         <div>
           <div style={{ textAlign: 'center' }}>
             <h1 id="blog-title">{title}</h1>

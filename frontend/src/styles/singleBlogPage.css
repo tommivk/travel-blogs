@@ -4,6 +4,10 @@
     overflow-y: auto;
   }
 
+  .blog-container {
+    word-wrap: break-word;
+  }
+
   .blog-cover-image img {
     width: 100%;
     height: auto;
@@ -75,8 +79,6 @@
     margin-bottom: 30px;
   }
 
-
- 
   .blog-comment-section-container {
     margin-bottom: 50px;
   }
