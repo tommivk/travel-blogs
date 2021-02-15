@@ -235,6 +235,7 @@ describe('Updating user', function () {
       el[0].dispatchEvent(new Event('change', { bubbles: true }));
     });
     cy.get('#profile-update-submit-button').click();
+    cy.get('.user-page-main-container').scrollTo('top');
     cy.get('.MuiAlert-message').contains('Profile updated');
     cy.get('.userpage-avatar-image').should('be.visible');
     cy.contains('new username');
@@ -272,8 +273,10 @@ describe('Updating user', function () {
     cy.contains('Member Since:');
     cy.contains('Created Blogs:');
     cy.contains('Uploaded Pictures:');
+    cy.get('.user-page-main-container').scrollTo('top');
     cy.get('.userpage-avatar-image').should('be.visible');
     cy.reload();
+    cy.get('.user-page-main-container').scrollTo('top');
     cy.contains('testuser');
     cy.contains('Member Since:');
     cy.contains('Created Blogs:');
