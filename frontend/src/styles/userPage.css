@@ -228,13 +228,31 @@
 
 #userpage-picture-delete-button {
   position: absolute;
+  right: 3px;
+  top: 3px;
   z-index: 5;
-  right: 0px;
-  top: 0px;
-  transform: translate(-25%, 50%);
+  /* transform: translate(-50%, 50%); */
   cursor: pointer;
   color: white;
   background-color: rgb(128, 9, 9);
+}
+
+.userpage-picture-publicity {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+}
+
+.userpage-picture-publicity.private {
+  color: red;
+}
+
+.userpage-picture-publicity.public {
+  color: green;
+}
+
+.user-page-publicity-icon {
+  margin-left: 5px;
 }
 
 .userpage-blog-card-wrapper, .userpage-pictures-wrapper{

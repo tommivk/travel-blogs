@@ -66,6 +66,44 @@ picturesRouter.delete('/:pictureId', async (req, res, next) => {
   }
 });
 
+picturesRouter.put('/:pictureID', async (req, res, next) => {
+  try {
+    const { pictureID } = req.params;
+
+    const token = getTokenFrom(req);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+
+    if (!token || !decodedToken) {
+      return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const user = await User.findById(decodedToken.id);
+    const picture = await Picture.findById(pictureID);
+
+    if (!user || !picture) {
+      return res.status(500).send();
+    }
+
+    if (user._id.toString() !== picture.user._id.toString()) {
+      return res.status(401).send();
+    }
+
+    if (req.body.public !== undefined) {
+      const newData = {
+        public: req.body.public,
+      };
+
+      const newPicture = await Picture.findByIdAndUpdate(pictureID, newData, { new: true }).populate('user');
+
+      return res.status(200).send(newPicture);
+    }
+
+    return res.status(400).end();
+  } catch (error) {
+    return next(error);
+  }
+});
+
 picturesRouter.delete('/:id/vote', async (req, res, next) => {
   try {
     const picture = await Picture.findById(req.params.id);

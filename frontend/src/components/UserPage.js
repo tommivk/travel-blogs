@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import Star from '@material-ui/icons/Star';
 import Sms from '@material-ui/icons/Sms';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import { CircularProgress } from '@material-ui/core';
 import ConfirmDialog from './ConfirmDialog';
@@ -53,6 +54,7 @@ const UserPage = ({
   const [uploadInProgress, setUploadInProgress] = useState(false);
 
   const history = useHistory();
+
   useEffect(() => {
     if (userMatch) {
       if (userMatch.id === user.id) {
@@ -112,6 +114,38 @@ const UserPage = ({
         JSON.stringify(newUser),
       );
       handleMessage('success', 'Picture deleted');
+    } catch (error) {
+      handleMessage('error', error.response.data.error);
+    }
+  };
+
+  const handlePictureUpdate = async (picture) => {
+    try {
+      const response = await axios.put(`http://localhost:8008/api/pictures/${picture.id}`,
+        {
+          public: !picture.public,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+      const newUser = { ...user };
+      newUser.pictures = user.pictures.map((pic) => (
+        pic.id === picture.id ? response.data : pic));
+      setUser(newUser);
+      setUserData(newUser);
+
+      if (!response.data.public) {
+        const newPictures = [...allPictures.filter((pic) => pic.id !== picture.id)];
+        setAllPictures(newPictures);
+      } else {
+        setAllPictures(allPictures.concat(response.data));
+      }
+
+      localStorage.setItem('loggedTravelBlogUser', JSON.stringify(newUser));
+
+      handleMessage('success', 'Picture updated');
     } catch (error) {
       handleMessage('error', error.response.data.error);
     }
@@ -498,57 +532,129 @@ const UserPage = ({
               ? <p>No pictures uploaded yet</p>
               : (
                 userData.pictures.map((pic) => (
-                  <div className="userpage-pictures-wrapper">
-                    <Link
-                      to={`/gallery/${pic.id}`}
-                      key={pic.id}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <div className="gallery-card">
-                        <img src={pic.imgURL} alt="" />
-                        <h4
-                          className="gallery-card-title"
-                        >
-                          {pic.title}
-                        </h4>
-                        <div
-                          className="gallery-card-bottom-section"
-                        >
+                  pic.public
+                    ? (
+                      <div className="userpage-pictures-wrapper">
+                        <div className="gallery-card">
+                          {isUser && <Button variant="contained" id="userpage-picture-delete-button" type="button" onClick={() => handleDialogOpen('Delete picture?', '', () => handlePictureDelete(pic))}>delete</Button>}
+                          <Link
+                            to={`/gallery/${pic.id}`}
+                            key={pic.id}
+                            style={{ textDecoration: 'none' }}
+                          >
+                            <img src={pic.imgURL} alt="" />
+                            <h4
+                              className="gallery-card-title"
+                            >
+                              {pic.title}
+                            </h4>
+                          </Link>
                           <div
-                            className="gallery-card-bottom-section-wrapper"
+                            className="gallery-card-bottom-section"
                           >
                             <div
-                              className="tooltip"
-                              style={{
-                                display: 'flex',
-                                color: '#6c717a',
-                                marginLeft: '4px',
-                              }}
+                              className="gallery-card-bottom-section-wrapper"
                             >
-                              <span className="tooltip-message">Points</span>
-                              <ArrowUpward />
                               <div
-                                className="gallery-card-vote-result"
+                                className="tooltip"
+                                style={{
+                                  display: 'flex',
+                                  color: '#6c717a',
+                                  marginLeft: '4px',
+                                }}
                               >
-                                {pic.voteResult}
+                                <span className="tooltip-message">Points</span>
+                                <ArrowUpward />
+                                <div
+                                  className="gallery-card-vote-result"
+                                >
+                                  {pic.voteResult}
+                                </div>
                               </div>
-                            </div>
-                            <div
-                              className="tooltip"
-                              style={{ color: '#6c717a', marginRight: '4px' }}
-                            >
-                              <span className="tooltip-message">Comments</span>
-                              <div className="gallery-card-comment-section">
-                                <Sms id="gallery-card-comment-icon" />
-                                {pic.comments.length}
+
+                              {isUser
+                              && (
+                              <div className="userpage-picture-publicity public" onClick={() => handleDialogOpen('Set image private?', 'Other users will no longer be able to see this image', () => handlePictureUpdate(pic))}>
+                                public
+                                <SwapHorizontalCircle className="user-page-publicity-icon" />
+                              </div>
+                              )}
+
+                              <div
+                                className="tooltip"
+                                style={{ color: '#6c717a', marginRight: '4px' }}
+                              >
+                                <span className="tooltip-message">Comments</span>
+                                <div className="gallery-card-comment-section">
+                                  <Sms id="gallery-card-comment-icon" />
+                                  {pic.comments.length}
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </Link>
-                    {isUser && <Button variant="contained" id="userpage-picture-delete-button" type="button" onClick={() => handleDialogOpen('Delete picture?', '', () => handlePictureDelete(pic))}>delete</Button>}
-                  </div>
+                    )
+                    : (
+                      <div className="userpage-pictures-wrapper">
+
+                        <div className="gallery-card">
+                          {isUser
+                        && (
+                          <Button variant="contained" id="userpage-picture-delete-button" type="button" onClick={() => handleDialogOpen('Delete picture?', '', () => handlePictureDelete(pic))}>delete</Button>
+                        )}
+                          <img src={pic.imgURL} alt="" />
+                          <h4
+                            className="gallery-card-title"
+                          >
+                            {pic.title}
+                          </h4>
+                          <div
+                            className="gallery-card-bottom-section"
+                          >
+                            <div
+                              className="gallery-card-bottom-section-wrapper"
+                            >
+                              <div
+                                className="tooltip"
+                                style={{
+                                  display: 'flex',
+                                  color: '#6c717a',
+                                  marginLeft: '4px',
+                                }}
+                              >
+                                <span className="tooltip-message">Points</span>
+                                <ArrowUpward />
+                                <div
+                                  className="gallery-card-vote-result"
+                                >
+                                  {pic.voteResult}
+                                </div>
+                              </div>
+
+                              {isUser
+                              && (
+                              <div className="userpage-picture-publicity private" onClick={() => handleDialogOpen('Set image public?', 'Image will be displayed to other users in gallery and world map', () => handlePictureUpdate(pic))}>
+                                private
+                                <SwapHorizontalCircle className="user-page-publicity-icon" />
+                              </div>
+                              )}
+
+                              <div
+                                className="tooltip"
+                                style={{ color: '#6c717a', marginRight: '4px' }}
+                              >
+                                <span className="tooltip-message">Comments</span>
+                                <div className="gallery-card-comment-section">
+                                  <Sms id="gallery-card-comment-icon" />
+                                  {pic.comments.length}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
                 ))
               )}
             <div className="pic-pseudo-element" />

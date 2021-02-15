@@ -159,7 +159,9 @@ const ImageUploadModal = ({
       const newUser = user;
       newUser.pictures = [response.data].concat(user.pictures);
       setUser(newUser);
-      setAllPictures(allPictures.concat(response.data));
+      if (publishToGallery) {
+        setAllPictures(allPictures.concat(response.data));
+      }
       window.localStorage.setItem('loggedTravelBlogUser', JSON.stringify(user));
       setImagePreview(null);
       setImage(null);
