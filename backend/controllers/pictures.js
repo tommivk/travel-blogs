@@ -18,7 +18,7 @@ const getTokenFrom = (request) => {
 
 picturesRouter.get('/', async (req, res, next) => {
   try {
-    const pictures = await Picture.find({})
+    const pictures = await Picture.find({ public: true })
       .populate('user')
       .populate('votes.user')
       .populate({

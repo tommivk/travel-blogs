@@ -20,7 +20,10 @@ const getTokenFrom = (request) => {
 
 usersRouter.get('/', async (req, res, next) => {
   try {
-    const users = await User.find({}).populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } }).populate('pictures');
+    const users = await User.find({})
+      .populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } })
+      .populate({ path: 'pictures', match: { public: true } });
+
     return res.json(users.map((user) => user.toJSON()));
   } catch (error) {
     return next(error);
