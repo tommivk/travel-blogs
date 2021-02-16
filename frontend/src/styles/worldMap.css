@@ -184,6 +184,7 @@
     width: fit-content;
     height: fit-content;
     transform: translate(10%, -110%);
+    z-index: 1000;
 }
 
 .map-popup-close-button {
