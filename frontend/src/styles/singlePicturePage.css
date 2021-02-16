@@ -203,6 +203,50 @@
     color: rgb(89, 120, 185)
   }
 
+  .picture-top-section  {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .picture-title {
+    width: 60%;
+    word-wrap: break-word;
+    text-align: center;
+  }
+
+  .picture-title h2{
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  .pictures-nav-button{
+    position: absolute;
+  }
+
+  .pictures-nav-button.next-button {
+    right: 0px;
+    top: 0px;
+  }
+
+  .pictures-nav-button.prev-button {
+    left: 0px;
+    top: 0px;
+  }
+
+  .pictures-nav-button button{
+    background-color: rgb(49, 41, 41);
+  }
+
+  .pictures-nav-button button:hover{
+    background-color: rgb(59, 50, 50);
+  }
+
+  .pictures-nav-button a {
+    text-decoration: none;
+  }
+
   @media (max-width: 1200px) {
     .picture-list-container, .picture-info-container{
       display: none;

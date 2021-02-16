@@ -315,16 +315,8 @@ const SinglePicturePage = ({
           </div>
 
           <div className="picture-container">
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                height: '40px',
-                justifyContent: 'space-between',
-                marginBottom: '5px',
-              }}
-            >
-              <div style={{ justifySelf: 'center' }}>
+            <div className="picture-top-section">
+              <div className="pictures-nav-button prev-button">
                 {pictureIndex - 1 >= 0 && (
                 <Link to={`/gallery/${pictures[pictureIndex - 1].id}`}>
                   <Button color="primary" variant="contained">
@@ -334,20 +326,13 @@ const SinglePicturePage = ({
                 )}
               </div>
 
-              <div>
-                <h2
-                  style={{
-                    margin: '0',
-                    position: 'absolute',
-                    right: '50%',
-                    transform: 'translate(50%,0%)',
-                  }}
-                >
+              <div className="picture-title">
+                <h2>
                   {picture.title}
                 </h2>
               </div>
 
-              <div style={{ justifySelf: 'center' }}>
+              <div className="pictures-nav-button next-button">
                 {pictures.length > pictureIndex + 1 && (
                 <Link to={`/gallery/${pictures[pictureIndex + 1].id}`}>
                   <Button color="primary" variant="contained">
