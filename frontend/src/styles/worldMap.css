@@ -239,3 +239,14 @@
 .cluster {
     z-index: 10 !important; 
 }
+
+.fullscreen-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen-container img {
+    height: 100vh;
+    width: auto;
+}

@@ -1,3 +1,10 @@
+  .fullscreen-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
   .fullscreen-image img {
     display: none;
   }
@@ -5,9 +12,8 @@
   .fullscreen-enabled .fullscreen-image img {
     display: block;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 100vh;
+    width: auto;
   }
 
   .vote-container-element {

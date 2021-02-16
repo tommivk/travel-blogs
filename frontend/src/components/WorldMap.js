@@ -578,12 +578,7 @@ const WorldMap = ({
       <FullScreen handle={handle}>
         {fullScreenImage && (
           <div
-            style={{
-              height: '100vh',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            className="fullscreen-container"
           >
             <img src={fullScreenImage} alt="" />
           </div>
