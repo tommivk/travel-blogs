@@ -301,6 +301,10 @@
   align-items: center;
 }
 
+.new-blog-submitted-content a{
+  text-decoration: none;
+}
+
 #new-blog-view-blog-button {
   background-color: rgb(36, 36, 146);
   font-size: 1.3em;
