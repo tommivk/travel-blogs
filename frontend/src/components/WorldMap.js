@@ -76,12 +76,10 @@ const PopUp = ({
   }
   return (
     <div className="map-picture-card map-picture">
-      <div>
-        <div className="map-picture-card-title">
-          <h2>{selected.title}</h2>
-        </div>
-        <img src={selected.imgURL} alt="" />
+      <div className="map-picture-card-title">
+        <h2>{selected.title}</h2>
       </div>
+      <img src={selected.imgURL} alt="" />
       <div className="map-picture-card-bottom">
         <Link to={`/gallery/${selected.id}`}>
           <Button id="map-picture-card-gallery-button">Open In Gallery</Button>
@@ -171,12 +169,10 @@ const ClusterPopUp = ({
 
               {pictures.map((pic) => (
                 <div className="map-picture-card" key={pic.data.id}>
-                  <div>
-                    <div className="map-picture-card-title">
-                      <h2>{pic.data.title}</h2>
-                    </div>
-                    <img src={pic.data.imgURL} alt="" />
+                  <div className="map-picture-card-title">
+                    <h2>{pic.data.title}</h2>
                   </div>
+                  <img src={pic.data.imgURL} alt="" />
                   <div className="map-picture-card-bottom">
                     <Link to={`/gallery/${pic.data.id}`}>
                       <Button id="map-picture-card-gallery-button">Open In Gallery</Button>
