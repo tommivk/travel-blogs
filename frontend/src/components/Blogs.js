@@ -210,9 +210,7 @@ const Blogs = ({ allBlogs }) => {
                         </div>
                       </div>
                       <div
-                        className={`blog-title ${
-                          blog.title.length > 22 && 'long-blog-title'
-                        }`}
+                        className="blog-title"
                       >
                         <h1>{blog.title.toUpperCase()}</h1>
                       </div>

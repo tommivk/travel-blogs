@@ -182,6 +182,12 @@
   word-break: break-all;
   word-break: break-word;
   hyphens: auto;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .blog-title h1 {
@@ -191,12 +197,14 @@
   width: 100%;
 }
 
-.blog-title.long-blog-title h1 {
-  font-size: 1em;
-}
-
 .blog-description {
   width: 95%;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .blog-description p {
