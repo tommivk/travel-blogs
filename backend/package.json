@@ -4,6 +4,7 @@
   "description": "backend for travel-blogs",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "dev": "NODE_ENV=development nodemon index.js",
     "lint": "eslint .",

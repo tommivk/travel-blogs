@@ -27,12 +27,17 @@ mongoose.connect(MongoURI, {
 });
 
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
+  credential: admin.credential.cert({
+    projectId: process.env.PROJECT_ID,
+    clientEmail: process.env.CLIENT_EMAIL,
+    privateKey: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  }),
   databaseURL: FirebaseURI,
 });
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('build'));
 
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
@@ -47,8 +52,6 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 const errorHandler = (error, req, res, next) => {
-  console.log('error: ', error.message, error.name);
-  console.log(error, 'asdasd');
   if (error.name === 'JsonWebTokenError') {
     return res.status(401).send({ error: 'token missing or invalid' });
   }
