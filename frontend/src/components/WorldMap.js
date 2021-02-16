@@ -81,17 +81,17 @@ const PopUp = ({
           <h2>{selected.title}</h2>
         </div>
         <img src={selected.imgURL} alt="" />
+      </div>
+      <div className="map-picture-card-bottom">
+        <Link to={`/gallery/${selected.id}`}>
+          <Button id="map-picture-card-gallery-button">Open In Gallery</Button>
+        </Link>
         <div
           id="map-fullscreen-button"
           onClick={() => handleFullScreen(selected.imgURL)}
         >
           <Fullscreen />
         </div>
-      </div>
-      <div className="map-picture-card-bottom">
-        <Link to={`/gallery/${selected.id}`}>
-          <Button id="map-picture-card-gallery-button">Open In Gallery</Button>
-        </Link>
       </div>
       <button
         type="button"
@@ -176,17 +176,17 @@ const ClusterPopUp = ({
                       <h2>{pic.data.title}</h2>
                     </div>
                     <img src={pic.data.imgURL} alt="" />
+                  </div>
+                  <div className="map-picture-card-bottom">
+                    <Link to={`/gallery/${pic.data.id}`}>
+                      <Button id="map-picture-card-gallery-button">Open In Gallery</Button>
+                    </Link>
                     <div
                       id="map-fullscreen-button"
                       onClick={() => handleFullScreen(pic.data.imgURL)}
                     >
                       <Fullscreen />
                     </div>
-                  </div>
-                  <div className="map-picture-card-bottom">
-                    <Link to={`/gallery/${pic.data.id}`}>
-                      <Button id="map-picture-card-gallery-button">Open In Gallery</Button>
-                    </Link>
                   </div>
                 </div>
               ))}
