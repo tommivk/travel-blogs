@@ -306,6 +306,7 @@
   background-color: rgb(0,0,0);
   padding: 8px;
   border-radius: 5px;
+  text-align: 'center',
 }
 
 #image-modal-progress-circle {
