@@ -602,16 +602,16 @@ const ImageUploadModal = ({
                 <table className="image-upload-preview-table">
                   <tbody>
                     {location && (
-                    <>
-                      <tr>
-                        <td>Country:</td>
-                        <td>{location.country}</td>
-                      </tr>
-                      <tr>
-                        <td>City:</td>
-                        <td>{location.city ? location.city : 'Unknown'}</td>
-                      </tr>
-                    </>
+                      <>
+                        <tr>
+                          <td>Country:</td>
+                          <td>{location.country}</td>
+                        </tr>
+                        <tr>
+                          <td>City:</td>
+                          <td>{location.city ? location.city : 'Unknown'}</td>
+                        </tr>
+                      </>
                     )}
                   </tbody>
                 </table>

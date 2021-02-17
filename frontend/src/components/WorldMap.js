@@ -9,251 +9,14 @@ import GoogleMapReact from 'google-map-react';
 import queryString from 'query-string';
 import MarkerClusterer from '@googlemaps/markerclustererplus';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
-import Fullscreen from '@material-ui/icons/Fullscreen';
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@material-ui/core';
-import Checkbox from '@material-ui/core/Checkbox';
+import { useLocation } from 'react-router-dom';
 import Settings from '@material-ui/icons/Settings';
 import Switch from '@material-ui/core/Switch';
 import pictureIcon from '../images/photo_camera.svg';
 import blogIcon from '../images/message.svg';
+import MapClusterPopUp from './MapClusterPopUp';
+import MapPopUp from './MapPopUp';
 import '../styles/worldMap.css';
-
-const PopUp = ({
-  selected, handle, type, setActivePopUp, setFullScreenImage,
-}) => {
-  const handleFullScreen = (img) => {
-    setFullScreenImage(img);
-    handle.enter();
-  };
-  if (type !== 'blog' && type !== 'image') return null;
-
-  if (type === 'blog') {
-    return (
-      <div className="map-blog-card-wrapper">
-        <Link to={`/blogs/${selected.id}`} style={{ textDecoration: 'none' }}>
-          <div className="blog-card map-blog-card">
-            <div className="blog-image">
-              {selected.headerImageURL && (
-                <img src={selected.headerImageURL} alt="blog-header" width="300px" />
-              )}
-            </div>
-            <div className="blog-card-right">
-              <div className="blog-header">
-                <div className="blog-author-info">
-                  <div>
-                    <img src={selected.author.avatar} alt="avatar" />
-                  </div>
-                  <div>
-                    By
-                    {' '}
-                    {selected.author.username}
-                  </div>
-                </div>
-                <div
-                  className={`blog-title ${
-                    selected.title.length > 22 && 'long-blog-title'
-                  }`}
-                >
-                  <h1>{selected.title.toUpperCase()}</h1>
-                </div>
-                <div className="blog-description">
-                  <p>{selected.description}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Link>
-        <button
-          type="button"
-          className="map-popup-close-button"
-          onClick={() => setActivePopUp(null)}
-        >
-          X
-        </button>
-      </div>
-    );
-  }
-  return (
-    <div className="map-picture-card map-picture">
-      <div className="map-picture-card-title">
-        <h2>{selected.title}</h2>
-      </div>
-      <img src={selected.imgURL} alt="" />
-      <div className="map-picture-card-bottom">
-        <Link to={`/gallery/${selected.id}`}>
-          <Button id="map-picture-card-gallery-button">Open In Gallery</Button>
-        </Link>
-        <div
-          id="map-fullscreen-button"
-          onClick={() => handleFullScreen(selected.imgURL)}
-        >
-          <Fullscreen />
-        </div>
-      </div>
-      <button
-        type="button"
-        className="map-popup-close-button"
-        onClick={() => setActivePopUp(null)}
-      >
-        X
-      </button>
-    </div>
-  );
-};
-
-PopUp.propTypes = {
-  selected: PropTypes.instanceOf(Object).isRequired,
-  handle: PropTypes.instanceOf(Object).isRequired,
-  type: PropTypes.string.isRequired,
-  setActivePopUp: PropTypes.func.isRequired,
-  setFullScreenImage: PropTypes.func.isRequired,
-};
-
-const ClusterPopUp = ({
-  content, setClusterContent, handle, setActivePopUp, setFullScreenImage,
-}) => {
-  const [viewBlogs, setViewBlogs] = useState(true);
-  const [viewPictures, setViewPictures] = useState(true);
-  const blogs = content.filter((c) => c.type === 'blog');
-  const pictures = content.filter((c) => c.type === 'picture');
-
-  useEffect(() => {
-    setActivePopUp(false);
-  }, []);
-
-  const handleFullScreen = (img) => {
-    setFullScreenImage(img);
-    handle.enter();
-  };
-
-  return (
-    <div
-      className="cluster-popup-main-container"
-    >
-      <div className="cluster-popup-wrapper">
-        {blogs.length > 0 && pictures.length > 0
-        && (
-        <div className="cluster-popup-filters">
-          {blogs.length > 0
-          && (
-          <div>
-            <Checkbox checked={viewBlogs} onChange={() => setViewBlogs(!viewBlogs)} />
-            Blogs
-          </div>
-          )}
-          {pictures.length > 0
-          && (
-          <div>
-            <Checkbox checked={viewPictures} onChange={() => setViewPictures(!viewPictures)} />
-            Pictures
-          </div>
-          )}
-        </div>
-        )}
-        <button id="cluster-close-button" type="button" onClick={() => setClusterContent(null)}>X</button>
-        <div className="cluster-content-container">
-          {pictures.length > 0 && viewPictures
-          && (
-          <div>
-            <h2 style={{ textAlign: 'center' }}>Pictures</h2>
-
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              width: '100%',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-            }}
-            >
-
-              {pictures.map((pic) => (
-                <div className="map-picture-card" key={pic.data.id}>
-                  <div className="map-picture-card-title">
-                    <h2>{pic.data.title}</h2>
-                  </div>
-                  <img src={pic.data.imgURL} alt="" />
-                  <div className="map-picture-card-bottom">
-                    <Link to={`/gallery/${pic.data.id}`}>
-                      <Button id="map-picture-card-gallery-button">Open In Gallery</Button>
-                    </Link>
-                    <div
-                      id="map-fullscreen-button"
-                      onClick={() => handleFullScreen(pic.data.imgURL)}
-                    >
-                      <Fullscreen />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          )}
-
-          {blogs.length > 0 && viewBlogs
-          && (
-          <div>
-            <h2 style={{ textAlign: 'center' }}>Blogs</h2>
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-              }}
-            >
-              {blogs.map((blog) => (
-                <Link to={`/blogs/${blog.data.id}`}>
-                  <div className="blog-card map-cluster-blog-card">
-                    <div className="blog-image">
-                      {blog.data.headerImageURL && (
-                        <img src={blog.data.headerImageURL} alt="blog-header" width="300px" />
-                      )}
-                    </div>
-                    <div className="blog-card-right">
-                      <div className="blog-header">
-                        <div className="blog-author-info">
-                          <div>
-                            <img src={blog.data.author.avatar} alt="avatar" />
-                          </div>
-                          <div>
-                            By
-                            {' '}
-                            {blog.data.author.username}
-                          </div>
-                        </div>
-                        <div
-                          className={`blog-title ${
-                            blog.data.title.length > 22 && 'long-blog-title'
-                          }`}
-                        >
-                          <h1>{blog.data.title.toUpperCase()}</h1>
-                        </div>
-                        <div className="blog-description">
-                          <p>{blog.data.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-ClusterPopUp.propTypes = {
-  content: PropTypes.instanceOf(Array).isRequired,
-  setClusterContent: PropTypes.func.isRequired,
-  handle: PropTypes.instanceOf(Object).isRequired,
-  setActivePopUp: PropTypes.func.isRequired,
-  setFullScreenImage: PropTypes.func.isRequired,
-};
 
 const WorldMap = ({
   allBlogs, allPictures, user, setFilteredPictures,
@@ -531,7 +294,7 @@ const WorldMap = ({
       )}
 
       {clusterContent && (
-        <ClusterPopUp
+        <MapClusterPopUp
           content={clusterContent}
           setClusterContent={setClusterContent}
           handle={handle}
@@ -551,7 +314,7 @@ const WorldMap = ({
         yesIWantToUseGoogleMapApiInternals
       >
         { activePopUp && activePopUp.data && activePopUp.type === 'image' && (
-          <PopUp
+          <MapPopUp
             handle={handle}
             selected={activePopUp.data}
             lat={activePopUp.data.location.lat}
@@ -563,7 +326,7 @@ const WorldMap = ({
         )}
 
         { activePopUp && activePopUp.data && activePopUp.type === 'blog' && (
-          <PopUp
+          <MapPopUp
             handle={handle}
             selected={activePopUp.data}
             lat={activePopUp.blogLocation.lat}
