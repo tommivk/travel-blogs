@@ -27,11 +27,7 @@ mongoose.connect(MongoURI, {
 });
 
 admin.initializeApp({
-  credential: admin.credential.cert({
-    projectId: process.env.PROJECT_ID,
-    clientEmail: process.env.CLIENT_EMAIL,
-    privateKey: process.env.FB_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  }),
+  credential: admin.credential.applicationDefault(),
   databaseURL: FirebaseURI,
 });
 
