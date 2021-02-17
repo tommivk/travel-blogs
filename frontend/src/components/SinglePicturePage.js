@@ -37,7 +37,7 @@ const CommentForm = ({
     };
     try {
       const response = await axios.post(
-        `http://localhost:8008/api/pictures/${picture.id}/comment`,
+        `/api/pictures/${picture.id}/comment`,
         newComment,
         {
           headers: {
@@ -169,7 +169,7 @@ const SinglePicturePage = ({
   const handleVote = async (direction) => {
     try {
       const response = await axios.put(
-        `http://localhost:8008/api/pictures/${picture.id}/vote`,
+        `/api/pictures/${picture.id}/vote`,
         { dir: direction },
         {
           headers: {
@@ -191,7 +191,7 @@ const SinglePicturePage = ({
   const handleVoteDelete = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:8008/api/pictures/${picture.id}/vote`,
+        `/api/pictures/${picture.id}/vote`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -211,7 +211,7 @@ const SinglePicturePage = ({
 
   const handleCommentDelete = async (pictureId, commentId) => {
     try {
-      const response = await axios.delete(`http://localhost:8008/api/pictures/${pictureId}/comments/${commentId}`, {
+      const response = await axios.delete(`/api/pictures/${pictureId}/comments/${commentId}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },

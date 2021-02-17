@@ -47,22 +47,22 @@ const App = () => {
       setUser(JSON.parse(loggedUser));
     }
     axios
-      .get('http://localhost:8008/api/blogs')
+      .get('/api/blogs')
       .then((response) => setAllBlogs(response.data));
 
     axios
-      .get('http://localhost:8008/api/pictures')
+      .get('/api/pictures')
       .then((res) => setAllPictures(res.data));
 
     axios
-      .get('http://localhost:8008/api/users')
+      .get('/api/users')
       .then((res) => setAllUsers(res.data));
   }, []);
 
   useEffect(async () => {
     if (user) {
       await axios
-        .get(`http://localhost:8008/api/notifications/user/${user.id}`)
+        .get(`/api/notifications/user/${user.id}`)
         .then((res) => setUserNotifications(res.data));
     }
   }, [user]);

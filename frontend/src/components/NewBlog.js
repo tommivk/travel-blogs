@@ -97,7 +97,7 @@ const NewBlog = ({
       formData.append('locations', JSON.stringify(locations));
 
       const response = await axios.post(
-        'http://localhost:8008/api/blogs',
+        '/api/blogs',
         formData,
         {
           headers: {

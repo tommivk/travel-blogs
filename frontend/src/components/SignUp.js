@@ -13,7 +13,7 @@ const SignUp = ({
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8008/api/users', {
+      const response = await axios.post('/api/users', {
         username,
         password,
       });

@@ -28,7 +28,7 @@ const CommentForm = ({
     };
     try {
       const response = await axios.post(
-        `http://localhost:8008/api/blogs/${blog.id}/comments`,
+        `/api/blogs/${blog.id}/comments`,
         newComment,
         {
           headers: {
@@ -131,7 +131,7 @@ const SingleBlogPage = ({
 
   const handleStarChange = async (action) => {
     const response = await axios.put(
-      `http://localhost:8008/api/blogs/${blog.id}/star`,
+      `/api/blogs/${blog.id}/star`,
       { action },
       {
         headers: {
@@ -148,7 +148,7 @@ const SingleBlogPage = ({
 
   const handleCommentDelete = async (blogId, commentId) => {
     try {
-      const response = await axios.delete(`http://localhost:8008/api/blogs/${blogId}/comments/${commentId}`,
+      const response = await axios.delete(`/api/blogs/${blogId}/comments/${commentId}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,

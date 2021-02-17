@@ -10,7 +10,7 @@ const HomePage = ({ allBlogs }) => {
 
   useEffect(() => {
     document.title = 'TravelBlogs';
-    axios.get('http://localhost:8008/api/pictures/picture-of-the-week').then((response) => setPicture(response.data));
+    axios.get('/api/pictures/picture-of-the-week').then((response) => setPicture(response.data));
   }, []);
 
   if (allBlogs.length === 0) return null;

@@ -62,7 +62,7 @@ const Header = ({
   const handleNotificationIconClick = async (n) => {
     try {
       await axios.put(
-        `http://localhost:8008/api/notifications/${n.id}`,
+        `/api/notifications/${n.id}`,
         {},
         {
           headers: {

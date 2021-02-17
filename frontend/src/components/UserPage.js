@@ -100,7 +100,7 @@ const UserPage = ({
 
   const handlePictureDelete = async (picture) => {
     try {
-      await axios.delete(`http://localhost:8008/api/pictures/${picture.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
+      await axios.delete(`/api/pictures/${picture.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
 
       const newUser = { ...user, pictures: user.pictures.filter((pic) => pic.id !== picture.id) };
       setUser(newUser);
@@ -121,7 +121,7 @@ const UserPage = ({
 
   const handlePictureUpdate = async (picture) => {
     try {
-      const response = await axios.put(`http://localhost:8008/api/pictures/${picture.id}`,
+      const response = await axios.put(`/api/pictures/${picture.id}`,
         {
           public: !picture.public,
         },
@@ -153,7 +153,7 @@ const UserPage = ({
 
   const handleBlogDelete = async (blog) => {
     try {
-      await axios.delete(`http://localhost:8008/api/blogs/${blog.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
+      await axios.delete(`/api/blogs/${blog.id}`, { headers: { Authorization: `Bearer ${user.token}` } });
 
       const newUser = { ...user, blogs: user.blogs.filter((b) => b.id !== blog.id) };
       setUser(newUser);
@@ -176,7 +176,7 @@ const UserPage = ({
 
   const handleUserDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8008/api/users/${user.id}`,
+      await axios.delete(`/api/users/${user.id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -208,7 +208,7 @@ const UserPage = ({
 
     try {
       const response = await axios.put(
-        `http://localhost:8008/api/users/${user.id}`,
+        `/api/users/${user.id}`,
         formData,
         {
           onUploadProgress: () => setUploadInProgress(true),
@@ -288,7 +288,7 @@ const UserPage = ({
   const handleSubscription = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8008/api/users/${userData.id}/subscription`,
+        `/api/users/${userData.id}/subscription`,
         {
           blogSubscription: subscribeBlogs,
           pictureSubscription: subscribePictures,

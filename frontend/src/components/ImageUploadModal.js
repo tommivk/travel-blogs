@@ -143,7 +143,7 @@ const ImageUploadModal = ({
 
     try {
       const response = await axios.post(
-        'http://localhost:8008/api/pictures',
+        '/api/pictures',
         formData,
         {
           onUploadProgress: () => setUploadInProgress(true),
