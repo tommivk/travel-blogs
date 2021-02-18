@@ -32,11 +32,11 @@ path {
 }
 
 .video-container {
- position: absolute;
-  height: 100vh;
-  width: 110vw;
-  z-index: -5;
-  transition: filter 1.5s;
+    position: absolute;
+    height: 100vh;
+    width: 110vw;
+    z-index: -5;
+    transition: filter 1.5s;
 }
 
 .video-container video {
@@ -85,4 +85,13 @@ path {
     top: 52%;
     left: 50%;
     transform: translate(-50%, 0px);
+}
+
+@media (max-width: 750px) {
+    .video-container {
+        display: none;
+    }
+    .svg-wrapper {
+        filter: blur(0);
+    }
 }
