@@ -14,7 +14,7 @@ const noticationsRouter = require('./controllers/notifications');
 let MongoURI = process.env.MONGO_DB_URI;
 let FirebaseURI = process.env.FIREBASE_DB_URI;
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'development') {
   MongoURI = process.env.MONGO_DB_TEST_URI;
   FirebaseURI = process.env.FIREBASE_DB_TEST_URI;
 }
