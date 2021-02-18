@@ -45,6 +45,7 @@ const HomePage = ({ allBlogs }) => {
       <div className="homepage-main-content">
         <div className="newest-blogs">
           <div className="homepage-blogs">
+            <h2 className="homepage-section-title">Newest Blogs</h2>
             <div className="homepage-blog-wrapper">
               {newestBlogs.map((blog) => (
                 <Link
@@ -82,7 +83,18 @@ const HomePage = ({ allBlogs }) => {
           </div>
         </div>
         <div className="homepage-top-picture-container">
-          {picture && <img src={picture.imgURL} alt="best of the week" /> }
+          <h2 className="homepage-section-title">Picture Of The Week</h2>
+          <div className="homepage-picture">
+            {picture
+            && (
+            <Link to={`/gallery/${picture.id}`}>
+              <img src={picture.imgURL} alt="best of the week" />
+              <div className="homepage-picture-bottom-section">
+                {picture && <h3>{picture.title.toUpperCase()}</h3>}
+              </div>
+            </Link>
+            ) }
+          </div>
         </div>
       </div>
     </div>
