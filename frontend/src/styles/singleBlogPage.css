@@ -45,7 +45,7 @@
 
   .blog-info-container {
     display: flex;  
-    margin: 10px;
+    margin: 10px 5px;
   }
 
   .blog-info-date {
