@@ -53,12 +53,19 @@
   align-items: center;
 }
 
+.gallery-title-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .gallery-card-title {
   margin-top: 2px;
   margin-bottom: 5px;
-  text-align: center;
+  text-align: left;
   color: #FFFFFF;
   font-size: 1.1rem;
+  width: fit-content;
+  max-width: 90%;
 
   display: -webkit-box;
   -webkit-line-clamp: 2;

@@ -543,11 +543,13 @@ const UserPage = ({
                             style={{ textDecoration: 'none' }}
                           >
                             <img src={pic.imgURL} alt="" />
-                            <h4
-                              className="gallery-card-title"
-                            >
-                              {pic.title}
-                            </h4>
+                            <div className="gallery-title-wrapper">
+                              <h4
+                                className="gallery-card-title"
+                              >
+                                {pic.title}
+                              </h4>
+                            </div>
                           </Link>
                           <div
                             className="gallery-card-bottom-section"
@@ -604,11 +606,13 @@ const UserPage = ({
                           <Button variant="contained" id="userpage-picture-delete-button" type="button" onClick={() => handleDialogOpen('Delete picture?', '', () => handlePictureDelete(pic))}>delete</Button>
                         )}
                           <img src={pic.imgURL} alt="" />
-                          <h4
-                            className="gallery-card-title"
-                          >
-                            {pic.title}
-                          </h4>
+                          <div className="gallery-title-wrapper">
+                            <h4
+                              className="gallery-card-title"
+                            >
+                              {pic.title}
+                            </h4>
+                          </div>
                           <div
                             className="gallery-card-bottom-section"
                           >

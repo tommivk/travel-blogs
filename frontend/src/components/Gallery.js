@@ -187,12 +187,13 @@ const Gallery = ({
                 >
                   <div className="gallery-card">
                     <img src={pic.imgURL} alt="" />
-                    <h4
-                      className="gallery-card-title"
-
-                    >
-                      {pic.title}
-                    </h4>
+                    <div className="gallery-title-wrapper">
+                      <h4
+                        className="gallery-card-title"
+                      >
+                        {pic.title}
+                      </h4>
+                    </div>
                     <div
                       className="gallery-card-bottom-section"
                     >

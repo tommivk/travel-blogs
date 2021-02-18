@@ -199,11 +199,6 @@
   justify-items: center;
 }
 
-.userpage-blogs-container p {
-  width: 100%;
-  text-align: center;
-}
-
 .userpage-pictures-container {
   width: 80vw;
   display: flex;
