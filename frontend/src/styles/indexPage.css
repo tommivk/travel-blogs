@@ -34,7 +34,7 @@ path {
 .video-container {
  position: absolute;
   height: 100vh;
-  width: 100vw;
+  width: 110vw;
   z-index: -5;
   transition: filter 1.5s;
 }
