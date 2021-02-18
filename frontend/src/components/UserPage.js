@@ -685,8 +685,8 @@ const UserPage = ({
             ) : (
               userData.blogs.map((blog) => (
                 <div className="userpage-blog-card-wrapper">
-                  <Link id="main-blog-link" to={`/blogs/${blog.id}`} key={blog.id}>
-                    <div className="blog-card">
+                  <div className="blog-card">
+                    <Link id="main-blog-link" to={`/blogs/${blog.id}`} key={blog.id}>
                       <div className="blog-image">
                         {blog.headerImageURL && (
                           <img src={blog.headerImageURL} alt="blog-header" width="300px" />
@@ -730,10 +730,10 @@ const UserPage = ({
                           {DateTime.fromISO(blog.date).year}
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                  {isUser
+                    </Link>
+                    {isUser
                     && <Button variant="contained" id="userpage-blog-delete-button" type="button" onClick={() => handleDialogOpen('Delete blog?', '', () => handleBlogDelete(blog))}>Delete Blog</Button>}
+                  </div>
                 </div>
               ))
             )}

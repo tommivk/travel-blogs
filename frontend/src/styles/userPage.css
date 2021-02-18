@@ -214,8 +214,8 @@
 #userpage-blog-delete-button {
   position: absolute;
   z-index: 5;
-  right: 20px;
-  top: 20px;
+  right: 5px;
+  top: 5px;
   cursor: pointer;
   color: white;
   background-color: rgb(128, 9, 9);
@@ -226,7 +226,6 @@
   right: 3px;
   top: 3px;
   z-index: 5;
-  /* transform: translate(-50%, 50%); */
   cursor: pointer;
   color: white;
   background-color: rgb(128, 9, 9);
@@ -259,6 +258,11 @@
 
 .userpage-blog-card-wrapper, .userpage-pictures-wrapper{
   position: relative;
+}
+
+.userpage-blog-card-wrapper #main-blog-link {
+  display: flex;
+  width: 100%;
 }
 
 .userpage-content-title {
