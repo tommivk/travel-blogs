@@ -131,7 +131,7 @@
     font-size: 1.4em;
   }
 
-  .blog-locations-container tr:nth-child(even) {
+  .blog-locations-container tr:nth-child(odd) {
     background-color: rgb(43, 44, 58);
   }
 
