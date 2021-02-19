@@ -55,7 +55,11 @@ blogsRouter.post('/', multer.single('image'), async (req, res, next) => {
       firebaseID = response.firebaseID;
     }
 
-    const locations = JSON.parse(body.locations);
+    let locations = {};
+
+    if (body.locations) {
+      locations = JSON.parse(body.locations);
+    }
 
     if (locations.length > 10) {
       return res.status(400).send({ error: 'Maximum number of locations is 10' });
