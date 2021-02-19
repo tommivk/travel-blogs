@@ -148,18 +148,17 @@ test('deleting user without token returns 401', async () => {
     .expect(401)
 })
 
-test('deleting user with token returns 204', async () => {
-  const res = await api.delete(`/api/users/${userID}`)
-    .set('Authorization', token)
-    .expect(204)
-})
-
 test('trying to delete another user with own token returns 401', async () => {
   const res = await api.delete(`/api/users/${secondUserID}`)
     .set('Authorization', token)
     .expect(401)
 })
 
+test('deleting user with token returns 204', async () => {
+  const res = await api.delete(`/api/users/${userID}`)
+    .set('Authorization', token)
+    .expect(204)
+})
 
 afterAll(() => {
   mongoose.connection.close()
