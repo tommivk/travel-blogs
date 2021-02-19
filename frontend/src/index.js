@@ -34,6 +34,7 @@ const App = () => {
   const [blog, setBlog] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
   const [message, setMessage] = useState({ type: '', message: '' });
+  const [pictureOfTheWeek, setPictureOfTheWeek] = useState(null);
 
   const handleMessage = (t, m) => {
     setMessage({ type: t, message: m });
@@ -57,6 +58,9 @@ const App = () => {
     axios
       .get('/api/users')
       .then((res) => setAllUsers(res.data));
+
+    axios.get('/api/pictures/picture-of-the-week')
+      .then((response) => setPictureOfTheWeek(response.data));
   }, []);
 
   useEffect(async () => {
@@ -265,7 +269,11 @@ const App = () => {
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
           />
-          <HomePage allBlogs={allBlogs} allPictures={allPictures} />
+          <HomePage
+            allBlogs={allBlogs}
+            allPictures={allPictures}
+            pictureOfTheWeek={pictureOfTheWeek}
+          />
         </Route>
       </Switch>
     </div>

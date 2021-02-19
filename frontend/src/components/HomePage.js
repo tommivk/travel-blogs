@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import '../styles/homePage.css';
 
-const HomePage = ({ allBlogs }) => {
-  const [picture, setPicture] = useState(null);
-
+const HomePage = ({ allBlogs, pictureOfTheWeek }) => {
   useEffect(() => {
     document.title = 'TravelBlogs';
-    axios.get('/api/pictures/picture-of-the-week').then((response) => setPicture(response.data));
   }, []);
 
   if (allBlogs.length === 0) return null;
@@ -85,12 +81,12 @@ const HomePage = ({ allBlogs }) => {
         <div className="homepage-top-picture-container">
           <h2 className="homepage-section-title">Picture Of The Week</h2>
           <div className="homepage-picture">
-            {picture
+            {pictureOfTheWeek
             && (
-            <Link to={`/gallery/${picture.id}`}>
-              <img src={picture.imgURL} alt="best of the week" />
+            <Link to={`/gallery/${pictureOfTheWeek.id}`}>
+              <img src={pictureOfTheWeek.imgURL} alt="best of the week" />
               <div className="homepage-picture-bottom-section">
-                {picture && <h3>{picture.title.toUpperCase()}</h3>}
+                <h3>{pictureOfTheWeek.title.toUpperCase()}</h3>
               </div>
             </Link>
             ) }
@@ -103,6 +99,7 @@ const HomePage = ({ allBlogs }) => {
 
 HomePage.propTypes = {
   allBlogs: PropTypes.instanceOf(Array).isRequired,
+  pictureOfTheWeek: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default HomePage;
