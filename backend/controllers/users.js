@@ -159,6 +159,10 @@ usersRouter.put('/:id/subscription', async (req, res, next) => {
     const user = await User.findById(decodedToken.id);
     const userToSubscribe = await User.findById(req.params.id);
 
+    if (user.id === userToSubscribe.id) {
+      return res.status(401).send();
+    }
+
     if (!user || !userToSubscribe) {
       return res.status(400).send();
     }
