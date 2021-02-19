@@ -198,7 +198,10 @@ usersRouter.put('/:id/subscription', async (req, res, next) => {
     }
 
     const updatedUser = await userToSubscribe.save();
-    await updatedUser.populate('pictures').populate('blogs').execPopulate();
+    await updatedUser
+      .populate({ path: 'pictures', model: 'Picture', populate: { path: 'user', model: 'User' } })
+      .populate({ path: 'blogs', model: 'Blog', populate: { path: 'author', model: 'User' } })
+      .execPopulate();
 
     return res.status(200).send(updatedUser);
   } catch (error) {
