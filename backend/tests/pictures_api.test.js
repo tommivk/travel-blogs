@@ -87,6 +87,77 @@ beforeAll(async () => {
       expect(response.body[0].user.id).toBe(user.id)
   })
 
+  test('Updating picture without token returns 401', async () => {
+    await api.put(`/api/pictures/${pictureID}`)
+          .send({ "public": false })
+          .expect(401)
+  })
+
+  test('Updating picture with token returns 200', async () => {
+    const res = await api.put(`/api/pictures/${pictureID}`)
+          .set('Authorization', token)
+          .send({ "public": false })
+          .expect(200)
+
+    expect(res.body.public).toBe(false)
+  })
+
+  test('Voting without token returns 401', async () => {
+    const res = await api.post(`/api/pictures/${pictureID}/vote`)
+          .send({ "dir": 1 })
+          .expect(401)
+  })
+
+  test('Voting with token returns 200', async () => {
+    const res = await api.post(`/api/pictures/${pictureID}/vote`)
+          .set('Authorization', token)
+          .send({ "dir": 1 })
+          .expect(200)
+
+    expect(res.body.voteResult).toBe(1)
+  })
+
+  test('User cannot upvote twice', async () => {
+    const res = await api.post(`/api/pictures/${pictureID}/vote`)
+          .set('Authorization', token)
+          .send({ "dir": 1 })
+          .expect(400)
+  })
+
+  test('Deleting vote without token returns 401', async () => {
+    const res = await api.delete(`/api/pictures/${pictureID}/vote`)
+          .expect(401)
+  })
+
+  test('User can delete vote', async () => {
+    const res = await api.delete(`/api/pictures/${pictureID}/vote`)
+          .set('Authorization', token)
+          .expect(200)
+  })
+
+  test('User can downvote', async () => {
+    const res = await api.post(`/api/pictures/${pictureID}/vote`)
+          .set('Authorization', token)
+          .send({ "dir": -1 })
+          .expect(200)
+
+    expect(res.body.voteResult).toBe(-1)
+  })
+
+  test('User cannot downvote twice', async () => {
+    const res = await api.post(`/api/pictures/${pictureID}/vote`)
+          .set('Authorization', token)
+          .send({ "dir": -1 })
+          .expect(400)
+  })
+
+  test('Voting with incorrect data returns 400', async () => {
+    const res = await api.post(`/api/pictures/${pictureID}/vote`)
+          .set('Authorization', token)
+          .send({ "dir": 2 })
+          .expect(400)
+  })
+
   test('Deleting picture without token returns 401', async () => {
     await api.delete(`/api/pictures/${pictureID}`).expect(401)
   })
