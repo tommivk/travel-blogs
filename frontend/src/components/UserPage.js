@@ -529,7 +529,7 @@ const UserPage = ({
           </div>
           <div className="userpage-pictures-container">
             {userData.pictures.length === 0
-              ? <p>No pictures uploaded yet</p>
+              ? <p className="userpage-content-paragraph">No pictures uploaded yet</p>
               : (
                 userData.pictures.map((pic) => (
                   pic.public
@@ -681,7 +681,7 @@ const UserPage = ({
           </div>
           <div className="userpage-blogs-container">
             {userData.blogs.length === 0 ? (
-              <p>No blogs created yet</p>
+              <p className="userpage-content-paragraph">No blogs created yet</p>
             ) : (
               userData.blogs.map((blog) => (
                 <div className="userpage-blog-card-wrapper">
@@ -734,12 +734,12 @@ const UserPage = ({
                     {isUser
                     && <Button variant="contained" id="userpage-blog-delete-button" type="button" onClick={() => handleDialogOpen('Delete blog?', '', () => handleBlogDelete(blog))}>Delete Blog</Button>}
                   </div>
+                  <div className="blog-pseudo-element" />
+                  <div className="blog-pseudo-element" />
+                  <div className="blog-pseudo-element" />
                 </div>
               ))
             )}
-            <div className="blog-pseudo-element" />
-            <div className="blog-pseudo-element" />
-            <div className="blog-pseudo-element" />
           </div>
         </div>
       )}
