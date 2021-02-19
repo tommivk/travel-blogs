@@ -263,6 +263,8 @@
 
 .image-modal-search-result {
   margin-top: 20px;
+  max-height: 250px;
+  overflow-y: auto;
 }
 
 .image-modal-search-result table{
@@ -285,21 +287,24 @@
 
 .image-modal-search-result .location-result-prev-button {
   background-color: rgb(41, 41, 126);
-  margin-right: 20px;
   margin-top: 10px;
-  width: 50px;
+  border-radius: 5px;
   height: 30px;
   color: white;
 }
 
 .image-modal-search-result .location-result-next-button {
   background-color: rgb(41, 41, 126);
-  margin-left: 20px;
   margin-top: 10px;
-  width: 50px;
+  border-radius: 5px;
   height: 30px;
   color: white;
 }
+
+.image-modal-search-result .location-result-bottom-buttons {
+  text-align: right;
+}
+
 
 #image-upload-modal-title {
   width: fit-content;
