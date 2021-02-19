@@ -195,13 +195,8 @@ const ImageUploadModal = ({
         >
           <div style={{ height: '100%', width: '100%' }}>
             <Button
-              style={{
-                position: 'absolute',
-                bottom: '1%',
-                left: '1%',
-                zIndex: '1',
-              }}
-              variant="outlined"
+              id="upload-modal-map-back-button"
+              variant="contained"
               color="secondary"
               onClick={() => setMapOpen(false)}
             >
