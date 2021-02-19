@@ -129,3 +129,7 @@ body {
   text-decoration: none;
   color: inherit;
 }
+
+.golden-text {
+  color: rgb(180, 155, 9);
+}

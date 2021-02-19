@@ -167,21 +167,33 @@ const Blogs = ({ allBlogs }) => {
         <div className="blogs-top-title">
           {param.city
             && (
-            <h1>
-              Blogs about
-              {' '}
-              <span style={{ color: 'rgb(180, 155, 9)' }}>
-                {param.city}
-              </span>
-            </h1>
+              <>
+                <h1>
+                  Blogs about
+                  {' '}
+                  <span style={{ color: 'rgb(180, 155, 9)', position: 'relative' }}>
+                    {param.city}
+                    <div className="blogs-title-show-all-button">
+                      <Link to="/blogs">
+                        Show All
+                      </Link>
+                    </div>
+                  </span>
+                </h1>
+              </>
             )}
           {param.country
             && (
             <h1>
               Blogs about
               {' '}
-              <span style={{ color: 'rgb(180, 155, 9)' }}>
+              <span style={{ color: 'rgb(180, 155, 9)', position: 'relative' }}>
                 {param.country}
+                <div className="blogs-title-show-all-button">
+                  <Link to="/blogs">
+                    Show All
+                  </Link>
+                </div>
               </span>
             </h1>
             )}

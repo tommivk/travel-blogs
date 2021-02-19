@@ -150,7 +150,7 @@ const Gallery = ({
         />
         <div className="gallery-top-content">
           {param.country && (
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', position: 'relative' }}>
               <h1 style={{ color: 'white', marginTop: '0px' }}>
                 Pictures from
                 {' '}
@@ -158,21 +158,25 @@ const Gallery = ({
                   {param.country}
                 </span>
               </h1>
-              <Link to="/gallery">
-                <Button style={{ color: 'white' }}>(X)</Button>
-              </Link>
+              <div className="gallery-top-show-all-button">
+                <Link to="/gallery">
+                  <Button style={{ color: 'white' }}>Show All</Button>
+                </Link>
+              </div>
             </div>
           )}
           {param.city && (
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', position: 'relative' }}>
               <h1 style={{ color: 'white', marginTop: '0px' }}>
                 Pictures from
                 {' '}
                 <span style={{ color: 'rgb(180, 155, 9)' }}>{param.city}</span>
               </h1>
-              <Link to="/gallery">
-                <Button style={{ color: 'white' }}>(X)</Button>
-              </Link>
+              <div className="gallery-top-show-all-button">
+                <Link to="/gallery">
+                  <Button style={{ color: 'white' }}>Show All</Button>
+                </Link>
+              </div>
             </div>
           )}
         </div>

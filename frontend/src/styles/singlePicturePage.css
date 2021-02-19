@@ -70,6 +70,20 @@
     position: sticky;
   }
 
+  .picture-list-top h4 {
+    margin: 5px;
+    font-size: 1.2rem;
+  }
+
+  .picture-city-filter {
+    margin-top: 5px;
+  }
+
+  #picture-list-show-all-button {
+    color: white;
+    padding: 0px;
+  }
+
   .picture-list-flex-box {
     height: 90%;
     display: flex;

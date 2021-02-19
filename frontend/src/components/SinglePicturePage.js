@@ -448,16 +448,20 @@ const SinglePicturePage = ({
         <div className="picture-list-top">
           {filteredPictures.filter ? (
             <div>
-              Pictures from
-              {' '}
-              {filteredPictures.filter}
-              {' '}
-              <button type="button" onClick={handleFilterRemove}>Show All Pictures</button>
+              <h4>
+                Pictures from
+                {' '}
+                <div className="golden-text picture-city-filter">
+                  {filteredPictures.filter}
+                </div>
+                {' '}
+              </h4>
+              <Button type="button" id="picture-list-show-all-button" onClick={handleFilterRemove}>Show All Pictures</Button>
             </div>
           ) : (
-            <div>
+            <h4>
               All Pictures
-            </div>
+            </h4>
           )}
         </div>
         <div className="picture-list-flex-box">

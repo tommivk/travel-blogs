@@ -122,6 +122,16 @@
   margin-top: 25px;
 }
 
+.gallery-top-show-all-button {
+  position: absolute;
+  right: 0px;
+  transform: translate(100%, -20%);
+}
+
+.gallery-top-show-all-button a{
+  text-decoration: none;
+}
+
 .blog-top-right-wrapper {
   display: flex;
 }

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Checkbox } from '@material-ui/core';
+import { Modal, Checkbox, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import '../styles/searchModal.css';
 
@@ -212,33 +212,35 @@ const SearchModal = ({
                               <td>
                                 {foundPictureCities.includes(city) ? (
                                   <Link
+                                    style={{ textDecoration: 'none' }}
                                     to={{
                                       pathname: '/gallery',
                                       search: `?city=${city}`,
                                     }}
                                     onClick={closeSearchModal}
                                   >
-                                    <button type="button" className="search-result-button">
+                                    <Button variant="contained" type="button" id="search-result-button">
                                       Pictures
-                                    </button>
+                                    </Button>
                                   </Link>
                                 )
                                   : (
-                                    <button type="button" disabled className="search-result-button--disabled">Pictures</button>
+                                    <Button variant="contained" type="button" disabled id="search-result-button--disabled">Pictures</Button>
                                   )}
                                 {foundBlogCities.includes(city) ? (
                                   <Link
+                                    style={{ textDecoration: 'none' }}
                                     to={{
                                       pathname: '/blogs',
                                       search: `?city=${city}`,
                                     }}
                                     onClick={closeSearchModal}
                                   >
-                                    <button type="button" className="search-result-button">Blogs</button>
+                                    <Button variant="contained" type="button" id="search-result-button">Blogs</Button>
                                   </Link>
                                 )
                                   : (
-                                    <button type="button" disabled className="search-result-button--disabled">Blogs</button>
+                                    <Button variant="contained" type="button" disabled id="search-result-button--disabled">Blogs</Button>
                                   )}
                               </td>
                             </tr>
@@ -266,27 +268,29 @@ const SearchModal = ({
                               <td>
                                 {foundPictureCountries.includes(country) ? (
                                   <Link
+                                    style={{ textDecoration: 'none' }}
                                     to={{
                                       pathname: '/gallery',
                                       search: `?country=${country}`,
                                     }}
                                     onClick={closeSearchModal}
                                   >
-                                    <button type="button" className="search-result-button">Pictures</button>
+                                    <Button type="button" id="search-result-button">Pictures</Button>
                                   </Link>
-                                ) : <button type="button" disabled className="search-result-button--disabled">Pictures</button>}
+                                ) : <Button type="button" disabled id="search-result-button--disabled">Pictures</Button>}
                                 {foundBlogCountries.includes(country) ? (
 
                                   <Link
+                                    style={{ textDecoration: 'none' }}
                                     to={{
                                       pathname: '/blogs',
                                       search: `?country=${country}`,
                                     }}
                                     onClick={closeSearchModal}
                                   >
-                                    <button type="button" className="search-result-button">Blogs</button>
+                                    <Button type="button" id="search-result-button">Blogs</Button>
                                   </Link>
-                                ) : <button type="button" disabled className="search-result-button--disabled">Blogs</button>}
+                                ) : <Button type="button" disabled id="search-result-button--disabled">Blogs</Button>}
                               </td>
                             </tr>
                           ))}
