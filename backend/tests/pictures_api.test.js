@@ -15,8 +15,6 @@ const user = {
 
 const picture = {
     title: 'new picture',
-    imgURL: 'pictureurl',
-    firebaseID: 'firebaseid',
     public: true,
     location: {lat: 60.1699, lng: 24.9384, city: 'Helsinki', country: 'Finland'},
 }
@@ -41,13 +39,20 @@ beforeAll(async () => {
   })
 
   test('Posting picture returns 200 and correct data with token', async () => {
-      const response = await api.post('/api/pictures').set('Authorization', token).send(picture).expect(200)
+      const response = await api.post('/api/pictures')
+        .set('Content-type', 'multipart/form-data')
+        .set('Authorization', token)
+        .field('title', picture.title)
+        .field('public', picture.public)
+        .field('location', JSON.stringify(picture.location))
+        .attach('image', 'images/testimage.jpg')
+        .expect(200)
 
       pictureID = response.body.id
 
       expect(response.body.title).toBe('new picture')
-      expect(response.body.imgURL).toBe('pictureurl')
-      expect(response.body.firebaseID).toBe('firebaseid')
+      expect(response.body.imgURL).toBeDefined()
+      expect(response.body.firebaseID).toBeDefined()
       expect(response.body.public).toBe(true)
       expect(response.body.voteResult).toBe(0)
       expect(response.body.location).toStrictEqual({ "lat": 60.1699, "lng": 24.9384, "city": 'Helsinki', "country": 'Finland' })
@@ -66,8 +71,8 @@ beforeAll(async () => {
     const response = await api.get('/api/pictures').expect(200)
       expect(response.body.length).toBe(1)
       expect(response.body[0].title).toBe('new picture')
-      expect(response.body[0].imgURL).toBe('pictureurl')
-      expect(response.body[0].firebaseID).toBe('firebaseid')
+      expect(response.body[0].imgURL).toBeDefined()
+      expect(response.body[0].firebaseID).toBeDefined()
       expect(response.body[0].public).toBe(true)
       expect(response.body[0].voteResult).toBe(0)
       expect(response.body[0].location).toStrictEqual({ "lat": 60.1699, "lng": 24.9384, "city": 'Helsinki', "country": 'Finland' })

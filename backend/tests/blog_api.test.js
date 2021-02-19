@@ -13,12 +13,10 @@ const user = {
 let token
 let blogID
 
-const newBlog = {
+const blog = {
   title: 'blog title',
   description: 'blog description',
   content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  headerImageURL: 'pictureURL',
-  headerImageID: '1344-2232'
 }
 
 beforeAll(async () => {
@@ -36,22 +34,32 @@ beforeAll(async () => {
 })
 
 test('Creating new blog without token returns 401', async () => {
-  await api.post('/api/blogs').send(newBlog).expect(401)
+  await api.post('/api/blogs')
+    .field('title', blog.title)
+    .field('description', blog.description)
+    .field('content', blog.content)
+    .expect(401)
 })
 
 test('Creating new blog with token returns 200', async () => {
-  await api
+  const res = await api
     .post('/api/blogs')
+    .set('Content-type', 'multipart/form-data')
     .set('Authorization', token)
-    .send(newBlog)
+    .field('title', blog.title)
+    .field('description', blog.description)
+    .field('content', blog.content)
     .expect(200)
+
 })
 
 test('Correct fields are returned after new blog submit', async () => {
   const response = await api
     .post('/api/blogs')
     .set('Authorization', token)
-    .send(newBlog)
+    .field('title', blog.title)
+    .field('description', blog.description)
+    .field('content', blog.content)
     .expect(200)
 
   blogID = response.body.id
@@ -68,8 +76,8 @@ test('Correct fields are returned after new blog submit', async () => {
   expect(response.body.author.pictures).toBeDefined()
   expect(response.body.author.id).toBeDefined()
   expect(response.body.author.username).toBe('testuser')
-  expect(response.body.headerImageURL).toBe('pictureURL')
-  expect(response.body.headerImageID).toBe('1344-2232')
+  expect(response.body.headerImageURL).toBeDefined()
+  expect(response.body.headerImageID).toBeDefined()
 })
 
 test('Blogs get request returns correct data', async () => {
@@ -101,8 +109,8 @@ test('Blogs get request returns correct data', async () => {
   expect(response.body[1].author.pictures).toBeDefined()
   expect(response.body[1].author.id).toBeDefined()
   expect(response.body[1].author.username).toBe('testuser')
-  expect(response.body[1].headerImageURL).toBe('pictureURL')
-  expect(response.body[1].headerImageID).toBe('1344-2232')
+  expect(response.body[1].headerImageURL).toBeDefined()
+  expect(response.body[1].headerImageID).toBeDefined()
 })
 
 test('Correct fields are returned after blog comment submit', async () => {
@@ -124,8 +132,8 @@ test('Correct fields are returned after blog comment submit', async () => {
   expect(response.body.author.pictures).toBeDefined()
   expect(response.body.author.id).toBeDefined()
   expect(response.body.author.username).toBe('testuser')
-  expect(response.body.headerImageURL).toBe('pictureURL')
-  expect(response.body.headerImageID).toBe('1344-2232')
+  expect(response.body.headerImageURL).toBeDefined()
+  expect(response.body.headerImageID).toBeDefined()
 
   expect(response.body.comments[0].user).toBeDefined()
   expect(response.body.comments[0].date).toBeDefined()
@@ -164,8 +172,8 @@ test('Adding star works correctly and correct fields are returned', async () => 
   expect(response.body.author.pictures).toBeDefined()
   expect(response.body.author.id).toBeDefined()
   expect(response.body.author.username).toBe('testuser')
-  expect(response.body.headerImageURL).toBe('pictureURL')
-  expect(response.body.headerImageID).toBe('1344-2232')
+  expect(response.body.headerImageURL).toBeDefined()
+  expect(response.body.headerImageID).toBeDefined()
 
   expect(response.body.comments[0].user).toBeDefined()
   expect(response.body.comments[0].date).toBeDefined()
@@ -207,8 +215,8 @@ test('Removing star works correctly and correct fields are returned', async () =
   expect(response.body.author.pictures).toBeDefined()
   expect(response.body.author.id).toBeDefined()
   expect(response.body.author.username).toBe('testuser')
-  expect(response.body.headerImageURL).toBe('pictureURL')
-  expect(response.body.headerImageID).toBe('1344-2232')
+  expect(response.body.headerImageURL).toBeDefined()
+  expect(response.body.headerImageID).toBeDefined()
 
   expect(response.body.comments[0].user).toBeDefined()
   expect(response.body.comments[0].date).toBeDefined()
