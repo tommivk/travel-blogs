@@ -90,6 +90,30 @@
   transform: translate(50%, -50%);
 }
 
+.upload-modal-image-preview {
+  position: relative;
+}
+
+.upload-modal-preview-close-button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  transform: translate(50%, -50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-weight: 700;
+  background-color: rgb(46, 39, 39);
+  color: white;
+  border: 2px solid black;
+  cursor: pointer;
+  outline: none;
+}
+
+.upload-modal-preview-close-button:hover {
+  background-color: rgb(182, 13, 13);
+}
+
 .image-upload-preview-table {
   text-align: left;
   width: 100%;

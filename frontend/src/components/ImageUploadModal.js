@@ -262,7 +262,10 @@ const ImageUploadModal = ({
             <div className="upload-modal-middle-container first-step">
               <div className="upload-modal-midddle-content first-step">
                 {imagePreview && (
-                  <img alt="" src={imagePreview} height="300" width="300" />
+                  <div className="upload-modal-image-preview">
+                    <img alt="" src={imagePreview} height="300" width="300" />
+                    <button type="button" onClick={cancelImage} className="upload-modal-preview-close-button">X</button>
+                  </div>
                 )}
 
                 {image && (
