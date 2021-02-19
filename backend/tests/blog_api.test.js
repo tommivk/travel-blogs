@@ -41,7 +41,7 @@ test('Creating new blog without token returns 401', async () => {
     .expect(401)
 })
 
-test('Creating new blog with token returns 200', async () => {
+test('Creating new blog without cover image with token returns 200', async () => {
   const res = await api
     .post('/api/blogs')
     .set('Content-type', 'multipart/form-data')
@@ -50,7 +50,18 @@ test('Creating new blog with token returns 200', async () => {
     .field('description', blog.description)
     .field('content', blog.content)
     .expect(200)
+})
 
+test('Creating new blog with cover image token returns 200', async () => {
+  const res = await api
+    .post('/api/blogs')
+    .set('Content-type', 'multipart/form-data')
+    .set('Authorization', token)
+    .field('title', blog.title)
+    .field('description', blog.description)
+    .field('content', blog.content)
+    .attach('image', 'images/testimage.jpg')
+    .expect(200)
 })
 
 test('Correct fields are returned after new blog submit', async () => {
@@ -83,7 +94,7 @@ test('Correct fields are returned after new blog submit', async () => {
 test('Blogs get request returns correct data', async () => {
   const response = await api.get('/api/blogs').expect(200)
 
-  expect(response.body.length).toBe(2)
+  expect(response.body.length).toBe(3)
 
   expect(response.body[0].stars).toBeDefined()
   expect(response.body[0].comments).toBeDefined()
@@ -258,10 +269,10 @@ test('Missing star action returns 401', async () => {
 
 test('Deleting blog works in mongo', async () => {
   let blogs = await Blog.find({})
-  expect(blogs.length).toBe(2)
+  expect(blogs.length).toBe(3)
   await api.delete(`/api/blogs/${blogID}`).set('Authorization', token).expect(204)
   blogs = await Blog.find({})
-  expect(blogs.length).toBe(1)
+  expect(blogs.length).toBe(2)
 })
 
 afterAll(async () => {
