@@ -349,6 +349,10 @@
   color: white;
 }
 
+#image-upload-help-icon {
+  font-size: 2.3rem;
+}
+
 @media (max-width: 1700px) {
   .image-upload-modal-main-container {
     width: 85%;

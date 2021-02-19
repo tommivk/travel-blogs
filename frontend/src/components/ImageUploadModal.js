@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -6,6 +7,7 @@ import {
 } from '@material-ui/core';
 import Explore from '@material-ui/icons/Explore';
 import Room from '@material-ui/icons/Room';
+import Help from '@material-ui/icons/Help';
 import GoogleMapReact from 'google-map-react';
 import AddLocations from './AddLocations';
 import '../styles/imageUploadModal.css';
@@ -496,6 +498,10 @@ const ImageUploadModal = ({
               <div className="upload-modal-midddle-content">
                 <div>
                   <h3>Publish This Image To Gallery?</h3>
+                  <div className="tooltip">
+                    <span className="tooltip-message" style={{ right: '15%' }}>Public images will be diplayed to other users in gallery and world map</span>
+                    <Help id="image-upload-help-icon" />
+                  </div>
                   <div className="upload-modal-publicicity-select-buttons">
                     <Button
                       id="upload-modal-yes-button"

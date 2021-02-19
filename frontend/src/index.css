@@ -20,7 +20,7 @@ body {
   background: #0b1111;
   color: white;
   padding: 7px 10px 7px 10px;
-  white-space: nowrap;
+  text-align: left;
 }
 
 .tooltip:hover .tooltip-message {
