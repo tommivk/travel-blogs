@@ -168,7 +168,7 @@ const SinglePicturePage = ({
 
   const handleVote = async (direction) => {
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         `/api/pictures/${picture.id}/vote`,
         { dir: direction },
         {
@@ -205,6 +205,7 @@ const SinglePicturePage = ({
 
       setAllPictures(filteredPics);
     } catch (error) {
+      console.log({ error });
       handleMessage('error', error.response.data.error);
     }
   };

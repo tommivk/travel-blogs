@@ -106,10 +106,6 @@ picturesRouter.put('/:pictureID', async (req, res, next) => {
 
 picturesRouter.delete('/:id/vote', async (req, res, next) => {
   try {
-    const picture = await Picture.findById(req.params.id);
-    if (!picture) {
-      return res.status(404).send().end();
-    }
     const token = getTokenFrom(req);
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
@@ -118,58 +114,40 @@ picturesRouter.delete('/:id/vote', async (req, res, next) => {
     }
 
     const user = await User.findById(decodedToken.id);
+    const picture = await Picture.findById(req.params.id);
 
     const usersVote = await picture.votes.find(
       (vote) => vote.user.toString() === user._id.toString(),
     );
 
     if (!usersVote) {
-      res.send(400).end();
-    }
-    if (usersVote.dir !== 1 && usersVote.dir !== -1) {
-      res.send(400).end();
+      return res.status(400).end();
     }
 
-    if (usersVote.dir === 1) {
-      picture.voteResult -= 1;
-    } else {
-      picture.voteResult += 1;
-    }
+    const newData = {
+      voteResult: picture.voteResult -= usersVote.dir,
+      votes: picture.votes.filter((vote) => vote.user.toString() !== user._id.toString()),
+    };
 
-    picture.votes = await picture.votes.filter(
-      (vote) => vote.user.toString() !== user._id.toString(),
-    );
-
-    const newPicture = await picture.save();
-    await newPicture
+    const newPicture = await Picture
+      .findByIdAndUpdate(req.params.id, newData, { new: true })
       .populate('user')
       .populate('votes.user')
       .populate({
         path: 'comments',
         model: 'Comment',
         populate: { path: 'user', model: 'User' },
-      })
-      .execPopulate();
+      });
 
-    return res.json(newPicture);
+    return res.status(200).send(newPicture);
   } catch (error) {
     return next(error);
   }
 });
 
-picturesRouter.put('/:id/vote', async (req, res, next) => {
+picturesRouter.post('/:id/vote', async (req, res, next) => {
   try {
     const { body } = req;
-    const picture = await Picture.findById(req.params.id);
-
-    if (!picture) {
-      return res.status(404).send().end();
-    }
-
-    if (body.dir !== 1 && body.dir !== -1) {
-      return res.status(400).send().end();
-    }
-
     const token = getTokenFrom(req);
     const decodedToken = jwt.verify(token, process.env.SECRET);
 
@@ -177,36 +155,32 @@ picturesRouter.put('/:id/vote', async (req, res, next) => {
       return res.status(401).json({ error: 'token missing or invalid' });
     }
 
+    if (!body.dir) {
+      return res.status(400).end();
+    }
+
+    if (body.dir !== 1 && body.dir !== -1) {
+      return res.status(400).end();
+    }
+
     const user = await User.findById(decodedToken.id);
+    const picture = await Picture.findById(req.params.id);
 
     const usersVote = await picture.votes.find(
       (vote) => vote.user.toString() === user._id.toString(),
     );
 
-    if (usersVote && usersVote.dir === body.dir) {
-      return res.status(400).send().end();
-    }
     if (usersVote) {
-      picture.votes = picture.votes.map((vote) => (vote.user.toString() === user._id.toString()
-        ? (vote.dir = body.dir)
-        : vote));
-    } else {
-      picture.votes = picture.votes.concat({
-        user: user._id,
-        dir: body.dir,
-      });
+      return res.status(400).end();
     }
-    const newPicture = {
-      voteResult: usersVote
-        ? (picture.voteResult += body.dir * 2)
-        : (picture.voteResult += body.dir),
-      votes: picture.votes,
+
+    const newData = {
+      voteResult: picture.voteResult += body.dir,
+      votes: picture.votes.concat({ user, dir: body.dir }),
     };
-    const updatedPicture = await Picture.findByIdAndUpdate(
-      picture._id,
-      newPicture,
-      { new: true },
-    )
+
+    const updatedPicture = await Picture
+      .findByIdAndUpdate(req.params.id, newData, { new: true })
       .populate('user')
       .populate('votes.user')
       .populate({
@@ -214,8 +188,8 @@ picturesRouter.put('/:id/vote', async (req, res, next) => {
         model: 'Comment',
         populate: { path: 'user', model: 'User' },
       });
-    console.log(updatedPicture);
-    res.json(updatedPicture.toJSON());
+
+    return res.status(200).send(updatedPicture);
   } catch (error) {
     return next(error);
   }
