@@ -1,3 +1,4 @@
 .env
 request.http
 images/
+coverage/
