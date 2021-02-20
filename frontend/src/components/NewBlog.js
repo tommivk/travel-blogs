@@ -305,7 +305,7 @@ const NewBlog = ({
           </div>
           <div className="location-select-wrapper">
             <div className="new-blog-selected-locations">
-              <h3>Locations selected</h3>
+              <h2>Locations selected</h2>
               <table>
                 <tbody>
                   {locations.map((loc) => (

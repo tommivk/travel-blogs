@@ -190,6 +190,11 @@
   width: 30%;
 }
 
+.new-blog-selected-locations h2 {
+  margin-top: 0px;
+  text-align: center;
+}
+
 .new-blog-image-preview {
   position: relative;
   height: 200px;
