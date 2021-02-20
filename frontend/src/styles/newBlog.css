@@ -138,9 +138,6 @@
   width: 72px;
  }
  
-
-
-
 .location-select-form tr:nth-child(even) td:first-child, .location-select-form tr:nth-child(even) td:nth-child(2) {
   background-color: #ece8e8;
 } 
@@ -175,6 +172,10 @@
   background-color: rgb(64, 71, 75);
   color: white;
   font-size: 0.8rem;
+}
+
+#new-blog-search-button:hover {
+  background-color: rgb(78, 86, 90);
 }
 
 .new-blog-bottom-navigation {
@@ -326,4 +327,14 @@
 
 #new-blog-editor {
   height: 67vh;
+}
+
+#location-remove-button {
+  background-color: rgb(64, 71, 75);
+  color: white;
+  padding: 4px 6px;
+}
+
+#location-remove-button:hover {
+  background-color: rgb(78, 86, 90);
 }

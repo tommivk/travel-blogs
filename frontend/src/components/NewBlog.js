@@ -317,7 +317,7 @@ const NewBlog = ({
                         {loc.country}
                       </td>
                       <td>
-                        <Button variant="contained" onClick={() => handleLocationRemove(loc)}>remove</Button>
+                        <Button variant="contained" id="location-remove-button" onClick={() => handleLocationRemove(loc)}>remove</Button>
                       </td>
                     </tr>
                   ))}
