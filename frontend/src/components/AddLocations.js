@@ -9,14 +9,17 @@ const AddLocations = ({ filter, selectFunction }) => {
   const URL = 'http://geodb-free-service.wirefreethought.com';
 
   useEffect(() => {
-    setHref('/v1/geo/cities?limit=5&offset=0&namePrefix=');
+    setSearchResult([]);
     if (filter !== '') {
-      axios.get(`${URL}${href}${filter}`).then((res) => setSearchResult(res.data));
+      axios.get(`${URL}${'/v1/geo/cities?limit=5&offset=0&namePrefix='}${filter}`).then((res) => setSearchResult(res.data));
     }
   }, [filter]);
 
   useEffect(() => {
-    axios.get(`${URL}${href}`).then((res) => setSearchResult(res.data));
+    setSearchResult([]);
+    if (filter !== '') {
+      axios.get(`${URL}${href}`).then((res) => setSearchResult(res.data));
+    }
   }, [href]);
 
   const getButtons = (res) => {
