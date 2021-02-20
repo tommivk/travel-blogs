@@ -61,8 +61,17 @@ blogsRouter.post('/', multer.single('image'), async (req, res, next) => {
       locations = JSON.parse(body.locations);
     }
 
-    if (locations.length > 10) {
-      return res.status(400).send({ error: 'Maximum number of locations is 10' });
+    if (locations.length > 5) {
+      return res.status(400).send({ error: 'Maximum number of locations is 5' });
+    }
+
+    for (let i = 0; i < locations.length; i += 1) {
+      for (let j = i + 1; j < locations.length; j += 1) {
+        if (locations[i].city === locations[j].city
+            && locations[i].country === locations[j].country) {
+          return res.status(401).json({ error: 'Duplicate locations not allowed' });
+        }
+      }
     }
 
     const newBlog = new Blog({

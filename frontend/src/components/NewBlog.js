@@ -78,6 +78,20 @@ const NewBlog = ({
         country: city.country,
       },
     ];
+
+    const containsLocation = locations
+      .some((loc) => loc.city === city.city && loc.country === city.country);
+
+    if (containsLocation) {
+      handleMessage('error', 'This location has already been added');
+      return;
+    }
+
+    if (locations.length >= 5) {
+      handleMessage('error', 'Maximum number of locations is 5');
+      return;
+    }
+
     setLocations(locations.concat(newLocation));
   };
 
