@@ -68,7 +68,6 @@ test('User is sent welcome notification', async () => {
 });
 
 test('Put request without token returns 401', async () => {
-    console.log(notificationID)
     const res = await api
       .put(`/api/notifications/${notificationID}`)
       .expect(401)

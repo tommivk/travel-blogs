@@ -292,7 +292,7 @@ picturesRouter.post('/:id/comment', async (req, res, next) => {
         model: 'Comment',
         populate: { path: 'user', model: 'User' },
       });
-    console.log(newPicture);
+
     return res.json(newPicture.toJSON());
   } catch (error) {
     return next(error);

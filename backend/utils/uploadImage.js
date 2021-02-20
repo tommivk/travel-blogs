@@ -34,7 +34,6 @@ const uploadImage = async (file, userID, path, type) => new Promise((resolve, re
   });
 
   blobStream.on('error', (error) => {
-    console.log(error, 'error');
     reject(error);
   });
 
