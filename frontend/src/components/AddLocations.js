@@ -4,21 +4,19 @@ import axios from 'axios';
 
 const AddLocations = ({ filter, selectFunction }) => {
   const [searchResult, setSearchResult] = useState([]);
-  const [href, setHref] = useState('/v1/geo/cities?limit=5&offset=0&namePrefix=');
-
-  const URL = 'http://geodb-free-service.wirefreethought.com';
+  const [href, setHref] = useState('');
 
   useEffect(() => {
     setSearchResult([]);
     if (filter !== '') {
-      axios.get(`${URL}${'/v1/geo/cities?limit=5&offset=0&namePrefix='}${filter}`).then((res) => setSearchResult(res.data));
+      axios.post('/api/cities', { filter }).then((res) => setSearchResult(res.data));
     }
   }, [filter]);
 
   useEffect(() => {
     setSearchResult([]);
-    if (filter !== '') {
-      axios.get(`${URL}${href}`).then((res) => setSearchResult(res.data));
+    if (filter !== '' && href !== '') {
+      axios.post('/api/cities', { href }).then((res) => setSearchResult(res.data));
     }
   }, [href]);
 
