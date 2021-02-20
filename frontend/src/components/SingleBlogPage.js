@@ -17,7 +17,7 @@ import ConfirmDialog from './ConfirmDialog';
 import calculateDateDiff from '../utils/calculateDateDiff';
 
 const CommentForm = ({
-  user, blog, setBlog, allBlogs, setAllBlogs,
+  user, blog, setBlog, allBlogs, setAllBlogs, handleMessage,
 }) => {
   const [comment, setComment] = useState('');
   const inputRef = useRef(null);
@@ -45,7 +45,7 @@ const CommentForm = ({
         inputRef.current.scrollIntoView({ behavior: 'smooth' });
       }
     } catch (error) {
-      console.log(error);
+      handleMessage('error', error.response.data.error);
     }
   };
 
@@ -80,6 +80,7 @@ CommentForm.propTypes = {
   setBlog: PropTypes.func.isRequired,
   allBlogs: PropTypes.instanceOf(Array).isRequired,
   setAllBlogs: PropTypes.func.isRequired,
+  handleMessage: PropTypes.func.isRequired,
 };
 
 const SingleBlogPage = ({
@@ -124,7 +125,7 @@ const SingleBlogPage = ({
         setDialogOpen(false);
       });
     } catch (error) {
-      console.log(error);
+      handleMessage('error', 'Something went wrong');
     }
   };
 
@@ -158,7 +159,6 @@ const SingleBlogPage = ({
       handleMessage('success', 'Comment Deleted');
     } catch (error) {
       handleMessage('error', error.response.data.error);
-      console.log(error);
     }
   };
 
@@ -270,6 +270,7 @@ const SingleBlogPage = ({
                     setBlog={setBlog}
                     allBlogs={allBlogs}
                     setAllBlogs={setAllBlogs}
+                    handleMessage={handleMessage}
                   />
                 </div>
                 <div className="blog-comments">

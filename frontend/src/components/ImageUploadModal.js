@@ -61,7 +61,7 @@ const ImageUploadModal = ({
           country: res.data.address.country,
         }));
     } catch (error) {
-      console.log(error);
+      handleMessage('error', error.response.data.error);
     }
 
     setStep(3);

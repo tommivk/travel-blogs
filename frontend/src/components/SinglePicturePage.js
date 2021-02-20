@@ -25,6 +25,7 @@ const CommentForm = ({
   setPicture,
   allPictures,
   setAllPictures,
+  handleMessage,
 }) => {
   const [comment, setComment] = useState('');
 
@@ -57,7 +58,7 @@ const CommentForm = ({
         inputRef.current.scrollIntoView({ behavior: 'smooth' });
       }
     } catch (error) {
-      console.log(error);
+      handleMessage('error', error.response.data.error);
     }
   };
   return (
@@ -85,6 +86,7 @@ CommentForm.propTypes = {
   setPicture: PropTypes.func.isRequired,
   allPictures: PropTypes.instanceOf(Array).isRequired,
   setAllPictures: PropTypes.func.isRequired,
+  handleMessage: PropTypes.func.isRequired,
 };
 
 const SinglePicturePage = ({
@@ -157,7 +159,7 @@ const SinglePicturePage = ({
         setDialogOpen(false);
       });
     } catch (error) {
-      console.log(error);
+      handleMessage('error', 'Something went wrong');
     }
   };
 
@@ -184,7 +186,7 @@ const SinglePicturePage = ({
 
       setAllPictures(filteredPics);
     } catch (error) {
-      console.log(error.response.data.message);
+      handleMessage('error', error.response.data.error);
     }
   };
 
@@ -205,7 +207,6 @@ const SinglePicturePage = ({
 
       setAllPictures(filteredPics);
     } catch (error) {
-      console.log({ error });
       handleMessage('error', error.response.data.error);
     }
   };
@@ -222,7 +223,6 @@ const SinglePicturePage = ({
       handleMessage('success', 'Comment Deleted');
     } catch (error) {
       handleMessage('error', error.response.data.error);
-      console.log(error);
     }
   };
 
@@ -415,6 +415,7 @@ const SinglePicturePage = ({
             setPicture={setPicture}
             allPictures={allPictures}
             setAllPictures={setAllPictures}
+            handleMessage={handleMessage}
           />
           <ul>
             {picture.comments.map((comment) => (

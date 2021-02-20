@@ -132,6 +132,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            handleMessage={handleMessage}
           />
 
           <NewBlog
@@ -153,6 +154,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            handleMessage={handleMessage}
             activePage="map"
           />
 
@@ -172,6 +174,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            handleMessage={handleMessage}
           />
           <SinglePicturePage
             user={user}
@@ -193,6 +196,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            handleMessage={handleMessage}
             activePage="gallery"
           />
           <Gallery
@@ -213,6 +217,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            handleMessage={handleMessage}
           />
           <UserPage
             userMatch={selectedUser}
@@ -236,6 +241,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            handleMessage={handleMessage}
           />
           <SingleBlogPage
             blog={blog}
@@ -255,6 +261,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            handleMessage={handleMessage}
             activePage="blogs"
           />
           <Blogs allBlogs={allBlogs} />
@@ -268,6 +275,7 @@ const App = () => {
             allUsers={allUsers}
             userNotifications={userNotifications}
             setUserNotifications={setUserNotifications}
+            handleMessage={handleMessage}
           />
           <HomePage
             allBlogs={allBlogs}

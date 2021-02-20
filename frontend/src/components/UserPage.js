@@ -307,7 +307,6 @@ const UserPage = ({
       handleMessage('success', subMessage);
     } catch (error) {
       handleMessage('error', error.response.data.error);
-      console.log(error);
     }
   };
 
@@ -334,7 +333,7 @@ const UserPage = ({
         setDialogOpen(false);
       });
     } catch (error) {
-      console.log(error);
+      handleMessage('error', 'Something went wrong');
     }
   };
 

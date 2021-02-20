@@ -22,6 +22,7 @@ const Header = ({
   allUsers,
   userNotifications,
   activePage,
+  handleMessage,
 }) => {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [notificationMenuEl, setNotificationMenuEl] = useState(null);
@@ -78,7 +79,7 @@ const Header = ({
 
       setNotificationMenuEl(null);
     } catch (error) {
-      console.log(error);
+      handleMessage('error', error.response.data.error);
     }
   };
 
@@ -297,6 +298,7 @@ Header.propTypes = {
   allUsers: PropTypes.instanceOf(Array).isRequired,
   userNotifications: PropTypes.instanceOf(Array).isRequired,
   activePage: PropTypes.string,
+  handleMessage: PropTypes.func.isRequired,
 };
 
 export default Header;
