@@ -512,7 +512,7 @@ const UserPage = ({
         )}
       </div>
       <FormControl>
-        <RadioGroup row aria-label="position" defaultValue={content} onChange={handleRadioChange}>
+        <RadioGroup row aria-label="position" defaultValue="blogs" onChange={handleRadioChange}>
           <FormControlLabel value="blogs" control={<Radio />} label="Blogs" />
           <FormControlLabel id="userpage-pictures-radio" value="pictures" control={<Radio />} label="Pictures" />
         </RadioGroup>
@@ -534,7 +534,7 @@ const UserPage = ({
                 userData.pictures.map((pic) => (
                   pic.public
                     ? (
-                      <div className="userpage-pictures-wrapper">
+                      <div className="userpage-pictures-wrapper" key={pic.id}>
                         <div className="gallery-card">
                           {isUser && <Button variant="contained" id="userpage-picture-delete-button" type="button" onClick={() => handleDialogOpen('Delete picture?', '', () => handlePictureDelete(pic))}>delete</Button>}
                           <Link
@@ -598,8 +598,7 @@ const UserPage = ({
                       </div>
                     )
                     : (
-                      <div className="userpage-pictures-wrapper">
-
+                      <div className="userpage-pictures-wrapper" key={pic.id}>
                         <div className="gallery-card">
                           {isUser
                         && (

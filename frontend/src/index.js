@@ -34,7 +34,7 @@ const App = () => {
   const [blog, setBlog] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
   const [message, setMessage] = useState({ type: '', message: '' });
-  const [pictureOfTheWeek, setPictureOfTheWeek] = useState(null);
+  const [pictureOfTheWeek, setPictureOfTheWeek] = useState([]);
 
   const handleMessage = (t, m) => {
     setMessage({ type: t, message: m });

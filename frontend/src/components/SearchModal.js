@@ -155,7 +155,7 @@ const SearchModal = ({
                       : (
                         <div>
                           {foundBlogs.map((blog) => (
-                            <li>
+                            <li key={blog.id}>
                               <Link
                                 to={`/blogs/${blog.id}`}
                                 onClick={closeSearchModal}

@@ -466,7 +466,7 @@ const SinglePicturePage = ({
         </div>
         <div className="picture-list-flex-box">
           {pictures.map((pic) => (
-            <div className="picture-list-picture-box">
+            <div className="picture-list-picture-box" key={pic.id}>
               {pic.id === picture.id ? (
                 <div className="picture-list-active-image">
                   <img src={pic.imgURL} alt="" />

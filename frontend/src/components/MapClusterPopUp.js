@@ -98,7 +98,7 @@ const MapClusterPopUp = ({
                 }}
               >
                 {blogs.map((blog) => (
-                  <Link to={`/blogs/${blog.data.id}`}>
+                  <Link to={`/blogs/${blog.data.id}`} key={blog.data.id}>
                     <div className="blog-card map-cluster-blog-card">
                       <div className="blog-image">
                         {blog.data.headerImageURL && (
