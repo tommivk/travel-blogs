@@ -244,7 +244,7 @@ const NewBlog = ({
             <div className="new-blog-stepper-container">
               <Stepper alternativeLabel activeStep={activeStep}>
                 {steps.map((step, index) => (
-                  <Step>
+                  <Step key={step}>
                     <StepLabel
                       onClick={() => setActiveStep(index)}
                       StepIconComponent={stepperIcons}
@@ -278,7 +278,7 @@ const NewBlog = ({
           <div className="new-blog-stepper-container">
             <Stepper alternativeLabel activeStep={activeStep}>
               {steps.map((step, index) => (
-                <Step>
+                <Step key={step}>
                   <StepLabel
                     onClick={() => setActiveStep(index)}
                     StepIconComponent={stepperIcons}
@@ -295,7 +295,7 @@ const NewBlog = ({
               <table>
                 <tbody>
                   {locations.map((loc) => (
-                    <tr>
+                    <tr key={loc.city}>
                       <td>
                         {loc.city}
                         ,
@@ -336,7 +336,7 @@ const NewBlog = ({
           <div className="new-blog-stepper-container">
             <Stepper alternativeLabel activeStep={activeStep}>
               {steps.map((step, index) => (
-                <Step>
+                <Step key={step}>
                   <StepLabel
                     onClick={() => setActiveStep(index)}
                     StepIconComponent={stepperIcons}
@@ -417,7 +417,7 @@ const NewBlogPreview = ({
            <table>
              <tbody>
                {locations.map((loc) => (
-                 <tr>
+                 <tr key={loc.city}>
                    <td>
                      {loc.city}
                    </td>
