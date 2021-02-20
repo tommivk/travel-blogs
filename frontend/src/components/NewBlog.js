@@ -121,14 +121,12 @@ const NewBlog = ({
       handleMessage('success', 'Blog Submitted!');
       setActiveStep(5);
     } catch (error) {
-      console.log({ error });
       handleMessage('error', error.response.data.error);
     }
   };
 
   const handleImageChange = (e) => {
     if (!e.target.files[0]) return;
-    console.log(e.target.files[0]);
     if (e.target.files[0] && e.target.files[0].type && e.target.files[0].type) {
       if (e.target.files[0].type !== 'image/png'
          && e.target.files[0].type !== 'image/jpg'
@@ -148,7 +146,6 @@ const NewBlog = ({
 
   const handleCitySearch = (e) => {
     e.preventDefault();
-    console.log(searchRef.current.value);
     setSearchFilter(searchRef.current.value);
   };
 

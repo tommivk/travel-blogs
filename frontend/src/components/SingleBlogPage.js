@@ -40,7 +40,6 @@ const CommentForm = ({
       setBlog(newBlog);
       const filteredBlogs = allBlogs.map((b) => (b.id === newBlog.id ? newBlog : b));
       setAllBlogs(filteredBlogs);
-      console.log(response.data);
       setComment('');
       if (inputRef.current) {
         inputRef.current.scrollIntoView({ behavior: 'smooth' });

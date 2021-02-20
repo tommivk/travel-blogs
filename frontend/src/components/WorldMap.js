@@ -151,7 +151,6 @@ const WorldMap = ({
         }));
       }
       mcCopy.addMarkers(markers);
-      console.log(markerData.size);
 
       mapRef.current.maps_.event.clearInstanceListeners(mcCopy);
 

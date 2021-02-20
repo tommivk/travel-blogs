@@ -17,7 +17,6 @@ const SignUp = ({
         username,
         password,
       });
-      console.log(response);
       setAllUsers(allUsers.concat(response.data));
       setUsername('');
       setPassword('');
@@ -25,7 +24,6 @@ const SignUp = ({
       closeModal();
     } catch (error) {
       handleMessage('error', error.response.data.error);
-      console.log({ error });
     }
   };
 

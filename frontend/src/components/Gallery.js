@@ -25,8 +25,6 @@ const Gallery = ({
     document.title = 'Gallery | TravelBlogs';
   }, []);
 
-  console.log(allPictures);
-
   useEffect(() => {
     if (allPictures) {
       const sortedPictures = allPictures.slice();
