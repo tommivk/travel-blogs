@@ -485,11 +485,11 @@ const UserPage = ({
                 </td>
               </tr>
               <tr>
-                <td>Created Blogs: </td>
+                <td>Blogs Created: </td>
                 <td>{userData.blogs.length}</td>
               </tr>
               <tr>
-                <td>Uploaded Pictures:</td>
+                <td>Pictures Uploaded:</td>
                 <td>{userData.pictures.length}</td>
               </tr>
             </tbody>
@@ -575,7 +575,7 @@ const UserPage = ({
 
                               {isUser
                               && (
-                              <div className="userpage-picture-publicity public" onClick={() => handleDialogOpen('Set image private?', 'Other users will no longer be able to see this image', () => handlePictureUpdate(pic))}>
+                              <div className="userpage-picture-publicity public" onClick={() => handleDialogOpen('Set image private?', 'Image will no longer be displayed to other users in gallery or world map', () => handlePictureUpdate(pic))}>
                                 public
                                 <SwapHorizontalCircle className="user-page-publicity-icon" />
                               </div>

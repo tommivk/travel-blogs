@@ -17,7 +17,6 @@ import ConfirmDialog from './ConfirmDialog';
 import '../styles/singlePicturePage.css';
 
 const API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
-// const GEO_API_KEY = process.env.REACT_APP_GEOCODE_API_KEY;
 
 const CommentForm = ({
   picture,
