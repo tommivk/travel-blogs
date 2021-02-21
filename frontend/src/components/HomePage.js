@@ -82,6 +82,9 @@ const HomePage = ({ allBlogs, pictureOfTheWeek }) => {
           <h2 className="homepage-section-title">Picture Of The Week</h2>
           <div className="homepage-picture">
             {pictureOfTheWeek
+            && pictureOfTheWeek.id
+            && pictureOfTheWeek.title
+            && pictureOfTheWeek.imgURL
             && (
             <Link to={`/gallery/${pictureOfTheWeek.id}`}>
               <img src={pictureOfTheWeek.imgURL} alt="best of the week" />
