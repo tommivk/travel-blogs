@@ -186,7 +186,7 @@ describe('Gallery uploading', function () {
     cy.get('#my-page-menulink').click();
     cy.get('#userpage-pictures-radio').click();
     cy.contains('Test title');
-    cy.get('.gallery-card > img').should('be.visible');
+    cy.get('.gallery-card > a > img').should('be.visible');
   });
 
   it('User can delete picture', function () {
@@ -235,7 +235,7 @@ describe('Updating user', function () {
       el[0].dispatchEvent(new Event('change', { bubbles: true }));
     });
     cy.get('#profile-update-submit-button').click();
-    cy.get('.user-page-main-container').scrollTo('top');
+    cy.get('.user-page-main-container').scrollTo('top', { ensureScrollable: false });
     cy.get('.MuiAlert-message').contains('Profile updated');
     cy.get('.userpage-avatar-image').should('be.visible');
     cy.contains('new username');
@@ -273,10 +273,10 @@ describe('Updating user', function () {
     cy.contains('Member Since:');
     cy.contains('Created Blogs:');
     cy.contains('Uploaded Pictures:');
-    cy.get('.user-page-main-container').scrollTo('top');
+    cy.get('.user-page-main-container').scrollTo('top', { ensureScrollable: false });
     cy.get('.userpage-avatar-image').should('be.visible');
     cy.reload();
-    cy.get('.user-page-main-container').scrollTo('top');
+    cy.get('.user-page-main-container').scrollTo('top', { ensureScrollable: false });
     cy.contains('testuser');
     cy.contains('Member Since:');
     cy.contains('Created Blogs:');
