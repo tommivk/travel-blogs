@@ -8,7 +8,7 @@ import IndexModal from './IndexModal';
 import handPicture from '../images/hand.png';
 import bgvideo from '../videos/background.mp4';
 import '../styles/indexPage.css';
-import imagePath from '../images/image-path';
+import imagePath from '../images/imagePath';
 
 const IndexPage = ({
   setUser, message, handleMessage, allUsers, setAllUsers,
