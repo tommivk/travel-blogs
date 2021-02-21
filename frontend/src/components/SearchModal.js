@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Checkbox, Button } from '@material-ui/core';
@@ -98,6 +97,7 @@ const SearchModal = ({
             <input
               autoComplete="off"
               id="search-modal-input"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               value={searchFilter}
               onChange={({ target }) => setSearchFilter(target.value)}

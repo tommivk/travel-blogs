@@ -1,6 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -190,9 +187,12 @@ const Header = ({
         </div>
         <div
           className="notification-container"
-          onClick={handleNotificationMenuOpen}
         >
-          <Notifications id="notifications-bell" />
+          <Notifications
+            id="notifications-bell"
+            onClick={handleNotificationMenuOpen}
+            onKeyPress={handleNotificationMenuOpen}
+          />
 
           {unreadNotifications.length > 0 && (
             <div className="notification-count">
@@ -213,11 +213,11 @@ const Header = ({
         >
           <div className="notification-menu-content">
             {unreadNotifications.length === 0 && (
-              <div className="no-notifications-message">You don't have any new notifications</div>
+              <div className="no-notifications-message">You don&rsquo;t have any new notifications</div>
             )}
             <ul>
               {unreadNotifications.map((n) => (
-                <li>
+                <li key={n.createdAt}>
                   <div
                     className="unread-notification notification-message"
                   >
@@ -233,8 +233,11 @@ const Header = ({
           </div>
         </Menu>
         <div
+          role="button"
+          tabIndex="0"
           style={{ margin: '10px', cursor: 'pointer' }}
           onClick={handleMenuOpen}
+          onKeyPress={handleMenuOpen}
         >
           <img
             id="header-user-avatar"

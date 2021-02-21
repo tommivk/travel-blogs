@@ -9,15 +9,15 @@ const uploadImage = async (file, userID, path, type) => new Promise((resolve, re
   const accessToken = uuidv4();
 
   if (!file) {
-    reject('no file');
+    reject(new Error('no file'));
   }
 
   if (file.buffer.byteLength >= maxSize) {
-    reject({ name: 'ImageUploadValidationError', message: 'Maximum allowed file size is 2MB' });
+    reject(new Error({ name: 'ImageUploadValidationError', message: 'Maximum allowed file size is 2MB' }));
   }
 
   if (file.mimetype !== 'image/png' && file.mimetype !== 'image/jpg' && file.mimetype !== 'image/jpeg') {
-    reject({ name: 'ImageUploadValidationError', message: 'Only JPG, JPEG and PNG file types allowed' });
+    reject(new Error({ name: 'ImageUploadValidationError', message: 'Only JPG, JPEG and PNG file types allowed' }));
   }
 
   const newFileName = (type && type === 'avatar') ? 'avatar' : uuidv4();

@@ -299,6 +299,7 @@ blogsRouter.put('/:id/star', async (req, res, next) => {
         .populate({ path: 'author', model: 'User' });
       return res.json(newBlog.toJSON());
     }
+    return res.status(400).end();
   } catch (error) {
     return next(error);
   }

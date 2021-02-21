@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
@@ -31,7 +29,13 @@ const IndexPage = ({
       <div className="indexpage-title">
         <h1>TravelBlogs</h1>
       </div>
-      <div className="indexpage-login-link" onClick={openLoginModal}>
+      <div
+        className="indexpage-login-link"
+        role="button"
+        tabIndex="0"
+        onClick={openLoginModal}
+        onKeyPress={openLoginModal}
+      >
         <h1>Login</h1>
       </div>
       <div className={`video-container ${(mouseOnImage || modalOpen.open) && 'video-blur'}`}>

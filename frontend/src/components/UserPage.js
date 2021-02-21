@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/no-autofocus */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -454,6 +450,7 @@ const UserPage = ({
           {editUsername && isUser ? (
             <input
               type="text"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
               value={newUsername}
               onChange={({ target }) => setNewUsername(target.value)}
@@ -463,8 +460,11 @@ const UserPage = ({
 
         {isUser && editProfile && !editUsername ? (
           <div
-            onClick={() => setEditUsername(true)}
             className="username-edit-container"
+            role="button"
+            tabIndex="0"
+            onClick={() => setEditUsername(true)}
+            onKeyPress={() => setEditUsername(true)}
           >
             <h1>{userData.username}</h1>
             <Edit id="username-edit-icon" />
@@ -575,7 +575,13 @@ const UserPage = ({
 
                               {isUser
                               && (
-                              <div className="userpage-picture-publicity public" onClick={() => handleDialogOpen('Set image private?', 'Image will no longer be displayed to other users in gallery or world map', () => handlePictureUpdate(pic))}>
+                              <div
+                                className="userpage-picture-publicity public"
+                                role="button"
+                                tabIndex="0"
+                                onClick={() => handleDialogOpen('Set image private?', 'Image will no longer be displayed to other users in gallery or world map', () => handlePictureUpdate(pic))}
+                                onKeyPress={() => handleDialogOpen('Set image private?', 'Image will no longer be displayed to other users in gallery or world map', () => handlePictureUpdate(pic))}
+                              >
                                 public
                                 <SwapHorizontalCircle className="user-page-publicity-icon" />
                               </div>
@@ -636,7 +642,14 @@ const UserPage = ({
 
                               {isUser
                               && (
-                              <div className="userpage-picture-publicity private" onClick={() => handleDialogOpen('Set image public?', 'Image will be displayed to other users in gallery and world map', () => handlePictureUpdate(pic))}>
+                              <div
+                                className="userpage-picture-publicity private"
+                                role="button"
+                                tabIndex="0"
+                                onClick={() => handleDialogOpen('Set image public?', 'Image will be displayed to other users in gallery and world map', () => handlePictureUpdate(pic))}
+                                onKeyPress={() => handleDialogOpen('Set image public?', 'Image will be displayed to other users in gallery and world map', () => handlePictureUpdate(pic))}
+                              >
+
                                 private
                                 <SwapHorizontalCircle className="user-page-publicity-icon" />
                               </div>

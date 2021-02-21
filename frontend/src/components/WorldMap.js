@@ -1,8 +1,3 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable prefer-const */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
@@ -66,101 +61,102 @@ const WorldMap = ({
     }
   }, [param.lat, param.lng]);
 
-  // eslint-disable-next-line consistent-return
   const getMarkers = () => {
-    if (!mapRef.current || !user) return null;
+    if (!mapRef.current || !user || !markerClusterer) return null;
 
     const markers = [];
+    // eslint-disable-next-line no-underscore-dangle
     const maps = mapRef.current.maps_;
 
-    if (markerClusterer) {
-      const mcCopy = markerClusterer;
+    const mcCopy = markerClusterer;
 
-      mcCopy.clearMarkers();
+    mcCopy.clearMarkers();
 
-      if (maps && picturesWithLocation && showPictures) {
-        if (showUserContentOnly) {
-          picturesWithLocation = user.pictures
-            ? user.pictures.filter(
-              (pic) => pic.location.lat !== null && pic.location.lng !== null,
-            )
-            : [];
+    if (maps && picturesWithLocation && showPictures) {
+      if (showUserContentOnly) {
+        picturesWithLocation = user.pictures
+          ? user.pictures.filter(
+            (pic) => pic.location.lat !== null && pic.location.lng !== null,
+          )
+          : [];
+      }
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of markerData) {
+        if (value.type === 'picture') {
+          markerData.delete(key);
         }
+      }
 
-        for (let [key, value] of markerData) {
-          if (value.type === 'picture') {
-            markerData.delete(key);
-          }
-        }
+      const pictureMarker = {
+        url: pictureIcon,
+        size: new maps.Size(24, 24),
+        origin: new maps.Point(0, 0),
+        anchor: new maps.Point(0, 24),
+      };
 
-        const pictureMarker = {
-          url: pictureIcon,
-          size: new maps.Size(24, 24),
-          origin: new maps.Point(0, 0),
-          anchor: new maps.Point(0, 24),
-        };
-
-        picturesWithLocation.map((pic) => {
-          const marker = new maps.Marker({
-            position: { lat: pic.location.lat, lng: pic.location.lng },
-            icon: pictureMarker,
-            title: 'Picture',
-          });
-          maps.event.addListener(marker, 'click', () => setActivePopUp({ data: pic, type: 'image' }));
-
-          setMarkerData(
-            new Map(markerData.set(marker, { type: 'picture', data: pic })),
-          );
-          markers.push(marker);
+      picturesWithLocation.map((pic) => {
+        const marker = new maps.Marker({
+          position: { lat: pic.location.lat, lng: pic.location.lng },
+          icon: pictureMarker,
+          title: 'Picture',
         });
-      }
+        maps.event.addListener(marker, 'click', () => setActivePopUp({ data: pic, type: 'image' }));
 
-      if (blogs && showBlogs && maps && markerClusterer) {
-        let blogArray = [];
-        if (showUserContentOnly && user && user.blogs) {
-          blogArray = user.blogs;
-        } else {
-          blogArray = blogs;
-        }
-
-        for (let [key, value] of markerData) {
-          if (value.type === 'blog') {
-            markerData.delete(key);
-          }
-        }
-
-        const blogMarker = {
-          url: blogIcon,
-          size: new maps.Size(24, 24),
-          origin: new maps.Point(0, 0),
-          anchor: new maps.Point(0, 24),
-        };
-
-        blogArray.map((blog) => blog.locations.map((loc) => {
-          const marker = new maps.Marker({
-            position: { lat: loc.lat, lng: loc.lng },
-            icon: blogMarker,
-            title: 'Blog',
-          });
-
-          maps.event.addListener(marker, 'click', () => setActivePopUp({ data: blog, type: 'blog', blogLocation: loc }));
-          setMarkerData(
-            new Map(markerData.set(marker, { type: 'blog', data: blog })),
-          );
-          markers.push(marker);
-        }));
-      }
-      mcCopy.addMarkers(markers);
-
-      mapRef.current.maps_.event.clearInstanceListeners(mcCopy);
-
-      mcCopy.addListener('click', (c) => {
-        const clusterMarkers = c.getMarkers();
-        const content = clusterMarkers.map((m) => markerData.get(m));
-        setClusterContent(content);
+        setMarkerData(
+          new Map(markerData.set(marker, { type: 'picture', data: pic })),
+        );
+        markers.push(marker);
       });
-      setMarkerClusterer(mcCopy);
     }
+
+    if (blogs && showBlogs && maps && markerClusterer) {
+      let blogArray = [];
+      if (showUserContentOnly && user && user.blogs) {
+        blogArray = user.blogs;
+      } else {
+        blogArray = blogs;
+      }
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of markerData) {
+        if (value.type === 'blog') {
+          markerData.delete(key);
+        }
+      }
+
+      const blogMarker = {
+        url: blogIcon,
+        size: new maps.Size(24, 24),
+        origin: new maps.Point(0, 0),
+        anchor: new maps.Point(0, 24),
+      };
+
+      blogArray.map((blog) => blog.locations.map((loc) => {
+        const marker = new maps.Marker({
+          position: { lat: loc.lat, lng: loc.lng },
+          icon: blogMarker,
+          title: 'Blog',
+        });
+
+        maps.event.addListener(marker, 'click', () => setActivePopUp({ data: blog, type: 'blog', blogLocation: loc }));
+        setMarkerData(
+          new Map(markerData.set(marker, { type: 'blog', data: blog })),
+        );
+        markers.push(marker);
+      }));
+    }
+    mcCopy.addMarkers(markers);
+
+    // eslint-disable-next-line no-underscore-dangle
+    mapRef.current.maps_.event.clearInstanceListeners(mcCopy);
+
+    mcCopy.addListener('click', (c) => {
+      const clusterMarkers = c.getMarkers();
+      const content = clusterMarkers.map((m) => markerData.get(m));
+      setClusterContent(content);
+    });
+    return setMarkerClusterer(mcCopy);
   };
 
   useEffect(() => {

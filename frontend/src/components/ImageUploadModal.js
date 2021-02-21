@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';

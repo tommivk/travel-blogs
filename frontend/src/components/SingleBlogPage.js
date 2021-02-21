@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -254,7 +252,13 @@ const SingleBlogPage = ({
             {blog.stars.length}
             {' '}
           </div>
-          <div id="comment-count" onClick={() => setShowComments(!showComments)}>
+          <div
+            id="comment-count"
+            role="button"
+            tabIndex="0"
+            onClick={() => setShowComments(!showComments)}
+            onKeyPress={() => setShowComments(!showComments)}
+          >
             <ChatBubbleOutline id="blog-comments-icon" />
             {blog.comments.length}
           </div>
