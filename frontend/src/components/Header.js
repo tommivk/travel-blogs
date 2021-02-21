@@ -262,7 +262,7 @@ const Header = ({
         <Link to="/gallery" id="burger-gallery">
           <MenuItem onClick={handleMenuClose}>Gallery</MenuItem>
         </Link>
-        <Link to="explore" id="burger-explore">
+        <Link to="/explore" id="burger-explore">
           <MenuItem onClick={handleMenuClose}>Explore</MenuItem>
         </Link>
         <Link
