@@ -327,3 +327,17 @@
 .blogs-main-container.swiper-wrapper {
   overflow: hidden;
 }
+
+@media (max-width: 425px) {
+  .blog-card {
+    width: 90vw;
+    min-width: 90vw;
+    max-width: 90vw;
+    height: 62.6vw;
+    min-height: 62.6vw;
+    max-height: 62.6vw;
+  }
+  .blog-pseudo-element {
+    display: none;
+  }
+}

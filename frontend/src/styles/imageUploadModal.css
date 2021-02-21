@@ -407,21 +407,51 @@
   .upload-modal-preview-container {
     width: 45%;
   }
-  .upload-modal-midddle-content {
-    width: 200px;
-    height: 300px;
-  }
-}
-
-@media (max-width: 700px) {
   .upload-modal-preview-container {
     display: none;
-  }
-  .upload-modal-preview-container.final-step {
-    display: block;
-    width: 70%;
   }
   .upload-modal-middle-container {
     left: 50%;
   }
 }
+
+@media (max-width: 700px) {
+  .upload-modal-preview-container.final-step {
+    display: block;
+    width: 70%;
+  }
+
+  #image-upload-help-icon {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .upload-modal-middle-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  #upload-modal-next-button, #upload-modal-back-button {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .upload-modal-preview-container.final-step {
+    width: 95%;
+  }
+  #image-modal-final-cancel-button {
+    left: 2px;
+    padding: 0px;
+  }
+}
+
+@media (max-width: 400px) {
+  .image-modal-search-result {
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+  }
+}
+

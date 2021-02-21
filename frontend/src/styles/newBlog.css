@@ -4,9 +4,8 @@
   height: 92vh;
   max-height: 94vh;
   width: 70vw;
-  left: 50%;
-  transform: translate(-50%, 0);
-  margin: 10px;
+  min-width: 320px;
+  margin: 10px auto 10px auto;
 }
 
 .new-blog-info-container {
@@ -342,4 +341,47 @@
 
 #location-remove-button:hover {
   background-color: rgb(78, 86, 90);
+}
+
+@media (max-width: 800px) {
+  .new-blog-main-container {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  .new-blog-search-table-wrapper{
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+  }
+  .location-select-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    margin: 0px;
+    height: 70%;
+    font-size: 0.8rem;
+    overflow: auto;
+  }
+  .location-select-form {
+    min-height: fit-content;
+  }
+  .new-blog-selected-locations {
+    overflow: auto;
+    margin-top: 10px;
+    width: 80%;
+  }
+  .new-blog-selected-locations table {
+    width: 100%;
+    overflow: auto;
+  }
+}
+
+@media (max-width: 420px){
+  .new-blog-search-table-wrapper{
+    max-height: 120px;
+  }
+  .location-select-wrapper {
+    height: 60%;
+    font-size: 0.7rem;
+  }
 }

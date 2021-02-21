@@ -239,3 +239,19 @@
         width: 70%;
     }
 }
+
+@media (max-width: 500px) {
+    .homepage-blog {
+        width: 95vw;
+        min-width: 95vw;
+        max-width: 95vw;
+    }
+
+    .home-page-top-blog-info h1{
+        font-size: 2rem;
+    }
+    
+    .home-page-top-blog-info p {
+        font-size: 1.2rem;
+    }
+}
