@@ -4,9 +4,12 @@ https://fast-basin-89854.herokuapp.com/
 ## Starting the app locally
 
 ### Prerequisites
-Location IQ api key https://locationiq.com/
-Google maps api key for Maps JavaScript and Maps Static Apis https://developers.google.com/
-Firebase credentials json file
+
+Intitialize new Firebase project and create a firebase credentials json file
+
+Create a Google maps api key for Maps JavaScript and Maps Static Apis https://developers.google.com/
+
+Create a LocationIQ api key https://locationiq.com/
 
 ### Frontend
 ```
@@ -44,7 +47,7 @@ SECRET = '<Your secret string>'
 DEFAULT_PICTURE_URL = '<default avatar picture url>'
 FIREBASE_DB_URI = '<Your Firebase storage URI>'
 FIREBASE_DB_TEST_URI = '<Your firebase test storage URI>'
-BUCKET_NAME = '<yOur firebase storage bucket name>'
+BUCKET_NAME = '<Your firebase storage bucket name>'
 ```
   
 #### Start backend 
