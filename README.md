@@ -1,6 +1,10 @@
 # TravelBlogs
 https://fast-basin-89854.herokuapp.com/
 
+Linkki käyttöohjeisiin: https://drive.google.com/file/d/1R5y1X6Zetu-5g1lQ8swdpHCRs7tTgP42/view?usp=sharing
+
+Linkki työaikakirjanpitoon: https://drive.google.com/file/d/1RMDhOof3nIfiICrJw8FWHkZcp-kHSHbc/view?usp=sharing
+
 ## Starting the app locally
 
 ### Prerequisites
