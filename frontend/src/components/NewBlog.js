@@ -10,7 +10,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import EditLocation from '@material-ui/icons/EditLocation';
 import Subject from '@material-ui/icons/Subject';
 import Visibility from '@material-ui/icons/Visibility';
-import { Button, TextField } from '@material-ui/core';
+import { Button, CircularProgress, TextField } from '@material-ui/core';
 import Explore from '@material-ui/icons/Explore';
 import Avatar from '@material-ui/core/Avatar';
 import ReactHtmlParser from 'react-html-parser';
@@ -43,6 +43,8 @@ const NewBlog = ({
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [uploadedBlogID, setUploadedBlogID] = useState(null);
   const [searchFilter, setSearchFilter] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const steps = getSteps();
 
   const searchRef = useRef(null);
@@ -111,12 +113,13 @@ const NewBlog = ({
         '/api/blogs',
         formData,
         {
+          onUploadProgress: () => setIsLoading(true),
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         },
       );
-
+      setIsLoading(false);
       setContent('');
       setTitle('');
       setDescription('');
@@ -132,6 +135,7 @@ const NewBlog = ({
       handleMessage('success', 'Blog Submitted!');
       setActiveStep(5);
     } catch (error) {
+      setIsLoading(false);
       handleMessage('error', error.response.data.error);
     }
   };
@@ -377,6 +381,7 @@ const NewBlog = ({
           user={user}
           setActiveStep={setActiveStep}
           handleBlogSubmit={handleBlogSubmit}
+          isLoading={isLoading}
         />
       );
     case 5:
@@ -407,7 +412,9 @@ NewBlog.propTypes = {
 };
 
 const NewBlogPreview = ({
-  title, description, headerImage, content, user, locations, setActiveStep, handleBlogSubmit,
+  title, description, headerImage,
+  content, user, locations, setActiveStep,
+  handleBlogSubmit, isLoading,
 }) => {
   const [showLocations, setShowLocations] = useState(false);
   const blogDate = DateTime.fromJSDate(new Date());
@@ -415,8 +422,14 @@ const NewBlogPreview = ({
   return (
     <div className="main-blog-page-container">
       <div className="new-blog-preview-buttons">
-        <Button variant="contained" id="new-blog-preview-submit-button" onClick={handleBlogSubmit}>Submit Blog</Button>
-        <Button variant="contained" id="new-blog-preview-cancel-button" onClick={() => setActiveStep(3)}>Go Back</Button>
+        {isLoading
+          ? <CircularProgress />
+          : (
+            <>
+              <Button variant="contained" id="new-blog-preview-submit-button" onClick={handleBlogSubmit}>Submit Blog</Button>
+              <Button variant="contained" id="new-blog-preview-cancel-button" onClick={() => setActiveStep(3)}>Go Back</Button>
+            </>
+          )}
       </div>
       <Explore id="blog-location-toggle" onClick={() => setShowLocations(!showLocations)} />
       {showLocations
@@ -504,6 +517,7 @@ NewBlogPreview.propTypes = {
   locations: PropTypes.instanceOf(Array).isRequired,
   setActiveStep: PropTypes.func.isRequired,
   handleBlogSubmit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 NewBlogPreview.defaultProps = {
